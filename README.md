@@ -12,7 +12,7 @@ Create an app that utilizes image recognition to identify what kind of waste a u
 - Celia Cai (ID: 40098535) (Github Username: CeliaCaii)
 - Kelvin Chow Wan Chuen (ID: 40029677) (Github Username: WanProduction)
 - Daniel Gauvin (ID: 40061905) (Github Username: DGovi)
-- Mahad Janjua (ID: 40054375) (Github Username: MahadJanjua)
+- Mahad Janjua (ID: 40102893) (Github Username: MahadJanjua)
 - Michael Lee (ID: 40054375) (Github Username: mlee97)
 - Jean Carlos Ng (ID: 40026914) (Github Username: ngjean)
 - Pasha Pishdad (ID: 40042599) (Github Username: pashapishdad)
