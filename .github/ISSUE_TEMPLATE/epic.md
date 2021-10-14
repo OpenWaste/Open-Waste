@@ -11,4 +11,4 @@ assignees: ''
 As a ___, I want to ____, so that _____
 
 **Description**
-*If applicable, provide more details about the epic.* **[To delete]**
+**[TO DELETE]** *If applicable, provide more details about the epic.*

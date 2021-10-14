@@ -8,10 +8,10 @@ assignees: ''
 ---
 
 **Observed Behavior**
-*A clear and concise observation of the bug*. **[To delete]**
+**[TO DELETE]** *A clear and concise observation of the bug*.
 
 **Expected Behavior**
-*A clear and concise description of what you expected to happen.* **[To delete]**
+**[TO DELETE]** *A clear and concise description of what you expected to happen.*
 
 **Steps to Reproduce the Bug**
 1. *Step 1*
@@ -19,10 +19,10 @@ assignees: ''
 3. *...*
 
 **Screenshots**
-*If applicable, add screenshots to help explain your problem.* **[To delete]**
+**[TO DELETE]** *If applicable, add screenshots to help explain your problem.*
 
 **Related User Stories**
-*Specify the issue number (eg: #1).* **[To delete]**
+**[TO DELETE]** *Specify the issue number (eg: #1).*
 
-**Other Related Issues**
-*If applicable, specify the issue number (eg: #1, #2, ...).* **[To delete]**
+**Other Related Issues:**
+**[TO DELETE]** *If applicable, specify the issue number (eg: #1, #2, ...).*

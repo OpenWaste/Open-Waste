@@ -1,17 +1,17 @@
 ---
 name: Task
 about: Template used to assign tasks
-title: "[TASK]"
+title: "[TASK]:"
 labels: task
 assignees: ''
 
 ---
 
 **Task Description**
-*Specify the description of the task.* **[To delete]**
+**[TO DELETE]** *Specify the description of the task.*
 
-**Related User Stories:**
-*Specify the issue number (eg: #1).* **[To delete]**
+**Related User Stories** 
+**[TO DELETE]** *Specify the issue number (eg: #1).*
 
-**Other Related Issues:**
-*If applicable, specify the issue number (eg: #1, #2, ...).* **[To delete]**
+**Other Related Issues** 
+**[TO DELETE]** *If applicable, specify the issue number (eg: #1, #2, ...).*

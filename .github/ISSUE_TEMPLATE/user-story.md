@@ -11,7 +11,7 @@ assignees: ''
 As a ___, I want to ____, so that _____.
 
 **Description**
-*If applicable, provide more details about the user story.* **[To delete]**
+**[TO DELETE]** *If applicable, provide more details about the user story.*
 
 **Acceptance Criteria**
 - Criteria 1
@@ -23,5 +23,5 @@ As a ___, I want to ____, so that _____.
 2. Step 2
 3. ...
 
-**Related Epic:** 
-*Specify the issue number (eg: #1).* **[To delete]**
+**Related Epic** 
+**[TO DELETE]** *Specify the issue number (eg: #1).*
