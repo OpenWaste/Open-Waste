@@ -1,0 +1,4 @@
+gdown
+requests
+torchvision
+matplotlib
