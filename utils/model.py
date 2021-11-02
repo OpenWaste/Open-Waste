@@ -30,31 +30,46 @@ data_transformations = {
 }
 
 data_dir = 'utils/data/'
+# Pytorch defines the datasets for itself using the data directory and transformations
 image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x), data_transformations[x]) for x in ['train', 'val']}
+# Pytorch sets up data loaders using the transformed dataset and sets up batching
 data_loaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=4, shuffle=True, num_workers=4) for x in ['train', 'val']}
+# Setup constants for result analysis
 dataset_sizes = {x: len(image_datasets[x]) for x in ['train', 'val']}
 class_names = image_datasets['train'].classes
 
+# Use GPU is available, otherwise CPU
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
+# Extra function used to show a given image on the matplotlib plot
 def imshow(inp, title=None):
     """Imshow for Tensor."""
+    # Reshape image
     inp = inp.numpy().transpose((1, 2, 0))
     mean = np.array([0.485, 0.456, 0.406])
     std = np.array([0.229, 0.224, 0.225])
     inp = std * inp + mean
     inp = np.clip(inp, 0, 1)
+    # Show image for 60 seconds
     plt.imshow(inp)
     if title is not None:
         plt.title(title)
-    plt.show(60)  # pause a bit so that plots are updated
+    plt.pause(60)  # pause a bit so that plots are updated
 
+# Trains a given model
+# model: pretrained/loaded model
+# criterion: Defines the loss function for training
+# optimizer: Defines optimizer function (basically allows the model to progressively decrease randomness as it learns)
+# scheduler Defines the learning rate and the size of the epochs
+# num_epochs: How many epochs you wish to train for
 def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
     since = time.time()
 
+    # Keep track of the best results thus far
     best_model_wts = copy.deepcopy(model.state_dict())
     best_acc = 0.0
 
+    # Run for num_epochs
     for epoch in range(num_epochs):
         print('Epoch {}/{}'.format(epoch, num_epochs - 1))
         print('-' * 10)
@@ -95,42 +110,47 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
             if phase == 'train':
                 scheduler.step()
 
+            # Compute epoch stats
             epoch_loss = running_loss / dataset_sizes[phase]
             epoch_acc = running_corrects.double() / dataset_sizes[phase]
 
-            print('{} Loss: {:.4f} Acc: {:.4f}'.format(
-                phase, epoch_loss, epoch_acc))
+            print('{} Loss: {:.4f} Acc: {:.4f}'.format(phase, epoch_loss, epoch_acc))
 
             # deep copy the model
             if phase == 'val' and epoch_acc > best_acc:
                 best_acc = epoch_acc
                 best_model_wts = copy.deepcopy(model.state_dict())
-
         print()
 
+    # Training completion statistics
     time_elapsed = time.time() - since
     print('Training complete in {:.0f}m {:.0f}s'.format(
         time_elapsed // 60, time_elapsed % 60))
     print('Best val Acc: {:4f}'.format(best_acc))
 
-    # load best model weights
+    # Load best model weights
     model.load_state_dict(best_model_wts)
     return model
 
+# Function to visualize a model on the validation data
 def visualize_model(model, num_images=6):
+    # Set the model to eval mode so it knows it's no longer training
     was_training = model.training
     model.eval()
     images_so_far = 0
     fig = plt.figure()
 
+    # Disable gradient calculations
     with torch.no_grad():
         for i, (inputs, labels) in enumerate(data_loaders['val']):
             inputs = inputs.to(device)
             labels = labels.to(device)
 
+            # Get model predictions on the validation data
             outputs = model(inputs)
             _, preds = torch.max(outputs, 1)
 
+            # Plot images in two columns 
             for j in range(inputs.size()[0]):
                 images_so_far += 1
                 ax = plt.subplot(num_images//2, 2, images_so_far)
@@ -143,6 +163,7 @@ def visualize_model(model, num_images=6):
                     return
         model.train(mode=was_training)
 
+# Function to run the entire model and save it 
 def model():
     model = models.resnet18(pretrained=True)
     num_ftrs = model.fc.in_features

@@ -8,4 +8,4 @@ Run this script to train on the dataset, the model is saved as a file called `mo
 
 To be able to run the code, you must have python installed and run `pip install -r requirements.txt`, which installs the required packages for the scripts to run.
 
-To run one of the scrypts, simply run `python utils/download.py`, for instance, from the root directory.
+To run one of the scripts, simply run `python utils/download.py`, for instance, from the root directory.
