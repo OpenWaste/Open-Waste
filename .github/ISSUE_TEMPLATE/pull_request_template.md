@@ -1,4 +1,6 @@
 ---
+name: Pull request
+about: Template used to perform pull requests
 title: "type(issue-#): brief description"
 ---
 
