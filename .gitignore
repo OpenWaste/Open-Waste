@@ -1,0 +1,3 @@
+# ignore folders filled with images
+utils/data/*/*
+utils/data/*
