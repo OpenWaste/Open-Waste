@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class MvcConfig(AppConfig):
+class ComponentsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'MVC'
+    name = 'Components'
