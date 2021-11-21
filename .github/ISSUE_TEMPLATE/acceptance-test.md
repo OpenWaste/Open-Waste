@@ -17,5 +17,8 @@ assignees: ''
 2. Step 2
 3. ...
 
+## Related User Story
+**[TO DELETE]** *Specify the issue number (eg: #1).*
+
 ## Related Epic 
 **[TO DELETE]** *Specify the issue number (eg: #1).*
