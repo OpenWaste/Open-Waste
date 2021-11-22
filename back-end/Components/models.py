@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser
 
 class Category(models.Model):
     name = models.CharField(max_length=200)
-    sample_image = models.ImageField(null=True, blank=True, upload_to='media/sample_images/')
+    sample_image = models.ImageField(null=True, blank=True, upload_to='sample_images/')
 
 
 class DWUser(models.Model):
@@ -21,7 +21,7 @@ class Building(models.Model):
 
 class Building_images(models.Model):
     buildling = models.ForeignKey(Building, on_delete=models.CASCADE, default=1)
-    building_image = models.ImageField(null=True, blank=True, upload_to='media/building_images/')
+    building_image = models.ImageField(null=True, blank=True, upload_to='building_images/')
 
 
 class Bin(models.Model):
@@ -42,6 +42,6 @@ class Bin(models.Model):
 
 class Bin_images(models.Model):
     bin_id = models.ForeignKey(Bin, on_delete=models.CASCADE, default=1)
-    bin_images = models.ImageField(null=True, blank=True, upload_to='media/bin_images/')
+    bin_images = models.ImageField(null=True, blank=True, upload_to='bin_images/')
 
 
