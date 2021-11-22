@@ -5,20 +5,23 @@ from django.contrib.auth.models import AbstractUser
 
 
 class Category(models.Model):
-    name = models.Charfield(maxlength=200)
-    sample_image = models.ImageField()
+    name = models.CharField(max_length=200)
+    sample_image = models.ImageField(null=True, blank=True, upload_to='media/sample_images/')
 
 
-class DWUser(AbstractUser):
-    name = models.Charfield(maxlength=200)
-    email = models.Emailfield(max_length=254)
+class DWUser(models.Model):
+    name = models.CharField(max_length=200)
+    email = models.EmailField(max_length=254)
     nbr_of_images = models.IntegerField()
 
 
 class Building(models.Model):
-    name = models.Charfield(maxlength=200)
-    #TODO images
-    #building_image = models.ImageField(stuff in here)
+    building_name = models.CharField(max_length=200)
+
+
+class Building_images(models.Model):
+    buildling = models.ForeignKey(Building, on_delete=models.CASCADE, default=1)
+    building_image = models.ImageField(null=True, blank=True, upload_to='media/building_images/')
 
 
 class Bin(models.Model):
@@ -29,16 +32,16 @@ class Bin(models.Model):
     )
 
     building_id = models.ForeignKey(Building, on_delete=models.CASCADE, default=1)
-    address = models.Charfield(maxlength=200)
-
-    #TODO latitude longitude
-    # these should be in the buildings, not the bins
+    address = models.CharField(max_length=200)
     latitude = models.DecimalField(max_digits=6, decimal_places=6)
     longitude = models.DecimalField(max_digits=6, decimal_places=6)
     floor_num = models.IntegerField()
     location_description = models.TextField()
-    #TODO images
-    #image = models.ImageField(stuff in here)
-    accepted_categories = models.Charfield(maxlength=30, blank=True, null=True, choices=categories)
+    accepted_categories = models.CharField(max_length=30, blank=True, null=True, choices=categories_choices)
+
+
+class Bin_images(models.Model):
+    bin_id = models.ForeignKey(Bin, on_delete=models.CASCADE, default=1)
+    bin_images = models.ImageField(null=True, blank=True, upload_to='media/bin_images/')
 
 
