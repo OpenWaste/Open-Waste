@@ -14,28 +14,26 @@ const cameraName = "Camera";
 
 //screen info first one will be the homescreen
 const screenName = {
-  'Camera': {
-    'object': Camera,
-    'icon': 'photo-camera'
+  Camera: {
+    object: Camera,
+    icon: "photo-camera",
   },
 
-  'Map': {
-    'object': Map,
-    'icon': 'map'
+  Map: {
+    object: Map,
+    icon: "map",
   },
 
-  'Settings': {
-    'object': Settings,
-    'icon': 'settings'
+  Settings: {
+    object: Settings,
+    icon: "settings",
   },
 
-  'Profile': {
-    'object': Profile,
-    'icon': 'people'
-  }
+  Profile: {
+    object: Profile,
+    icon: "people",
+  },
 };
-
-
 
 const Tab = createBottomTabNavigator();
 
@@ -45,33 +43,33 @@ export default function MainContainer() {
       <Tab.Navigator
         initialRouteName={Object.keys(screenName)[0]}
         screenOptions={({ route }) => ({
-          tabBarIcon: ({ focus, color, size}) => {
+          tabBarIcon: ({ focus, color, size }) => {
             let iconName;
-            size = 20
+            size = 20;
             iconName = screenName[route.name]["icon"];
 
             return <MaterialIcons name={iconName} size={size} color={color} />;
           },
-          tabBarLabelStyle: {fontSize: 8},
+          tabBarLabelStyle: { fontSize: 8 },
           tabBarActiveTintColor: "#B6E28E",
-          tabBarInactiveTintColor: "#808080"
+          tabBarInactiveTintColor: "#808080",
         })}
       >
         <Tab.Screen
           name={Object.keys(screenName)[0]}
-          component={screenName[Object.keys(screenName)[0]]['object']}
+          component={screenName[Object.keys(screenName)[0]]["object"]}
         />
         <Tab.Screen
           name={Object.keys(screenName)[1]}
-          component={screenName[Object.keys(screenName)[1]]['object']}
+          component={screenName[Object.keys(screenName)[1]]["object"]}
         />
         <Tab.Screen
           name={Object.keys(screenName)[2]}
-          component={screenName[Object.keys(screenName)[2]]['object']}
+          component={screenName[Object.keys(screenName)[2]]["object"]}
         />
         <Tab.Screen
           name={Object.keys(screenName)[3]}
-          component={screenName[Object.keys(screenName)[3]]['object']}
+          component={screenName[Object.keys(screenName)[3]]["object"]}
         />
       </Tab.Navigator>
     </NavigationContainer>
