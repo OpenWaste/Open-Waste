@@ -1,8 +1,7 @@
-import { StatusBar } from "expo-status-bar";
 import * as React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 
-import MainContainer from "./navigation/MainContainer";
+import MainContainer from "./components/MainContainer";
 
 export default function App() {
   return <MainContainer />;

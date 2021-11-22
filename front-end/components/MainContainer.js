@@ -4,10 +4,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 // Screens
-import CameraScreen from "./screens/CameraScreen";
-import MapScreen from "./screens/MapScreen";
-import SettingsScreen from "./screens/SettingsScreen";
-import ProfileScreen from "./screens/ProfileScreen";
+import CameraScreen from "./camera/CameraScreen";
+import MapScreen from "./map/MapScreen";
+import SettingsScreen from "./settings/SettingsScreen";
+import ProfileScreen from "./profile/ProfileScreen";
 
 //Screen names
 const cameraName = "Camera";
