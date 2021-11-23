@@ -9,30 +9,12 @@ import Map from "./map/Map";
 import Settings from "./settings/Settings";
 import Profile from "./profile/Profile";
 
-//Screen names
-const cameraName = "Camera";
-
 //screen info first one will be the homescreen
 const screenName = {
-  Camera: {
-    object: Camera,
-    icon: "photo-camera",
-  },
-
-  Map: {
-    object: Map,
-    icon: "map",
-  },
-
-  Settings: {
-    object: Settings,
-    icon: "settings",
-  },
-
-  Profile: {
-    object: Profile,
-    icon: "people",
-  },
+  Camera: { object: Camera, icon: "photo-camera" },
+  Map: { object: Map, icon: "map" },
+  Settings: { object: Settings, icon: "settings" },
+  Profile: { object: Profile, icon: "people" },
 };
 
 const Tab = createBottomTabNavigator();
@@ -43,11 +25,9 @@ export default function MainContainer() {
       <Tab.Navigator
         initialRouteName={Object.keys(screenName)[0]}
         screenOptions={({ route }) => ({
-          tabBarIcon: ({ focus, color, size }) => {
-            let iconName;
+          tabBarIcon: ({ color, size }) => {
+            let iconName = screenName[route.name]["icon"];
             size = 20;
-            iconName = screenName[route.name]["icon"];
-
             return <MaterialIcons name={iconName} size={size} color={color} />;
           },
           tabBarLabelStyle: { fontSize: 8 },
