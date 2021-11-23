@@ -39,7 +39,7 @@ export class MainContainer extends React.Component {
         >
           {screens.map((screen) => {
             return (
-              <Tab.Screen name={screen.name} component={screen.component} />
+              <Tab.Screen key={screen.name} name={screen.name} component={screen.component} />
             );
           })}
         </Tab.Navigator>
