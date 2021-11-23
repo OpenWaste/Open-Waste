@@ -1878,10 +1878,10 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@^27.0.2":
-  "integrity" "sha512-4dRxkS/AFX0c5XW6IPMNOydLn2tEhNhJV7DnYK+0bjoJZ+QTmfucBlihX7aoEsh/ocYtkLC73UbnBXBXIxsULA=="
-  "resolved" "https://registry.npmjs.org/@types/jest/-/jest-27.0.2.tgz"
-  "version" "27.0.2"
+"@types/jest@^27.0.3":
+  "integrity" "sha512-cmmwv9t7gBYt7hNKH5Spu7Kuu/DotGa+Ff+JGRKZ4db5eh8PnKS4LuebJ3YLUoyOyIHraTGyULn23YtEAm0VSg=="
+  "resolved" "https://registry.npmjs.org/@types/jest/-/jest-27.0.3.tgz"
+  "version" "27.0.3"
   dependencies:
     "jest-diff" "^27.0.0"
     "pretty-format" "^27.0.0"
@@ -1901,10 +1901,25 @@
   "resolved" "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.4.tgz"
   "version" "15.7.4"
 
-"@types/react-native@~0.63.2":
-  "integrity" "sha512-KJE3KQZJ7L5XtAcNvWnfMDmRMCSkhPnc5dlhgYV6NHSwRUU2WaIOd6FVRKoWMm0Z9qpmC3GIjn/BQHs2lNeGzw=="
-  "resolved" "https://registry.npmjs.org/@types/react-native/-/react-native-0.63.54.tgz"
-  "version" "0.63.54"
+"@types/react-native-vector-icons@^6.4.10":
+  "integrity" "sha512-z4sexbuZ7nmYsp7Z9YB5fSQoN3KFn6nZA3QsCkQLOYnVmVlxX4U22v/bM9Xx/6dOA1vClxoRZo2CFDX16uryXQ=="
+  "resolved" "https://registry.npmjs.org/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.10.tgz"
+  "version" "6.4.10"
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
+
+"@types/react-native@*", "@types/react-native@^0.63.57":
+  "integrity" "sha512-FD4do3uthGHddy9e2HVsitMPRfR2wgm2C6k0KAiWaeKhEuiX+5rvtmAdH+0LkqzcDYIGRemEgbQl6iN/9CsZ1A=="
+  "resolved" "https://registry.npmjs.org/@types/react-native/-/react-native-0.63.57.tgz"
+  "version" "0.63.57"
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-test-renderer@^17.0.1":
+  "integrity" "sha512-3Fi2O6Zzq/f3QR9dRnlnHso9bMl7weKCviFmfF6B4LS1Uat6Hkm15k0ZAQuDz+UBq6B3+g+NM6IT2nr5QgPzCw=="
+  "resolved" "https://registry.npmjs.org/@types/react-test-renderer/-/react-test-renderer-17.0.1.tgz"
+  "version" "17.0.1"
   dependencies:
     "@types/react" "*"
 
@@ -7318,10 +7333,10 @@
   "resolved" "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz"
   "version" "0.0.6"
 
-"typescript@^4.4.4":
-  "integrity" "sha512-DqGhF5IKoBl8WNf8C1gu8q0xZSInh9j1kJJMqT3a94w1JzVaBU4EXOSMrz9yDqMT0xt3selp83fuFMQ0uzv6qA=="
-  "resolved" "https://registry.npmjs.org/typescript/-/typescript-4.4.4.tgz"
-  "version" "4.4.4"
+"typescript@^4.5.2":
+  "integrity" "sha512-5BlMof9H1yGt0P8/WF+wPNw6GfctgGjXp5hkblpyT+8rkASSmkUKMXrxR0Xg8ThVCi/JnHQiKXeBaEwCeQwMFw=="
+  "resolved" "https://registry.npmjs.org/typescript/-/typescript-4.5.2.tgz"
+  "version" "4.5.2"
 
 "ua-parser-js@^0.7.18":
   "integrity" "sha512-6Gurc1n//gjp9eQNXjD9O3M/sMwVtN5S8Lv9bvOYBfKfDNiIIhqiyi01vMBO45u4zkDE420w/e0se7Vs+sIg+g=="
