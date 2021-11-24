@@ -15,4 +15,5 @@ rules = """
 # 8. build: affects build system or external dependencies
 # 9. ci: change to CI configuration and scripts
 # 10. perf: improves performance
+# 11. task: work completed
 """

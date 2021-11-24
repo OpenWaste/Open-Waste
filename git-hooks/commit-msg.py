@@ -34,7 +34,7 @@ def line_valid(idx, line):
     if idx == 0:
         isPrefixGood = False
         line = line.strip()
-        if (line.startswith(('feat: ', 'fix: ', 'docs: ', 'style: ', 'refactor: ', 'test: ', 'chore: ', 'build: ', 'ci: ', 'perf: '))):
+        if (line.startswith(('feat: ', 'fix: ', 'docs: ', 'style: ', 'refactor: ', 'test: ', 'chore: ', 'build: ', 'ci: ', 'perf: ', 'task: '))):
             isPrefixGood = True
         else:
             print("\u001b[31m Please add prefix!\u001b[0m")
