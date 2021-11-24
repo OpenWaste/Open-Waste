@@ -6,7 +6,7 @@ rules = """
 # COMMIT MESSAGE EXAMPLE
 # ======================================
 # 1. feat: feature
-# 2. bug fix: bug fix
+# 2. fix: bug fix
 # 3. docs: documentation
 # 4. style: formatting, missing semi colons, etc.
 # 5. refactor: refactor
