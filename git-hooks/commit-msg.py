@@ -22,10 +22,9 @@ def main():
                 sys.exit(1)
 
     if (re.search('#[0-9]+$', line) is None):
-        print(
-            "\u001b[33m Warning: add issue number related to this commit.\u001b[0m")
+        print("Warning: add issue number related to this commit.")
     else:
-        print("\u001b[32m Perfect commit!\u001b[0m")
+        print("Success: Perfect commit!")
 
     sys.exit(0)
 
@@ -37,13 +36,13 @@ def line_valid(idx, line):
         if (line.startswith(('feat: ', 'fix: ', 'docs: ', 'style: ', 'refactor: ', 'test: ', 'chore: ', 'build: ', 'ci: ', 'perf: ', 'task: '))):
             isPrefixGood = True
         else:
-            print("\u001b[31m Please add prefix!\u001b[0m")
+            print("Error: Please add prefix!")
 
         isLowerCase = False
         if (line.islower()):
             isLowerCase = True
         else:
-            print("\u001b[31m Commit are always lowercase!\u001b[0m")
+            print("Error: Commit are always lowercase!")
 
         return isPrefixGood and isLowerCase
     elif idx == 1:
