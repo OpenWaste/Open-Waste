@@ -29,12 +29,13 @@ export class MainContainer extends React.Component {
                 (screen) => screen.name === route.name
               )?.icon;
               size = 20;
-
               return <MaterialIcons name={icon} size={size} color={color} />;
             },
-            tabBarLabelStyle: { fontSize: 8 },
+            tabBarLabelStyle: { fontSize: 8 , marginBottom: 10 },
+            tabBarStyle: { paddingTop: 10,},
             tabBarActiveTintColor: "#B6E28E",
             tabBarInactiveTintColor: "#808080",
+            headerShown: false,
           })}
         >
           {screens.map((screen) => {
