@@ -3,7 +3,7 @@ rules = """
 #
 # Please follow these rules:
 #
-# COMMIT MESSAGE EXAMPLE
+# COMMIT PREFIX EXAMPLE
 # ======================================
 # 1. feat: feature
 # 2. fix: bug fix
@@ -15,4 +15,9 @@ rules = """
 # 8. build: affects build system or external dependencies
 # 9. ci: change to CI configuration and scripts
 # 10. perf: improves performance
+# 11. task: work completed
+#
+# FULL COMMIT EXAMPLE
+# =======================
+# docs: add student id to readme #134 #123
 """
