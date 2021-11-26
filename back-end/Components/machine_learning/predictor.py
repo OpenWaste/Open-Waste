@@ -13,7 +13,7 @@ class Predictor:
 
     # Setup transformation for image
     __IMG_SIZE = 224
-    __loader = transforms.Compose([transforms.Scale(__IMG_SIZE), transforms.ToTensor()])
+    __loader = transforms.Compose([transforms.Resize(__IMG_SIZE), transforms.ToTensor()])
 
     def __init__(self):
         # Load model as it is in the model.pt file
