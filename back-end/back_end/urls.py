@@ -15,7 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from Components.views import (
+    ImageRecognitionApiView
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('prediction', ImageRecognitionApiView.as_view())
 ]
