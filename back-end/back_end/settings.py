@@ -133,3 +133,10 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# image paths
+CATEGORY_IMG_PATH = 'sample_images/'
+BUILDING_IMG_PATH = 'building_images/'
+BIN_IMG_PATH = 'bin_images/'
+ACCEPTED_TRASH_IMG_PATH = 'accepted_trash_images/'
+
