@@ -29,7 +29,9 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# For now, during dev, we can set it to any allowed host, but we might want to change this later on in prod and
+# implement some sort of authentication mechanism (like JWT?) 
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
