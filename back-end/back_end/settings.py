@@ -19,6 +19,10 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+#this is where all photos are located for the database to fetch
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -131,3 +135,10 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# image paths
+CATEGORY_IMG_PATH = 'sample_images/'
+BUILDING_IMG_PATH = 'building_images/'
+BIN_IMG_PATH = 'bin_images/'
+ACCEPTED_TRASH_IMG_PATH = 'accepted_trash_images/'
+
