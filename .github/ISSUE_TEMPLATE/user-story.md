@@ -2,7 +2,7 @@
 name: User Story
 about: Template for describing user stories
 title: "[US-#.#]:"
-labels: user story
+labels: user story, frontend, backend, testing, QA
 assignees: ''
 
 ---
