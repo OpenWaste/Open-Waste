@@ -7,11 +7,11 @@ assignees: ''
 
 ---
 
-**Task Description**
+## Task Description
 **[TO DELETE]** *Specify the description of the task.*
 
-**Related User Stories** 
+## Related User Stories
 **[TO DELETE]** *Specify the issue number (eg: #1).*
 
-**Other Related Issues** 
+## Other Related Issues
 **[TO DELETE]** *If applicable, specify the issue number (eg: #1, #2, ...).*
