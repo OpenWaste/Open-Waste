@@ -1,24 +1,19 @@
 from __future__ import print_function, division
 
+import os, glob
+from PIL import Image
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
 import pytorch_lightning as pl
-from torch.optim import lr_scheduler
 from torch.utils.data import Dataset, DataLoader
-from torchvision import datasets, models, transforms
+from torchvision import models, transforms
 from sklearn.model_selection import train_test_split
 
 import pytorch_lightning as pl
 from pytorch_lightning import Trainer
-from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping
-
-import numpy as np
-import matplotlib.pyplot as plt
-import time
-import os, glob
-import copy
-from PIL import Image
+from pytorch_lightning.callbacks import ModelCheckpoint
 
 MODEL_SAVE_PATH = 'utils/model.pt'
 CHECKPOINT_SAVE_PATH = 'utils/checkpoints/'
