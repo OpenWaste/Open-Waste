@@ -1,5 +1,4 @@
 import os.path
-
 import torch
 import torch.nn as nn
 from torchvision import datasets, models, transforms
@@ -10,7 +9,7 @@ class Predictor:
     # Possible prediction classes
     # TODO: Add class names to DB instead of keeping them in a hard-coded constant
     __CLASS_NAMES = ['cardboard', 'glass', 'metal', 'paper', 'plastic', 'trash']
-    __ML_MODEL_PATH = 'Components\\machine_learning\\data\\model.pt'
+    __ML_MODEL_PATH = os.path.join('Components', 'machine_learning', 'data', 'model.pt')
 
     # Setup transformation for image
     __IMG_SIZE = 224
