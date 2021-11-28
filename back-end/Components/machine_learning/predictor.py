@@ -8,6 +8,7 @@ from PIL import Image
 
 class Predictor:
     # Possible prediction classes
+    # TODO: Add class names to DB instead of keeping them in a hard-coded constant
     __CLASS_NAMES = ['cardboard', 'glass', 'metal', 'paper', 'plastic', 'trash']
     __ML_MODEL_PATH = 'Components\\machine_learning\\data\\model.pt'
 
