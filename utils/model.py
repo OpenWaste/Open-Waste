@@ -3,193 +3,231 @@ from __future__ import print_function, division
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import pytorch_lightning as pl
 from torch.optim import lr_scheduler
-import numpy as np
+from torch.utils.data import Dataset, DataLoader
 from torchvision import datasets, models, transforms
+from sklearn.model_selection import train_test_split
+
+import pytorch_lightning as pl
+from pytorch_lightning import Trainer
+from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping
+
+import numpy as np
 import matplotlib.pyplot as plt
 import time
-import os
+import os, glob
 import copy
+from PIL import Image
 
 MODEL_SAVE_PATH = 'utils/model.pt'
+CHECKPOINT_SAVE_PATH = 'utils/checkpoints/'
 
-# Setting up image transformations for data to be trained on
-data_transformations = {
-    'train': transforms.Compose([
-        transforms.RandomResizedCrop(224),
-        transforms.RandomHorizontalFlip(),
-        transforms.ToTensor(),
-        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-    ]),
-    'val': transforms.Compose([
-        transforms.Resize(256),
-        transforms.CenterCrop(224),
-        transforms.ToTensor(),
-        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-    ])
-}
+train_dir = 'utils/data/train/'
+test_dir = 'utils/data/test/'
+# FilePath List
+train_img_path = glob.glob(os.path.join(train_dir, '*/*.jpg'))
+test_img_path = glob.glob(os.path.join(test_dir, '*/*.jpg'))
 
-data_dir = 'utils/data/'
-# Pytorch defines the datasets for itself using the data directory and transformations
-image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x), data_transformations[x]) for x in ['train', 'val']}
-# Pytorch sets up data loaders using the transformed dataset and sets up batching
-data_loaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=4, shuffle=True, num_workers=4) for x in ['train', 'val']}
-# Setup constants for result analysis
-dataset_sizes = {x: len(image_datasets[x]) for x in ['train', 'val']}
-class_names = image_datasets['train'].classes
+# Data Augmentation
+class ImageTransform():
+    def __init__(self, img_size=224, mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)):
+        self.data_transform = {
+            'train': transforms.Compose([
+                transforms.RandomResizedCrop(img_size),
+                transforms.RandomHorizontalFlip(),
+                transforms.ToTensor(),
+                transforms.Normalize(mean, std)
+            ]),
+            'val': transforms.Compose([
+                transforms.Resize(256),
+                transforms.CenterCrop(img_size),
+                transforms.ToTensor(),
+                transforms.Normalize(mean, std)
+            ]),
+            'test': transforms.Compose([
+                transforms.Resize(256),
+                transforms.CenterCrop(img_size),
+                transforms.ToTensor(),
+                transforms.Normalize(mean, std)
+            ]),
+        }
 
-# Use GPU is available, otherwise CPU
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    def __call__(self, img, phase):
+        return self.data_transform[phase](img)
 
-# Extra function used to show a given image on the matplotlib plot
-def imshow(inp, title=None):
-    """Imshow for Tensor."""
-    # Reshape image
-    inp = inp.numpy().transpose((1, 2, 0))
-    mean = np.array([0.485, 0.456, 0.406])
-    std = np.array([0.229, 0.224, 0.225])
-    inp = std * inp + mean
-    inp = np.clip(inp, 0, 1)
-    # Show image for 60 seconds
-    plt.imshow(inp)
-    if title is not None:
-        plt.title(title)
-    plt.pause(60)  # pause a bit so that plots are updated
+# Datasets
+class TrashDataset(Dataset):
+    LABELS = {
+        'cardboard': 0,
+        'glass': 1,
+        'metal': 2,
+        'paper': 3,
+        'plastic': 4,
+        'trash': 5,
+    }
 
-# Trains a given model
-# model: pretrained/loaded model
-# criterion: Defines the loss function for training
-# optimizer: Defines optimizer function (basically allows the model to progressively decrease randomness as it learns)
-# scheduler Defines the learning rate and the size of the epochs
-# num_epochs: How many epochs you wish to train for
-def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
-    since = time.time()
+    def __init__(self, file_list, transform=None, phase='train'):
+        self.file_list = file_list
+        self.transform = transform
+        self.phase = phase
+        self.labels = [self.LABELS[x.split('\\')[1]] for x in self.file_list]
 
-    # Keep track of the best results thus far
-    best_model_wts = copy.deepcopy(model.state_dict())
-    best_acc = 0.0
+    def __len__(self):
+        return len(self.file_list)
 
-    # Run for num_epochs
-    for epoch in range(num_epochs):
-        print('Epoch {}/{}'.format(epoch, num_epochs - 1))
-        print('-' * 10)
+    def __getitem__(self, idx):
+        img_path = self.file_list[idx]
+        img = Image.open(img_path)
+        img_transformed = self.transform(img, self.phase)
 
-        # Each epoch has a training and validation phase
-        for phase in ['train', 'val']:
-            if phase == 'train':
-                model.train()  # Set model to training mode
-            else:
-                model.eval()   # Set model to evaluate mode
+        label = self.labels[idx]
 
-            running_loss = 0.0
-            running_corrects = 0
+        return img_transformed, label
 
-            # Iterate over data.
-            for inputs, labels in data_loaders[phase]:
-                inputs = inputs.to(device)
-                labels = labels.to(device)
 
-                # zero the parameter gradients
-                optimizer.zero_grad()
+class ModelSystem(pl.LightningModule):
+    def __init__(self, img_path, criterion, batch_size, img_size):
+        super(ModelSystem, self).__init__()
+        self.criterion = criterion
+        self.batch_size = batch_size
+        self.img_size = img_size
 
-                # forward
-                # track history if only in train
-                with torch.set_grad_enabled(phase == 'train'):
-                    outputs = model(inputs)
-                    _, preds = torch.max(outputs, 1)
-                    loss = criterion(outputs, labels)
+        # Load Data #########################
+        self.img_path = img_path
+        # Split Train/Val Data
+        self.train_img_path, self.val_img_path = train_test_split(self.img_path)
+        # Dataset
+        self.train_dataset = TrashDataset(self.train_img_path, ImageTransform(self.img_size), phase='val')
+        self.val_dataset = TrashDataset(self.val_img_path, ImageTransform(self.img_size), phase='val')
 
-                    # backward + optimize only if in training phase
-                    if phase == 'train':
-                        loss.backward()
-                        optimizer.step()
+        # Model #############################
+        # Pretrained model
+        self.classifier = models.resnet18(pretrained=True)
+        
+        # Freeze the pretrained part of the model
+        # for param in self.classifier.parameters():
+        #     param.requires_grad = False
 
-                # statistics
-                running_loss += loss.item() * inputs.size(0)
-                running_corrects += torch.sum(preds == labels.data)
-            if phase == 'train':
-                scheduler.step()
+        # Change Output Size of Last FC Layer
+        num_features = self.classifier.fc.in_features
+        self.classifier.fc = nn.Linear(in_features=num_features, out_features=6)
 
-            # Compute epoch stats
-            epoch_loss = running_loss / dataset_sizes[phase]
-            epoch_acc = running_corrects.double() / dataset_sizes[phase]
+        # Set Optimizer
+        self.optimizer = optim.SGD(self.classifier.parameters(), lr=0.001, momentum=0.9)
 
-            print('{} Loss: {:.4f} Acc: {:.4f}'.format(phase, epoch_loss, epoch_acc))
+    # Mothed ############################
+    # Set Train Dataloader
+    # @pl.data_loader
+    def train_dataloader(self):
+        '''
+        REQUIRED
+        Set Train Dataloader
+        '''
+        return DataLoader(self.train_dataset, batch_size=self.batch_size, shuffle=True, num_workers=4, pin_memory=True)
 
-            # deep copy the model
-            if phase == 'val' and epoch_acc > best_acc:
-                best_acc = epoch_acc
-                best_model_wts = copy.deepcopy(model.state_dict())
-        print()
+    # Set Valid Dataloader
+    # @pl.data_loader
+    def val_dataloader(self):
+        '''
+        REQUIRED
+        Set Validation Dataloader
+        '''
+        return DataLoader(self.val_dataset, batch_size=self.batch_size, shuffle=False, num_workers=4, pin_memory=True)
 
-    # Training completion statistics
-    time_elapsed = time.time() - since
-    print('Training complete in {:.0f}m {:.0f}s'.format(
-        time_elapsed // 60, time_elapsed % 60))
-    print('Best val Acc: {:4f}'.format(best_acc))
+    def forward(self, x):
+        return self.classifier(x)
 
-    # Load best model weights
-    model.load_state_dict(best_model_wts)
-    return model
+    # Set optimizer and scheduler
+    def configure_optimizers(self):
+        # [optimizer], [scheduler]
+        return [self.optimizer], []
 
-# Function to visualize a model on the validation data
-def visualize_model(model, num_images=6):
-    # Set the model to eval mode so it knows it's no longer training
-    was_training = model.training
-    model.eval()
-    images_so_far = 0
-    fig = plt.figure()
+    # Train Loop
+    def training_step(self, batch, batch_idx):
+        '''
+        REQUIRED
+        batch: Output from DataLoader
+        batch_idx: Index of Batch
+        '''
 
-    # Disable gradient calculations
-    with torch.no_grad():
-        for i, (inputs, labels) in enumerate(data_loaders['val']):
-            inputs = inputs.to(device)
-            labels = labels.to(device)
+        # Output from DataLoader
+        imgs, labels = batch
 
-            # Get model predictions on the validation data
-            outputs = model(inputs)
-            _, preds = torch.max(outputs, 1)
+        # Prediction
+        preds = self.forward(imgs)
+        # Calc Loss
+        loss = self.criterion(preds, labels)
 
-            # Plot images in two columns 
-            for j in range(inputs.size()[0]):
-                images_so_far += 1
-                ax = plt.subplot(num_images//2, 2, images_so_far)
-                ax.axis('off')
-                ax.set_title('predicted: {}'.format(class_names[preds[j]]))
-                imshow(inputs.cpu().data[j])
+        # Calc Accuracy
+        _, preds = torch.max(preds, 1)
+        accuracy = torch.sum(preds == labels).float() / preds.size(0)
 
-                if images_so_far == num_images:
-                    model.train(mode=was_training)
-                    return
-        model.train(mode=was_training)
+        self.log('train_loss', loss, prog_bar=True, logger=True)
+        self.log('train_accuracy', accuracy, prog_bar=True, logger=True)
 
-# Function to run the entire model and save it 
-def model():
-    model = models.resnet18(pretrained=True)
-    num_ftrs = model.fc.in_features
+        return loss
+    
+    # Validation Loop
+    def validation_step(self, batch, batch_idx):
+        '''
+        OPTIONAL
+        batch: Output from DataLoader
+        batch_idx: Index of Batch
+        '''
+        # Output from Dataloader
+        imgs, labels = batch
+        
+        # Prediction
+        preds = self.forward(imgs)
+        # Calc Loss
+        loss = self.criterion(preds, labels)
+        
+        # Calc Accuracy
+        _, preds = torch.max(preds, 1)
+        accuracy = torch.sum(preds == labels).float() / preds.size(0)
 
-    # Freeze the pretrained part of the model
-    for param in model.parameters():
-        param.requires_grad = False
-    # Here the size of each output sample is set to 2.
-    # Alternatively, it can be generalized to nn.Linear(num_ftrs, len(class_names)).
-    model.fc = nn.Linear(num_ftrs, len(class_names))
+        self.log('val_loss', loss, prog_bar=True, logger=True)
+        self.log('val_accuracy', accuracy, prog_bar=True, logger=True)
+        
+        return {'val_loss': loss, 'val_accuracy': accuracy}
 
-    model = model.to(device)
+    # Aggegate Validation Result
+    def validation_end(self, outputs):
+        avg_loss = torch.stack([x['val_loss'] for x in outputs]).mean()
+        avg_accuracy = torch.stack([x['val_accuracy'] for x in outputs]).mean()
+        logs = {'avg_val_loss': avg_loss, 'avg_val_accuracy': avg_accuracy}
+        torch.cuda.empty_cache()
 
-    criterion = nn.CrossEntropyLoss()
+        return {'avg_val_loss': avg_loss, 'log': logs}
 
-    # Observe that all parameters are being optimized
-    optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
-
-    # Decay LR by a factor of 0.1 every 7 epochs
-    exp_lr_scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
-
-    # Train model
-    model = train_model(model, criterion, optimizer, exp_lr_scheduler, num_epochs=25)
-
-    # Save model
-    torch.save(model.state_dict(), MODEL_SAVE_PATH)
 
 if __name__ == '__main__':
-    model()
+    # Config  ################################################
+    criterion = nn.CrossEntropyLoss()
+    batch_size = 32
+    img_size = 224
+    epoch = 2
+
+    # Set LightningSystem  ################################################
+    model = ModelSystem(train_img_path, criterion, batch_size, img_size)
+
+    # Callbacks  ################################################
+    # Save Model
+    checkpoint_callback = ModelCheckpoint(dirpath=CHECKPOINT_SAVE_PATH, monitor='val_loss', mode='min', save_weights_only=True)
+    # EarlyStopping
+    # earlystopping = EarlyStopping(monitor='val_loss', min_delta=0.0, patience=2)
+
+    # Trainer  ################################################
+    trainer = Trainer(
+        max_epochs=epoch,                               # Set Num Epoch
+        default_root_dir=CHECKPOINT_SAVE_PATH,          # Path for save lightning_logs
+        callbacks=[checkpoint_callback],                # sdfnkhjsd
+        gpus=1                                          # GPU
+    )
+
+    # Start Training!!  ################################################
+    trainer.fit(model)
+    
+
+    torch.save(model.classifier.state_dict(), MODEL_SAVE_PATH)
