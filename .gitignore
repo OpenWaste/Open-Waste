@@ -4,3 +4,6 @@ utils/data/*
 
 # ignore virtual environment
 .venv/*
+
+# ignore jetbrain files
+.idea/

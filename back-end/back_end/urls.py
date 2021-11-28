@@ -16,12 +16,16 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path
+from Components.views import (
+    ImageRecognitionApiView
+)
 
 from django.conf import settings
 from django.views.static import serve
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('prediction', ImageRecognitionApiView.as_view())
 ]
 
 if settings.DEBUG:
