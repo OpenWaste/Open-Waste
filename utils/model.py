@@ -80,7 +80,8 @@ class TrashDataset(Dataset):
 
         return img_transformed, label
 
-
+# Defines the Model and Image Transformations
+# Accepts hyperparameters to change settings between runs
 class ModelSystem(pl.LightningModule):
     def __init__(self, img_path, criterion, batch_size, img_size):
         super(ModelSystem, self).__init__()
