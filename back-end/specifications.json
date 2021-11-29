@@ -14,7 +14,7 @@
   },
   "servers": [
     {
-      "url": "https://virtserver.swaggerhub.com/Attack-On-SOEN/Waste_Sorting_API/1.0.0"
+      "url": "https://virtserver.swaggerhub.com/Attack-On-SOEN/Waste_Sorting_API/1.0.0-oas3"
     }
   ],
   "tags": [
@@ -39,7 +39,7 @@
         "requestBody": {
           "description": "image to predict",
           "content": {
-            "image/png": {
+            "image/jpg": {
               "schema": {
                 "$ref": "#/components/schemas/Image"
               }
@@ -69,7 +69,7 @@
                 "$ref": "#/components/schemas/Image_name"
               }
             },
-            "image/png": {
+            "image/jpg": {
               "schema": {
                 "$ref": "#/components/schemas/Image"
               }
@@ -97,7 +97,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "format": "binary"
+            "format": "plain text",
+            "example": "plastic"
           }
         }
       },
