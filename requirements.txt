@@ -2,3 +2,5 @@ gdown
 requests
 torchvision
 matplotlib
+pytorch-lightning
+scikit-learn

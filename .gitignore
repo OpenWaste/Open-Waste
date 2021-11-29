@@ -1,6 +1,8 @@
 # ignore folders filled with images
 utils/data/*/*
 utils/data/*
+utils/__pycache__
+utils/checkpoints
 
 # ignore virtual environment
 .venv/*
