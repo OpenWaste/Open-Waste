@@ -23,20 +23,6 @@ def main():
             if not line_valid(idx, line):
                 show_rules()
                 sys.exit(1)
-
-    # warning message
-    if (re.search('#[0-9]+$', line) is None):
-        print("Warning: add issue number related to this commit.")
-        # ask user to confirm until valid response
-        try:
-            while True:
-                response = input("Are you sure you want to commit? [y/N]: ")
-                if (response == 'y'):
-                    sys.exit(0)
-                elif (response == 'N'):
-                    sys.exit(1)
-        except EOFError as e:
-            print(e)
     
     # successful commit
     print("Success: Perfect commit!")
@@ -60,7 +46,14 @@ def line_valid(idx, line):
         else:
             print("Error: Commit are always lowercase!")
 
-        return isPrefixGood and isLowerCase
+        # verify you added a issue number at the end of your commit
+        isIssueNumber = False
+        if (re.search('#[0-9]+$', line) is None):
+            print("Error: Add issue number related to this commit.")
+        else:
+            isIssueNumber = True
+
+        return isPrefixGood and isLowerCase and isIssueNumber
     elif idx == 1:
         return len(line.strip()) == 0
     else:
