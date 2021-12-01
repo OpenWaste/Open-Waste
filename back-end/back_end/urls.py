@@ -17,7 +17,8 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path
 from Components.views import (
-    ImageRecognitionApiView
+    ImageRecognitionApiView,
+    ImageSubmissionApiView
 )
 
 from django.conf import settings
@@ -25,11 +26,12 @@ from django.views.static import serve
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('prediction', ImageRecognitionApiView.as_view())
+    path('prediction', ImageRecognitionApiView.as_view()),
+    path('imageSubmission/', ImageSubmissionApiView.as_view())
 ]
 
 if settings.DEBUG:
-    urlpatterns+=[
+    urlpatterns += [
         url(r'^media/(?P<path>.*)$', serve, {
             'document_root': settings.MEDIA_ROOT
         })
