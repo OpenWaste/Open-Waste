@@ -27,7 +27,7 @@ from django.views.static import serve
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('prediction', ImageRecognitionApiView.as_view()),
-    path('image-submission/', ImageSubmissionApiView.as_view())
+    path('image-submission', ImageSubmissionApiView.as_view())
 ]
 
 if settings.DEBUG:
