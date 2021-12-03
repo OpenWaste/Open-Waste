@@ -1,0 +1,100 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "This is the API of the Waste Sorting App",
+    "version" : "1.0.0",
+    "title" : "Waste Sorting API",
+    "contact" : {
+      "email" : "you@your-company.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags" : [ {
+    "name" : "admins",
+    "description" : "Secured Admin-only calls"
+  }, {
+    "name" : "developers",
+    "description" : "Operations available to regular developers"
+  } ],
+  "paths" : {
+    "/prediction" : {
+      "post" : {
+        "tags" : [ "image prediction" ],
+        "summary" : "predicts an image",
+        "operationId" : "prediction",
+        "description" : "sends an image to the api to return a predicted result",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "image",
+          "description" : "image sent for prediction",
+          "schema" : {
+            "$ref" : "#/definitions/Image"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "returns the detected waste"
+          },
+          "400" : {
+            "description" : "image not uploaded"
+          }
+        }
+      }
+    },
+    "/imageSubmission" : {
+      "post" : {
+        "tags" : [ "image prediction" ],
+        "summary" : "predicts an image",
+        "operationId" : "imageSubmission",
+        "description" : "sends an image to the api to add to the database",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "category and image",
+          "description" : "image and category sent for submission",
+          "schema" : {
+            "$ref" : "#/definitions/Category"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "returns the category and the image file"
+          },
+          "400" : {
+            "description" : "missing category or image"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "Category" : {
+      "type" : "object",
+      "required" : [ "category", "image" ],
+      "properties" : {
+        "category" : {
+          "type" : "string",
+          "format" : "plain text",
+          "example" : "plastic"
+        },
+        "image" : {
+          "$ref" : "#/definitions/Image"
+        }
+      }
+    },
+    "Image" : {
+      "required" : [ "image" ],
+      "properties" : {
+        "image" : {
+          "type" : "object",
+          "example" : "waste.jpg"
+        }
+      }
+    }
+  },
+  "host" : "virtserver.swaggerhub.com",
+  "basePath" : "/Attack-On-SOEN/Waste_Sorting_API/1.0.0",
+  "schemes" : [ "https" ]
+}
