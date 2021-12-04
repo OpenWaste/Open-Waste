@@ -1,7 +1,7 @@
 ---
 name: Performance
 about: Template for performance issue reporting
-title: "[PERFORMANCE]:"
+title: "[PERFORMANCE-#.#]:"
 labels: performance
 assignees: ''
 
