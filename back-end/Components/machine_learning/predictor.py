@@ -21,7 +21,11 @@ class Predictor:
         num_ftrs = self.__model.fc.in_features
         for param in self.__model.parameters():
             param.requires_grad = False
-        self.__model.fc = nn.Linear(num_ftrs, len(Predictor.__CLASS_NAMES))
+        self.__model.fc = self.classifier.fc = nn.Sequential(
+            nn.Linear(num_ftrs, 256),
+            nn.ReLU(),
+            nn.Linear(256, len(Predictor.__CLASS_NAMES))
+        )
         self.__model.load_state_dict(torch.load(Predictor.__ML_MODEL_PATH, map_location=torch.device('cpu')))
         self.__model.eval()  # Set in evaluation mode (not training)
 
