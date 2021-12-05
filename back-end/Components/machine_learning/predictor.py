@@ -21,7 +21,7 @@ class Predictor:
         num_ftrs = self.__model.fc.in_features
         for param in self.__model.parameters():
             param.requires_grad = False
-        self.__model.fc = self.classifier.fc = nn.Sequential(
+        self.__model.fc = nn.Sequential(
             nn.Linear(num_ftrs, 256),
             nn.ReLU(),
             nn.Linear(256, len(Predictor.__CLASS_NAMES))
