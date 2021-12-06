@@ -16,7 +16,7 @@ Install requirements
 `py -m pip install -r requirements.txt`
 
 Create an .env file with a Django secret key assigned to the variable **SECRET_KEY**
-You can copy the env.eample file and rename it to .env.
+You can copy the env.example file and rename it to .env
 You can generate a secret key on https://djecrety.ir/
 
 Run the server
