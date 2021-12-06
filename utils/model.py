@@ -21,8 +21,8 @@ CHECKPOINT_SAVE_PATH = 'utils/checkpoints/'
 train_dir = 'utils/data/train/'
 test_dir = 'utils/data/test/'
 # FilePath List
-train_img_path = glob.glob(os.path.join(train_dir, '*/*.jpg'))
-test_img_path = glob.glob(os.path.join(test_dir, '*/*.jpg'))
+train_img_path = [os.path.normpath(i) for i in glob.glob(os.path.join(train_dir, '*/*.jpg'))]
+test_img_path = [os.path.normpath(i) for i in glob.glob(os.path.join(test_dir, '*/*.jpg'))]
 
 # Data Augmentation
 class ImageTransform():
@@ -66,7 +66,8 @@ class TrashDataset(Dataset):
         self.file_list = file_list
         self.transform = transform
         self.phase = phase
-        self.labels = [self.LABELS[x.split('\\')[1]] for x in self.file_list]
+        self.labels = [self.LABELS[os.path.basename(os.path.dirname(x))] for x in self.file_list]
+        print(self.labels)
 
     def __len__(self):
         return len(self.file_list)
