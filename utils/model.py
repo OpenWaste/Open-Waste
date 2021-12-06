@@ -67,7 +67,6 @@ class TrashDataset(Dataset):
         self.transform = transform
         self.phase = phase
         self.labels = [self.LABELS[os.path.basename(os.path.dirname(x))] for x in self.file_list]
-        print(self.labels)
 
     def __len__(self):
         return len(self.file_list)
