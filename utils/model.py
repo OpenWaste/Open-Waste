@@ -21,8 +21,8 @@ CHECKPOINT_SAVE_PATH = 'utils/checkpoints/'
 train_dir = 'utils/data/train/'
 test_dir = 'utils/data/test/'
 # FilePath List
-train_img_path = glob.glob(os.path.join(train_dir, '*/*.jpg'))
-test_img_path = glob.glob(os.path.join(test_dir, '*/*.jpg'))
+train_img_path = [os.path.normpath(i) for i in glob.glob(os.path.join(train_dir, '*/*.jpg'))]
+test_img_path = [os.path.normpath(i) for i in glob.glob(os.path.join(test_dir, '*/*.jpg'))]
 
 # Data Augmentation
 class ImageTransform():
@@ -66,7 +66,8 @@ class TrashDataset(Dataset):
         self.file_list = file_list
         self.transform = transform
         self.phase = phase
-        self.labels = [self.LABELS[x.split('\\')[1]] for x in self.file_list]
+        self.labels = [self.LABELS[os.path.basename(os.path.dirname(x))] for x in self.file_list]
+        print(self.labels)
 
     def __len__(self):
         return len(self.file_list)
@@ -105,16 +106,18 @@ class ModelSystem(pl.LightningModule):
         # for param in self.classifier.parameters():
         #     param.requires_grad = False
 
-        # Change Output Size of Last FC Layer
-        num_features = self.classifier.fc.in_features
-        self.classifier.fc = nn.Linear(in_features=num_features, out_features=6)
+        # Create learning space for model and change output size of last layer
+        self.classifier.fc = nn.Sequential(
+            nn.Linear(self.classifier.fc.in_features, 256),
+            nn.ReLU(),
+            nn.Linear(256, 6)
+        )
 
         # Set Optimizer
         self.optimizer = optim.SGD(self.classifier.parameters(), lr=0.001, momentum=0.9)
 
     # Mothed ############################
     # Set Train Dataloader
-    # @pl.data_loader
     def train_dataloader(self):
         '''
         REQUIRED
@@ -123,7 +126,6 @@ class ModelSystem(pl.LightningModule):
         return DataLoader(self.train_dataset, batch_size=self.batch_size, shuffle=True, num_workers=4, pin_memory=True)
 
     # Set Valid Dataloader
-    # @pl.data_loader
     def val_dataloader(self):
         '''
         REQUIRED
