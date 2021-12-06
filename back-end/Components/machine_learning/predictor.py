@@ -26,7 +26,7 @@ class Predictor:
             nn.ReLU(),
             nn.Linear(256, len(Predictor.__CLASS_NAMES))
         )
-        self.__model.load_state_dict(torch.load(Predictor.__ML_MODEL_PATH, map_location=torch.device('cpu')))
+        self.__model.load_state_dict(torch.load(Predictor.__ML_MODEL_PATH, map_location=torch.device('cpu')), strict=False)
         self.__model.eval()  # Set in evaluation mode (not training)
 
     def evaluate_image(self, image_path: str) -> str:
