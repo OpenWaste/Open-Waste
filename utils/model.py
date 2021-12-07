@@ -15,7 +15,7 @@ import pytorch_lightning as pl
 from pytorch_lightning import Trainer
 from pytorch_lightning.callbacks import ModelCheckpoint
 
-MODEL_SAVE_PATH = 'utils/model.pt'
+MODEL_SAVE_PATH = 'back-end/Components/machine_learning/data/model.pt'
 CHECKPOINT_SAVE_PATH = 'utils/checkpoints/'
 
 train_dir = 'utils/data/train/'
