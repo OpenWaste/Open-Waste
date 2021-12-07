@@ -1,0 +1,133 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Waste Sorting External  API Gateway",
+    "description": "This is the API to access our Waste Sorting App services",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "v1.0.0"
+  },
+  "paths": {
+    "/image-submission": {
+      "post": {
+        "tags": [
+          "Image Submission Endpoint"
+        ],
+        "summary": "Submits an image that the user chooses",
+        "description": "sends an image to the api to add to the database",
+        "requestBody": {
+          "description": "Submits the image",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageSubmissionPayload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Image succesfully submitted"
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      }
+    },
+    "/prediction": {
+      "post": {
+        "tags": [
+          "Image Prediction Endpoint"
+        ],
+        "summary": "Receive an image for prediction",
+        "description": "Sends an image to the api to return a predicted result",
+        "operationId": "predictImage",
+        "requestBody": {
+          "description": "image to predict",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImagePredictionPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns the detected waste category based on the image sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ImageSubmissionPayload": {
+        "required": [
+          "category",
+          "image"
+        ],
+        "type": "object",
+        "properties": {
+          "category": {
+            "enum": [
+              "Cardboard",
+              "Glass",
+              "Metal",
+              "Paper",
+              "Plastic - Trash"
+            ],
+            "type": "string"
+          },
+          "image": {
+            "type": "object",
+            "format": "JPEG",
+            "example": "image.jpg"
+          }
+        }
+      },
+      "ImagePredictionPayload": {
+        "required": [
+          "image"
+        ],
+        "type": "object",
+        "properties": {
+          "image": {
+            "type": "object",
+            "format": "JPEG",
+            "example": "image.jpg"
+          }
+        }
+      },
+      "Prediction": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "enum": [
+              "Cardboard",
+              "Glass",
+              "Metal",
+              "Paper",
+              "Plastic - Trash"
+            ],
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
