@@ -25,7 +25,7 @@ export default function displayCamera() {
   return (
     <NativeBaseProvider>
       <View style={style.container}>
-        <Camera style={style.camera} type={type}>
+        <Camera ratio={"16:9"} style={style.camera} type={type}>
           <View style={style.footer}>
             <MaterialIcons name="file-upload" size={60} color="#FFFFFF" />
             <MaterialIcons name="cancel" size={60} color="#EA4335" />
