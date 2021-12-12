@@ -1,7 +1,7 @@
 ---
 name: Task
 about: Template used to assign tasks
-title: "[TASK]:"
+title: "[TASK-#.#]:"
 labels: task
 assignees: ''
 
