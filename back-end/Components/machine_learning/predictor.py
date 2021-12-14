@@ -19,9 +19,11 @@ class Predictor:
         # Load model as it is in the model.pt file
         self.__model = models.resnet18(pretrained=True)
         num_ftrs = self.__model.fc.in_features
-        for param in self.__model.parameters():
-            param.requires_grad = False
-        self.__model.fc = nn.Linear(num_ftrs, len(Predictor.__CLASS_NAMES))
+        self.__model.fc = nn.Sequential(
+            nn.Linear(num_ftrs, 256),
+            nn.ReLU(),
+            nn.Linear(256, len(Predictor.__CLASS_NAMES))
+        )
         self.__model.load_state_dict(torch.load(Predictor.__ML_MODEL_PATH, map_location=torch.device('cpu')))
         self.__model.eval()  # Set in evaluation mode (not training)
 
@@ -32,6 +34,6 @@ class Predictor:
 
         # Predict
         prediction = self.__model(image[None, ...])  # pass image to model
-        prediction = prediction.max(1, keepdim=True)[
-            1]  # get max value in the first dimension of the tensor, preserve dimensions
+        # get max value in the first dimension of the tensor, preserve dimensions
+        prediction = prediction.max(1, keepdim=True)[1]
         return Predictor.__CLASS_NAMES[prediction.item()]  # grab index and use to take classname
