@@ -3,6 +3,7 @@ from __future__ import print_function, division
 import os, glob
 from PIL import Image
 
+import yaml
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -13,7 +14,12 @@ from sklearn.model_selection import train_test_split
 
 import pytorch_lightning as pl
 from pytorch_lightning import Trainer
+from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning.callbacks import ModelCheckpoint
+from pytorch_lightning.callbacks.early_stopping import EarlyStopping
+
+with open('utils/hparams.yaml') as f:
+    HPARAMS = yaml.load(f, Loader=yaml.FullLoader)
 
 MODEL_SAVE_PATH = 'Components/machine_learning/data/model.ckpt'
 CHECKPOINT_SAVE_PATH = 'utils/checkpoints/'
@@ -113,10 +119,11 @@ class ModelSystem(pl.LightningModule):
         )
 
         # Set Optimizer
-        self.optimizer = optim.SGD(self.classifier.parameters(), lr=0.001, momentum=0.9)
+        self.optimizer = optim.SGD(self.classifier.parameters(), lr=HPARAMS['learning_rate'], momentum=HPARAMS['momentum'])
+        # self.optimizer = optim.Adam(self.classifier.parameters(), lr=HPARAMS['learning_rate'])
         self.save_hyperparameters()
 
-    # Mothed ############################
+    # Method ############################
     # Set Train Dataloader
     def train_dataloader(self):
         '''
@@ -201,27 +208,31 @@ class ModelSystem(pl.LightningModule):
 
 
 if __name__ == '__main__':
+    wandblogger = WandbLogger(project='attack-on-soen', entity='attack-on-soen')
+
     # Config  ################################################
     criterion = nn.CrossEntropyLoss()
-    batch_size = 32
+    batch_size = HPARAMS['batch_size']
     img_size = 224
-    epoch = 2
+    epoch = HPARAMS['epoch']
 
     # Set LightningSystem  ################################################
     model = ModelSystem(train_img_path, criterion, batch_size, img_size)
 
     # Callbacks  ################################################
     # Save Model
-    checkpoint_callback = ModelCheckpoint(dirpath=CHECKPOINT_SAVE_PATH, monitor='val_loss', mode='min', save_weights_only=True)
-    # EarlyStopping
-    # earlystopping = EarlyStopping(monitor='val_loss', min_delta=0.0, patience=2)
+    checkpoint_callback = ModelCheckpoint(dirpath=CHECKPOINT_SAVE_PATH, monitor='val_loss', mode='min', save_weights_only=True, save_top_k=1, every_n_epochs=1)
+    # EarlyStopping: used for stopping early automatically if overfitting
+    earlystopping = EarlyStopping(monitor='val_loss', min_delta=0.0, patience=3)
 
     # Trainer  ################################################
     trainer = Trainer(
-        max_epochs=epoch,                               # Set Num Epoch
-        default_root_dir=CHECKPOINT_SAVE_PATH,          # Path for save lightning_logs
-        callbacks=[checkpoint_callback],                # sdfnkhjsd
-        gpus=1                                          # GPU
+        max_epochs=epoch, # Set Num Epoch
+        default_root_dir=CHECKPOINT_SAVE_PATH, # Path for save lightning_logs
+        callbacks=[checkpoint_callback, earlystopping],
+        gpus=1 if torch.cuda.is_available() else 0, # GPU
+        log_every_n_steps=HPARAMS['log_every_n_steps'],
+        logger=wandblogger,
     )
 
     # Start Training!!  ################################################
