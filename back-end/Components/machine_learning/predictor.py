@@ -1,4 +1,6 @@
 import os.path
+from io import BytesIO
+
 import torch
 import torch.nn as nn
 from torchvision import datasets, models, transforms
@@ -27,9 +29,9 @@ class Predictor:
         self.__model.load_state_dict(torch.load(Predictor.__ML_MODEL_PATH, map_location=torch.device('cpu')))
         self.__model.eval()  # Set in evaluation mode (not training)
 
-    def evaluate_image(self, image_path: str) -> str:
+    def evaluate_image(self, image_buffer: BytesIO) -> str:
         # Load image
-        image = Image.open(image_path)
+        image = Image.open(image_buffer)
         image = Predictor.__loader(image).float()
 
         # Predict

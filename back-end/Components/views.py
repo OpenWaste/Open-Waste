@@ -1,3 +1,5 @@
+import base64
+import io
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -8,7 +10,6 @@ from Components.machine_learning.predictor import Predictor
 
 
 class ImageRecognitionApiView(APIView):
-    parser_classes = [MultiPartParser]
 
     def post(self, request):
         # Validation (checks that an image was uploaded)
@@ -21,7 +22,7 @@ class ImageRecognitionApiView(APIView):
         p = Predictor()
 
         # Returns HTTP Success code 200 and ML prediction in the form of `"prediction":"glass"`
-        return Response({"prediction": p.evaluate_image(request.data['image'])}, status=status.HTTP_200_OK)
+        return Response({"prediction": p.evaluate_image(io.BytesIO(base64.b64decode(request.data['image'])))}, status=status.HTTP_200_OK)
 
 
 class ImageSubmissionApiView(APIView):
