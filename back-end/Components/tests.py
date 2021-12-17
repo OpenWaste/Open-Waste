@@ -1,5 +1,6 @@
 from django.test import TestCase, Client
 from django.core.files.uploadedfile import SimpleUploadedFile
+from Components.models import Category
 
 
 class ImageSubmissionTest(TestCase):
@@ -13,6 +14,10 @@ class ImageSubmissionTest(TestCase):
             'image.jpg', b"image_content", content_type='image/jpeg')
         # url to end point
         self.path = '/image-submission'
+
+        # insert 'plastic' category into test db
+        category = Category(name='plastic')
+        category.save()
 
     def test_image_submission_success(self):
         # stub image object
