@@ -22,7 +22,7 @@ class ImageRecognitionApiView(APIView):
         p = Predictor()
 
         # Returns HTTP Success code 200 and ML prediction in the form of `"prediction":"glass"`
-        return Response({"prediction": p.evaluate_image(io.BytesIO(base64.b64decode(request.data['image'])))}, status=status.HTTP_200_OK)
+        return Response({"prediction": p.evaluate_image(io.BytesIO(base64.b64decode(s.validated_data.get('image'))))}, status=status.HTTP_200_OK)
 
 
 class ImageSubmissionApiView(APIView):
