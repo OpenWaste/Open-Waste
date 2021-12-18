@@ -17,9 +17,6 @@ class CategoryInstructions(models.Model):
     category = models.ManyToManyField(Category)
     instructions = models.TextField()
 
-    def __str__(self):
-        return f"Instructions for {self.category}."
-
 
 class DWUser(models.Model):
     name = models.CharField(max_length=200)
