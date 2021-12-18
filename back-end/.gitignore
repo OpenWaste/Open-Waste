@@ -133,3 +133,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Machine Learning gitignores
+utils/data/
+utils/checkpoints/
+wandb/

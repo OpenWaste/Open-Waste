@@ -1,4 +1,6 @@
 gdown
+wandb
+pyyaml
 requests
 torchvision
 matplotlib
