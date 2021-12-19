@@ -36,7 +36,8 @@ pipeline {
     stage('Test') {
       steps {
         //Run tests
-        sh 'cd front-end'
+        sh 'npm cache clean -f'
+        sh 'rm -rf node_modules'
         sh 'npm install'
         sh 'npm test'
       }
