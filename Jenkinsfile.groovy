@@ -7,15 +7,10 @@ pipeline {
         
     stage('Git') {
       steps {
-        git branch: 'develop',
+        //Check out the triggering branch using the personal access token
+        git branch: "${env.BRANCH_NAME}",
         credentialsId: 'de474f75-b8e7-480c-a217-2cd52ef98b48',
         url: 'https://github.com/mlee97/SOEN-490-Attack-On-SOEN.git'
-      }
-    }
-     
-    stage('Build') {
-      steps {
-        sh 'npm install --force'
       }
     }  
     
@@ -24,6 +19,7 @@ pipeline {
             SCANNER_HOME = tool 'Sonar-scanner'
         }
         steps {
+        //Perform SonarQube Analysis on front-end and back-end directories
         withSonarQubeEnv(credentialsId: 'd56e9146-e2fa-4ee5-b50c-4dfad9c7abb8', installationName: 'Sonar') {
             sh '''$SCANNER_HOME/bin/sonar-scanner \
             -Dsonar.projectKey=projectKey \
@@ -39,6 +35,7 @@ pipeline {
             
     stage('Test') {
       steps {
+        //Run tests
         sh 'npm test'
       }
     }
