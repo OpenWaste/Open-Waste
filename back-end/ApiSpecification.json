@@ -162,14 +162,16 @@
             }
           }
         },
-        "example": [
-          "cardboard",
-          "glass",
-          "metal",
-          "paper",
-          "plastic",
-          "trash"
-        ]
+        "example": {
+           "categories": [
+            "cardboard",
+            "glass",
+            "metal",
+            "paper",
+            "plastic",
+            "trash"
+          ]
+        }
       }
     }
   }
