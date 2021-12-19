@@ -1,3 +1,4 @@
+from django.http import response
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -43,3 +44,20 @@ class ImageSubmissionApiView(APIView):
             # error: 400 BAD REQUEST
             return Response({"Bad Request"},
                             status=status.HTTP_400_BAD_REQUEST)
+
+
+class UpdateApiView(APIView):
+
+    def get(self, request):
+        try:
+            # values
+            data = Category.objects.values_list('name')
+            unravelled_list = [item for sublist in data for item in sublist]
+
+        # success: 200 OK
+            return Response({"categories": unravelled_list}, status=status.HTTP_200_OK)
+
+        except Exception:
+            # error: 404 NOT FOUND
+            return Response({"Not Found"},
+                            status=status.HTTP_404_NOT_FOUND)
