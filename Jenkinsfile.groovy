@@ -32,16 +32,7 @@ pipeline {
             }
         }
     }
-            
-    stage('Test') {
-      steps {
-        //Run tests
-        sh 'npm cache clean -f'
-        sh 'rm -rf node_modules'
-        sh 'npm install'
-        sh 'npm test'
-      }
-    }
+        
   }
 
 }
