@@ -7,7 +7,7 @@
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "version": "v1.0.0"
+    "version": "v1.1.0"
   },
   "paths": {
     "/image-submission": {
@@ -34,6 +34,30 @@
           },
           "400": {
             "description": "Invalid request"
+          }
+        }
+      }
+    },
+    "/update": {
+      "get": {
+        "tags": [
+          "Image Submission Endpoint"
+        ],
+        "summary": "Retreives image categories from database",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Categories succesfully retreived",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Categories"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Categories not found"
           }
         }
       }
@@ -116,6 +140,22 @@
         "type": "object",
         "properties": {
           "prediction": {
+            "enum": [
+              "Cardboard",
+              "Glass",
+              "Metal",
+              "Paper",
+              "Plastic",
+              "Trash"
+            ],
+            "type": "string"
+          }
+        }
+      },
+      "Categories": {
+        "type": "object",
+        "properties": {
+          "categories": {
             "enum": [
               "Cardboard",
               "Glass",
