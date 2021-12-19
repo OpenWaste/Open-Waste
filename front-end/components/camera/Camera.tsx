@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import {Text, View} from 'react-native';
 import { Camera } from "expo-camera";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import style from "../../styles/camera_style";
+import style from "../../styles/camera-style";
 import { Button, NativeBaseProvider} from 'native-base';
 import Service from "../../service/service";
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
