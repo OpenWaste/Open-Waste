@@ -36,6 +36,8 @@ pipeline {
     stage('Test') {
       steps {
         //Run tests
+        sh 'cd front-end'
+        sh 'npm install'
         sh 'npm test'
       }
     }
