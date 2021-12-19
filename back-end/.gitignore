@@ -1,3 +1,6 @@
+# Images stored locally for the backend
+media/*
+
 .idea/
 *.pyc
 
@@ -130,3 +133,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Machine Learning gitignores
+utils/data/
+utils/checkpoints/
+wandb/

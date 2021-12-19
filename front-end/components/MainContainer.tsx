@@ -32,8 +32,8 @@ export class MainContainer extends React.Component {
               size = 20;
               return <MaterialIcons name={icon} size={size} color={color} />;
             },
-            tabBarLabelStyle: { fontSize: 8 , marginBottom: 10 },
-            tabBarStyle: { paddingTop: 10,},
+            tabBarLabelStyle: { fontSize: 8, marginBottom: 10 },
+            tabBarStyle: { paddingTop: 10 },
             tabBarActiveTintColor: "#B6E28E",
             tabBarInactiveTintColor: "#808080",
             headerShown: false,
@@ -41,7 +41,11 @@ export class MainContainer extends React.Component {
         >
           {screens.map((screen) => {
             return (
-              <Tab.Screen key={screen.name} name={screen.name} component={screen.component} />
+              <Tab.Screen
+                key={screen.name}
+                name={screen.name}
+                component={screen.component}
+              />
             );
           })}
         </Tab.Navigator>

@@ -6,12 +6,13 @@ import torch.nn as nn
 from torchvision import datasets, models, transforms
 from PIL import Image
 
+from utils.model import ModelSystem, TrashDataset
+
 
 class Predictor:
-    # Possible prediction classes
-    # TODO: Add class names to DB instead of keeping them in a hard-coded constant
-    __CLASS_NAMES = ['cardboard', 'glass', 'metal', 'paper', 'plastic', 'trash']
-    __ML_MODEL_PATH = os.path.join('Components', 'machine_learning', 'data', 'model.pt')
+    # Possible prediction classes loaded from model
+    __CLASS_NAMES = {v: k for k, v in TrashDataset.LABELS.items()}
+    __ML_MODEL_PATH = os.path.join('Components', 'machine_learning', 'data', 'model.ckpt')
 
     # Setup transformation for image
     __IMG_SIZE = 224
@@ -19,12 +20,7 @@ class Predictor:
 
     def __init__(self):
         # Load model as it is in the model.pt file
-        self.__model = models.resnet18(pretrained=True)
-        num_ftrs = self.__model.fc.in_features
-        for param in self.__model.parameters():
-            param.requires_grad = False
-        self.__model.fc = nn.Linear(num_ftrs, len(Predictor.__CLASS_NAMES))
-        self.__model.load_state_dict(torch.load(Predictor.__ML_MODEL_PATH, map_location=torch.device('cpu')))
+        self.__model = ModelSystem.load_from_checkpoint(self.__ML_MODEL_PATH)
         self.__model.eval()  # Set in evaluation mode (not training)
 
     def evaluate_image(self, image_buffer: BytesIO) -> str:
@@ -34,6 +30,6 @@ class Predictor:
 
         # Predict
         prediction = self.__model(image[None, ...])  # pass image to model
-        prediction = prediction.max(1, keepdim=True)[
-            1]  # get max value in the first dimension of the tensor, preserve dimensions
+        # get max value in the first dimension of the tensor, preserve dimensions
+        prediction = prediction.max(1, keepdim=True)[1]
         return Predictor.__CLASS_NAMES[prediction.item()]  # grab index and use to take classname
