@@ -7,7 +7,7 @@
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "version": "v1.1.0"
+    "version": "v1.0.0"
   },
   "paths": {
     "/image-submission": {
@@ -156,17 +156,20 @@
         "type": "object",
         "properties": {
           "categories": {
-            "enum": [
-              "Cardboard",
-              "Glass",
-              "Metal",
-              "Paper",
-              "Plastic",
-              "Trash"
-            ],
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
-        }
+        },
+        "example": [
+          "cardboard",
+          "glass",
+          "metal",
+          "paper",
+          "plastic",
+          "trash"
+        ]
       }
     }
   }
