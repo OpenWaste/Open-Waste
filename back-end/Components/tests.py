@@ -1,7 +1,7 @@
 from django.test import TestCase, Client
 from django.core.files.uploadedfile import SimpleUploadedFile
 from Components.models import Category
-
+import json
 
 class ImageSubmissionTest(TestCase):
     def setUp(self):
@@ -41,7 +41,32 @@ class ImageSubmissionTest(TestCase):
         # assert status code: 400
         self.assertEqual(response.status_code, 400)
 
+class ImageUpdate(TestCase):
+    def setUp(self):
+        # Test client is a Python class that acts as a dummy Web browser
+        # allowing you to test your views and interact with your Django-powered  application
+        self.client = Client()
+        # url to end point
+        self.path = '/update'
 
+    def test_update_success(self):
+        # insert categories into test db
+        Category(name='cardboard').save()
+        Category(name='plastic').save()
+        Category(name='glass').save()
+
+        # mock returned json
+        mock = '{"categories":["cardboard","plastic","glass"]}'
+
+        # get request
+        response = self.client.get(self.path)
+
+        # assert values returned are correct
+        self.assertEqual(response.content.decode('utf8'), mock)
+
+        # assert status code: 200
+        self.assertEqual(response.status_code, 200)
+        
 class ImageRecognitionTest(TestCase):
     def setUp(self):
         self.client = Client()
