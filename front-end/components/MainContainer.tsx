@@ -3,14 +3,14 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
-import Camera from "./camera/Camera";
+import displayCamera from "./camera/Camera";
 import { Map } from "./map/Map";
 import { Settings } from "./settings/Settings";
 import { Profile } from "./profile/Profile";
 
 
 const screens = [
-  { name: "Camera", component: Camera, icon: "photo-camera" },
+  { name: "Camera", component: displayCamera, icon: "photo-camera" },
   { name: "Map", component: Map, icon: "map" },
   { name: "Settings", component: Settings, icon: "settings" },
   { name: "Profile", component: Profile, icon: "person" },
