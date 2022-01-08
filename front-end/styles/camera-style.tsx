@@ -25,8 +25,12 @@ export default StyleSheet.create({
       footer: {              
         flex: 1,
         flexDirection: "row",
-        justifyContent: "space-around",
-        alignItems: "flex-end",
-        bottom: 25
+        justifyContent: "space-evenly",
+        bottom: 25,
+        position: 'absolute',
+        left:0,
+        right:0,
+        marginLeft:'auto',
+        marginRight:'auto'
       },
   });
