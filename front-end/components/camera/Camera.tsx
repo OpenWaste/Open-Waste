@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {Text, View} from 'react-native';
+import {Alert, Text, View} from 'react-native';
 import { Camera } from "expo-camera";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import style from "../../styles/camera-style";
@@ -7,6 +7,7 @@ import { Button, NativeBaseProvider} from 'native-base';
 import Service from "../../service/service";
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 import { useIsFocused } from '@react-navigation/native';
+import { color } from "native-base/lib/typescript/theme/styled-system";
 
 export default function displayCamera() { 
   const isFocused = useIsFocused();
@@ -31,24 +32,22 @@ export default function displayCamera() {
     return (
       <NativeBaseProvider>
         <View style={style.container}>
-          <Camera ratio={"16:9"} style={style.camera} type={type} ref={r => camera = r}>
-            <View style={style.footer}>
+          <Camera ratio={"16:9"} style={style.camera} type={type} ref={r => camera = r}/>
+          <View style={style.footer}>
               <MaterialIcons onPress={() => {
                 camera.takePictureAsync().then(o => {
                   manipulateAsync(o.base64, [], {format:SaveFormat.JPEG}).then(convertedImage => {
                     Service.submitImagePrediction(convertedImage.base64?.split(",")[1])
-    
                   })
                 })
               }} name="file-upload" size={60} color="#FFFFFF" />
               <MaterialIcons name="cancel" size={60} color="#EA4335" />
               <Button color="#FFFFFF" height={60}>Next</Button>
             </View>
-          </Camera>
         </View>
       </NativeBaseProvider>
       );
   }
-  return (<View></View>)
+  return (<View/>)
 
   }
