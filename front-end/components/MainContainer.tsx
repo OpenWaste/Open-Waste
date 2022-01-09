@@ -6,14 +6,15 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import displayCamera from "./camera/Camera";
 import { Map } from "./map/Map";
 import { Settings } from "./settings/Settings";
-import { Profile } from "./profile/Profile";
+import { ProfileNavigator } from "./profile/ProfileNavigator";
+import { Registration } from "./profile/Registration";
 
 
 const screens = [
   { name: "Camera", component: displayCamera, icon: "photo-camera" },
   { name: "Map", component: Map, icon: "map" },
   { name: "Settings", component: Settings, icon: "settings" },
-  { name: "Profile", component: Profile, icon: "person" },
+  { name: "Profile", component: ProfileNavigator, icon: "person" },
 ];
 
 const Tab = createBottomTabNavigator();

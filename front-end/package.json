@@ -2,6 +2,7 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
+    "gesture": "expo install react-native-gesture-handler",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
@@ -11,7 +12,9 @@
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.0.9",
+    "@react-navigation/material-top-tabs": "^6.0.6",
     "@react-navigation/native": "^6.0.6",
+    "@react-navigation/stack": "^6.0.11",
     "axios": "^0.24.0",
     "expo": "~42.0.1",
     "expo-camera": "~11.2.2",
@@ -21,9 +24,13 @@
     "react": "^16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
+    "react-native-gesture-handler": "~1.10.2",
     "react-native-svg": "^12.1.1",
+    "react-native-tab-navigator": "^0.3.4",
     "react-native-vector-icons": "^9.0.0",
-    "react-native-web": "^0.13.17"
+    "react-native-web": "^0.13.17",
+    "react-navigation": "^4.4.4",
+    "react-navigation-stack": "^2.10.4"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

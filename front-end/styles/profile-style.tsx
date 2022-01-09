@@ -2,6 +2,8 @@ import { StyleSheet } from 'react-native';
 import { Dimensions } from 'react-native';
 
 export default StyleSheet.create({
+    
+    /*Guest Profile*/
     header: {
       width: '100%' ,
       height: Dimensions.get('window').height/5 ,
