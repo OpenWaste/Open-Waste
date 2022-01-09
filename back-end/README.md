@@ -63,3 +63,28 @@ You can install Postman here: https://www.postman.com/downloads/
 /update
 
 - Used to fetch the categories for image submission. In the future it will get other updates like updated waste disposal instructions, etc
+
+
+# Machine Learning Utils
+
+## Setup
+As in the backend setup, run `pip install -r requirements.txt` from the root directory if you haven't already.
+
+If any modules still show up as not found, simply run `pip install <module name>`.
+
+Also run the following for specific versions of packages required to use your GPU during training:
+`pip3 install torch==1.10.0+cu102 torchvision==0.11.1+cu102 torchaudio===0.10.0+cu102 -f https://download.pytorch.org/whl/cu102/torch_stable.html`
+
+Now, ensure you are in the `back-end` directory using `cd back-end`.
+
+## download.py
+Run this script using `python utils/download.py` to download a copy of the garythung/trashnet dataset as a ZIP file and unzip it (the copy is already sorted into training and validation data).
+
+## model.py
+Before running the model, you need to be able to log to Weights and Biases or ignore the logging call.  
+Option 1: Run `wandb offline` before you run the script to let the program run offline.  
+Option 2: Create a Weights and Biases account and ask for an invite to the project. Once invited, you can run `wandb login` and paste your API key to connect to the project. This allows your run stats to save onto the project history online.
+
+Run this script using `python utils/model.py` to train on the dataset, the model is saved as a file called `model.ckpt` that can be loaded in again later on.
+
+Note: If you do not have a GPU or PyTorch cannot detect yours, change `gpus=1` to `gpus=0` in the Trainer call near the end of the file.

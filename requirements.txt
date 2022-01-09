@@ -1,4 +1,6 @@
 gdown
+wandb
+pyyaml
 requests
 torchvision
 matplotlib
@@ -7,6 +9,7 @@ scikit-learn
 asgiref==3.4.1
 Django==3.2.9
 djangorestframework==3.12.4
+django-cors-headers==3.10.0
 numpy==1.21.4
 Pillow==8.4.0
 python-dotenv==0.19.2

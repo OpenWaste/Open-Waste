@@ -22,7 +22,7 @@ class ImageRecognitionApiView(APIView):
         p = Predictor()
 
         # Returns HTTP Success code 200 and ML prediction in the form of `"prediction":"glass"`
-        return Response({"prediction": p.evaluate_image(io.BytesIO(base64.b64decode(request.data['image'])))}, status=status.HTTP_200_OK)
+        return Response({"prediction": p.evaluate_image(io.BytesIO(base64.b64decode(s.validated_data.get('image'))))}, status=status.HTTP_200_OK)
 
 
 class ImageSubmissionApiView(APIView):
@@ -54,3 +54,19 @@ class ImageSubmissionApiView(APIView):
                 {e.__class__.__name__: str(e)},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+class UpdateApiView(APIView):
+
+    def get(self, request):
+        try:
+            # values
+            data = Category.objects.values_list('name')
+            unravelled_list = [item for sublist in data for item in sublist]
+
+        # success: 200 OK
+            return Response({"categories": unravelled_list}, status=status.HTTP_200_OK)
+
+        except Exception:
+            # error: 404 NOT FOUND
+            return Response({"Not Found"},
+                            status=status.HTTP_404_NOT_FOUND)

@@ -18,7 +18,8 @@ from django.contrib import admin
 from django.urls import path
 from Components.views import (
     ImageRecognitionApiView,
-    ImageSubmissionApiView
+    ImageSubmissionApiView,
+    UpdateApiView
 )
 
 from django.conf import settings
@@ -27,7 +28,8 @@ from django.views.static import serve
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('prediction', ImageRecognitionApiView.as_view()),
-    path('image-submission', ImageSubmissionApiView.as_view())
+    path('image-submission', ImageSubmissionApiView.as_view()),
+    path('update', UpdateApiView.as_view())
 ]
 
 if settings.DEBUG:
