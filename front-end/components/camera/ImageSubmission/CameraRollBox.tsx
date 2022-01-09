@@ -2,10 +2,10 @@ import * as React from "react";
 import { View } from "react-native";
 import { Text } from "native-base";
 
-export function CameraRoll({}) {
+export function CameraRollBox() {
   return (
     <View>
-      <Text></Text>
+      <Text>Rolls</Text>
     </View>
   );
 }
