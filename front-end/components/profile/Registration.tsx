@@ -1,8 +1,5 @@
 import * as React from "react";
-import { View, Text, Image, TouchableHighlight } from "react-native";
-import style from "../../styles/profile-style";
-import { Button, NativeBaseProvider } from 'native-base';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { NativeBaseProvider } from 'native-base';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import { LogIn } from "./LogIn";

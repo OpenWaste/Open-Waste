@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TextInput, Image, TouchableHighlight } from "react-native";
+import { View, Text, Image } from "react-native";
 import passStyle from "../../styles/forgotpassword-style";
 import { Button, NativeBaseProvider } from 'native-base';
 

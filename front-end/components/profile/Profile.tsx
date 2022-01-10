@@ -1,14 +1,11 @@
 import React from "react";
-import { View, Text, Image, TouchableHighlight } from "react-native";
+import { View, Text, Image } from "react-native";
 import style from "../../styles/profile-style";
 import { Button, NativeBaseProvider } from 'native-base';
-import { Login } from './Registration';
-import { createStackNavigator } from 'react-navigation-stack';
 
 export class Profile extends React.Component {
   
   render() {
-
     return (
       <NativeBaseProvider>
         <View>

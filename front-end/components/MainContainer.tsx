@@ -7,8 +7,6 @@ import displayCamera from "./camera/Camera";
 import { Map } from "./map/Map";
 import { Settings } from "./settings/Settings";
 import { ProfileNavigator } from "./profile/ProfileNavigator";
-import { Registration } from "./profile/Registration";
-
 
 const screens = [
   { name: "Camera", component: displayCamera, icon: "photo-camera" },

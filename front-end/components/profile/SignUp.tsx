@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TextInput, Image, TouchableHighlight } from "react-native";
+import { View, Text, TextInput } from "react-native";
 import signUpStyle from "../../styles/signup-style";
 import formStyle from "../../styles/forms-style";
 import { Avatar, Button, Center, NativeBaseProvider } from 'native-base';
@@ -13,6 +13,7 @@ export class SignUp extends React.Component {
       <NativeBaseProvider>
         <View>
           <Text style={signUpStyle.signUpHeader}>Create an Account</Text>
+          
           <Center style={signUpStyle.addProfilePic}>
             <Avatar size='40' source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}}>
               <Avatar.Badge bg="green.200" />
