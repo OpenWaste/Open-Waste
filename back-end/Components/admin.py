@@ -5,6 +5,7 @@ from django.contrib.auth.admin import UserAdmin
 
 # Register your models here.
 
+# content + attributes that will show up for the creation form
 class DWUserAdmin(UserAdmin):
     model = DWUser
     add_form = DWUserCreationForm
