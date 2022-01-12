@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'Components',
-    'corsheaders'
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -138,11 +138,15 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# our user model
+AUTH_USER_MODEL = 'Components.DWUser'
+
 # image paths
 CATEGORY_IMG_PATH = 'sample_images/'
 BUILDING_IMG_PATH = 'building_images/'
 BIN_IMG_PATH = 'bin_images/'
 ACCEPTED_TRASH_IMG_PATH = 'accepted_trash_images/'
+PROFILE_PICTURE_PATH = 'profile_pictures/'
 
 # CORS
 CORS_ORIGIN_ALLOW_ALL = True
