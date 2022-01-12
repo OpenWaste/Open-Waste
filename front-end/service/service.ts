@@ -13,7 +13,6 @@ export default class Service {
       .then(response => response.data.json())
       .catch(error => console.log(error))
   }
-
   static async submitImagePrediction(base64Image: string) {
     const resource = new FormData();
     resource.append('image', base64Image);
@@ -28,5 +27,13 @@ export default class Service {
     }
 
     this.post('image-submission', resource)
+  }
+
+  private static async get(endpoint: string) { 
+    return instance.get(`/${endpoint}`)
+  }
+
+  static async getImageCategory() {
+    return this.get('update')
   }
 }
