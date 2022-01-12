@@ -1,3 +1,10 @@
+# python
+__pycache__
+
 # data
+yolov5s.pt
 data
 data/*
+
+# logging
+/wandb/
