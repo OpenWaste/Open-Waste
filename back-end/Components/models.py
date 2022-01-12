@@ -18,13 +18,12 @@ class CategoryInstructions(models.Model):
     instructions = models.TextField()
 
 
-class DWUser(models.Model):
-    name = models.CharField(max_length=200)
-    email = models.EmailField(max_length=254)
-    nbr_of_images = models.IntegerField()
+class DWUser(AbstractUser):
+    profile_picture = models.ImageField(
+        null=True, blank=True, upload_to=settings.PROFILE_PICTURE_PATH)
 
     def __str__(self):
-        return self.name
+        return self.username
 
 
 class Building(models.Model):
@@ -78,10 +77,13 @@ class Bin_images(models.Model):
         return f"Bin {self.bin_id} image"
 
 
-class Trash_Accepted(models.Model):
+class Image_Submission(models.Model):
     name = models.ForeignKey(
         Category, to_field='name', on_delete=models.CASCADE, default=1)
-    accepted_image = models.ImageField(
+    submission_Image = models.ImageField(
         null=True, blank=True, upload_to=settings.ACCEPTED_TRASH_IMG_PATH)
-
-
+    is_accepted = models.BooleanField(default=False)
+    submitted_by = models.ForeignKey(
+        DWUser, on_delete=models.CASCADE, default=1)
+    
+    
