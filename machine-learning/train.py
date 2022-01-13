@@ -25,20 +25,6 @@ from utils.general import (LOGGER, methods, intersect_dicts, check_dataset, chec
 from utils.datasets import create_dataloader
 from utils.torch_utils import EarlyStopping, ModelEMA
 
-'''
-TODO:
-    Callbacks
-    Imports/Requirements
-    wandb logging ? utils?
-
-    plot_label()
-
-    delete old code
-
-OPTIONAL:
-    non-linear scheduler
-'''
-
 # Environment
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]
@@ -240,7 +226,6 @@ def train(hyp, opt, device, callbacks):
         lr = [x['lr'] for x in optimizer.param_groups]  # for loggers
         scheduler.step()
 
-        #TODO:
         # mAP
         callbacks.run('on_train_epoch_end', epoch=epoch)
         ema.update_attr(model, include=['yaml', 'nc', 'hyp', 'names', 'stride', 'class_weights'])
