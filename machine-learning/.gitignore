@@ -3,8 +3,11 @@ __pycache__
 
 # data
 yolov5s.pt
-data
-data/*
+data/test
+data/train
+data/valid
+data/data.yaml
+data/README.roboflow.txt
 
 # logging
 /wandb/
