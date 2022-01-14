@@ -40,6 +40,12 @@ img = require ('../../assets/forgotpass.png')
   }
 }
 
+
+/* The below code are not being used atm */
+/* Their future purpose is to hide/show password */
+/* Ask Celia or Michael for inquiry */
+
+/* TODO: Implement code */
 function HidePassword() {
   const [show, setShow] = React.useState(false)
   const handleClick = () => setShow(!show)
@@ -55,7 +61,6 @@ function HidePassword() {
     />
   )
 }
-
 
 
 function HidePassword2() {
