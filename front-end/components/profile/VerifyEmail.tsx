@@ -15,7 +15,7 @@ img = require ('../../assets/mailbox.png')
 
           <Text style={passStyle.verifyHeader}>Verify your email</Text>
           <Text style={passStyle.verifyText}>A password recovery instruction has been sent to your email.</Text>
-          <Button style={passStyle.okBtn} onPress={() => this.props.navigation.navigate('LogIn')}> Ok </Button>
+          <Button style={passStyle.okBtn} _text={{color:'#0F968D'}} onPress={() => this.props.navigation.navigate('ResetPassword')}> OK </Button>
         </View>
       </NativeBaseProvider>
     );
