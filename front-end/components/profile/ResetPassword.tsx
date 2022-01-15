@@ -1,5 +1,5 @@
-import React from "react";
-import { KeyboardAvoidingView, ScrollView, View, Text, Image } from "react-native";
+import React, { useRef } from "react";
+import { KeyboardAvoidingView, ScrollView, View, Text, Image, TouchableOpacity } from "react-native";
 import { Input, Button, IconButton, NativeBaseProvider } from 'native-base';
 import formStyle from "../../styles/forms-style";
 import passStyle from "../../styles/forgotpassword-style";
@@ -19,17 +19,7 @@ img = require ('../../assets/forgotpass.png')
                     <Image source={this.img} style={passStyle.resetImg}/>
                     <Text style={passStyle.header}>Reset Password</Text>
 
-                    <View style = {formStyle.registrationInputView}>
-                    <MaterialIcons style = {formStyle.registrationIcons} name = "lock" size = {22}/>
-                    <Input style = {formStyle.registrationTextInputs} variant="underlined" secureTextEntry={true} placeholder = "New password" />
-                    <MaterialIcons style = {formStyle.registrationIcons} name = "remove-red-eye" size = {22}/>
-                    </View>
-
-                    <View style = {formStyle.registrationInputView}>
-                    <MaterialIcons style = {formStyle.registrationIcons} name = "lock" size = {22}/>
-                    <Input style = {formStyle.registrationTextInputs} variant="underlined"  secureTextEntry={true} placeholder = "Re-enter new password" />
-                    <MaterialIcons style = {formStyle.registrationIcons} name = "remove-red-eye" size = {22}/>
-                    </View>
+                    <ResetPasswordForm />
 
                     <Button style={passStyle.submitBtn}> Submit </Button>
                 </View>
@@ -40,41 +30,44 @@ img = require ('../../assets/forgotpass.png')
   }
 }
 
+function ResetPasswordForm() {
 
-/* The below code are not being used atm */
-/* Their future purpose is to hide/show password */
-/* Ask Celia or Michael for inquiry */
+  const ref_input2 = useRef();
+  const [show1, setShow1] = React.useState(false)
+  const [show2, setShow2] = React.useState(false)
+  const showPass1 = () => setShow1(!show1)
+  const showPass2 = () => setShow2(!show2)
 
-/* TODO: Implement code */
-function HidePassword() {
-  const [show, setShow] = React.useState(false)
-  const handleClick = () => setShow(!show)
+  return(
+    <View>
+      <View style = {formStyle.registrationInputView}>
+        <MaterialIcons style = {formStyle.registrationIcons} name = "lock" size = {22}/>
+        <Input type={show1 ? "text" : "password"} 
+          style = {formStyle.registrationPasswordInputs} 
+          variant="underlined" 
+          placeholder = "New password"
+          autoFocus={true}
+          returnKeyType="next"
+          onSubmitEditing={() => ref_input2.current.focus()} />
+        <TouchableOpacity onPress={showPass1}>
+            {show1 ? <MaterialIcons style = {formStyle.registrationIcons} name = "visibility-off" size = {22}/> : <MaterialIcons style = {formStyle.registrationIcons} name = "remove-red-eye" size = {22}/>}
+        </TouchableOpacity>
+        
+      </View>
 
-  return (
-    <Input type={show ? "text" : "password"} w={{base: "75%", md: "25%"}} 
-      InputRightElement={
-        <Button size="xs" rounded="none" w="1/6" h="full" onPress={handleClick}>
-          {show ? "Hide" : "Show"}
-        </Button>
-      }
-      placeholder="Password"
-    />
-  )
-}
-
-
-function HidePassword2() {
-  const [show, setShow] = React.useState(false)
-  const handleClick = () => setShow(!show)
-
-  return (
-    <Input type={show ? "text" : "password"} w={{base: "75%", md: "25%"}} 
-      InputRightElement={
-        <Button w="1/6" h="full" onPress={handleClick}>
-          {show ? <MaterialIcons style = {formStyle.registrationIcons} name = "visibility-off" size = {22}/> : <MaterialIcons style = {formStyle.registrationIcons} name = "remove-red-eye" size = {22}/>}
-        </Button>
-      }
-      placeholder="Password"
-    />
+      <View style = {formStyle.registrationInputView}>
+        <MaterialIcons style = {formStyle.registrationIcons} name = "lock" size = {22}/>
+        <Input type={show2 ? "text" : "password"} 
+          style = {formStyle.registrationTextInputs} 
+          variant="underlined" 
+          placeholder = "New password"
+          autoFocus={true}
+          ref={ref_input2} />
+        <TouchableOpacity onPress={showPass2}>
+            {show2 ? <MaterialIcons style = {formStyle.registrationIcons} name = "visibility-off" size = {22}/> : <MaterialIcons style = {formStyle.registrationIcons} name = "remove-red-eye" size = {22}/>}
+        </TouchableOpacity>
+  
+      </View>
+    </View>
   )
 }

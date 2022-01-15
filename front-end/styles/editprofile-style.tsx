@@ -48,7 +48,7 @@ export default StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: "10%",
+        marginVertical: "10%",
     },
 
     cancelBtn: {
@@ -65,4 +65,5 @@ export default StyleSheet.create({
         marginLeft: '2%',
 
     },
+
 })

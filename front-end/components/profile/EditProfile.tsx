@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, Text, Image, TextInput } from "react-native";
+import { View, ScrollView, KeyboardAvoidingView, Text, Image, TextInput } from "react-native";
 import { Accordion, AlertDialog, Box, Button, Center, NativeBaseProvider } from 'native-base';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
@@ -14,23 +14,25 @@ export class EditProfile extends React.Component {
     
     return (
       <NativeBaseProvider>
-         <View>
-            <View style={style.header}></View> 
-            
-            {/* TO DO: Pull profile pic from database. */}
-            <Image style={style.profilePic} source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}} />
-            
-            <Text style={style.username}> Edit Profile </Text>
+        <ScrollView>
+          <KeyboardAvoidingView>
+              <View style={style.header}></View> 
+              
+              {/* TO DO: Pull profile pic from database. */}
+              <Image style={style.profilePic} source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}} />
+              
+              <Text style={style.username}> Edit Profile </Text>
 
-            <OpenUsername />
-            <OpenEmail />
-            <DeleteAccount />
+              <OpenUsername />
+              <OpenEmail />
+              <DeleteAccount />
 
-            <View style={style.btnView}>
-              <Button style={style.cancelBtn} onPress={() => this.props.navigation.navigate('ProfilePage')}> Cancel </Button>
-              <Button style={style.saveBtn} onPress={() => this.props.navigation.navigate('ProfilePage')}> Save </Button>
-            </View>
-          </View>
+              <View style={style.btnView}>
+                <Button style={style.cancelBtn} onPress={() => this.props.navigation.navigate('ProfilePage')}> Cancel </Button>
+                <Button style={style.saveBtn} onPress={() => this.props.navigation.navigate('ProfilePage')}> Save </Button>
+              </View>
+          </KeyboardAvoidingView>
+        </ScrollView>
       </NativeBaseProvider>
     );
   }
