@@ -43,7 +43,7 @@ function ResetPasswordForm() {
       <View style = {formStyle.registrationInputView}>
         <MaterialIcons style = {formStyle.registrationIcons} name = "lock" size = {22}/>
         <Input type={show1 ? "text" : "password"} 
-          style = {formStyle.registrationPasswordInputs} 
+          style = {formStyle.registrationTextInputs} 
           variant="underlined" 
           placeholder = "New password"
           autoFocus={true}
