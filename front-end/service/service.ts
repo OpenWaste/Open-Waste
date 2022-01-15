@@ -7,19 +7,19 @@ const instance = axios.create({
 
 export default class Service {
 
-  private static async post(endpoint: string, resource: any) { 
+  private static async post(endpoint: string, resource: any) {
     return instance.post(`/${endpoint}`, resource)
   }
 
   static submitImagePrediction(base64Image: string): Promise<Object> {
     return new Promise((resolve, reject) => {
-      this.post('prediction', {image:base64Image})
-      .then(a=> {
-        resolve(a.data)
-      })
-      .catch(error => {
-        reject(error)
-      })
+      this.post('prediction', { image: base64Image })
+        .then(a => {
+          resolve(a.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
     });
   }
 
