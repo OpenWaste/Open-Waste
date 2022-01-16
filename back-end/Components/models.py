@@ -55,7 +55,7 @@ class Bin(models.Model):
         (CATEGORY3, 'Category3'),
     ]
 
-    building_id = models.ForeignKey(
+    building = models.ForeignKey(
         Building, on_delete=models.CASCADE, default=1)
     address = models.CharField(max_length=200)
     latitude = models.DecimalField(max_digits=7, decimal_places=4)
@@ -70,7 +70,7 @@ class Bin(models.Model):
 
 
 class Bin_images(models.Model):
-    bin_id = models.ForeignKey(Bin, on_delete=models.CASCADE, default=1)
+    bin = models.ForeignKey(Bin, on_delete=models.CASCADE, default=1)
     bin_images = models.ImageField(
         null=True, blank=True, upload_to=settings.BIN_IMG_PATH)
 
@@ -79,7 +79,7 @@ class Bin_images(models.Model):
 
 
 class Image_Submission(models.Model):
-    name = models.ForeignKey(
+    category = models.ForeignKey(
         Category, to_field='name', on_delete=models.CASCADE, default=1)
     submission_Image = models.ImageField(
         null=True, blank=True, upload_to=settings.ACCEPTED_TRASH_IMG_PATH)
