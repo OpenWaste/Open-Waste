@@ -30,7 +30,7 @@ class Building(models.Model):
     building_name = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.name
+        return self.building_name
 
 
 class Building_images(models.Model):
@@ -57,8 +57,8 @@ class Bin(models.Model):
     building_id = models.ForeignKey(
         Building, on_delete=models.CASCADE, default=1)
     address = models.CharField(max_length=200)
-    latitude = models.DecimalField(max_digits=6, decimal_places=6)
-    longitude = models.DecimalField(max_digits=6, decimal_places=6)
+    latitude = models.DecimalField(max_digits=7, decimal_places=4)
+    longitude = models.DecimalField(max_digits=7, decimal_places=4)
     floor_num = models.IntegerField()
     location_description = models.TextField()
     accepted_categories = models.CharField(
