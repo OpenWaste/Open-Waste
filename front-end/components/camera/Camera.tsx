@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Text, View, Modal, TouchableHighlight, Image, ActivityIndicator } from 'react-native';
 import { Camera } from "expo-camera";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import style from "../../styles/camera-style";
-import { Button, NativeBaseProvider, Flex, Spacer } from 'native-base';
+import { Button, NativeBaseProvider} from 'native-base';
 import Service from "../../service/service";
 import { useIsFocused } from '@react-navigation/native';
 import MapView from 'react-native-maps';
@@ -15,6 +16,34 @@ export default function displayCamera() {
   const [modalText, setModalText] = useState("")
   const [picTaken, setPicTaken] = useState(false)
   const [picURI, setPicURI] = useState("")
+
+  const MapModal = () => {
+    return (
+      <>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(false);
+          }}>
+          <View style={style.centeredView}>
+            <View style={style.modalView}>
+
+              <MaterialIcons style={style.modalCloseButton} name="cancel" size={30} onPress={() => setModalVisible(false)} />
+              <MapView style={style.map}
+                initialRegion={{
+                  latitude: 45.494862,
+                  longitude: -73.57790,
+                  latitudeDelta: 0.01,
+                  longitudeDelta: 0.01,
+                }} />
+            </View>
+          </View>
+        </Modal>
+      </>
+    )
+  }
 
   useEffect(() => {
     (async () => {
@@ -44,33 +73,16 @@ export default function displayCamera() {
           }
 
           <View style={style.footer}>
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => {
-                setModalVisible(false);
-              }}>
-              <View style={style.centeredView}>
-                <View style={style.modalView}>
-
-                  <MaterialIcons style={style.modalCloseButton} name="cancel" size={30} onPress={() => setModalVisible(false)} />
-                  <MapView style={style.map}
-                    initialRegion={{
-                      latitude: 45.494862,
-                      longitude: -73.57790,
-                      latitudeDelta: 0.01,
-                      longitudeDelta: 0.01,
-                    }} />
-                </View>
-              </View>
-            </Modal>
-
-
-            <TouchableHighlight activeOpacity={0.6} underlayColor={'transparent'}>
+            <MapModal/>
+            {
+              !picTaken || (picTaken && modalText.length > 0 )?
+              <TouchableHighlight style={!picTaken ? style.imageSubmissionButton : {}} activeOpacity={0.6} underlayColor={'transparent'}>
               <MaterialIcons name="file-upload" size={60} color="#FFFFFF" />
             </TouchableHighlight>
+            :<></>
+            }
 
+            
             {
               !picTaken ?
                 <TouchableHighlight activeOpacity={0.6} underlayColor={'transparent'} onPress={() => {
@@ -82,7 +94,7 @@ export default function displayCamera() {
                     })
                   })
                 }}>
-                  <MaterialIcons name="camera-alt" size={60} color="#FFFFFF" /></TouchableHighlight>
+                  <MaterialCommunityIcons name="circle-slice-8" size={60} color="#FFFFFF" /></TouchableHighlight>
                 :
                 <></>
             }

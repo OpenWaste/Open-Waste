@@ -69,11 +69,15 @@ export default StyleSheet.create({
 
       },
       nextButton: {
-        height:'70%',
+        height:'75%',
         width:'20%',
         top:0,
         bottom:0,
         marginTop:'auto',
         marginBottom:'auto'
+      },
+      imageSubmissionButton: {
+        position:'absolute',
+        left:55,
       }
   });
