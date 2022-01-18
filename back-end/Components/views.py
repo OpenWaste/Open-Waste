@@ -3,7 +3,7 @@ import io
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from Components.models import Category, Trash_Accepted
+from Components.models import Category, Image_Submission
 from Components.serializer import ImageRecognitionSerializer
 from rest_framework.parsers import MultiPartParser
 from Components.machine_learning.predictor import Predictor
@@ -37,10 +37,11 @@ class ImageSubmissionApiView(APIView):
             category_selected = Category.objects.get(name=category)
 
             # store in database
-            Trash_Accepted(
-                name=category_selected,
-                accepted_image=image
-            ).save()
+            # TODO: modify to match Image_Submission model (in models.py)
+            # Image_Submission(
+            #     name=category_selected,
+            #     accepted_image=image
+            # ).save()
 
             # success: 200 OK
             return Response(

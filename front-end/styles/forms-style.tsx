@@ -14,12 +14,30 @@ export default StyleSheet.create({
         borderTopWidth: 0,
         borderColor: "#BDBDBD",
        
-        backgroundColor: '#F9F9F9', 
+        backgroundColor: 'transparent', 
         height: 40,
         
         marginLeft: '5%',
         marginRight: '5%',
         marginTop: '5%',
+    },
+
+    accordionInputView: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        
+        borderBottomWidth: 0.5,
+        borderRightWidth: 0,
+        borderLeftWidth: 0,
+        borderTopWidth: 0,
+        borderColor: "#BDBDBD",
+       
+        backgroundColor: 'transparent', 
+        height: 40,
+        
+        marginLeft: '2%',
+        marginRight: '2%',
     },
 
     registrationIcons: {
@@ -30,7 +48,7 @@ export default StyleSheet.create({
 
     registrationTextInputs: {
         flex: 1,
-        backgroundColor: '#F9F9F9',
-        color: '#BDBDBD',
+        backgroundColor: 'transparent',
+        color: 'black',
     }
   });

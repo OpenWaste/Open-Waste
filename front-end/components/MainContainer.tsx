@@ -38,6 +38,7 @@ export class MainContainer extends React.Component {
             tabBarActiveTintColor: "#B6E28E",
             tabBarInactiveTintColor: "#808080",
             headerShown: false,
+            tabBarHideOnKeyboard: true,
           })}
         >
           {screens.map((screen) => {

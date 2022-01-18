@@ -2,22 +2,25 @@ import axios from 'axios';
 import { ImageSubmissionResource } from '../models/ImageSubmission';
 
 const instance = axios.create({
-  baseURL: 'http://127.0.0.1:8000'
+  baseURL: 'http://24.203.130.8:55012'
 });
 
 export default class Service {
 
-  private static async post(endpoint: string, resource: any) { 
-    await instance
-      .post(`/${endpoint}`, resource)
-      .then(response => response.data.json())
-      .catch(error => console.log(error))
+  private static async post(endpoint: string, resource: any) {
+    return instance.post(`/${endpoint}`, resource)
   }
-  static async submitImagePrediction(base64Image: string) {
-    const resource = new FormData();
-    resource.append('image', base64Image);
 
-    this.post('prediction', resource);
+  static submitImagePrediction(base64Image: string): Promise<Object> {
+    return new Promise((resolve, reject) => {
+      this.post('prediction', { image: base64Image })
+        .then(a => {
+          resolve(a.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    });
   }
 
   static async submitImageCategory(data: ImageSubmissionResource) {
@@ -26,7 +29,8 @@ export default class Service {
       image: data.image
     }
 
-    this.post('image-submission', resource)
+    let resp = await this.post('image-submission', resource);
+    return resp
   }
 
   private static async get(endpoint: string) { 
