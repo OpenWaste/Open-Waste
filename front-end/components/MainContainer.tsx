@@ -7,14 +7,12 @@ import { Camera } from "./camera/CameraContainer";
 import { Map } from "./map/Map";
 import { Settings } from "./settings/Settings";
 import { ProfileNavigator } from "./profile/ProfileNavigator";
-import { ImageSubmission } from "./camera/ImageSubmission/ImageSubmission";
 
 const screens = [
   { name: "Camera", component: Camera, icon: "photo-camera" },
   { name: "Map", component: Map, icon: "map" },
   { name: "Settings", component: Settings, icon: "settings" },
   { name: "Profile", component: ProfileNavigator, icon: "person" },
-  { name: "ImageSubmission", component: ImageSubmission },
 ];
 
 const Tab = createBottomTabNavigator();

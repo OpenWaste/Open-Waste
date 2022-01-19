@@ -5,14 +5,15 @@ import Service from "../../../service/service";
 
 export function ImageCategory() {
   let [category, setCategory] = useState([]);
+  let [service, setService] = React.useState("")
 
-  useEffect(() => {
+  useEffect ( () =>{
     if (category.length == 0) {
       Service.getImageCategory().then((resp) => {
-        setCategory(resp.data.categories);
-      });
+        setCategory(resp.categories);
+      }).catch(error => console.log(error));
     }
-  });
+  })
 
   return (
     <View>
@@ -24,10 +25,10 @@ export function ImageCategory() {
             minWidth="100%"
             placeholder="Choose Categories"
             mt="1"
-            selectedValue={""}
+            selectedValue={service}
           >
             {category.map((value) => {
-              return <Select.Item key={value} label={value} value={value} />;
+              return <Select.Item key={value} label={value} value={value}/>;
             })}
           </Select>
           <Box m="10">

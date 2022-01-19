@@ -37,7 +37,15 @@ export default class Service {
     return instance.get(`/${endpoint}`)
   }
 
-  static async getImageCategory() {
-    return this.get('update')
+  static getImageCategory(): Promise<Object> {
+    return new Promise((resolve, reject) => {
+      this.get('update')
+        .then(a => {
+          resolve(a.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    });
   }
 }
