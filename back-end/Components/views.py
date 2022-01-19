@@ -3,10 +3,92 @@ import io
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from Components.models import Category, Image_Submission
+from Components.models import Category, Image_Submission, DWUser
 from Components.serializer import ImageRecognitionSerializer
 from rest_framework.parsers import MultiPartParser
 from Components.machine_learning.predictor import Predictor
+from django.contrib.auth import authenticate
+
+
+class CreateUser(APIView):
+    def post(self, request):
+        try:
+            # values
+            username = request.data['username']
+            email = request.data['email']
+            password = request.data['password']
+
+            # create user
+            user = DWUser.objects.create_user(username,
+                                              email,
+                                              password)
+
+            # store
+            user.save()
+
+            # success: 200 OK
+            return Response({"Successfully created account."},
+                            status=status.HTTP_200_OK)
+
+        except Exception as e:
+            # error: 400 BAD REQUEST
+            return Response(
+                {e.__class__.__name__: str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+class AuthenticateUser(APIView):
+    def post(self, request):
+        try:
+            # values
+            username = request.data['username']
+            password = request.data['password']
+
+            # authenticate
+            user = authenticate(username=username,
+                                password=password)
+
+            # success: 200 OK
+            if user is not None:
+                return Response({"Successfully authenticated the credentials."},
+                                status=status.HTTP_200_OK)
+            else:
+                return Response({"Authentication failed."},
+                                status=status.HTTP_200_OK)
+
+        except Exception as e:
+            # error: 400 BAD REQUEST
+            return Response(
+                {e.__class__.__name__: str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+class UpdatePassword(APIView):
+    def patch(self, request):
+        try:
+            # values
+            username = request.data['username']
+            new_password = request.data['password']
+
+            user = DWUser.objects.get(username=username)
+
+            # change password
+            user.set_password(new_password)
+
+            user.save()
+
+            # success: 200 OK
+            return Response({"Successfully changed password."},
+                            status=status.HTTP_200_OK)
+
+        except Exception as e:
+            # error: 400 BAD REQUEST
+            return Response(
+                {e.__class__.__name__: str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 
 class ImageRecognitionApiView(APIView):
@@ -55,6 +137,7 @@ class ImageSubmissionApiView(APIView):
                 {e.__class__.__name__: str(e)},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
 
 class UpdateApiView(APIView):
 
