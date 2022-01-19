@@ -49,11 +49,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'Components',
-    'corsheaders',
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -147,10 +145,4 @@ BUILDING_IMG_PATH = 'building_images/'
 BIN_IMG_PATH = 'bin_images/'
 ACCEPTED_TRASH_IMG_PATH = 'accepted_trash_images/'
 PROFILE_PICTURE_PATH = 'profile_pictures/'
-
-# CORS
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = (
-    'http://127.0.0.1:8000',
-)
 
