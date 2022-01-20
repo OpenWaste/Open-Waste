@@ -6,6 +6,7 @@ torchvision
 matplotlib
 pytorch-lightning
 scikit-learn
+coverage
 asgiref==3.4.1
 Django==3.2.9
 djangorestframework==3.12.4
