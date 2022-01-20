@@ -9,10 +9,9 @@ export function ImageCategory() {
 
   useEffect(() => {
     if (category.length == 0) {
-      Service.getImageCategory()
-        .then((resp) => {
-          setCategory(resp.categories);
-        })
+      Service.getImageCategory().then((resp) => {
+        setCategory(resp.categories);
+      });
     }
   });
 
@@ -48,17 +47,13 @@ function ButtonState() {
     setState(!state);
   };
 
-  if (state) {
-    return (
-      <Button onPress={() => {}} size="sm" colorScheme="success">
-        Done!
-      </Button>
-    );
-  } else {
-    return (
-      <Button onPress={toggleState} size="sm" colorScheme="teal">
-        Submit
-      </Button>
-    );
-  }
+  return state ? (
+    <Button onPress={() => {}} size="sm" colorScheme="success">
+      Done!
+    </Button>
+  ) : (
+    <Button onPress={toggleState} size="sm" colorScheme="teal">
+      Submit
+    </Button>
+  );
 }

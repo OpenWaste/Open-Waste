@@ -1,22 +1,27 @@
 import React from "react";
 import { View } from "react-native";
-import { Text, Box,  Heading, VStack, Button, NativeBaseProvider} from "native-base";
+import {
+  Text,
+  Box,
+  Heading,
+  VStack,
+  Button,
+  NativeBaseProvider,
+} from "native-base";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { ImageCategory } from "./ImageCategory";
 import { CameraRollBox } from "./CameraRollBox";
 
-
 export function ImageSubmission() {
-
-  const [state, setState] = React.useState(true)
+  const [state, setState] = React.useState(true);
 
   const toggleState = () => {
-    setState(!state)
-  }
+    setState(!state);
+  };
 
   return (
     <NativeBaseProvider>
-    <View>
+      <View>
         <Box m="10">
           <VStack space={10} alignItems="center">
             <Box width="100%">
@@ -42,16 +47,15 @@ export function ImageSubmission() {
                 color="#8A8A8A"
               />
             </Button>
-            <ToggleComponent show={state}/>
+            <ToggleComponent show={state} />
           </VStack>
         </Box>
-    </View>
+      </View>
     </NativeBaseProvider>
   );
 }
 
-function ToggleComponent(prop)
-{
-  const readyToSubmit = prop.show
-  return (readyToSubmit ? <ImageCategory />: <CameraRollBox />)
+function ToggleComponent(prop) {
+  const readyToSubmit = prop.show;
+  return readyToSubmit ? <ImageCategory /> : <CameraRollBox />;
 }
