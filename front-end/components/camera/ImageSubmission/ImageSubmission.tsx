@@ -53,13 +53,5 @@ export function ImageSubmission() {
 function ToggleComponent(prop)
 {
   const readyToSubmit = prop.show
-  if(readyToSubmit)
-  {
-    return <ImageCategory />
-  }
-  else
-  {
-    return <CameraRollBox />
-
-  }
+  return (readyToSubmit ? <ImageCategory />: <CameraRollBox />)
 }
