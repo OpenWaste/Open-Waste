@@ -28,8 +28,7 @@ export class MainContainer extends React.Component {
               const icon = screens.find(
                 (screen) => screen.name === route.name
               )?.icon;
-              size = 20;
-              return <MaterialIcons name={icon} size={size} color={color} />;
+              return <MaterialIcons name={icon} size={20} color={color} />;
             },
             tabBarLabelStyle: { fontSize: 8, marginBottom: 10 },
             tabBarStyle: { paddingTop: 10 },
