@@ -1,7 +1,9 @@
+from unicodedata import category
 from django.test import TestCase, Client
 from django.core.files.uploadedfile import SimpleUploadedFile
-from Components.models import Category
+from Components.models import Category, DWUser, CategoryInstructions
 import json
+
 
 class ImageSubmissionTest(TestCase):
     def setUp(self):
@@ -16,13 +18,14 @@ class ImageSubmissionTest(TestCase):
         self.path = '/image-submission'
 
         # insert 'plastic' category into test db
-        category = Category(name='plastic')
-        category.save()
+        Category(name='plastic').save()
+        DWUser(email='admin@admin.com').save()
 
     def test_image_submission_success(self):
         # stub image object
         img_param = {'category': 'plastic',
-                     'image': self.image}
+                     'image': self.image,
+                     'email': 'admin@admin.com'}
 
         # post request
         response = self.client.post(self.path, img_param)
@@ -41,7 +44,10 @@ class ImageSubmissionTest(TestCase):
         # assert status code: 400
         self.assertEqual(response.status_code, 400)
 
+
 class ImageUpdate(TestCase):
+    maxDiff = None
+
     def setUp(self):
         # Test client is a Python class that acts as a dummy Web browser
         # allowing you to test your views and interact with your Django-powered  application
@@ -51,22 +57,43 @@ class ImageUpdate(TestCase):
 
     def test_update_success(self):
         # insert categories into test db
-        Category(name='cardboard').save()
         Category(name='plastic').save()
+        Category(name='metal').save()
+        Category(name='paper').save()
+        Category(name='cardboard').save()
         Category(name='glass').save()
+        Category(name='trash').save()
 
+        CategoryInstructions(
+            category=Category.objects.get(id=1), instructions='1. check if it is contaminated;\r\n2. if contaminated, throw in trash;\r\n3. if not, put in recycle bin;\r\n4. congratulate yourself').save()
+        CategoryInstructions(
+            category=Category.objects.get(id=2), instructions='1. if dirty, please wash;\r\n2. check recycle number (1-6);\r\n3. if recyclable, put in recylce bin;\r\n4. otherwise, throw in trash;').save()
+        CategoryInstructions(
+            category=Category.objects.get(id=3), instructions='1. make sure item  does not contain electronic components;\r\n2. clean item;\r\n3. if item is large, make it smaller;\r\n4. dispose in recycle bin while being cautious not to get cut').save()
+        CategoryInstructions(
+            category=Category.objects.get(id=4), instructions='1. wash container;\r\n2. DO NOT BREAK;\r\n3. place in recycle bin;').save()
+        CategoryInstructions(
+            category=Category.objects.get(id=5), instructions='1. dispose in trash bin 5').save()
+        CategoryInstructions(
+            category=Category.objects.get(id=6), instructions='1. dispose in trash bin 6').save()
+
+        # print(Category.objects.values_list('name'))
+        # print(CategoryInstructions.objects.values_list(
+        #     'category', 'instructions'))
         # mock returned json
-        mock = '{"categories":["cardboard","plastic","glass"]}'
+        update_mock = open('Components/mocks/update_mock.json')
+        mock = json.load(update_mock)
 
         # get request
         response = self.client.get(self.path)
-
+        print(response.content.decode('utf8'))
         # assert values returned are correct
-        self.assertEqual(response.content.decode('utf8'), mock)
+        self.assertCountEqual(response.content.decode('utf8'), mock)
 
         # assert status code: 200
         self.assertEqual(response.status_code, 200)
-        
+
+
 class ImageRecognitionTest(TestCase):
     def setUp(self):
         self.client = Client()

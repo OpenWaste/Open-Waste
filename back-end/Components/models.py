@@ -14,7 +14,8 @@ class Category(models.Model):
 
 
 class CategoryInstructions(models.Model):
-    category = models.ManyToManyField(Category)
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE, default=1)
     instructions = models.TextField()
 
 
@@ -86,5 +87,3 @@ class Image_Submission(models.Model):
     is_accepted = models.BooleanField(default=False)
     submitted_by = models.ForeignKey(
         DWUser, on_delete=models.CASCADE, default=1)
-    
-    
