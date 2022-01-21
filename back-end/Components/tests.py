@@ -57,25 +57,31 @@ class ImageUpdate(TestCase):
 
     def test_update_success(self):
         # insert categories into test db
-        Category(name='plastic').save()
-        Category(name='metal').save()
-        Category(name='paper').save()
-        Category(name='cardboard').save()
-        Category(name='glass').save()
-        Category(name='trash').save()
+        category_plastic = Category(name='plastic')
+        category_metal = Category(name='metal')
+        category_paper = Category(name='paper')
+        category_cardboard = Category(name='cardboard')
+        category_glass = Category(name='glass')
+        category_trash = Category(name='trash')
+        category_plastic.save()
+        category_metal.save()
+        category_paper.save()
+        category_cardboard.save()
+        category_glass.save()
+        category_trash.save()
 
         CategoryInstructions(
-            category=Category.objects.get(id=1), instructions='1. check if it is contaminated;\r\n2. if contaminated, throw in trash;\r\n3. if not, put in recycle bin;\r\n4. congratulate yourself').save()
+            category=category_plastic, instructions='1. check if it is contaminated;\r\n2. if contaminated, throw in trash;\r\n3. if not, put in recycle bin;\r\n4. congratulate yourself').save()
         CategoryInstructions(
-            category=Category.objects.get(id=2), instructions='1. if dirty, please wash;\r\n2. check recycle number (1-6);\r\n3. if recyclable, put in recylce bin;\r\n4. otherwise, throw in trash;').save()
+            category=category_metal, instructions='1. if dirty, please wash;\r\n2. check recycle number (1-6);\r\n3. if recyclable, put in recylce bin;\r\n4. otherwise, throw in trash;').save()
         CategoryInstructions(
-            category=Category.objects.get(id=3), instructions='1. make sure item  does not contain electronic components;\r\n2. clean item;\r\n3. if item is large, make it smaller;\r\n4. dispose in recycle bin while being cautious not to get cut').save()
+            category=category_paper, instructions='1. make sure item  does not contain electronic components;\r\n2. clean item;\r\n3. if item is large, make it smaller;\r\n4. dispose in recycle bin while being cautious not to get cut').save()
         CategoryInstructions(
-            category=Category.objects.get(id=4), instructions='1. wash container;\r\n2. DO NOT BREAK;\r\n3. place in recycle bin;').save()
+            category=category_cardboard, instructions='1. wash container;\r\n2. DO NOT BREAK;\r\n3. place in recycle bin;').save()
         CategoryInstructions(
-            category=Category.objects.get(id=5), instructions='1. dispose in trash bin 5').save()
+            category=category_glass, instructions='1. dispose in trash bin 5').save()
         CategoryInstructions(
-            category=Category.objects.get(id=6), instructions='1. dispose in trash bin 6').save()
+            category=category_trash, instructions='1. dispose in trash bin 6').save()
 
         # print(Category.objects.values_list('name'))
         # print(CategoryInstructions.objects.values_list(
@@ -86,9 +92,9 @@ class ImageUpdate(TestCase):
 
         # get request
         response = self.client.get(self.path)
-        print(response.content.decode('utf8'))
+        print(response.json())
         # assert values returned are correct
-        self.assertCountEqual(response.content.decode('utf8'), mock)
+        self.assertCountEqual(response.json(), mock)
 
         # assert status code: 200
         self.assertEqual(response.status_code, 200)
