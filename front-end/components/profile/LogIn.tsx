@@ -7,7 +7,8 @@ import { showMsg } from '../../utils/FlashMessage';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Service from "../../service/service";
 import { UserResource } from "../../models/User";
-import axios from "axios";
+import { useNavigation } from '@react-navigation/native';
+import { save, getValueFor } from '../../utils/PersistInfo';
 
 export class LogIn extends React.Component {
   
@@ -20,7 +21,7 @@ export class LogIn extends React.Component {
 
             <Text style={loginStyle.LogInHeader}>Welcome Back</Text>
             
-            <LoginForm />
+            <LoginForm screenName={'ProfilePage'}/>
 
             <Text style={loginStyle.forgotPass} onPress={() => this.props.navigation.navigate('ForgotPassword')}> Forgot Password? </Text>
             
@@ -34,13 +35,15 @@ export class LogIn extends React.Component {
   }
 }
 
-function LoginForm(){
+function LoginForm( { screenName } ){
 
   const ref_input2 = useRef();
   const [show, setShow] = React.useState(false)
   const showPass = () => setShow(!show)
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
+ 
+  const navigation = useNavigation();
 
   const handleSubmit = () => {
 
@@ -56,6 +59,8 @@ function LoginForm(){
         showMsg('Authentication Failed', 'danger');
       }
       else{
+        
+        navigation.navigate(screenName, {username: username});
         showMsg('Success!', 'success');
       }
       
