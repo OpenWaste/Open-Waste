@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { ImageSubmissionResource } from '../models/ImageSubmission';
+import { UserResource } from '../models/User';
 
 const instance = axios.create({
   baseURL: 'http://24.203.130.8:55012'
@@ -30,6 +31,37 @@ export default class Service {
     }
 
     let resp = await this.post('image-submission', resource);
+    return resp
+  }
+
+  static async submitAccountCreation(data: UserResource) {
+    const resource = {
+      username: data.username,
+      email: data.email,
+      password: data.password
+    }
+
+    let resp = await this.post('create-user', resource);
+    return resp
+  }
+
+  static async authenticateUser(data: UserResource) {
+    const resource = {
+      username: data.username,
+      password: data.password
+    }
+
+    let resp = await this.post('authenticate-user', resource);
+    return resp
+  }
+
+  static async changePassword(data: UserResource) {
+    const resource = {
+      username: data.username,
+      password: data.password
+    }
+
+    let resp = await this.post('update-password', resource);
     return resp
   }
 }

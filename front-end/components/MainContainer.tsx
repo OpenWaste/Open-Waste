@@ -2,6 +2,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import FlashMessage from "react-native-flash-message";
 
 import displayCamera from "./camera/Camera";
 import { Map } from "./map/Map";
@@ -49,6 +50,7 @@ export class MainContainer extends React.Component {
             );
           })}
         </Tab.Navigator>
+        <FlashMessage position="bottom" />
       </NavigationContainer>
     );
   }
