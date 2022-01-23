@@ -1,16 +1,25 @@
 import React from "react";
-import { View, ScrollView, SafeAreaView, Text, Image } from "react-native";
+import { View, ScrollView, SafeAreaView, Text, Image, Alert } from "react-native";
 import style from "../../styles/profile-style";
 import { Button, NativeBaseProvider } from 'native-base';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { useNavigation } from '@react-navigation/native';
+import { save, deleteValueFor, getValueFor } from '../../utils/PersistInfo';
+import { showMsg } from "../../utils/FlashMessage";
 
 export class Profile extends React.Component {
+
+  state = { username: "" };
 
   guest = true;
 
   render() {
 
-    if(this.guest){
+    getValueFor('username').then(output => {
+      this.setState({ username: output})
+    })
+
+    if(this.state.username ==='undefined' || this.state.username == null){
       return (
         <NativeBaseProvider>
           <View>
@@ -35,11 +44,11 @@ export class Profile extends React.Component {
               {/* TO DO: Pull profile pic from database. */}
               <Image style={style.profilePic} source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}} />
               
-              <Text style={style.username}> Username </Text>
+              <Text style={style.username}> {this.state.username} </Text>
               
               <View style={style.btnView}>
                 <Button style={style.editBtn} onPress={() => this.props.navigation.navigate('EditProfile')}> Edit Profile </Button>
-                <Button style={style.logOutBtn} onPress={() => this.props.navigation.navigate('LogOut')}> Log Out </Button>
+                <LogOutBtn screenName={'ProfilePage'}/>
               </View>
 
               <View style={style.userInfoView}>
@@ -79,3 +88,20 @@ export class Profile extends React.Component {
   }
 }
 
+function LogOutBtn( { screenName } ){
+
+  const [username, setUsername] = React.useState();
+  const navigation = useNavigation();
+
+  const handleLogOut = () => {
+
+    deleteValueFor('username');
+    navigation.navigate(screenName);
+    showMsg('Logged Out', 'success');
+  }
+
+  return(
+    <Button style={style.logOutBtn} onPress={handleLogOut}> Log Out </Button>
+  )
+  
+}

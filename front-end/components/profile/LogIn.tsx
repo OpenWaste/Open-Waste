@@ -59,8 +59,8 @@ function LoginForm( { screenName } ){
         showMsg('Authentication Failed', 'danger');
       }
       else{
-        
-        navigation.navigate(screenName, {username: username});
+        save('username', username)
+        navigation.navigate(screenName);
         showMsg('Success!', 'success');
       }
       
