@@ -1,147 +1,218 @@
-openapi: 3.0.0
-info:
-  title: Waste Sorting External  API Gateway
-  description: This is the API to access our Waste Sorting App services
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: v1.2.0
-paths:
-  /image-submission:
-    post:
-      tags:
-        - Image Submission Endpoint
-      summary: Submits an image that the user chooses
-      description: sends an image to the api to add to the database
-      requestBody:
-        description: Submits the image
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ImageSubmissionPayload'
-        required: true
-      responses:
-        '200':
-          description: Image succesfully submitted
-        '400':
-          description: Invalid request
-  /update:
-    get:
-      tags:
-        - Image Submission Endpoint
-      summary: Retreives image categories and disposal instructions from database
-      description: ''
-      responses:
-        '200':
-          description: Categories succesfully retreived
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CategoriesAndCategory_instructions'
-        '404':
-          description: Categories not found
-  /prediction:
-    post:
-      tags:
-        - Image Prediction Endpoint
-      summary: Receive an image for prediction
-      description: Sends an image to the api to return a predicted result
-      operationId: predictImage
-      requestBody:
-        description: image to predict
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ImagePredictionPayload'
-      responses:
-        '200':
-          description: Returns the detected waste category based on the image sent
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Prediction'
-        '400':
-          description: Invalid request
-components:
-  schemas:
-    ImageSubmissionPayload:
-      required:
-        - category
-        - image
-        - email
-      type: object
-      properties:
-        category:
-          enum:
-            - Cardboard
-            - Glass
-            - Metal
-            - Paper
-            - Plastic 
-            - Trash
-          type: string
-        image:
-          type: string
-          format: byte
-        email:
-          type: string
-      example:
-        category:
-          -cardboard
-        image:
-          -string
-        email:
-          -admin@amind.com
-    ImagePredictionPayload:
-      required:
-        - image
-      type: object
-      properties:
-        image:
-          type: object
-          format: JPEG
-          example: image.jpg
-    Prediction:
-      type: object
-      properties:
-        prediction:
-          enum:
-            - Cardboard
-            - Glass
-            - Metal
-            - Paper
-            - Plastic
-            - Trash
-          type: string
-    CategoriesAndCategory_instructions:
-      type: object
-      properties:
-        categories:
-          type: array
-          items:
-            type: string
-      example:
-        categories:
-          - cardboard
-          - glass
-          - metal
-          - paper
-          - plastic
-          - trash
-        category_instructions:
-          - - cardboard
-            - Throw in recycling bin.
-          - - glass
-            - Make sure it is not broken.
-            - Rinse container.
-            - Throw in specified bin
-          - - metal
-            - Make sure it is not sharp
-            - Throw in specified bin
-          - - paper
-            - Make sure it is not dirty
-            - Throw in specified bin
-          - - plastic
-            - Rinse container and throw in blue bin.
-          - - trash
-            - Dispose in thrash bin.
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Waste Sorting External  API Gateway",
+    "description": "This is the API to access our Waste Sorting App services",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "v2.1.0"
+  },
+  "paths": {
+    "/image-submission": {
+      "post": {
+        "tags": [
+          "Image Submission Endpoint"
+        ],
+        "summary": "Submits an image that the user chooses",
+        "description": "sends an image to the api to add to the database",
+        "requestBody": {
+          "description": "Submits the image",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageSubmissionPayload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Image succesfully submitted"
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      }
+    },
+    "/update": {
+      "get": {
+        "tags": [
+          "Image Submission Endpoint"
+        ],
+        "summary": "Retreives image categories and disposal instructions from database",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Categories succesfully retreived",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoriesAndCategory_instructions"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Categories not found"
+          }
+        }
+      }
+    },
+    "/prediction": {
+      "post": {
+        "tags": [
+          "Image Prediction Endpoint"
+        ],
+        "summary": "Receive an image for prediction",
+        "description": "Sends an image to the api to return a predicted result",
+        "operationId": "predictImage",
+        "requestBody": {
+          "description": "image to predict",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImagePredictionPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns the detected waste category based on the image sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Prediction"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ImageSubmissionPayload": {
+        "required": [
+          "category",
+          "image",
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "category": {
+            "enum": [
+              "Cardboard",
+              "Glass",
+              "Metal",
+              "Paper",
+              "Plastic",
+              "Trash"
+            ],
+            "type": "string"
+          },
+          "image": {
+            "type": "string",
+            "format": "byte"
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "category": "-cardboard",
+          "image": "-string",
+          "email": "-admin@amind.com"
+        }
+      },
+      "ImagePredictionPayload": {
+        "required": [
+          "image"
+        ],
+        "type": "object",
+        "properties": {
+          "image": {
+            "type": "object",
+            "format": "JPEG",
+            "example": "image.jpg"
+          }
+        }
+      },
+      "Prediction": {
+        "type": "object",
+        "properties": {
+          "prediction": {
+            "enum": [
+              "Cardboard",
+              "Glass",
+              "Metal",
+              "Paper",
+              "Plastic",
+              "Trash"
+            ],
+            "type": "string"
+          }
+        }
+      },
+      "CategoriesAndCategory_instructions": {
+        "type": "object",
+        "properties": {
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "example": {
+          "categories": [
+            "cardboard",
+            "glass",
+            "metal",
+            "paper",
+            "plastic",
+            "trash"
+          ],
+          "category_instructions": [
+            [
+              "cardboard",
+              "Throw in recycling bin."
+            ],
+            [
+              "glass",
+              "Make sure it is not broken.",
+              "Rinse container.",
+              "Throw in specified bin"
+            ],
+            [
+              "metal",
+              "Make sure it is not sharp",
+              "Throw in specified bin"
+            ],
+            [
+              "paper",
+              "Make sure it is not dirty",
+              "Throw in specified bin"
+            ],
+            [
+              "plastic",
+              "Rinse container and throw in blue bin."
+            ],
+            [
+              "trash",
+              "Dispose in thrash bin."
+            ]
+          ]
+        }
+      }
+    }
+  }
+}
