@@ -6,6 +6,7 @@ import { Avatar, Button, Center, Input, NativeBaseProvider } from 'native-base';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Service from "../../service/service";
 import { showMsg } from '../../utils/FlashMessage';
+import { validateEmail } from '../../utils/Validators';
 import { UserResource } from "../../models/User";
 
 export class SignUp extends React.Component {
@@ -41,29 +42,35 @@ export function SignUpForm() {
   const [show, setShow] = React.useState(false);
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const showPass = () => setShow(!show);
+
   const [email, setEmail] = React.useState('');
-  const showPass = () => setShow(!show)
 
   const handleSubmit = () => {
 
-    const user: UserResource = {
-      username: username,
-      password: password,
-      email: email
+    if(validateEmail(email)){
+      const user: UserResource = {
+        username: username,
+        password: password,
+        email: email
+      }
+  
+      //Flash message to inform user of request status
+      Service.submitAccountCreation(user).then((resp) => {
+        showMsg('Success!', 'success');
+      }).catch(error => {
+       if(error.toJSON().message === 'Network Error'){
+         showMsg('Network Error', 'warning');
+       }
+       else{
+         showMsg('An Error Has Occurred', 'danger');
+       }
+      })
     }
-
-    //Flash message to inform user of request status
-    Service.submitAccountCreation(user).then((resp) => {
-      showMsg('Success!', 'success');
-    }).catch(error => {
-      if(error.toJSON().message === 'Network Error'){
-        showMsg('Network Error', 'warning');
-      }
-      else{
-        showMsg('An Error Has Occurred', 'danger');
-      }
-    })
-    
+    else{
+      showMsg('Invalid Email', 'danger');
+    }
+      
   }
 
   return(
@@ -99,7 +106,7 @@ export function SignUpForm() {
           borderWidth="0" 
           placeholder = "Email"
           autoFocus={true}
-          onChangeText = {value => setEmail(value)}
+          onChangeText = {emailInput => setEmail(emailInput)}
           ref={ref_input3} />
       </View>
 
