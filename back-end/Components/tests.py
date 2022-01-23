@@ -92,7 +92,7 @@ class ImageUpdate(TestCase):
 
         # get request
         response = self.client.get(self.path)
-        print(response.json())
+
         # assert values returned are correct
         self.assertCountEqual(response.json(), mock)
 
