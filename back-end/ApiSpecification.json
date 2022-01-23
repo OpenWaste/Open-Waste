@@ -7,7 +7,7 @@
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "version": "v2.1.0"
+    "version": "v2.2.1"
   },
   "paths": {
     "/image-submission": {
@@ -15,10 +15,10 @@
         "tags": [
           "Image Submission Endpoint"
         ],
-        "summary": "Submits an image that the user chooses",
-        "description": "sends an image to the api to add to the database",
+        "summary": "Submit an image that the user chooses",
+        "description": "send an image to the api to add to the database",
         "requestBody": {
-          "description": "Submits the image",
+          "description": "Submit the image",
           "content": {
             "application/json": {
               "schema": {
@@ -43,7 +43,7 @@
         "tags": [
           "Image Submission Endpoint"
         ],
-        "summary": "Retreives image categories and disposal instructions from database",
+        "summary": "Retreive image categories and disposal instructions from database",
         "description": "",
         "responses": {
           "200": {
@@ -51,7 +51,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoriesAndCategory_instructions"
+                  "$ref": "#/components/schemas/CategoriesAndCategoryInstructions"
                 }
               }
             }
@@ -69,7 +69,6 @@
         ],
         "summary": "Receive an image for prediction",
         "description": "Sends an image to the api to return a predicted result",
-        "operationId": "predictImage",
         "requestBody": {
           "description": "image to predict",
           "content": {
@@ -90,6 +89,90 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      }
+    },
+    "/create-user": {
+      "post": {
+        "tags": [
+          "User Creation, Authentication And Password Update Endpoint"
+        ],
+        "summary": "Send information to create user",
+        "description": "Send username, email and password to create a user",
+        "requestBody": {
+          "description": "User info",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully created user"
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      }
+    },
+    "/authenticate-user": {
+      "post": {
+        "tags": [
+          "User Creation, Authentication And Password Update Endpoint"
+        ],
+        "summary": "Send information to sign-in",
+        "description": "Send username and password to authenticate user",
+        "requestBody": {
+          "description": "User info",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticateUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully authenticated the credentials"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/update-password": {
+      "patch": {
+        "tags": [
+          "User Creation, Authentication And Password Update Endpoint"
+        ],
+        "summary": "Send information to change password",
+        "description": "Send username and new password to change current password",
+        "requestBody": {
+          "description": "User info",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePassword"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully change password"
           },
           "400": {
             "description": "Invalid request"
@@ -128,9 +211,9 @@
           }
         },
         "example": {
-          "category": "-cardboard",
-          "image": "-string",
-          "email": "-admin@amind.com"
+          "category": "cardboard",
+          "image": "string",
+          "email": "admin@amind.com"
         }
       },
       "ImagePredictionPayload": {
@@ -162,7 +245,7 @@
           }
         }
       },
-      "CategoriesAndCategory_instructions": {
+      "CategoriesAndCategoryInstructions": {
         "type": "object",
         "properties": {
           "categories": {
@@ -183,34 +266,86 @@
           ],
           "category_instructions": [
             [
-              "cardboard",
-              "Throw in recycling bin."
+              "cardboard , Throw in recycling bin."
             ],
             [
-              "glass",
-              "Make sure it is not broken.",
-              "Rinse container.",
-              "Throw in specified bin"
+              "glass, Make sure it is not broken., Rinse container, Throw in specified    bin"
             ],
             [
-              "metal",
-              "Make sure it is not sharp",
-              "Throw in specified bin"
+              "metal, Make sure it is not sharp., Throw in specified bin"
             ],
             [
-              "paper",
-              "Make sure it is not dirty",
-              "Throw in specified bin"
+              "paper, Make sure it is not dirty., Throw in specified bin"
             ],
             [
-              "plastic",
-              "Rinse container and throw in blue bin."
+              "plastic, Rinse container and throw in blue bin."
             ],
             [
-              "trash",
-              "Dispose in thrash bin."
+              "trash, Dispose in thrash bin."
             ]
           ]
+        }
+      },
+      "CreateUser": {
+        "required": [
+          "username",
+          "email",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "username": "username1",
+          "email": "email1",
+          "password": "password1"
+        }
+      },
+      "AuthenticateUser": {
+        "required": [
+          "username",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "username": "username1",
+          "password": "password1"
+        }
+      },
+      "UpdatePassword": {
+        "required": [
+          "username",
+          "new_password"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "new_password": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "username": "username1",
+          "new_password": "password1"
         }
       }
     }
