@@ -97,7 +97,6 @@ class DeleteUser(APIView):
         try:
             # values
             username = request.data['username']
-            print("**USERNAME**", username)
 
             # get user
             user = DWUser.objects.get(username=username)

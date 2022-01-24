@@ -103,7 +103,7 @@ class DeleteUser(TestCase):
 
         # delete request
         response = self.client.delete(
-            self.path, user_info, content_type='multipart/form-data')
+            self.path, user_info, content_type='application/json')
 
         # assert status code: 200
         self.assertEqual(response.status_code, 200)
