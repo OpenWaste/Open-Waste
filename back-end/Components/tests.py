@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from django.core.files.uploadedfile import SimpleUploadedFile
-from Components.models import Category
+from Components.models import Category, DWUser
 import json
 
 
@@ -82,6 +82,38 @@ class UpdatePassword(TestCase):
 
         # patch request
         response = self.client.patch(self.path, user_info)
+
+        # assert status code: 400
+        self.assertEqual(response.status_code, 400)
+
+
+class DeleteUser(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.path = '/delete-user'
+
+    def test_delete_user_success(self):
+        # create user
+        self.user = DWUser.objects.create_user({'username': 'John',
+                                                'email': 'John@gmail.com',
+                                                'password': 'John123'})
+
+        # user
+        user_info = {'username': 'John'}
+
+        # delete request
+        response = self.client.delete(
+            self.path, user_info, content_type='multipart/form-data')
+
+        # assert status code: 200
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_user_missing_param_fail(self):
+        # user
+        user_info = {''}
+
+        # delete request
+        response = self.client.delete(self.path, user_info)
 
         # assert status code: 400
         self.assertEqual(response.status_code, 400)

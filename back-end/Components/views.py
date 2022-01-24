@@ -91,6 +91,37 @@ class UpdatePassword(APIView):
             )
 
 
+class DeleteUser(APIView):
+
+    def delete(self, request):
+        try:
+            # values
+            username = request.data['username']
+            print("**USERNAME**", username)
+
+            # get user
+            user = DWUser.objects.get(username=username)
+            user.delete()
+
+            # success: 200 OK
+            return Response(
+                {"The user is deleted."},
+                status=status.HTTP_200_OK
+            )
+        except DWUser.DoesNotExist:
+            # success: 200 OK
+            return Response(
+                {"The user does not exist."},
+                status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            # error: 400 BAD REQUEST
+            return Response(
+                {e.__class__.__name__: str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
 class ImageRecognitionApiView(APIView):
 
     def post(self, request):
