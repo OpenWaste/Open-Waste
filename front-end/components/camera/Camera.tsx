@@ -9,7 +9,7 @@ import Service from "../../service/service";
 import { useIsFocused } from '@react-navigation/native';
 import MapView from 'react-native-maps';
 
-export default function displayCamera() {
+export default function displayCamera({navigation}) {
   const isFocused = useIsFocused();
   const [hasPermission, setHasPermission] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
@@ -70,7 +70,7 @@ export default function displayCamera() {
 
   const ImageSubmissionButton = () => {
     return ( 
-    <TouchableHighlight style={!picTaken ? style.imageSubmissionButton : {}} activeOpacity={0.6} underlayColor={'transparent'}>
+    <TouchableHighlight style={!picTaken ? style.imageSubmissionButton : {}} activeOpacity={0.6} underlayColor={'transparent'} onPress={()=>navigation.navigate('ImageSubmission')}>
       <MaterialIcons name="file-upload" size={60} color="#FFFFFF" />
     </TouchableHighlight>
     )

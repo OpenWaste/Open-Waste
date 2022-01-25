@@ -4,13 +4,13 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import FlashMessage from "react-native-flash-message";
 
-import displayCamera from "./camera/Camera";
+import { Camera } from "./camera/CameraContainer";
 import { Map } from "./map/Map";
 import { Settings } from "./settings/Settings";
 import { ProfileNavigator } from "./profile/ProfileNavigator";
 
 const screens = [
-  { name: "Camera", component: displayCamera, icon: "photo-camera" },
+  { name: "Camera", component: Camera, icon: "photo-camera" },
   { name: "Map", component: Map, icon: "map" },
   { name: "Settings", component: Settings, icon: "settings" },
   { name: "Profile", component: ProfileNavigator, icon: "person" },
@@ -29,8 +29,7 @@ export class MainContainer extends React.Component {
               const icon = screens.find(
                 (screen) => screen.name === route.name
               )?.icon;
-              size = 20;
-              return <MaterialIcons name={icon} size={size} color={color} />;
+              return <MaterialIcons name={icon} size={20} color={color} />;
             },
             tabBarLabelStyle: { fontSize: 8, marginBottom: 10 },
             tabBarStyle: { paddingTop: 10 },

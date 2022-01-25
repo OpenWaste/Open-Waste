@@ -73,4 +73,20 @@ export default class Service {
     let resp = this.post('user', resource);
     return resp
   }
+  
+  private static async get(endpoint: string) { 
+    return instance.get(`/${endpoint}`)
+  }
+
+  static getImageCategory(): Promise<Object> {
+    return new Promise((resolve, reject) => {
+      this.get('update')
+        .then(a => {
+          resolve(a.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    });
+  }
 }
