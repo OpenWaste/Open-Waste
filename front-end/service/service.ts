@@ -64,4 +64,13 @@ export default class Service {
     let resp = await this.post('update-password', resource);
     return resp
   }
+
+  static returnUserInfo(data: UserResource): Promise<Object> {
+    const resource = {
+      username: data.username,
+    }
+
+    let resp = this.post('user', resource);
+    return resp
+  }
 }

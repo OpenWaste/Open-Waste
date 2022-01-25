@@ -6,12 +6,11 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from '@react-navigation/native';
 import { save, deleteValueFor, getValueFor } from '../../utils/PersistInfo';
 import { showMsg } from "../../utils/FlashMessage";
+import Service from "../../service/service";
 
 export class Profile extends React.Component {
 
   state = { username: "" };
-
-  guest = true;
 
   render() {
 
@@ -35,6 +34,7 @@ export class Profile extends React.Component {
       );
     }
     else{
+      
       return (
         <NativeBaseProvider>
           <SafeAreaView>
@@ -51,15 +51,8 @@ export class Profile extends React.Component {
                 <LogOutBtn screenName={'ProfilePage'}/>
               </View>
 
-              <View style={style.userInfoView}>
-                <View>
-                  <MaterialIcons style={style.userInfoIcons} name = "alternate-email" size = {50}/>
-                </View>
-                <View style={style.userInfo}>
-                  <Text style={style.userInfoTextHeader}>Email</Text>
-                  <Text style={style.userInfoText}>example@live.concordia.ca</Text>
-                </View>
-              </View>
+              <GetEmail/>
+
               <View style={style.userInfoView}>
                 <View>
                   <MaterialIcons style={style.userInfoIcons} name = "image-search" size = {50}/>
@@ -96,6 +89,7 @@ function LogOutBtn( { screenName } ){
   const handleLogOut = () => {
 
     deleteValueFor('username');
+    deleteValueFor('email');
     navigation.navigate(screenName);
     showMsg('Logged Out', 'success');
   }
@@ -104,4 +98,34 @@ function LogOutBtn( { screenName } ){
     <Button style={style.logOutBtn} onPress={handleLogOut}> Log Out </Button>
   )
   
+}
+
+function GetUsername() {
+  const [username, setUsername] = React.useState();
+
+  getValueFor('username').then(output => {
+    setUsername(output)
+  });
+
+  return username;
+}
+
+function GetEmail() {
+  const [email, setEmail] = React.useState();
+
+  getValueFor('email').then(output => {
+    setEmail(output)
+  });
+
+  return (
+    <View style={style.userInfoView}>
+      <View>
+        <MaterialIcons style={style.userInfoIcons} name = "alternate-email" size = {50}/>
+      </View>
+      <View style={style.userInfo}>
+        <Text style={style.userInfoTextHeader}>Email</Text>
+        <Text style={style.userInfoText}>{email}</Text>
+      </View>
+    </View>
+  );
 }

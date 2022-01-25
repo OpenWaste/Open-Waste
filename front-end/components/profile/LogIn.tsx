@@ -8,7 +8,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Service from "../../service/service";
 import { UserResource } from "../../models/User";
 import { useNavigation } from '@react-navigation/native';
-import { save, getValueFor } from '../../utils/PersistInfo';
+import { save } from '../../utils/PersistInfo';
 
 export class LogIn extends React.Component {
   
@@ -29,7 +29,6 @@ export class LogIn extends React.Component {
 
           </KeyboardAvoidingView>
         </ScrollView>
-        
       </NativeBaseProvider>
     );
   }
@@ -42,6 +41,7 @@ function LoginForm( { screenName } ){
   const showPass = () => setShow(!show)
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [email, setEmail] = React.useState('');
  
   const navigation = useNavigation();
 
@@ -59,6 +59,14 @@ function LoginForm( { screenName } ){
         showMsg('Authentication Failed', 'danger');
       }
       else{
+
+        //Find user's details
+        Service.returnUserInfo(user).then((resp) => {
+          save('email', resp.data.email)
+        }).catch(error => {
+          console.log(error.response)
+        })
+        
         save('username', username)
         navigation.navigate(screenName);
         showMsg('Success!', 'success');

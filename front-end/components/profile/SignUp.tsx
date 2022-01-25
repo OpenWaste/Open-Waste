@@ -8,6 +8,8 @@ import Service from "../../service/service";
 import { showMsg } from '../../utils/FlashMessage';
 import { validateEmail } from '../../utils/Validators';
 import { UserResource } from "../../models/User";
+import { useNavigation } from '@react-navigation/native';
+import { save } from '../../utils/PersistInfo';
 
 export class SignUp extends React.Component {
 
@@ -42,9 +44,10 @@ export function SignUpForm() {
   const [show, setShow] = React.useState(false);
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [email, setEmail] = React.useState('');
   const showPass = () => setShow(!show);
 
-  const [email, setEmail] = React.useState('');
+  const navigation = useNavigation();
 
   const handleSubmit = () => {
 
@@ -57,6 +60,8 @@ export function SignUpForm() {
   
       //Flash message to inform user of request status
       Service.submitAccountCreation(user).then((resp) => {
+        save('username', username)
+        navigation.navigate('ProfilePage');
         showMsg('Success!', 'success');
       }).catch(error => {
        if(error.toJSON().message === 'Network Error'){
