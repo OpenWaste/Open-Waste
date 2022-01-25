@@ -14,7 +14,7 @@ pipeline {
       withSonarQubeEnv(credentialsId: 'd56e9146-e2fa-4ee5-b50c-4dfad9c7abb8', installationName: 'Sonar') {
         sh '''$SCANNER_HOME/bin/sonar-scanner \
         -Dsonar.projectKey=projectKey \
-        -Dsonar.projectName=projectName \
+        -Dsonar.projectName=DigitizingWaste \
         -Dsonar.sources=./front-end,./back-end \
         -Dsonar.java.binaries=target/classes/ \
         -Dsonar.exclusions=src/test/java/****/*.java \
