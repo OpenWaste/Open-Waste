@@ -73,6 +73,15 @@ export default class Service {
     let resp = this.post('user', resource);
     return resp
   }
+
+  private static async delete(endpoint: string, configdata: any) {
+    return instance.delete(`/${endpoint}`, configdata)
+  }
+
+  static deleteUser(data: UserResource): Promise<Object> {
+    let resp = this.delete('delete-user', { data: { "username": data.username } });
+    return resp
+  }
   
   private static async get(endpoint: string) { 
     return instance.get(`/${endpoint}`)
