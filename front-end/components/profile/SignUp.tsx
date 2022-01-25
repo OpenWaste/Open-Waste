@@ -61,6 +61,7 @@ export function SignUpForm() {
       //Flash message to inform user of request status
       Service.submitAccountCreation(user).then((resp) => {
         save('username', username)
+        save('email', email)
         navigation.navigate('ProfilePage');
         showMsg('Success!', 'success');
       }).catch(error => {
