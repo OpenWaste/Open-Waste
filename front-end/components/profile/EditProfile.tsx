@@ -1,10 +1,13 @@
 import * as React from "react";
 import { View, ScrollView, KeyboardAvoidingView, Text, Image, TextInput } from "react-native";
 import { Accordion, AlertDialog, Box, Button, Center, NativeBaseProvider } from 'native-base';
+import { getValueFor } from '../../utils/PersistInfo';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Service from "../../service/service";
 
 import style from "../../styles/editprofile-style";
 import formStyle from "../../styles/forms-style";
+import { State } from "react-native-gesture-handler";
 
 
 
@@ -78,7 +81,7 @@ function OpenUsername() {
           <Accordion.Details>
             <View style = {formStyle.accordionInputView}>
               <MaterialIcons style = {formStyle.registrationIcons} name = "person" size = {22}/>
-              <TextInput style = {formStyle.registrationTextInputs} placeholder = "Username" />
+              <TextInput style = {formStyle.registrationTextInputs} placeholder = {getUsername()} />
             </View>
           </Accordion.Details>
         </Accordion.Item>
@@ -99,11 +102,27 @@ function OpenEmail() {
           <Accordion.Details>
             <View style = {formStyle.accordionInputView}>
               <MaterialIcons style = {formStyle.registrationIcons} name = "alternate-email" size = {22}/>
-              <TextInput style = {formStyle.registrationTextInputs} placeholder = "Email" />
+              <TextInput style = {formStyle.registrationTextInputs} placeholder = {getEmail()} />
             </View>
           </Accordion.Details>
         </Accordion.Item>
       </Accordion>
     </Box>
   );
+}
+
+function getUsername() {
+  const [un, setUn] = React.useState('')
+  getValueFor('username').then(output => {
+    setUn(output);
+  })
+  return un;
+}
+
+function getEmail() {
+  const [email, setEmail] = React.useState('')
+  getValueFor('email').then(output => {
+    setEmail(output);
+  })
+  return email;
 }
