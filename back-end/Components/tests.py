@@ -37,6 +37,9 @@ class AuthenticateUser(TestCase):
     def setUp(self):
         self.client = Client()
         self.path = '/authenticate-user'
+        self.user = self.client.post('/create-user', {'username': 'John',
+                                                      'email': 'John@gmail.com',
+                                                      'password': 'John123'})
 
     def test_authenticate_user_success_correct(self):
         # user
@@ -57,8 +60,8 @@ class AuthenticateUser(TestCase):
         # post request
         response = self.client.post(self.path, user_info)
 
-        # assert status code: 200
-        self.assertEqual(response.status_code, 200)
+        # assert status code: 401
+        self.assertEqual(response.status_code, 401)
 
     def test_authenticate_user_fail_missing_param(self):
         # user
@@ -82,6 +85,41 @@ class UpdatePassword(TestCase):
 
         # patch request
         response = self.client.patch(self.path, user_info)
+
+        # assert status code: 400
+        self.assertEqual(response.status_code, 400)
+
+
+class UpdateUsernameAndEmail(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.path = '/update-username-email'
+        self.user = self.client.post('/create-user', {'username': 'John',
+                                                      'email': 'John@gmail.com',
+                                                      'password': 'John123'})
+
+    def test_update_username_and_email_success(self):
+        # user
+        users_info = {'old_username': 'John',
+                      'new_username': 'JohnCena',
+                      'email': 'YouCannotSeeMe@gmail.com'}
+
+        response = self.client.patch(self.path,
+                                     users_info,
+                                     content_type='application/json')
+
+        # assert status code: 200
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_username_and_email_fail(self):
+        # user - old_username doesn't exist in DB
+        users_info = {'old_username': 'James',
+                      'new_username': 'JohnCena',
+                      'email': 'YouCannotSeeMe@gmail.com'}
+
+        response = self.client.patch(self.path,
+                                     users_info,
+                                     content_type='application/json')
 
         # assert status code: 400
         self.assertEqual(response.status_code, 400)
