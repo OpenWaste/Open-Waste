@@ -91,6 +91,34 @@ class UpdatePassword(APIView):
             )
 
 
+class UpdateUsernameAndEmail(APIView):
+    def patch(self, request):
+        try:
+            # values
+            old_username = request.data['old_username']
+            new_username = request.data['new_username']
+            email = request.data['email']
+
+            # get user
+            user = DWUser.objects.get(username=old_username)
+
+            # store new values
+            user.username = new_username
+            user.email = email
+            user.save()
+
+            # success: 200 OK
+            return Response({"Successfully updated username and email."},
+                            status=status.HTTP_200_OK)
+
+        except Exception as e:
+            # error: 400 BAD REQUEST
+            return Response(
+                {e.__class__.__name__: str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
 class DeleteUser(APIView):
 
     def delete(self, request):
