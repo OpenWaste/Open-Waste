@@ -55,7 +55,7 @@ class AuthenticateUser(APIView):
                                 status=status.HTTP_200_OK)
             else:
                 return Response({"Authentication failed."},
-                                status=status.HTTP_200_OK)
+                                status=status.HTTP_401_UNAUTHORIZED)
 
         except Exception as e:
             # error: 400 BAD REQUEST

@@ -37,6 +37,9 @@ class AuthenticateUser(TestCase):
     def setUp(self):
         self.client = Client()
         self.path = '/authenticate-user'
+        self.user = self.client.post('/create-user', {'username': 'John',
+                                                      'email': 'John@gmail.com',
+                                                      'password': 'John123'})
 
     def test_authenticate_user_success_correct(self):
         # user
@@ -57,8 +60,8 @@ class AuthenticateUser(TestCase):
         # post request
         response = self.client.post(self.path, user_info)
 
-        # assert status code: 200
-        self.assertEqual(response.status_code, 200)
+        # assert status code: 401
+        self.assertEqual(response.status_code, 401)
 
     def test_authenticate_user_fail_missing_param(self):
         # user
