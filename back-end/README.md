@@ -88,3 +88,8 @@ Option 2: Create a Weights and Biases account and ask for an invite to the proje
 Run this script using `python utils/model.py` to train on the dataset, the model is saved as a file called `model.ckpt` that can be loaded in again later on.
 
 Note: If you do not have a GPU or PyTorch cannot detect yours, change `gpus=1` to `gpus=0` in the Trainer call near the end of the file.
+
+## generate code coverage
+
+In order to generate code coverage in the back-end, run `coverage run manage.py test -v 2 coverage report`.
+`python manage.py test` must work in order to generate coverage.
