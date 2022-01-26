@@ -23,10 +23,10 @@ export default class Service {
     });
   }
 
-  static async submitImageCategory(data: ImageSubmissionResource) {
+  static async submitImageCategory(image: string, category: string) {
     const resource = {
-      category: data.category,
-      image: data.image
+      category: category,
+      image: image
     }
 
     let resp = await this.post('image-submission', resource);
