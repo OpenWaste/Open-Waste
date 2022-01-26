@@ -19,7 +19,11 @@ from django.urls import path
 from Components.views import (
     ImageRecognitionApiView,
     ImageSubmissionApiView,
-    UpdateApiView
+    UpdateApiView,
+    CreateUser,
+    AuthenticateUser,
+    UpdatePassword,
+    DeleteUser
 )
 
 from django.conf import settings
@@ -29,7 +33,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('prediction', ImageRecognitionApiView.as_view()),
     path('image-submission', ImageSubmissionApiView.as_view()),
-    path('update', UpdateApiView.as_view())
+    path('update', UpdateApiView.as_view()),
+    path('create-user', CreateUser.as_view()),
+    path('authenticate-user', AuthenticateUser.as_view()),
+    path('update-password', UpdatePassword.as_view()),
+    path('delete-user', DeleteUser.as_view())
 ]
 
 if settings.DEBUG:

@@ -1,7 +1,123 @@
 from django.test import TestCase, Client
 from django.core.files.uploadedfile import SimpleUploadedFile
-from Components.models import Category
+from Components.models import Category, DWUser
 import json
+
+
+class CreateUser(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.path = '/create-user'
+
+    def test_user_creation_success(self):
+        # user
+        user_info = {'username': 'John',
+                     'email': 'John@gmail.com',
+                     'password': 'John123'}
+
+        # post request
+        response = self.client.post(self.path, user_info)
+
+        # assert status code: 200
+        self.assertEqual(response.status_code, 200)
+
+    def test_user_creation_fail(self):
+        # user
+        user_info = {'username': 'John',
+                     'password': 'John123'}
+
+        # post request
+        response = self.client.post(self.path, user_info)
+
+        # assert status code: 400
+        self.assertEqual(response.status_code, 400)
+
+
+class AuthenticateUser(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.path = '/authenticate-user'
+
+    def test_authenticate_user_success_correct(self):
+        # user
+        user_info = {'username': 'John',
+                     'password': 'John123'}
+
+        # post request
+        response = self.client.post(self.path, user_info)
+
+        # assert status code: 200
+        self.assertEqual(response.status_code, 200)
+
+    def test_authenticate_user_success_incorrect(self):
+        # user
+        user_info = {'username': 'John',
+                     'password': 'John1234'}
+
+        # post request
+        response = self.client.post(self.path, user_info)
+
+        # assert status code: 200
+        self.assertEqual(response.status_code, 200)
+
+    def test_authenticate_user_fail_missing_param(self):
+        # user
+        user_info = {'password': 'John1234'}
+
+        # post request
+        response = self.client.post(self.path, user_info)
+
+        # assert status code: 400
+        self.assertEqual(response.status_code, 400)
+
+
+class UpdatePassword(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.path = '/update-password'
+
+    def test_update_password_fail(self):
+        # user
+        user_info = {'password': 'John123'}
+
+        # patch request
+        response = self.client.patch(self.path, user_info)
+
+        # assert status code: 400
+        self.assertEqual(response.status_code, 400)
+
+
+class DeleteUser(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.path = '/delete-user'
+
+    def test_delete_user_success(self):
+        # create user
+        self.user = DWUser.objects.create_user({'username': 'John',
+                                                'email': 'John@gmail.com',
+                                                'password': 'John123'})
+
+        # user
+        user_info = {'username': 'John'}
+
+        # delete request
+        response = self.client.delete(
+            self.path, user_info, content_type='application/json')
+
+        # assert status code: 200
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_user_missing_param_fail(self):
+        # user
+        user_info = {''}
+
+        # delete request
+        response = self.client.delete(self.path, user_info)
+
+        # assert status code: 400
+        self.assertEqual(response.status_code, 400)
+
 
 class ImageSubmissionTest(TestCase):
     def setUp(self):
@@ -41,6 +157,7 @@ class ImageSubmissionTest(TestCase):
         # assert status code: 400
         self.assertEqual(response.status_code, 400)
 
+
 class ImageUpdate(TestCase):
     def setUp(self):
         # Test client is a Python class that acts as a dummy Web browser
@@ -66,7 +183,8 @@ class ImageUpdate(TestCase):
 
         # assert status code: 200
         self.assertEqual(response.status_code, 200)
-        
+
+
 class ImageRecognitionTest(TestCase):
     def setUp(self):
         self.client = Client()

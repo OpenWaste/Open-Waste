@@ -19,6 +19,7 @@ class CategoryInstructions(models.Model):
 
 
 class DWUser(AbstractUser):
+    email = models.EmailField(blank=False)
     profile_picture = models.ImageField(
         null=True, blank=True, upload_to=settings.PROFILE_PICTURE_PATH)
 
@@ -30,7 +31,7 @@ class Building(models.Model):
     building_name = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.name
+        return self.building_name
 
 
 class Building_images(models.Model):
@@ -54,11 +55,11 @@ class Bin(models.Model):
         (CATEGORY3, 'Category3'),
     ]
 
-    building_id = models.ForeignKey(
+    building = models.ForeignKey(
         Building, on_delete=models.CASCADE, default=1)
     address = models.CharField(max_length=200)
-    latitude = models.DecimalField(max_digits=6, decimal_places=6)
-    longitude = models.DecimalField(max_digits=6, decimal_places=6)
+    latitude = models.DecimalField(max_digits=7, decimal_places=4)
+    longitude = models.DecimalField(max_digits=7, decimal_places=4)
     floor_num = models.IntegerField()
     location_description = models.TextField()
     accepted_categories = models.CharField(
@@ -69,7 +70,7 @@ class Bin(models.Model):
 
 
 class Bin_images(models.Model):
-    bin_id = models.ForeignKey(Bin, on_delete=models.CASCADE, default=1)
+    bin = models.ForeignKey(Bin, on_delete=models.CASCADE, default=1)
     bin_images = models.ImageField(
         null=True, blank=True, upload_to=settings.BIN_IMG_PATH)
 
@@ -78,7 +79,7 @@ class Bin_images(models.Model):
 
 
 class Image_Submission(models.Model):
-    name = models.ForeignKey(
+    category = models.ForeignKey(
         Category, to_field='name', on_delete=models.CASCADE, default=1)
     submission_Image = models.ImageField(
         null=True, blank=True, upload_to=settings.ACCEPTED_TRASH_IMG_PATH)
