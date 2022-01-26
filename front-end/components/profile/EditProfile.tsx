@@ -42,7 +42,8 @@ function EditForm() {
 
   const [oldUsername, setOldUsername] = React.useState('');
   const [newUsername, setNewUsername] = React.useState('');
-  const [email, setEmail] = React.useState('');
+  const [oldEmail, setOldEmail] = React.useState('');
+  const [newEmail, setNewEmail] = React.useState('');
 
   // Find current username
   getValueFor('username').then(output => {
@@ -51,7 +52,7 @@ function EditForm() {
 
   // Find current email
   getValueFor('email').then(output => {
-    setEmail(output);
+    setOldEmail(output);
   })
 
   // Redirect to profile page if cancel is pressed
@@ -61,14 +62,21 @@ function EditForm() {
 
   // Handle save button
   const handleSubmit = () => {
+    
+    if(newUsername==''){
+      setNewUsername(oldUsername)
+    }
+    if(newEmail==''){
+      setNewEmail(oldEmail);
+    }
 
     // Check if email is valid
-    if(validateEmail(email)){
-      //Prepare data
+    if(validateEmail(newEmail) || newEmail==''){
+      
       const user = {
         old_username: oldUsername,
         new_username: newUsername,
-        email: email,
+        email: newEmail,
       }
 
       // Get response from update-username-email endpoint
@@ -81,7 +89,7 @@ function EditForm() {
           save('username', newUsername);
         }
         
-        save('email', email);
+        save('email', newEmail);
 
         // Redirect and display success message
         navigation.navigate('ProfilePage');
@@ -133,8 +141,8 @@ function EditForm() {
                 <MaterialIcons style = {formStyle.registrationIcons} name = "alternate-email" size = {22}/>
                 <Input 
                   style = {formStyle.registrationTextInputs} 
-                  onChangeText = {value => setEmail(value)}
-                  borderColor="transparent">{GetEmail()}</Input>
+                  onChangeText = {value => setNewEmail(value)}
+                  borderColor="transparent">{oldEmail}</Input>
               </View>
             </Accordion.Details>
           </Accordion.Item>
@@ -213,20 +221,4 @@ function DeleteAccount() {
         </AlertDialog>
         </Center>
     )
-}
-
-function GetUsername() {
-  const [un, setUn] = React.useState('')
-  getValueFor('username').then(output => {
-    setUn(output);
-  })
-  return un;
-}
-
-function GetEmail() {
-  const [email, setEmail] = React.useState('')
-  getValueFor('email').then(output => {
-    setEmail(output);
-  })
-  return email;
 }
