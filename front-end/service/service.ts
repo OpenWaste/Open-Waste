@@ -82,6 +82,22 @@ export default class Service {
     let resp = this.delete('delete-user', { data: { "username": data.username } });
     return resp
   }
+
+  private static async patch(endpoint: string, data: any) {
+    return instance.patch(`/${endpoint}`, data)
+  }
+
+  static updateUsernameEmail(data: any): Promise<Object> {
+
+    const userData = {
+      old_username: data.old_username,
+      new_username: data.new_username,
+      email: data.email
+    }
+
+    let resp = this.patch('update-username-email', userData);
+    return resp
+  }
   
   private static async get(endpoint: string) { 
     return instance.get(`/${endpoint}`)

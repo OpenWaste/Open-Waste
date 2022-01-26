@@ -1,7 +1,7 @@
 import * as React from "react";
 import { View, ScrollView, KeyboardAvoidingView, Text, Image, TextInput } from "react-native";
-import { Accordion, AlertDialog, Box, Button, Center, NativeBaseProvider } from 'native-base';
-import { getValueFor, deleteValueFor } from '../../utils/PersistInfo';
+import { Accordion, AlertDialog, Box, Button, Center, NativeBaseProvider, Input } from 'native-base';
+import { save, getValueFor, deleteValueFor } from '../../utils/PersistInfo';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Service from "../../service/service";
 import { UserResource } from "../../models/User";
@@ -11,8 +11,6 @@ import style from "../../styles/editprofile-style";
 import formStyle from "../../styles/forms-style";
 import { State } from "react-native-gesture-handler";
 import { showMsg } from "../../utils/FlashMessage";
-
-
 
 export class EditProfile extends React.Component {
     
@@ -29,19 +27,103 @@ export class EditProfile extends React.Component {
               
               <Text style={style.username}> Edit Profile </Text>
 
-              <OpenUsername />
-              <OpenEmail />
-              <DeleteAccount />
-
-              <View style={style.btnView}>
-                <Button style={style.cancelBtn} onPress={() => this.props.navigation.navigate('ProfilePage')}> Cancel </Button>
-                <Button style={style.saveBtn} onPress={() => this.props.navigation.navigate('ProfilePage')}> Save </Button>
-              </View>
+              <EditForm />
+            
           </KeyboardAvoidingView>
         </ScrollView>
       </NativeBaseProvider>
     );
   }
+}
+
+function EditForm() {
+
+  const navigation = useNavigation();
+
+  const [oldUsername, setOldUsername] = React.useState('');
+  const [newUsername, setNewUsername] = React.useState('');
+  const [email, setEmail] = React.useState('');
+
+  getValueFor('username').then(output => {
+    setOldUsername(output);
+  })
+
+  const handleCancel = () => {
+    navigation.navigate('ProfilePage')
+  }
+
+  const handleSubmit = () => {
+
+    const user = {
+      old_username: oldUsername,
+      new_username: newUsername,
+      email: email,
+    }
+
+    Service.updateUsernameEmail(user).then(output => {
+      save('username', newUsername);
+      save('email', email);
+      navigation.navigate('ProfilePage');
+      showMsg('Successfully Updated Account', 'success')
+    }).catch(error =>{
+      showMsg('An Error Has Occurred', 'danger');
+    })
+
+  }
+
+  return(
+    <View>
+
+      <Box m={3}>
+        <Accordion>
+          <Accordion.Item>
+            <Accordion.Summary _expanded={{ backgroundColor: '#0F968D' }}>
+              Edit Username
+              <Accordion.Icon />
+            </Accordion.Summary>
+            <Accordion.Details>
+              <View style = {formStyle.accordionInputView}>
+                <MaterialIcons style = {formStyle.registrationIcons} name = "person" size = {22}/>
+                <Input 
+                  style = {formStyle.registrationTextInputs} 
+                  onChangeText = {value => setNewUsername(value)}
+                  borderColor="transparent">{oldUsername}</Input>
+              </View>
+            </Accordion.Details>
+          </Accordion.Item>
+        </Accordion>
+      </Box>
+
+      <Box m={3}>
+        <Accordion>
+          <Accordion.Item>
+            <Accordion.Summary _expanded={{ backgroundColor: '#0F968D' }}>
+              Edit Email
+              <Accordion.Icon />
+            </Accordion.Summary>
+            <Accordion.Details>
+              <View style = {formStyle.accordionInputView}>
+                <MaterialIcons style = {formStyle.registrationIcons} name = "alternate-email" size = {22}/>
+                <Input 
+                  style = {formStyle.registrationTextInputs} 
+                  onChangeText = {value => setEmail(value)}
+                  borderColor="transparent">{GetEmail()}</Input>
+              </View>
+            </Accordion.Details>
+          </Accordion.Item>
+        </Accordion>
+      </Box>
+
+      <DeleteAccount/>
+
+      <View style={style.btnView}>
+        <Button style={style.cancelBtn} onPress={handleCancel}> Cancel </Button>
+        <Button style={style.saveBtn} onPress={handleSubmit}> Save </Button>
+      </View> 
+
+    </View>
+  )
+
 }
 
 function DeleteAccount() {
@@ -53,7 +135,7 @@ function DeleteAccount() {
 
     getValueFor('username').then(output => {
       setUsername(output);
-    })
+    }) 
 
     const handleDelete = () => {
 
@@ -74,7 +156,6 @@ function DeleteAccount() {
         showMsg('An Error Has Occurred', 'danger');
       })
       
-    
     }
 
     return(
@@ -98,48 +179,6 @@ function DeleteAccount() {
         </AlertDialog>
         </Center>
     )
-}
-
-function OpenUsername() {
-  return (
-    <Box m={3}>
-      <Accordion>
-        <Accordion.Item>
-          <Accordion.Summary _expanded={{ backgroundColor: '#0F968D' }}>
-            Edit Username
-            <Accordion.Icon />
-          </Accordion.Summary>
-          <Accordion.Details>
-            <View style = {formStyle.accordionInputView}>
-              <MaterialIcons style = {formStyle.registrationIcons} name = "person" size = {22}/>
-              <TextInput style = {formStyle.registrationTextInputs} placeholder = {GetUsername()} />
-            </View>
-          </Accordion.Details>
-        </Accordion.Item>
-      </Accordion>
-    </Box>
-  );
-}
-
-function OpenEmail() {
-  return (
-    <Box m={3}>
-      <Accordion>
-        <Accordion.Item>
-          <Accordion.Summary _expanded={{ backgroundColor: '#0F968D' }}>
-            Edit Email
-            <Accordion.Icon />
-          </Accordion.Summary>
-          <Accordion.Details>
-            <View style = {formStyle.accordionInputView}>
-              <MaterialIcons style = {formStyle.registrationIcons} name = "alternate-email" size = {22}/>
-              <TextInput style = {formStyle.registrationTextInputs} placeholder = {GetEmail()} />
-            </View>
-          </Accordion.Details>
-        </Accordion.Item>
-      </Accordion>
-    </Box>
-  );
 }
 
 function GetUsername() {

@@ -24,7 +24,8 @@ from Components.views import (
     AuthenticateUser,
     UpdatePassword,
     DeleteUser,
-    UpdateUsernameAndEmail
+    UpdateUsernameAndEmail,
+    GetUserInfo
 )
 
 from django.conf import settings
