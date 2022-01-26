@@ -78,7 +78,7 @@ export function ImageSubmission({ navigation }) {
                 onPress={pickImage}
                 variant="unstyled"
                 width="100%"
-                height="100%"
+                height="50%"
                 borderColor="#E5E5E5"
                 borderWidth="1"
                 rounded="15"
@@ -111,7 +111,7 @@ export function ImageSubmission({ navigation }) {
               <Box m="10">
                 <Button onPress={handleSubmit}> Submit </Button>
                 {
-                  statusResponse === 200
+                  statusResponse === 0
                   ? ( <Center>
                     <AlertDialog
                       leastDestructiveRef={cancelRef}
