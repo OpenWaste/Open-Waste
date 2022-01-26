@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { View, ScrollView, KeyboardAvoidingView, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, ScrollView, KeyboardAvoidingView, Text, TouchableOpacity } from "react-native";
 import loginStyle from "../../styles/login-style";
 import formStyle from "../../styles/forms-style";
 import { Button, Input, NativeBaseProvider } from 'native-base';
@@ -21,7 +21,7 @@ export class LogIn extends React.Component {
 
             <Text style={loginStyle.LogInHeader}>Welcome Back</Text>
             
-            <LoginForm screenName={'ProfilePage'}/>
+            <LoginForm/>
 
             <Text style={loginStyle.forgotPass} onPress={() => this.props.navigation.navigate('ForgotPassword')}> Forgot Password? </Text>
             
@@ -34,7 +34,7 @@ export class LogIn extends React.Component {
   }
 }
 
-function LoginForm( { screenName } ){
+function LoginForm(){
 
   const ref_input2 = useRef();
   const [show, setShow] = React.useState(false)
@@ -47,41 +47,42 @@ function LoginForm( { screenName } ){
 
   const handleSubmit = () => {
 
+    // Prepare info
     const user: UserResource = {
       username: username,
       email: '',
       password: password,
     }
 
-    //Flash message to inform user of request status
+    // Get response from authenticate-user endpoint
     Service.authenticateUser(user).then(resp => {
       if(resp.data == 'Authentication failed.'){
         showMsg('Authentication Failed', 'danger');
       }
       else{
 
-        //Find user's details
+        // Find user's email
         Service.returnUserInfo(user).then((resp) => {
+          // Save email to persistent data
           save('email', resp.data.email)
         }).catch(error => {
           console.log(error.response)
         })
-        
+        // Save username to persistent data
         save('username', username)
-        navigation.navigate(screenName);
+        // Redirect and show success message
+        navigation.navigate('ProfilePage');
         showMsg('Success!', 'success');
       }
       
     }).catch(error => {
-    
+      // Else show error
       if(error.toJSON().message === 'Network Error'){
         showMsg('Network Error', 'warning');
       }
-      
       else{
         showMsg('An Error Has Occurred', 'danger');
-      }
-        
+      }  
     })
   }
   

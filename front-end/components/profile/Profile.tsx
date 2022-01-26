@@ -6,7 +6,6 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from '@react-navigation/native';
 import { save, deleteValueFor, getValueFor } from '../../utils/PersistInfo';
 import { showMsg } from "../../utils/FlashMessage";
-import Service from "../../service/service";
 
 export class Profile extends React.Component {
 
@@ -48,7 +47,7 @@ export class Profile extends React.Component {
               
               <View style={style.btnView}>
                 <Button style={style.editBtn} onPress={() => this.props.navigation.navigate('EditProfile')}> Edit Profile </Button>
-                <LogOutBtn screenName={'ProfilePage'}/>
+                <LogOutBtn />
               </View>
 
               <GetEmail/>
@@ -81,16 +80,20 @@ export class Profile extends React.Component {
   }
 }
 
-function LogOutBtn( { screenName } ){
+function LogOutBtn(){
 
-  const [username, setUsername] = React.useState();
   const navigation = useNavigation();
 
   const handleLogOut = () => {
 
+    // Remove values for persistent data
     deleteValueFor('username');
     deleteValueFor('email');
-    navigation.navigate(screenName);
+
+    // Redirect
+    navigation.navigate('ProfilePage');
+
+    // Display message
     showMsg('Logged Out', 'success');
   }
 
@@ -100,19 +103,10 @@ function LogOutBtn( { screenName } ){
   
 }
 
-function GetUsername() {
-  const [username, setUsername] = React.useState();
-
-  getValueFor('username').then(output => {
-    setUsername(output)
-  });
-
-  return username;
-}
-
 function GetEmail() {
   const [email, setEmail] = React.useState();
 
+  // Get email value
   getValueFor('email').then(output => {
     setEmail(output)
   });

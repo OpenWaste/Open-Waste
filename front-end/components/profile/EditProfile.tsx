@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, ScrollView, KeyboardAvoidingView, Text, Image, TextInput } from "react-native";
+import { View, ScrollView, KeyboardAvoidingView, Text, Image } from "react-native";
 import { Accordion, AlertDialog, Box, Button, Center, NativeBaseProvider, Input } from 'native-base';
 import { save, getValueFor, deleteValueFor } from '../../utils/PersistInfo';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -9,8 +9,8 @@ import { useNavigation } from '@react-navigation/native';
 
 import style from "../../styles/editprofile-style";
 import formStyle from "../../styles/forms-style";
-import { State } from "react-native-gesture-handler";
 import { showMsg } from "../../utils/FlashMessage";
+import { validateEmail } from "../../utils/Validators";
 
 export class EditProfile extends React.Component {
     
@@ -44,31 +44,58 @@ function EditForm() {
   const [newUsername, setNewUsername] = React.useState('');
   const [email, setEmail] = React.useState('');
 
+  // Find current username
   getValueFor('username').then(output => {
     setOldUsername(output);
   })
 
+  // Find current email
+  getValueFor('email').then(output => {
+    setEmail(output);
+  })
+
+  // Redirect to profile page if cancel is pressed
   const handleCancel = () => {
     navigation.navigate('ProfilePage')
   }
 
+  // Handle save button
   const handleSubmit = () => {
 
-    const user = {
-      old_username: oldUsername,
-      new_username: newUsername,
-      email: email,
+    // Check if email is valid
+    if(validateEmail(email)){
+      //Prepare data
+      const user = {
+        old_username: oldUsername,
+        new_username: newUsername,
+        email: email,
+      }
+
+      // Get response from update-username-email endpoint
+      Service.updateUsernameEmail(user).then(output => {
+        // If response is good, update the user's persistent info
+        if(newUsername==''){
+          save('username', oldUsername);
+        }
+        else{
+          save('username', newUsername);
+        }
+        
+        save('email', email);
+
+        // Redirect and display success message
+        navigation.navigate('ProfilePage');
+        showMsg('Successfully Updated Account', 'success')
+
+      }).catch(error =>{
+        //If bad response, display error message
+        showMsg('An Error Has Occurred', 'danger');
+      })
     }
-
-    Service.updateUsernameEmail(user).then(output => {
-      save('username', newUsername);
-      save('email', email);
-      navigation.navigate('ProfilePage');
-      showMsg('Successfully Updated Account', 'success')
-    }).catch(error =>{
-      showMsg('An Error Has Occurred', 'danger');
-    })
-
+    // Display error message if email is not valid
+    else{
+      showMsg('Invalid Email', 'danger');
+    }
   }
 
   return(
@@ -133,26 +160,33 @@ function DeleteAccount() {
     const cancelRef = React.useRef(null)
     const navigation = useNavigation();
 
+    // Get username
     getValueFor('username').then(output => {
       setUsername(output);
     }) 
 
     const handleDelete = () => {
 
+      // Close dialog box
       onClose()
-    
+      
+      // Prepare info
       const user: UserResource = {
         username: username,
         email: '',
         password: '',
       }
 
+      // Get response from delete-user endpoint
       Service.deleteUser(user).then(output => {
+        // If response is good, delete persistent data
         deleteValueFor('username');
         deleteValueFor('email');
+        // Redirect and show success message
         navigation.navigate('ProfilePage');
         showMsg('Successfully Deleted Account', 'success')
       }).catch(error =>{
+        // If response is bad, show error message
         showMsg('An Error Has Occurred', 'danger');
       })
       

@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { KeyboardAvoidingView, ScrollView, View, Text, Image, TouchableOpacity } from "react-native";
-import { Input, Button, IconButton, NativeBaseProvider } from 'native-base';
+import { Input, Button, NativeBaseProvider } from 'native-base';
 import formStyle from "../../styles/forms-style";
 import passStyle from "../../styles/forgotpassword-style";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -8,7 +8,6 @@ import { useNavigation } from '@react-navigation/native';
 import { validatePassword } from '../../utils/Validators';
 import { showMsg } from '../../utils/FlashMessage';
 import { UserResource } from "../../models/User";
-import { getValueFor } from '../../utils/PersistInfo';
 import Service from "../../service/service";
 
 export class ResetPassword extends React.Component {

@@ -51,6 +51,7 @@ export function SignUpForm() {
 
   const handleSubmit = () => {
 
+    // Check if email is valid
     if(validateEmail(email)){
       const user: UserResource = {
         username: username,
@@ -58,21 +59,25 @@ export function SignUpForm() {
         email: email
       }
   
-      //Flash message to inform user of request status
+      // Get response from create-user endpoint
       Service.submitAccountCreation(user).then((resp) => {
+        // If response is good, save user's info to persistent data
         save('username', username)
         save('email', email)
+        // Redirect and show success message
         navigation.navigate('ProfilePage');
         showMsg('Success!', 'success');
       }).catch(error => {
-       if(error.toJSON().message === 'Network Error'){
-         showMsg('Network Error', 'warning');
-       }
-       else{
-         showMsg('An Error Has Occurred', 'danger');
-       }
-      })
+        // If response is bad, show error message
+        if(error.toJSON().message === 'Network Error'){
+          showMsg('Network Error', 'warning');
+        }
+        else{
+          showMsg('An Error Has Occurred', 'danger');
+        }
+        })
     }
+    //If email is invalid, indicate so
     else{
       showMsg('Invalid Email', 'danger');
     }
