@@ -90,6 +90,31 @@ class UpdatePassword(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+class GetUserInfo(APIView):
+    def post(self, request):
+        try:
+            # values
+            username = request.data['username']
+
+            # find row with the username passed
+            user = DWUser.objects.get(username=username)
+
+            # get user info
+            info = {
+                "email": user.email
+                }
+
+            # success: 200 OK
+            return Response(info,
+                            status=status.HTTP_200_OK)
+
+        except Exception as e:
+            # error: 400 BAD REQUEST
+            return Response(
+                {e.__class__.__name__: str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
 
 class UpdateUsernameAndEmail(APIView):
     def patch(self, request):
