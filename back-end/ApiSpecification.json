@@ -43,11 +43,11 @@
         "tags": [
           "Image Submission Endpoint"
         ],
-        "summary": "Retreive image categories and disposal instructions from database",
+        "summary": "Retrieve image categories and disposal instructions from database",
         "description": "",
         "responses": {
           "200": {
-            "description": "Categories succesfully retreived",
+            "description": "Categories succesfully retrieved",
             "content": {
               "application/json": {
                 "schema": {

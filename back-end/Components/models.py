@@ -37,7 +37,7 @@ class Building(models.Model):
 
 class Building_images(models.Model):
     building = models.ForeignKey(
-        Building, on_delete=models.CASCADE, default=1)
+        Building, on_delete=models.CASCADE)
     building_image = models.ImageField(
         null=True, blank=True, upload_to=settings.BUILDING_IMG_PATH)
 

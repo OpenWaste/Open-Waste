@@ -185,9 +185,7 @@ class ImageSubmissionApiView(APIView):
 
             # success: 200 OK
             return Response(
-                {"category": category,
-                 "image": image.name,
-                 "user": email},
+                {"Successfully submitted"},
                 status=status.HTTP_200_OK
             )
         except Exception as e:

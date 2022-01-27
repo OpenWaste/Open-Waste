@@ -235,9 +235,6 @@ class ImageUpdate(TestCase):
         CategoryInstructions(
             category=category_trash, instructions='1. dispose in trash bin 6').save()
 
-        # print(Category.objects.values_list('name'))
-        # print(CategoryInstructions.objects.values_list(
-        #     'category', 'instructions'))
         # mock returned json
         update_mock = open('Components/mocks/update_mock.json')
         mock = json.load(update_mock)
