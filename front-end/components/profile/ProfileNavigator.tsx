@@ -9,16 +9,26 @@ import { ResetPassword as ResetPasswordScreen } from './ResetPassword';
 
 const Stack = createStackNavigator();
 
+const screens = [
+    {name: "ProfilePage", component: ProfileScreen},
+    {name: "LogIn", component: LoginScreen},
+    {name: "ForgotPassword", component: ForgotPasswordScreen},
+    {name: "VerifyEmail", component: VerifyEmailScreen},
+    {name: "EditProfile", component: EditProfileScreen},
+    {name: "ResetPassword", component: ResetPasswordScreen},
+];
 export class ProfileNavigator extends React.Component {
     render() {
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="ProfilePage" component={ProfileScreen} />
-                <Stack.Screen name="LogIn" component={LoginScreen} />
-                <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-                <Stack.Screen name="VerifyEmail" component={VerifyEmailScreen} />
-                <Stack.Screen name="EditProfile" component={EditProfileScreen} />
-                <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
+                {screens.map((screen) => {
+                    return (
+                        <Stack.Screen 
+                            name = {screen.name} 
+                            component = {screen.component}
+                        />
+                    );
+                })}
             </Stack.Navigator>
         )
     }
