@@ -33,8 +33,6 @@ from django.conf import settings
 from django.views.static import serve
 
 urlpatterns = [
-    # Remove admin endpoint for PROD when running in prod
-    path('admin/', admin.site.urls) if (os.getenv('PROD_MODE', 'False').title() == 'True') else None,
     path('prediction', ImageRecognitionApiView.as_view()),
     path('image-submission', ImageSubmissionApiView.as_view()),
     path('update', UpdateApiView.as_view()),
@@ -45,6 +43,9 @@ urlpatterns = [
     path('update-username-email', UpdateUsernameAndEmail.as_view()),
     path('reset-password', ResetPassword.as_view())
 ]
+# Remove admin endpoint for PROD when running in prod
+if os.getenv('PROD_MODE', 'False').title() == 'False':
+    urlpatterns.append(path('admin/', admin.site.urls))
 
 if settings.DEBUG:
     urlpatterns += [
