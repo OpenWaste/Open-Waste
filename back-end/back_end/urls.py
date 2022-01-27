@@ -24,7 +24,8 @@ from Components.views import (
     AuthenticateUser,
     UpdatePassword,
     DeleteUser,
-    UpdateUsernameAndEmail
+    UpdateUsernameAndEmail,
+    ResetPassword,
 )
 
 from django.conf import settings
@@ -39,7 +40,8 @@ urlpatterns = [
     path('authenticate-user', AuthenticateUser.as_view()),
     path('update-password', UpdatePassword.as_view()),
     path('delete-user', DeleteUser.as_view()),
-    path('update-username-email', UpdateUsernameAndEmail.as_view())
+    path('update-username-email', UpdateUsernameAndEmail.as_view()),
+    path('reset-password', ResetPassword.as_view())
 ]
 
 if settings.DEBUG:

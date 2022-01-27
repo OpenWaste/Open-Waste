@@ -8,6 +8,7 @@ from Components.serializer import ImageRecognitionSerializer
 from rest_framework.parsers import MultiPartParser
 from Components.machine_learning.predictor import Predictor
 from django.contrib.auth import authenticate
+from django.core.mail import send_mail
 
 
 class CreateUser(APIView):
@@ -212,3 +213,30 @@ class UpdateApiView(APIView):
             # error: 404 NOT FOUND
             return Response({"Not Found"},
                             status=status.HTTP_404_NOT_FOUND)
+
+class ResetPassword(APIView):
+
+    def post(self, request):
+        try:
+            # requested email
+            email = request.data['email']
+
+            # sends an email to the request email (subject, message, from, to)
+            send_mail(
+                'Password reset',
+                'You requested a password reset. Here is your passcode: 123456',
+                'DigiWaste Concordia',
+                [email],
+                fail_silently=False,
+                )
+        # success: 200 OK
+            return Response(
+                        {"The email has been sent"},
+                        status=status.HTTP_200_OK
+                        )
+        except Exception as e:
+            # error: 400 BAD REQUEST
+            return Response(
+                {e.__class__.__name__: str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
