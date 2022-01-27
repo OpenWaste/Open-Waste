@@ -7,7 +7,7 @@
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "version": "v2.2.1"
+    "version": "v2.3.1"
   },
   "paths": {
     "/image-submission": {
@@ -77,7 +77,8 @@
                 "$ref": "#/components/schemas/ImagePredictionPayload"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -99,7 +100,7 @@
     "/create-user": {
       "post": {
         "tags": [
-          "User Creation, Authentication And Password Update Endpoint"
+          "User Creation, Authentication Password Update And Password Reset Endpoint"
         ],
         "summary": "Send information to create user",
         "description": "Send username, email and password to create a user",
@@ -111,7 +112,8 @@
                 "$ref": "#/components/schemas/CreateUser"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -126,7 +128,7 @@
     "/authenticate-user": {
       "post": {
         "tags": [
-          "User Creation, Authentication And Password Update Endpoint"
+          "User Creation, Authentication Password Update And Password Reset Endpoint"
         ],
         "summary": "Send information to sign-in",
         "description": "Send username and password to authenticate user",
@@ -138,7 +140,8 @@
                 "$ref": "#/components/schemas/AuthenticateUser"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -156,7 +159,7 @@
     "/update-password": {
       "patch": {
         "tags": [
-          "User Creation, Authentication And Password Update Endpoint"
+          "User Creation, Authentication Password Update And Password Reset Endpoint"
         ],
         "summary": "Send information to change password",
         "description": "Send username and new password to change current password",
@@ -168,11 +171,40 @@
                 "$ref": "#/components/schemas/UpdatePassword"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
             "description": "Successfully change password"
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      }
+    },
+    "/reset-password": {
+      "post": {
+        "tags": [
+          "User Creation, Authentication Password Update And Password Reset Endpoint"
+        ],
+        "summary": "Send information to reset password",
+        "description": "Send email to reset current password",
+        "requestBody": {
+          "description": "User info",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPassword"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "The email has been sent"
           },
           "400": {
             "description": "Invalid request"
@@ -346,6 +378,20 @@
         "example": {
           "username": "username1",
           "new_password": "password1"
+        }
+      },
+      "ResetPassword": {
+        "required": [
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "email": "Bob123@email.com"
         }
       }
     }
