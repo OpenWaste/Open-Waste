@@ -11,6 +11,8 @@ import {
   Select,
   Image,
   AlertDialog,
+  AspectRatio,
+  Flex,
   NativeBaseProvider,
 } from "native-base";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -44,12 +46,12 @@ export function ImageSubmission({ navigation }) {
 
   //Calls the service to submit using POST
   const handleSubmit = () => {
-    Service.submitImageCategory(image, category)
-      .then((res) => {
-        setStatusReponse(res.status);
-        setIsOpen(!isOpen);
-        navigation.navigate('displayCamera')
-      });
+    Service.submitImageCategory(image, category).then((res) => {
+      setStatusReponse(res.status);
+      setIsOpen(!isOpen);
+      setImageIsChosen(false);
+      navigation.navigate("displayCamera");
+    });
   };
 
   //Gets list of categories from endpoint
@@ -65,7 +67,7 @@ export function ImageSubmission({ navigation }) {
     <NativeBaseProvider>
       <View>
         <Box m="10">
-          <VStack space={10} alignItems="center">
+          <VStack space={10}>
             <Box width="100%">
               <Heading color="#808080">Image Submission</Heading>
               <Text mt="3" fontWeight="medium" color="#8A8A8A">
@@ -73,79 +75,94 @@ export function ImageSubmission({ navigation }) {
                 it so that it can be used to help improve the app.
               </Text>
             </Box>
-            <FormControl isRequired>
-              <Button
-                onPress={pickImage}
-                variant="unstyled"
-                width="100%"
-                height="50%"
-                borderColor="#E5E5E5"
-                borderWidth="1"
-                rounded="15"
-                bg="#FFFFFF"
-              >
-                {
-                  imageIsChosen
-                  ? (<Image source={{ uri: image }} alt="chosen image" size="xl" />)
-                  : (<MaterialCommunityIcons
+            <Box
+              p="1"
+              width="100%"
+              height="50%"
+              borderColor="#E5E5E5"
+              borderWidth="1"
+              rounded="5"
+              bg="#FFFFFF"
+            >
+              {imageIsChosen ? (
+                <Image
+                  style={{ resizeMode: "contain" }}
+                  width="100%"
+                  height="100%"
+                  source={{ uri: image }}
+                  alt="chosen image"
+                />
+              ) : (
+                <Button
+                  onPress={pickImage}
+                  variant="unstyled"
+                  width="100%"
+                  height="100%"
+                >
+                  <MaterialCommunityIcons
                     name="image-outline"
                     size={50}
-                    color="#8A8A8A"/>)
-                }
-              </Button>
-              <FormControl.Label mt="4" color="#8A8A8A">
-                Category
-              </FormControl.Label>
-              <Select
-                bg="#F9F9F9"
-                minWidth="100%"
-                placeholder="Choose Categories"
-                mt="2"
-                selectedValue={category}
-                onValueChange={(itemValue) => setCategory(itemValue)}
-              >
-                {categoriesList.map((value) => {
-                  return <Select.Item label={value} value={value} />;
-                })}
-              </Select>
-              <Box m="10">
-                <Button onPress={handleSubmit}> Submit </Button>
-                {
-                  statusResponse === 0
-                  ? ( <Center>
-                    <AlertDialog
-                      leastDestructiveRef={cancelRef}
-                      isOpen={isOpen}
-                      onClose={onClose}
-                    >
-                      <AlertDialog.Content>
-                        <AlertDialog.CloseButton />
-                        <AlertDialog.Header>Success</AlertDialog.Header>
-                        <AlertDialog.Body>
-                          Your image was successfully submitted.
-                        </AlertDialog.Body>
-                        <AlertDialog.Footer>
-                          <Button.Group space={2}>
-                            <Button
-                              variant="unstyled"
-                              colorScheme="coolGray"
-                              onPress={onClose}
-                              ref={cancelRef}
-                            >
-                              Cancel
-                            </Button>
-                            <Button colorScheme="primary" onPress={onClose}>
-                              OK
-                            </Button>
-                          </Button.Group>
-                        </AlertDialog.Footer>
-                      </AlertDialog.Content>
-                    </AlertDialog>
-                  </Center>)
-                  : <></>
-                }
-              </Box>
-            </FormControl>
+                    color="#8A8A8A"
+                  />
+                </Button>
+              )}
+            </Box>
+            <Box>
+              <FormControl isRequired>
+                <FormControl.Label mt="4" color="#8A8A8A">
+                  Category
+                </FormControl.Label>
+                <Select
+                  bg="#F9F9F9"
+                  minWidth="100%"
+                  placeholder="Choose Categories"
+                  mt="2"
+                  selectedValue={category}
+                  onValueChange={(itemValue) => setCategory(itemValue)}
+                >
+                  {categoriesList.map((value) => {
+                    return <Select.Item label={value} value={value} />;
+                  })}
+                </Select>
+                <Box m="10">
+                  <Button onPress={handleSubmit}> Submit </Button>
+                  {statusResponse === 0 ? (
+                    <Center>
+                      <AlertDialog
+                        leastDestructiveRef={cancelRef}
+                        isOpen={isOpen}
+                        onClose={onClose}
+                      >
+                        <AlertDialog.Content>
+                          <AlertDialog.CloseButton />
+                          <AlertDialog.Header>Success</AlertDialog.Header>
+                          <AlertDialog.Body>
+                            Your image was successfully submitted.
+                          </AlertDialog.Body>
+                          <AlertDialog.Footer>
+                            <Button.Group space={2}>
+                              <Button
+                                variant="unstyled"
+                                colorScheme="coolGray"
+                                onPress={onClose}
+                                ref={cancelRef}
+                              >
+                                Cancel
+                              </Button>
+                              <Button colorScheme="primary" onPress={onClose}>
+                                OK
+                              </Button>
+                            </Button.Group>
+                          </AlertDialog.Footer>
+                        </AlertDialog.Content>
+                      </AlertDialog>
+                    </Center>
+                  ) : (
+                    <></>
+                  )}
+                </Box>
+              </FormControl>
+            </Box>
           </VStack>
         </Box>
       </View>
