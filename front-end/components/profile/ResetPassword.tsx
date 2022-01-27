@@ -5,7 +5,6 @@ import formStyle from "../../styles/forms-style";
 import passStyle from "../../styles/forgotpassword-style";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from '@react-navigation/native';
-import { validatePassword } from '../../utils/Validators';
 import { showMsg } from '../../utils/FlashMessage';
 import { UserResource } from "../../models/User";
 import Service from "../../service/service";
@@ -49,7 +48,7 @@ function ResetPasswordForm() {
 
   const handleSubmit = () => {
 
-    if(validatePassword(pass1, pass2)){
+    if(pass1 == pass2){
 
       const user: UserResource = {
         username: username,

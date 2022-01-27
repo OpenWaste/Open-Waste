@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import style from "../../styles/editprofile-style";
 import formStyle from "../../styles/forms-style";
 import { showMsg } from "../../utils/FlashMessage";
-import { validateEmail } from "../../utils/Validators";
+import isEmail from 'validator/lib/isEmail';
 
 export class EditProfile extends React.Component {
     
@@ -71,7 +71,7 @@ function EditForm() {
     }
 
     // Check if email is valid
-    if(validateEmail(newEmail) || newEmail==''){
+    if(isEmail(newEmail) || newEmail==''){
       
       const user = {
         old_username: oldUsername,

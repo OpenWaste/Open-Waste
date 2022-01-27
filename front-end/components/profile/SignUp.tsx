@@ -6,7 +6,7 @@ import { Avatar, Button, Center, Input, NativeBaseProvider } from 'native-base';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Service from "../../service/service";
 import { showMsg } from '../../utils/FlashMessage';
-import { validateEmail } from '../../utils/Validators';
+import isEmail from 'validator/lib/isEmail';
 import { UserResource } from "../../models/User";
 import { useNavigation } from '@react-navigation/native';
 import { save } from '../../utils/PersistInfo';
@@ -52,7 +52,7 @@ export function SignUpForm() {
   const handleSubmit = () => {
 
     // Check if email is valid
-    if(validateEmail(email)){
+    if(isEmail(email)){
       const user: UserResource = {
         username: username,
         password: password,
