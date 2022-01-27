@@ -2,7 +2,7 @@ import axios from 'axios';
 import { ImageSubmissionResource } from '../models/ImageSubmission';
 
 const instance = axios.create({
-  baseURL: 'http://24.203.130.8:55012'
+  baseURL: 'https://digiwaste.systems:42069'
 });
 
 export default class Service {
