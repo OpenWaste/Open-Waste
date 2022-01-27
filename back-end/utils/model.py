@@ -72,7 +72,11 @@ class TrashDataset(Dataset):
         self.file_list = file_list
         self.transform = transform
         self.phase = phase
-        self.labels = [self.LABELS[os.path.basename(os.path.dirname(x))] for x in self.file_list]
+        # Try block is here for server. Server doesn't download data since it's not training.
+        try:
+            self.labels = [self.LABELS[os.path.basename(os.path.dirname(x))] for x in self.file_list]
+        except KeyError:
+            print("Download the data if you're trying to train!")
 
     def __len__(self):
         return len(self.file_list)
