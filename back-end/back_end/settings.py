@@ -31,7 +31,7 @@ MEDIA_URL = '/media/'
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False if (os.getenv('PROD_MODE', 'False').title() == 'True') else True
 
 # For now, during dev, we can set it to any allowed host, but we might want to change this later on in prod and
 # implement some sort of authentication mechanism (like JWT?) 
@@ -49,11 +49,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'Components',
-    'corsheaders',
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -87,11 +85,23 @@ WSGI_APPLICATION = 'back_end.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
+if os.getenv('PROD_MODE', 'False').title() == 'True':
+    database_settings = {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USERNAME'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
+    }
+else:
+    database_settings = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+
+DATABASES = {
+    'default': database_settings
 }
 
 
@@ -148,16 +158,9 @@ BIN_IMG_PATH = 'bin_images/'
 ACCEPTED_TRASH_IMG_PATH = 'accepted_trash_images/'
 PROFILE_PICTURE_PATH = 'profile_pictures/'
 
-# CORS
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = (
-    'http://127.0.0.1:8000',
-)
-
 # SEND EMAIL SETTINGS
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
 EMAIL_HOST_USER = 'digiwasteconcordia@gmail.com'
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
 EMAIL_USE_TLS = True
-# EMAIL_USE_SSL = False
