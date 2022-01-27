@@ -262,3 +262,16 @@ class ImageRecognitionTest(TestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertTrue('prediction' not in response.data)
+
+
+class ResetPassword(TestCase):
+    def setUp(self):
+        self.path = '/reset-password'
+
+    def test_reset_password_success(self):
+        valid_email = 'myemail@gmail.com'
+
+        response = self.client.post(self.path, {'email': valid_email})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('The email has been sent' in response.data)
