@@ -26,12 +26,14 @@ from Components.views import (
     DeleteUser,
     UpdateUsernameAndEmail
 )
+import os
 
 from django.conf import settings
 from django.views.static import serve
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # Remove admin endpoint for PROD when running in prod
+    path('admin/', admin.site.urls) if (os.getenv('PROD_MODE', 'False').title() == 'True') else None,
     path('prediction', ImageRecognitionApiView.as_view()),
     path('image-submission', ImageSubmissionApiView.as_view()),
     path('update', UpdateApiView.as_view()),
