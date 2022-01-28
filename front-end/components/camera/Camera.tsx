@@ -129,7 +129,7 @@ export default function displayCamera({navigation}) {
 
           <View style={style.footer}>
             <MapModal/>
-            {!picTaken || (picTaken && modalText.length > 0 ) ? <ImageSubmissionButton/>:<></>}
+            {!picTaken || (picTaken && modalText.length > 0 ) ? <ImageSubmissionButton data-cy='image-submission'/>:<></>}
             {!picTaken ? <CameraTriggerButton/> :<></>}
             {picTaken && modalText.length > 0 ? <PostPictureSnapButtons/> : <></>}
           </View>
