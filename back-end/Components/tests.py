@@ -4,15 +4,19 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from Components.models import Category, DWUser, CategoryInstructions
 import json
 
+CONTENT_TYPE = 'application/json'
+TEST_EMAIL = 'John@gmail.com'
+CREATE_USER_PATH = '/create-user'
+
 class CreateUser(TestCase):
     def setUp(self):
         self.client = Client()
-        self.path = '/create-user'
+        self.path = CREATE_USER_PATH
 
     def test_user_creation_success(self):
         # user
         user_info = {'username': 'John',
-                     'email': 'John@gmail.com',
+                     'email': TEST_EMAIL,
                      'password': 'John123'}
 
         # post request
@@ -37,8 +41,8 @@ class AuthenticateUser(TestCase):
     def setUp(self):
         self.client = Client()
         self.path = '/authenticate-user'
-        self.user = self.client.post('/create-user', {'username': 'John',
-                                                      'email': 'John@gmail.com',
+        self.user = self.client.post(CREATE_USER_PATH, {'username': 'John',
+                                                      'email': TEST_EMAIL,
                                                       'password': 'John123'})
 
     def test_authenticate_user_success_correct(self):
@@ -94,8 +98,8 @@ class UpdateUsernameAndEmail(TestCase):
     def setUp(self):
         self.client = Client()
         self.path = '/update-username-email'
-        self.user = self.client.post('/create-user', {'username': 'John',
-                                                      'email': 'John@gmail.com',
+        self.user = self.client.post(CREATE_USER_PATH, {'username': 'John',
+                                                      'email': TEST_EMAIL,
                                                       'password': 'John123'})
 
     def test_update_username_and_email_success(self):
@@ -106,7 +110,7 @@ class UpdateUsernameAndEmail(TestCase):
 
         response = self.client.patch(self.path,
                                      users_info,
-                                     content_type='application/json')
+                                     content_type=CONTENT_TYPE)
 
         # assert status code: 200
         self.assertEqual(response.status_code, 200)
@@ -119,7 +123,7 @@ class UpdateUsernameAndEmail(TestCase):
 
         response = self.client.patch(self.path,
                                      users_info,
-                                     content_type='application/json')
+                                     content_type=CONTENT_TYPE)
 
         # assert status code: 400
         self.assertEqual(response.status_code, 400)
@@ -133,7 +137,7 @@ class DeleteUser(TestCase):
     def test_delete_user_success(self):
         # create user
         self.user = DWUser.objects.create_user({'username': 'John',
-                                                'email': 'John@gmail.com',
+                                                'email': TEST_EMAIL,
                                                 'password': 'John123'})
 
         # user
@@ -141,7 +145,7 @@ class DeleteUser(TestCase):
 
         # delete request
         response = self.client.delete(
-            self.path, user_info, content_type='application/json')
+            self.path, user_info, content_type=CONTENT_TYPE)
 
         # assert status code: 200
         self.assertEqual(response.status_code, 200)
@@ -191,7 +195,7 @@ class ImageSubmissionTest(TestCase):
 
         # post request
         response = self.client.post(
-            self.path, img_param, content_type='application/json')
+            self.path, img_param, content_type=CONTENT_TYPE)
 
         # assert status code: 400
         self.assertEqual(response.status_code, 400)
