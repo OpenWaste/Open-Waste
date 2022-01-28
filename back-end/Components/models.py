@@ -35,7 +35,7 @@ class Building(models.Model):
         return self.building_name
 
 
-class Building_images(models.Model):
+class BuildingImages(models.Model):
     building = models.ForeignKey(
         Building, on_delete=models.CASCADE)
     building_image = models.ImageField(
@@ -70,7 +70,7 @@ class Bin(models.Model):
         return f"Bin located in {self.building} building"
 
 
-class Bin_images(models.Model):
+class BinImages(models.Model):
     bin = models.ForeignKey(Bin, on_delete=models.CASCADE, default=1)
     bin_images = models.ImageField(
         null=True, blank=True, upload_to=settings.BIN_IMG_PATH)
@@ -79,7 +79,7 @@ class Bin_images(models.Model):
         return f"Bin {self.bin_id} image"
 
 
-class Image_Submission(models.Model):
+class ImageSubmission(models.Model):
     category = models.ForeignKey(
         Category, to_field='name', on_delete=models.CASCADE, default=1)
     submission_Image = models.ImageField(
