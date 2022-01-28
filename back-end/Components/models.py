@@ -14,7 +14,8 @@ class Category(models.Model):
 
 
 class CategoryInstructions(models.Model):
-    category = models.ManyToManyField(Category)
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE, default=1)
     instructions = models.TextField()
 
 
@@ -36,7 +37,7 @@ class Building(models.Model):
 
 class Building_images(models.Model):
     building = models.ForeignKey(
-        Building, on_delete=models.CASCADE, default=1)
+        Building, on_delete=models.CASCADE)
     building_image = models.ImageField(
         null=True, blank=True, upload_to=settings.BUILDING_IMG_PATH)
 
@@ -86,5 +87,3 @@ class Image_Submission(models.Model):
     is_accepted = models.BooleanField(default=False)
     submitted_by = models.ForeignKey(
         DWUser, on_delete=models.CASCADE, default=1)
-    
-    

@@ -3,7 +3,7 @@ import io
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from Components.models import Category, Image_Submission, DWUser
+from Components.models import Category, CategoryInstructions, Image_Submission, DWUser
 from Components.serializer import ImageRecognitionSerializer
 from rest_framework.parsers import MultiPartParser
 from Components.machine_learning.predictor import Predictor
@@ -197,21 +197,20 @@ class ImageSubmissionApiView(APIView):
             # values
             category = request.data['category']
             image = request.data['image']
-
+            email = request.data['email']
             # get the category selected
             category_selected = Category.objects.get(name=category)
+            user = DWUser.objects.get(email=email)
 
-            # store in database
-            # TODO: modify to match Image_Submission model (in models.py)
-            # Image_Submission(
-            #     name=category_selected,
-            #     accepted_image=image
-            # ).save()
+            Image_Submission(
+                category=category_selected,
+                submission_Image=image,
+                submitted_by=user
+            ).save()
 
             # success: 200 OK
             return Response(
-                {"category": category,
-                 "image": image.name},
+                {"Successfully submitted"},
                 status=status.HTTP_200_OK
             )
         except Exception as e:
@@ -227,13 +226,20 @@ class UpdateApiView(APIView):
     def get(self, request):
         try:
             # values
-            data = Category.objects.values_list('name')
-            unravelled_list = [item for sublist in data for item in sublist]
+            category = Category.objects.values_list('name')
+            category_list = [item for sublist in category for item in sublist]
+            category_instructions = CategoryInstructions.objects.values_list(
+                'category', 'instructions')
 
-        # success: 200 OK
-            return Response({"categories": unravelled_list}, status=status.HTTP_200_OK)
+            returned_category_instructions = []
+            for ci in category_instructions:
+                category = Category.objects.get(pk=ci[0])
+                returned_category_instructions.append({category.name, ci[1]})
 
-        except Exception:
+            # success: 200 OK
+            return Response({"categories": category_list, "category_instructions": returned_category_instructions}, status=status.HTTP_200_OK)
+
+        except Exception as e:
             # error: 404 NOT FOUND
-            return Response({"Not Found"},
+            return Response({e.__class__.__name__: str(e)},
                             status=status.HTTP_404_NOT_FOUND)

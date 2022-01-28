@@ -1,8 +1,8 @@
+from unicodedata import category
 from django.test import TestCase, Client
 from django.core.files.uploadedfile import SimpleUploadedFile
-from Components.models import Category, DWUser
+from Components.models import Category, DWUser, CategoryInstructions
 import json
-
 
 class CreateUser(TestCase):
     def setUp(self):
@@ -170,13 +170,14 @@ class ImageSubmissionTest(TestCase):
         self.path = '/image-submission'
 
         # insert 'plastic' category into test db
-        category = Category(name='plastic')
-        category.save()
+        Category(name='plastic').save()
+        DWUser(email='admin@admin.com').save()
 
     def test_image_submission_success(self):
         # stub image object
         img_param = {'category': 'plastic',
-                     'image': self.image}
+                     'image': self.image,
+                     'email': 'admin@admin.com'}
 
         # post request
         response = self.client.post(self.path, img_param)
@@ -197,6 +198,8 @@ class ImageSubmissionTest(TestCase):
 
 
 class ImageUpdate(TestCase):
+    maxDiff = None
+
     def setUp(self):
         # Test client is a Python class that acts as a dummy Web browser
         # allowing you to test your views and interact with your Django-powered  application
@@ -206,18 +209,41 @@ class ImageUpdate(TestCase):
 
     def test_update_success(self):
         # insert categories into test db
-        Category(name='cardboard').save()
-        Category(name='plastic').save()
-        Category(name='glass').save()
+        category_plastic = Category(name='plastic')
+        category_metal = Category(name='metal')
+        category_paper = Category(name='paper')
+        category_cardboard = Category(name='cardboard')
+        category_glass = Category(name='glass')
+        category_trash = Category(name='trash')
+        category_plastic.save()
+        category_metal.save()
+        category_paper.save()
+        category_cardboard.save()
+        category_glass.save()
+        category_trash.save()
+
+        CategoryInstructions(
+            category=category_plastic, instructions='1. check if it is contaminated;\r\n2. if contaminated, throw in trash;\r\n3. if not, put in recycle bin;\r\n4. congratulate yourself').save()
+        CategoryInstructions(
+            category=category_metal, instructions='1. if dirty, please wash;\r\n2. check recycle number (1-6);\r\n3. if recyclable, put in recylce bin;\r\n4. otherwise, throw in trash;').save()
+        CategoryInstructions(
+            category=category_paper, instructions='1. make sure item  does not contain electronic components;\r\n2. clean item;\r\n3. if item is large, make it smaller;\r\n4. dispose in recycle bin while being cautious not to get cut').save()
+        CategoryInstructions(
+            category=category_cardboard, instructions='1. wash container;\r\n2. DO NOT BREAK;\r\n3. place in recycle bin;').save()
+        CategoryInstructions(
+            category=category_glass, instructions='1. dispose in trash bin 5').save()
+        CategoryInstructions(
+            category=category_trash, instructions='1. dispose in trash bin 6').save()
 
         # mock returned json
-        mock = '{"categories":["cardboard","plastic","glass"]}'
+        update_mock = open('Components/mocks/update_mock.json')
+        mock = json.load(update_mock)
 
         # get request
         response = self.client.get(self.path)
 
         # assert values returned are correct
-        self.assertEqual(response.content.decode('utf8'), mock)
+        self.assertCountEqual(response.json(), mock)
 
         # assert status code: 200
         self.assertEqual(response.status_code, 200)
