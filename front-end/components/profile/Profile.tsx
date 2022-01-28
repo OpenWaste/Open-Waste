@@ -1,16 +1,23 @@
 import React from "react";
-import { View, ScrollView, SafeAreaView, Text, Image } from "react-native";
+import { View, ScrollView, SafeAreaView, Text, Image, Alert } from "react-native";
 import style from "../../styles/profile-style";
 import { Button, NativeBaseProvider } from 'native-base';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { useNavigation } from '@react-navigation/native';
+import { save, deleteValueFor, getValueFor } from '../../utils/PersistInfo';
+import { showMsg } from "../../utils/FlashMessage";
 
 export class Profile extends React.Component {
 
-  guest = true;
+  state = { username: "" };
 
   render() {
 
-    if(this.guest){
+    getValueFor('username').then(output => {
+      this.setState({ username: output})
+    })
+
+    if(this.state.username ==='undefined' || this.state.username == null){
       return (
         <NativeBaseProvider>
           <View>
@@ -26,6 +33,7 @@ export class Profile extends React.Component {
       );
     }
     else{
+      
       return (
         <NativeBaseProvider>
           <SafeAreaView>
@@ -35,22 +43,15 @@ export class Profile extends React.Component {
               {/* TO DO: Pull profile pic from database. */}
               <Image style={style.profilePic} source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}} />
               
-              <Text style={style.username}> Username </Text>
+              <Text style={style.username}> {this.state.username} </Text>
               
               <View style={style.btnView}>
                 <Button style={style.editBtn} onPress={() => this.props.navigation.navigate('EditProfile')}> Edit Profile </Button>
-                <Button style={style.logOutBtn} onPress={() => this.props.navigation.navigate('LogOut')}> Log Out </Button>
+                <LogOutBtn />
               </View>
 
-              <View style={style.userInfoView}>
-                <View>
-                  <MaterialIcons style={style.userInfoIcons} name = "alternate-email" size = {50}/>
-                </View>
-                <View style={style.userInfo}>
-                  <Text style={style.userInfoTextHeader}>Email</Text>
-                  <Text style={style.userInfoText}>example@live.concordia.ca</Text>
-                </View>
-              </View>
+              <GetEmail/>
+
               <View style={style.userInfoView}>
                 <View>
                   <MaterialIcons style={style.userInfoIcons} name = "image-search" size = {50}/>
@@ -79,3 +80,46 @@ export class Profile extends React.Component {
   }
 }
 
+function LogOutBtn(){
+
+  const navigation = useNavigation();
+
+  const handleLogOut = () => {
+
+    // Remove values for persistent data
+    deleteValueFor('username');
+    deleteValueFor('email');
+
+    // Redirect
+    navigation.navigate('ProfilePage');
+
+    // Display message
+    showMsg('Logged Out', 'success');
+  }
+
+  return(
+    <Button style={style.logOutBtn} onPress={handleLogOut}> Log Out </Button>
+  )
+  
+}
+
+function GetEmail() {
+  const [email, setEmail] = React.useState();
+
+  // Get email value
+  getValueFor('email').then(output => {
+    setEmail(output)
+  });
+
+  return (
+    <View style={style.userInfoView}>
+      <View>
+        <MaterialIcons style={style.userInfoIcons} name = "alternate-email" size = {50}/>
+      </View>
+      <View style={style.userInfo}>
+        <Text style={style.userInfoTextHeader}>Email</Text>
+        <Text style={style.userInfoText}>{email}</Text>
+      </View>
+    </View>
+  );
+}
