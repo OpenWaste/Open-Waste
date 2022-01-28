@@ -39,6 +39,7 @@
     "react-native-web": "^0.13.17",
     "react-navigation": "^4.4.4",
     "react-navigation-stack": "^2.10.4",
+    "expo-image-picker": "~10.2.2",
     "react-router-dom": "^6.2.1",
     "validator": "^13.7.0"
   },
