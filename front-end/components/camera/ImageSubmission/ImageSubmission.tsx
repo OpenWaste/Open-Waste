@@ -67,7 +67,7 @@ export function ImageSubmission({ navigation }) {
     <NativeBaseProvider>
       <View>
         <Box m="10">
-          <VStack space={10}>
+          <VStack space={8}>
             <Box width="100%">
               <Heading color="#808080">Image Submission</Heading>
               <Text mt="3" fontWeight="medium" color="#8A8A8A">
@@ -76,17 +76,15 @@ export function ImageSubmission({ navigation }) {
               </Text>
             </Box>
             {imageIsChosen ? (
-              <Box>
-                <AspectRatio w="100%" ratio={16 / 9}>
-                  <Image
-                    style={{ resizeMode: "contain" }}
-                    width="100%"
-                    height="100%"
-                    source={{ uri: image }}
-                    alt="chosen image"
-                  />
-                </AspectRatio>
-              </Box>
+              <AspectRatio w="100%" ratio={1}>
+                <Image
+                  style={{ resizeMode: "contain" }}
+                  width="100%"
+                  height="100%"
+                  source={{ uri: image }}
+                  alt="chosen image"
+                />
+              </AspectRatio>
             ) : (
               <Box
                 p="1"
@@ -111,7 +109,6 @@ export function ImageSubmission({ navigation }) {
                 </Button>
               </Box>
             )}
-
             <Box>
               <FormControl isRequired>
                 <FormControl.Label mt="4" color="#8A8A8A">
