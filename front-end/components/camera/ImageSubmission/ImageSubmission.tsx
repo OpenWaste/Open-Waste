@@ -75,24 +75,28 @@ export function ImageSubmission({ navigation }) {
                 it so that it can be used to help improve the app.
               </Text>
             </Box>
-            <Box
-              p="1"
-              width="100%"
-              height="50%"
-              borderColor="#E5E5E5"
-              borderWidth="1"
-              rounded="5"
-              bg="#FFFFFF"
-            >
-              {imageIsChosen ? (
-                <Image
-                  style={{ resizeMode: "contain" }}
-                  width="100%"
-                  height="100%"
-                  source={{ uri: image }}
-                  alt="chosen image"
-                />
-              ) : (
+            {imageIsChosen ? (
+              <Box>
+                <AspectRatio w="100%" ratio={16 / 9}>
+                  <Image
+                    style={{ resizeMode: "contain" }}
+                    width="100%"
+                    height="100%"
+                    source={{ uri: image }}
+                    alt="chosen image"
+                  />
+                </AspectRatio>
+              </Box>
+            ) : (
+              <Box
+                p="1"
+                width="100%"
+                height="25%"
+                borderColor="#E5E5E5"
+                borderWidth="1"
+                rounded="5"
+                bg="#FFFFFF"
+              >
                 <Button
                   onPress={pickImage}
                   variant="unstyled"
@@ -105,8 +109,9 @@ export function ImageSubmission({ navigation }) {
                     color="#8A8A8A"
                   />
                 </Button>
-              )}
-            </Box>
+              </Box>
+            )}
+
             <Box>
               <FormControl isRequired>
                 <FormControl.Label mt="4" color="#8A8A8A">
