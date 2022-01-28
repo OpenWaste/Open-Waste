@@ -7,7 +7,7 @@
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "version": "v1.1.0"
+    "version": "v2.3.1"
   },
   "paths": {
     "/image-submission": {
@@ -15,10 +15,10 @@
         "tags": [
           "Image Submission Endpoint"
         ],
-        "summary": "Submits an image that the user chooses",
-        "description": "sends an image to the api to add to the database",
+        "summary": "Submit an image that the user chooses",
+        "description": "send an image to the api to add to the database",
         "requestBody": {
-          "description": "Submits the image",
+          "description": "Submit the image",
           "content": {
             "application/json": {
               "schema": {
@@ -43,15 +43,15 @@
         "tags": [
           "Image Submission Endpoint"
         ],
-        "summary": "Retreives image categories from database",
+        "summary": "Retrieve image categories and disposal instructions from database",
         "description": "",
         "responses": {
           "200": {
-            "description": "Categories succesfully retreived",
+            "description": "Categories succesfully retrieved",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Categories"
+                  "$ref": "#/components/schemas/CategoriesAndCategoryInstructions"
                 }
               }
             }
@@ -69,7 +69,6 @@
         ],
         "summary": "Receive an image for prediction",
         "description": "Sends an image to the api to return a predicted result",
-        "operationId": "predictImage",
         "requestBody": {
           "description": "image to predict",
           "content": {
@@ -78,7 +77,8 @@
                 "$ref": "#/components/schemas/ImagePredictionPayload"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -96,6 +96,121 @@
           }
         }
       }
+    },
+    "/create-user": {
+      "post": {
+        "tags": [
+          "User Creation, Authentication Password Update And Password Reset Endpoint"
+        ],
+        "summary": "Send information to create user",
+        "description": "Send username, email and password to create a user",
+        "requestBody": {
+          "description": "User info",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUser"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully created user"
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      }
+    },
+    "/authenticate-user": {
+      "post": {
+        "tags": [
+          "User Creation, Authentication Password Update And Password Reset Endpoint"
+        ],
+        "summary": "Send information to sign-in",
+        "description": "Send username and password to authenticate user",
+        "requestBody": {
+          "description": "User info",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticateUser"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully authenticated the credentials"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/update-password": {
+      "patch": {
+        "tags": [
+          "User Creation, Authentication Password Update And Password Reset Endpoint"
+        ],
+        "summary": "Send information to change password",
+        "description": "Send username and new password to change current password",
+        "requestBody": {
+          "description": "User info",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePassword"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully change password"
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      }
+    },
+    "/reset-password": {
+      "post": {
+        "tags": [
+          "User Creation, Authentication Password Update And Password Reset Endpoint"
+        ],
+        "summary": "Send information to reset password",
+        "description": "Send email to reset current password",
+        "requestBody": {
+          "description": "User info",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPassword"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "The email has been sent"
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -103,7 +218,8 @@
       "ImageSubmissionPayload": {
         "required": [
           "category",
-          "image"
+          "image",
+          "email"
         ],
         "type": "object",
         "properties": {
@@ -113,14 +229,23 @@
               "Glass",
               "Metal",
               "Paper",
-              "Plastic - Trash"
+              "Plastic",
+              "Trash"
             ],
             "type": "string"
           },
           "image": {
             "type": "string",
             "format": "byte"
+          },
+          "email": {
+            "type": "string"
           }
+        },
+        "example": {
+          "category": "cardboard",
+          "image": "string",
+          "email": "admin@amind.com"
         }
       },
       "ImagePredictionPayload": {
@@ -152,7 +277,7 @@
           }
         }
       },
-      "Categories": {
+      "CategoriesAndCategoryInstructions": {
         "type": "object",
         "properties": {
           "categories": {
@@ -163,14 +288,110 @@
           }
         },
         "example": {
-           "categories": [
+          "categories": [
             "cardboard",
             "glass",
             "metal",
             "paper",
             "plastic",
             "trash"
+          ],
+          "category_instructions": [
+            [
+              "cardboard , Throw in recycling bin."
+            ],
+            [
+              "glass, Make sure it is not broken., Rinse container, Throw in specified    bin"
+            ],
+            [
+              "metal, Make sure it is not sharp., Throw in specified bin"
+            ],
+            [
+              "paper, Make sure it is not dirty., Throw in specified bin"
+            ],
+            [
+              "plastic, Rinse container and throw in blue bin."
+            ],
+            [
+              "trash, Dispose in thrash bin."
+            ]
           ]
+        }
+      },
+      "CreateUser": {
+        "required": [
+          "username",
+          "email",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "username": "username1",
+          "email": "email1",
+          "password": "password1"
+        }
+      },
+      "AuthenticateUser": {
+        "required": [
+          "username",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "username": "username1",
+          "password": "password1"
+        }
+      },
+      "UpdatePassword": {
+        "required": [
+          "username",
+          "new_password"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "new_password": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "username": "username1",
+          "new_password": "password1"
+        }
+      },
+      "ResetPassword": {
+        "required": [
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "email": "Bob123@email.com"
         }
       }
     }

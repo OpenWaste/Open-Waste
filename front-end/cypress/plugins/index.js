@@ -15,8 +15,19 @@
 /**
  * @type {Cypress.PluginConfig}
  */
-// eslint-disable-next-line no-unused-vars
+// cypress/plugins/index.js
 module.exports = (on, config) => {
-  // `on` is used to hook into various events Cypress emits
-  // `config` is the resolved Cypress config
+  // on('before:browser:launch', (browser = {}, launchOptions) => {
+  //   if (browser.family === 'chromium' && browser.name !== 'electron') {
+  //     // Mac/Linux
+  //     // launchOptions.args.push(
+  //     //   '--use-file-for-fake-video-capture=cypress/fixtures/my-video.y4m'
+  //     // )
+
+  //     // Windows
+  //     launchOptions.args.push('--use-file-for-fake-video-capture=cypress/fixtures/colors.mp4')
+  //   }
+
+  //   return launchOptions
+  // })
 }

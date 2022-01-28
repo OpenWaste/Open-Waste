@@ -1,5 +1,5 @@
-describe('My First Test', () => {
-    it('Does not do much!', () => {
-      expect(true).to.equal(true)
+describe('Image Submission Test', () => {
+    it('Ensure you can submit an image.', () => {
+      cy.get('[data-cy=image-submission-button]').click()
     })
   })

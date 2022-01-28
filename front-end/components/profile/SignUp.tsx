@@ -1,12 +1,18 @@
 import React, { useRef } from "react";
-import { View, ScrollView, KeyboardAvoidingView, Text, TouchableOpacity } from "react-native";
+import { Alert, View, ScrollView, KeyboardAvoidingView, Text, TouchableOpacity } from "react-native";
 import signUpStyle from "../../styles/signup-style";
 import formStyle from "../../styles/forms-style";
 import { Avatar, Button, Center, Input, NativeBaseProvider } from 'native-base';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Service from "../../service/service";
+import { showMsg } from '../../utils/FlashMessage';
+import isEmail from 'validator/lib/isEmail';
+import { UserResource } from "../../models/User";
+import { useNavigation } from '@react-navigation/native';
+import { save } from '../../utils/PersistInfo';
 
 export class SignUp extends React.Component {
-  
+
   render() {
 
     return (
@@ -22,10 +28,7 @@ export class SignUp extends React.Component {
             </Avatar>
           </Center>
       
-
             <SignUpForm />
-
-            <Button style={signUpStyle.signUpBtn}> Sign Up </Button>
 
           </KeyboardAvoidingView>
         </ScrollView>
@@ -34,12 +37,52 @@ export class SignUp extends React.Component {
   }
 }
 
-function SignUpForm() {
+export function SignUpForm() {
 
   const ref_input2 = useRef();
   const ref_input3 = useRef();
-  const [show, setShow] = React.useState(false)
-  const showPass = () => setShow(!show)
+  const [show, setShow] = React.useState(false);
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const showPass = () => setShow(!show);
+
+  const navigation = useNavigation();
+
+  const handleSubmit = () => {
+
+    // Check if email is valid
+    if(isEmail(email)){
+      const user: UserResource = {
+        username: username,
+        password: password,
+        email: email
+      }
+  
+      // Get response from create-user endpoint
+      Service.submitAccountCreation(user).then((resp) => {
+        // If response is good, save user's info to persistent data
+        save('username', username)
+        save('email', email)
+        // Redirect and show success message
+        navigation.navigate('ProfilePage');
+        showMsg('Success!', 'success');
+      }).catch(error => {
+        // If response is bad, show error message
+        if(error.toJSON().message === 'Network Error'){
+          showMsg('Network Error', 'warning');
+        }
+        else{
+          showMsg('An Error Has Occurred', 'danger');
+        }
+        })
+    }
+    //If email is invalid, indicate so
+    else{
+      showMsg('Invalid Email', 'danger');
+    }
+      
+  }
 
   return(
     <View>
@@ -50,6 +93,7 @@ function SignUpForm() {
           placeholder = "Username"
           autoFocus={true}
           returnKeyType="next"
+          onChangeText = {value => setUsername(value)}
           onSubmitEditing={() => ref_input2.current.focus()} />
       </View>
       <View style = {formStyle.registrationInputView}>
@@ -60,6 +104,7 @@ function SignUpForm() {
           placeholder = "Password"
           returnKeyType="next"
           autoFocus={true}
+          onChangeText = {value => setPassword(value)}
           onSubmitEditing={() => ref_input3.current.focus()}
           ref={ref_input2} />
         <TouchableOpacity onPress={showPass}>
@@ -72,8 +117,11 @@ function SignUpForm() {
           borderWidth="0" 
           placeholder = "Email"
           autoFocus={true}
+          onChangeText = {emailInput => setEmail(emailInput)}
           ref={ref_input3} />
       </View>
+
+      <Button style={signUpStyle.signUpBtn} onPress = {handleSubmit}> Sign Up </Button>
     </View>
   )
 }

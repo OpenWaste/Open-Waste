@@ -18,3 +18,8 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+beforeEach(() => {
+    cy.visit('http://localhost:19006/')
+    cy.viewport('samsung-s10')
+})
