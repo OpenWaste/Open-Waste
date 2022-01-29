@@ -24,7 +24,7 @@ img = require ('../../assets/forgotpassword.png')
                 <TextInput style = {formStyle.registrationTextInputs} placeholder = "Email" />
               </View>
               <Button style={passStyle.submitBtn} onPress={() => this.props.navigation.navigate('VerifyEmail')}> Submit </Button>
-              <Text style={passStyle.toLogin} onPress={() => this.props.navigation.navigate('LogIn')}>Back to login</Text>
+              <Text style={passStyle.toLogin} onPress={() => this.props.navigation.navigate('Registration')}>Back to login</Text>
             </View>
           </KeyboardAvoidingView>
         </ScrollView>
