@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, ScrollView, SafeAreaView, Text, Image, Alert } from "react-native";
 import style from "../../styles/profile-style";
 import { Button, NativeBaseProvider } from 'native-base';
@@ -11,29 +11,21 @@ export class Profile extends React.Component {
 
   state = { username: "" };
 
-  render() {
-
+  componentDidUpdate(){
     getValueFor('username').then(output => {
       this.setState({ username: output})
     })
+  }
 
-    if(this.state.username ==='undefined' || this.state.username == null){
-      return (
-        <NativeBaseProvider>
-          <View>
-            <View style={style.header}></View> 
-            
-            {/* TO DO: Pull profile pic from database. */}
-            <Image style={style.profilePic} source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}} />
-            
-            <Text style={style.username}> Guest </Text>
-            <Button style={style.loginBtn} onPress={() => this.props.navigation.navigate('LogIn')}> Log In </Button>
-          </View>
-        </NativeBaseProvider>
-      );
-    }
-    else{
-      
+  componentDidMount(){
+    getValueFor('username').then(output => {
+      this.setState({ username: output})
+    })
+  }
+
+  render() {
+    
+    if(this.state.username !== ""){
       return (
         <NativeBaseProvider>
           <SafeAreaView>
@@ -76,7 +68,21 @@ export class Profile extends React.Component {
         </NativeBaseProvider>
       );
     }
-    
+    else{
+      return (
+        <NativeBaseProvider>
+          <View>
+            <View style={style.header}></View> 
+            
+            {/* TO DO: Pull profile pic from database. */}
+            <Image style={style.profilePic} source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}} />
+            
+            <Text style={style.username}> Guest </Text>
+            <Button style={style.loginBtn} onPress={() => this.props.navigation.navigate('LogIn')}> Log In </Button>
+          </View>
+        </NativeBaseProvider>
+      );
+    }
   }
 }
 
@@ -87,11 +93,7 @@ function LogOutBtn(){
   const handleLogOut = () => {
 
     // Remove values for persistent data
-    deleteValueFor('username');
-    deleteValueFor('email');
-
-    // Redirect
-    navigation.navigate('ProfilePage');
+    save('username', "");
 
     // Display message
     showMsg('Logged Out', 'success');
@@ -106,10 +108,12 @@ function LogOutBtn(){
 function GetEmail() {
   const [email, setEmail] = React.useState();
 
-  // Get email value
-  getValueFor('email').then(output => {
-    setEmail(output)
-  });
+  useEffect(() => {
+    // Get email value
+    getValueFor('email').then(output => {
+      setEmail(output)
+    });
+  })
 
   return (
     <View style={style.userInfoView}>

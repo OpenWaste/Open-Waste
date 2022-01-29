@@ -59,7 +59,7 @@ class ImageTransform():
 
 # Datasets
 class TrashDataset(Dataset):
-    LABELS = {
+    TRASH_LABELS = {
         'cardboard': 0,
         'glass': 1,
         'metal': 2,
@@ -74,7 +74,7 @@ class TrashDataset(Dataset):
         self.phase = phase
         # Try block is here for server. Server doesn't download data since it's not training.
         try:
-            self.labels = [self.LABELS[os.path.basename(os.path.dirname(x))] for x in self.file_list]
+            self.labels = [self.TRASH_LABELS[os.path.basename(os.path.dirname(x))] for x in self.file_list]
         except KeyError:
             print("Download the data if you're trying to train!")
 
@@ -124,7 +124,6 @@ class ModelSystem(pl.LightningModule):
 
         # Set Optimizer
         self.optimizer = optim.SGD(self.classifier.parameters(), lr=HPARAMS['learning_rate'], momentum=HPARAMS['momentum'])
-        # self.optimizer = optim.Adam(self.classifier.parameters(), lr=HPARAMS['learning_rate'])
         self.save_hyperparameters()
 
     # Method ############################
