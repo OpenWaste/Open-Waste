@@ -176,6 +176,8 @@ class DeleteUser(APIView):
 
 
 class ImageRecognitionApiView(APIView):
+    def __init__(self):
+        self.p = Predictor()
 
     def post(self, request):
         # Validation (checks that an image was uploaded)
@@ -184,11 +186,8 @@ class ImageRecognitionApiView(APIView):
         # This will return a 400 Bad Request if no image was uploaded. Method returns here if is_valid=False.
         s.is_valid(raise_exception=True)
 
-        # Instantiate class used for image prediction
-        p = Predictor()
-
         # Returns HTTP Success code 200 and ML prediction in the form of `"prediction":"glass"`
-        return Response({"prediction": p.evaluate_image(io.BytesIO(base64.b64decode(s.validated_data.get('image'))))}, status=status.HTTP_200_OK)
+        return Response({"prediction": self.p.evaluate_image(io.BytesIO(base64.b64decode(s.validated_data.get('image'))))}, status=status.HTTP_200_OK)
 
 
 class ImageSubmissionApiView(APIView):
