@@ -13,13 +13,13 @@ export class Profile extends React.Component {
 
   componentDidUpdate(){
     getValueFor('username').then(output => {
-      this.setState({ username: output})
+      this.setState({ username: output })
     })
   }
 
   componentDidMount(){
     getValueFor('username').then(output => {
-      this.setState({ username: output})
+      this.setState({ username: output })
     })
   }
 
@@ -41,34 +41,15 @@ export class Profile extends React.Component {
                 <Button style={style.editBtn} onPress={() => this.props.navigation.navigate('EditProfile')}> Edit Profile </Button>
                 <LogOutBtn />
               </View>
-
               <GetEmail/>
-
-              <View style={style.userInfoView}>
-                <View>
-                  <MaterialIcons style={style.userInfoIcons} name = "image-search" size = {50}/>
-                </View>
-                <View style={style.userInfo}>
-                  <Text style={style.userInfoTextHeader}>Submitted Images</Text>
-                  <Text style={style.userInfoText}>23</Text>
-                </View>
-              </View>
-              
-              <View style={style.userInfoView}>
-                <View>
-                  <MaterialIcons style={style.userInfoIcons} name = "image" size = {50}/>
-                </View>
-                <View style={style.userInfo}>
-                  <Text style={style.userInfoTextHeader}>Accepted Images</Text>
-                  <Text style={style.userInfoText}>12</Text>
-                </View>
-              </View>
+              <InfoBox style={style} iconName="image-search" headerText="Submitted Images" infoText=""/>
+              <InfoBox style={style} iconName="image" headerText="Accepted Images" infoText="" />
             </ScrollView>
           </SafeAreaView>
         </NativeBaseProvider>
       );
     }
-    else{
+    else {
       return (
         <NativeBaseProvider>
           <View>
@@ -78,7 +59,7 @@ export class Profile extends React.Component {
             <Image style={style.profilePic} source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}} />
             
             <Text style={style.username}> Guest </Text>
-            <Button style={style.loginBtn} onPress={() => this.props.navigation.navigate('LogIn')}> Log In </Button>
+            <Button style={style.loginBtn} onPress={() => this.props.navigation.navigate('Registration')}> Log In </Button>
           </View>
         </NativeBaseProvider>
       );
@@ -106,23 +87,29 @@ function LogOutBtn(){
 }
 
 function GetEmail() {
-  const [email, setEmail] = React.useState();
+  const [email, setEmail] = React.useState('');
 
   useEffect(() => {
     // Get email value
-    getValueFor('email').then(output => {
+    getValueFor('email').then((output) => {
       setEmail(output)
     });
   })
 
   return (
-    <View style={style.userInfoView}>
+    <InfoBox style={style} iconName="alternate-email" headerText="Email" infoText={email} />
+  );
+}
+
+function InfoBox(props: any) {
+  return (
+    <View style={props.style.userInfoView}>
       <View>
-        <MaterialIcons style={style.userInfoIcons} name = "alternate-email" size = {50}/>
+        <MaterialIcons style={props.style.userInfoIcons} name={props.iconName} size={50}/>
       </View>
-      <View style={style.userInfo}>
-        <Text style={style.userInfoTextHeader}>Email</Text>
-        <Text style={style.userInfoText}>{email}</Text>
+      <View style={props.style.userInfo}>
+        <Text style={props.style.userInfoTextHeader}>{props.headerText}</Text>
+        <Text style={props.style.userInfoText}>{props.infoText}</Text>
       </View>
     </View>
   );

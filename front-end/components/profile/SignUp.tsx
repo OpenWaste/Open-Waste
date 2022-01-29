@@ -19,17 +19,13 @@ export class SignUp extends React.Component {
       <NativeBaseProvider>
         <ScrollView>
           <KeyboardAvoidingView>
-
           <Text style={signUpStyle.signUpHeader}>Create an Account</Text>
-      
           <Center style={signUpStyle.addProfilePic}>
             <Avatar size='40' source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}}>
               <Avatar.Badge bg="green.200" />
             </Avatar>
           </Center>
-      
-            <SignUpForm />
-
+          <SignUpForm />
           </KeyboardAvoidingView>
         </ScrollView>
       </NativeBaseProvider>

@@ -6,7 +6,11 @@ describe('Navigation Test', () => {
     cy.contains('If the app was not able to detect your item, upload a picture of it so that it can be used to help improve the app.').should('exist')
   })
 
-  it('Ensures access to profile page', () => {
+  it('Ensures access to profile page and tabs within', () => {
     cy.get('[data-focusable]').contains('Profile').click({force:true})
+    cy.contains('Log In').click()
+    cy.contains('Welcome Back').should('exist')
+    cy.contains('Sign Up').click({force:true})
+    cy.contains('Create an Account').should('exist')
   })
 })
