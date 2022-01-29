@@ -69,10 +69,10 @@ export default function displayCamera({navigation}) {
   }
 
   const ImageSubmissionButton = () => {
-    return ( 
-    <TouchableHighlight style={!picTaken ? style.imageSubmissionButton : {}} activeOpacity={0.6} underlayColor={'transparent'} onPress={()=>navigation.navigate('ImageSubmission')}>
-      <MaterialIcons name="file-upload" size={60} color="#FFFFFF" />
-    </TouchableHighlight>
+    return (
+      <TouchableHighlight style={!picTaken ? style.imageSubmissionButton : {}} activeOpacity={0.6} underlayColor={'transparent'} onPress={()=>navigation.navigate('ImageSubmission')}>
+        <MaterialIcons name="file-upload" size={60} color="#FFFFFF" />
+      </TouchableHighlight>
     )
 
   }
@@ -129,7 +129,7 @@ export default function displayCamera({navigation}) {
 
           <View style={style.footer}>
             <MapModal/>
-            {!picTaken || (picTaken && modalText.length > 0 ) ? <ImageSubmissionButton data-cy='image-submission'/>:<></>}
+            {!picTaken || (picTaken && modalText.length > 0 ) ? <ImageSubmissionButton/>:<></>}
             {!picTaken ? <CameraTriggerButton/> :<></>}
             {picTaken && modalText.length > 0 ? <PostPictureSnapButtons/> : <></>}
           </View>

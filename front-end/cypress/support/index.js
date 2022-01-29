@@ -20,6 +20,10 @@ import './commands'
 // require('./commands')
 
 beforeEach(() => {
-    cy.visit('http://localhost:19006/')
     cy.viewport('samsung-s10')
+    cy.visit('http://localhost:19006/')
+})
+
+Cypress.on('uncaught:exception', (err, runnable) => {
+    return false
 })
