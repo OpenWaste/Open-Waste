@@ -11,7 +11,7 @@ from utils.model import ModelSystem, TrashDataset
 
 class Predictor:
     # Possible prediction classes loaded from model
-    __CLASS_NAMES = {v: k for k, v in TrashDataset.LABELS.items()}
+    __CLASS_NAMES = {v: k for k, v in TrashDataset.TRASH_LABELS.items()}
     __ML_MODEL_PATH = os.path.join('Components', 'machine_learning', 'data', 'model.ckpt')
 
     # Setup transformation for image

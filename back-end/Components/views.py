@@ -3,7 +3,7 @@ import io
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from Components.models import Category, CategoryInstructions, Image_Submission, DWUser
+from Components.models import Category, CategoryInstructions, ImageSubmission, DWUser
 from Components.serializer import ImageRecognitionSerializer
 from rest_framework.parsers import MultiPartParser
 from Components.machine_learning.predictor import Predictor
@@ -199,11 +199,12 @@ class ImageSubmissionApiView(APIView):
             category = request.data['category']
             image = request.data['image']
             email = request.data['email']
+            
             # get the category selected
             category_selected = Category.objects.get(name=category)
             user = DWUser.objects.get(email=email)
 
-            Image_Submission(
+            ImageSubmission(
                 category=category_selected,
                 submission_Image=image,
                 submitted_by=user

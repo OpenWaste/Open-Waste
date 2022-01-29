@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import *
+from .models import Category, DWUser, Building, BuildingImages, Bin, BinImages, CategoryInstructions, ImageSubmission 
 from .forms import DWUserCreationForm
 from django.contrib.auth.admin import UserAdmin
 
@@ -26,8 +26,8 @@ class DWUserAdmin(UserAdmin):
 admin.site.register(Category)
 admin.site.register(DWUser, DWUserAdmin)
 admin.site.register(Building)
-admin.site.register(Building_images)
+admin.site.register(BuildingImages)
 admin.site.register(Bin)
-admin.site.register(Bin_images)
+admin.site.register(BinImages)
 admin.site.register(CategoryInstructions)
-admin.site.register(Image_Submission)
+admin.site.register(ImageSubmission)
