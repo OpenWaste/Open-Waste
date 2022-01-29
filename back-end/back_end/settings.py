@@ -159,8 +159,8 @@ ACCEPTED_TRASH_IMG_PATH = 'accepted_trash_images/'
 PROFILE_PICTURE_PATH = 'profile_pictures/'
 
 # SEND EMAIL SETTINGS
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = '587'
-EMAIL_HOST_USER = 'digiwasteconcordia@gmail.com'
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
+EMAIL_HOST = os.getenv('SMTP_HOST')
+EMAIL_PORT = os.getenv('SMTP_PORT')
+EMAIL_HOST_USER = os.getenv('SMTP_USERNAME')
+EMAIL_HOST_PASSWORD = os.getenv('SMTP_PASSWORD')
 EMAIL_USE_TLS = True

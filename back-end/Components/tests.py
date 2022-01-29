@@ -292,12 +292,22 @@ class ImageRecognitionTest(TestCase):
 
 class ResetPassword(TestCase):
     def setUp(self):
+        self.client = Client()
         self.path = '/reset-password'
 
     def test_reset_password_success(self):
+        # email example
         valid_email = 'myemail@gmail.com'
-
+        
+        # POST to that email
         response = self.client.post(self.path, {'email': valid_email})
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue('The email has been sent' in response.data)
+
+    def test_reset_password_fail(self):
+        
+        # POST with no email
+        response = self.client.post(self.path, {'': ""})
+
+        self.assertEqual(response.status_code, 400)
