@@ -30,16 +30,13 @@ export class Profile extends React.Component {
         <NativeBaseProvider>
           <SafeAreaView>
             <ScrollView>
-              <View style={style.header}></View> 
-              
-              {/* TO DO: Pull profile pic from database. */}
+              <View style={style.header}></View>
+              {/* TODO: Pull profile pic from database. */}
               <Image style={style.profilePic} source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}} />
-              
               <Text style={style.username}> {this.state.username} </Text>
-              
               <View style={style.btnView}>
                 <Button style={style.editBtn} onPress={() => this.props.navigation.navigate('EditProfile')}> Edit Profile </Button>
-                <LogOutBtn />
+                <LogOutBtn/>
               </View>
               <GetEmail/>
               <InfoBox style={style} iconName="image-search" headerText="Submitted Images" infoText=""/>
@@ -53,11 +50,9 @@ export class Profile extends React.Component {
       return (
         <NativeBaseProvider>
           <View>
-            <View style={style.header}></View> 
-            
-            {/* TO DO: Pull profile pic from database. */}
+            <View style={style.header}></View>
+            {/* TODO: Pull profile pic from database. */}
             <Image style={style.profilePic} source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}} />
-            
             <Text style={style.username}> Guest </Text>
             <Button style={style.loginBtn} onPress={() => this.props.navigation.navigate('Registration')}> Log In </Button>
           </View>
@@ -72,15 +67,11 @@ function LogOutBtn(){
   const navigation = useNavigation();
 
   const handleLogOut = () => {
-
-    // Remove values for persistent data
     save('username', "");
-
-    // Display message
     showMessage({ message: 'Logged Out', type: 'success' });
   }
 
-  return(
+  return (
     <Button style={style.logOutBtn} onPress={handleLogOut}> Log Out </Button>
   )
   

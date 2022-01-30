@@ -75,7 +75,7 @@ export default function displayCamera({ navigation }) {
           camera.takePictureAsync({ base64: true }).then((picture) => {
             setPicURI(picture.uri);
             setPicTaken(true);
-            Service.submitImagePrediction(picture.base64).then((response) => {
+            Service.submitImagePrediction(picture.base64 || "").then((response) => {
               setModalText(response.prediction);
             });
           });
@@ -146,11 +146,7 @@ export default function displayCamera({ navigation }) {
       </View>
     );
   };
-
-  if (hasPermission === null) {
-    return <View />;
-  }
-  if (hasPermission === false) {
+  if (!hasPermission) {
     return <Text>No access to camera</Text>;
   }
 
@@ -170,7 +166,7 @@ export default function displayCamera({ navigation }) {
               ratio={"16:9"}
               style={style.fullScreenView}
               type={Camera.Constants.Type.back}
-              ref={(r) => (camera = r)}
+              ref={(r:any) => (camera = r)}
             />
           )}
 

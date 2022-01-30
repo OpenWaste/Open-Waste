@@ -12,18 +12,8 @@ export class VerifyEmail extends React.Component {
         <View style={passStyle.verifyBg}>
           <Image source={this.img} style={passStyle.img} />
           <Text style={passStyle.verifyHeader}> Verify your email </Text>
-          <Text style={passStyle.verifyText}>
-            {" "}
-            A password recovery instruction has been sent to your email.{" "}
-          </Text>
-          <Button
-            style={passStyle.okBtn}
-            _text={{ color: "#0F968D" }}
-            onPress={() => this.props.navigation.navigate("ResetPassword")}
-          >
-            {" "}
-            OK{" "}
-          </Button>
+          <Text style={passStyle.verifyText}> A password recovery instruction has been sent to your email. </Text>
+          <Button style={passStyle.okBtn} _text={{ color: "#0F968D" }} onPress={() => this.props.navigation.navigate("ResetPassword")}> OK </Button>
         </View>
       </NativeBaseProvider>
     );

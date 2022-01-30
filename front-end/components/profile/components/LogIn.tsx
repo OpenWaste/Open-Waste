@@ -72,28 +72,30 @@ function LoginForm(){
   
   return(
     <View>
-      <View style = {formStyle.registrationInputView}>
-        <MaterialIcons style = {formStyle.registrationIcons} name = "person" size = {22}/>
-        <Input borderWidth="0" 
-          style = {formStyle.registrationTextInputs} 
-          placeholder = "Username"
+      <View style={formStyle.registrationInputView}>
+        <MaterialIcons style={formStyle.registrationIcons} name="person" size={22}/>
+        <Input
+          borderWidth="0" 
+          style={formStyle.registrationTextInputs}
+          placeholder="Username"
           autoFocus={true}
           returnKeyType="next"
-          onChangeText = {value => setUsername(value)}
+          onChangeText={(value:any) => setUsername(value)}
           onSubmitEditing={() => ref_input2.current.focus()} />
       </View>
-      <View style = {formStyle.registrationInputView}>
-        <MaterialIcons style = {formStyle.registrationIcons} name = "lock" size = {22}/>
-        <Input borderWidth="0"  
+      <View style={formStyle.registrationInputView}>
+        <MaterialIcons style={formStyle.registrationIcons} name="lock" size={22}/>
+        <Input
+          borderWidth="0"  
           type={show ? "text" : "password"} 
-          style = {formStyle.registrationTextInputs} 
+          style={formStyle.registrationTextInputs} 
           variant="underlined" 
-          placeholder = "Password"
+          placeholder="Password"
           autoFocus={true}
-          onChangeText = {value => setPassword(value)}
+          onChangeText={(value:any) => setPassword(value)}
           ref={ref_input2} />
         <TouchableOpacity onPress={showPass}>
-            {show ? <MaterialIcons style = {formStyle.registrationIcons} name = "visibility-off" size = {22}/> : <MaterialIcons style = {formStyle.registrationIcons} name = "remove-red-eye" size = {22}/>}
+          <MaterialIcons style={formStyle.registrationIcons} name={show ? "visibility-off" : "remove-red-eye"} size={22}/>
         </TouchableOpacity>
       </View>
       <Button style={loginStyle.logInBtn} onPress={handleSubmit}> Log In </Button>      

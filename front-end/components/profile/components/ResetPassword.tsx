@@ -49,24 +49,23 @@ function ResetPasswordForm() {
   const navigation = useNavigation();
 
   const handleSubmit = () => {
-    if (pass1 == pass2) {
-      const user: UserResource = {
-        username: username,
-        password: pass1,
-        email: "",
-      };
-
-      Service.changePassword(user)
-        .then(() => {
-          navigation.navigate("ProfilePage");
-          showMessage({ message: username, type: "success" });
-        })
-        .catch((error) => {
-          showMessage({ message: error.toJSON().message, type: "warning" });
-        });
-    } else {
+    if (pass1 != pass2) {
       showMessage({ message: "Passwords do not match!", type: "danger" });
+      return;
     }
+    const user: UserResource = {
+      username: username,
+      password: pass1,
+      email: "",
+    };
+
+    Service.changePassword(user).then(() => {
+      navigation.navigate("ProfilePage");
+      showMessage({ message: username, type: "success" });
+    })
+    .catch((error) => {
+      showMessage({ message: error.toJSON().message, type: "warning" });
+    });
   };
 
   return (
@@ -84,7 +83,7 @@ function ResetPasswordForm() {
           placeholder="New password"
           autoFocus={true}
           returnKeyType="next"
-          onChangeText={(value) => setPass1(value)}
+          onChangeText={(value:any) => setPass1(value)}
           onSubmitEditing={() => ref_input2.current.focus()}
         />
         <TouchableOpacity onPress={showPass1}>
@@ -117,7 +116,7 @@ function ResetPasswordForm() {
           placeholder="New password"
           autoFocus={true}
           ref={ref_input2}
-          onChangeText={(value) => setPass2(value)}
+          onChangeText={(value:any) => setPass2(value)}
         />
         <TouchableOpacity onPress={showPass2}>
           {show2 ? (
@@ -135,10 +134,7 @@ function ResetPasswordForm() {
           )}
         </TouchableOpacity>
       </View>
-      <Button style={passStyle.submitBtn} onPress={handleSubmit}>
-        {" "}
-        Submit{" "}
-      </Button>
+      <Button style={passStyle.submitBtn} onPress={handleSubmit}> Submit </Button>
     </View>
   );
 }

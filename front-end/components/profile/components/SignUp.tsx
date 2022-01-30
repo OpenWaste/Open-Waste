@@ -65,49 +65,51 @@ export function SignUpForm() {
       })
     }
     else {
-      showMessage({ message: 'Invalid Email', type: 'danger' });
+      showMessage({ message: 'Invalid Email', type: 'warning' });
     }
       
   }
 
   return(
     <View>
-      <View style = {formStyle.registrationInputView}>
-        <MaterialIcons style = {formStyle.registrationIcons} name = "person" size = {22}/>
-        <Input style = {formStyle.registrationTextInputs} 
+      <View style={formStyle.registrationInputView}>
+        <MaterialIcons style={formStyle.registrationIcons} name="person" size={22}/>
+        <Input
+          style={formStyle.registrationTextInputs} 
           borderWidth="0" 
-          placeholder = "Username"
+          placeholder="Username"
           autoFocus={true}
           returnKeyType="next"
-          onChangeText = {value => setUsername(value)}
+          onChangeText={(value:any) => setUsername(value)}
           onSubmitEditing={() => ref_input2.current.focus()} />
       </View>
-      <View style = {formStyle.registrationInputView}>
-        <MaterialIcons style = {formStyle.registrationIcons} name = "lock" size = {22}/>
-        <Input type={show ? "text" : "password"} 
-          style = {formStyle.registrationTextInputs} 
+      <View style={formStyle.registrationInputView}>
+        <MaterialIcons style={formStyle.registrationIcons} name="lock" size={22}/>
+        <Input
+          type={show ? "text" : "password"} 
+          style={formStyle.registrationTextInputs} 
           borderWidth="0" 
-          placeholder = "Password"
+          placeholder="Password"
           returnKeyType="next"
           autoFocus={true}
-          onChangeText = {value => setPassword(value)}
+          onChangeText={(value:any) => setPassword(value)}
           onSubmitEditing={() => ref_input3.current.focus()}
           ref={ref_input2} />
         <TouchableOpacity onPress={showPass}>
-            {show ? <MaterialIcons style = {formStyle.registrationIcons} name = "visibility-off" size = {22}/> : <MaterialIcons style = {formStyle.registrationIcons} name = "remove-red-eye" size = {22}/>}
+          <MaterialIcons style={formStyle.registrationIcons} name={show ? "visibility-off" : "remove-red-eye"} size={22}/>
         </TouchableOpacity>
       </View>
-      <View style = {formStyle.registrationInputView}>
-        <MaterialIcons style = {formStyle.registrationIcons} name = "alternate-email" size = {22}/>
-        <Input style = {formStyle.registrationTextInputs} 
+      <View style={formStyle.registrationInputView}>
+        <MaterialIcons style={formStyle.registrationIcons} name="alternate-email" size={22}/>
+        <Input
+          style={formStyle.registrationTextInputs} 
           borderWidth="0" 
-          placeholder = "Email"
+          placeholder="Email"
           autoFocus={true}
-          onChangeText = {emailInput => setEmail(emailInput)}
-          ref={ref_input3} />
+          onChangeText={(emailInput:any) => setEmail(emailInput)}
+          ref={ref_input3}/>
       </View>
-
-      <Button style={signUpStyle.signUpBtn} onPress = {handleSubmit}> Sign Up </Button>
+      <Button style={signUpStyle.signUpBtn} onPress={handleSubmit}> Sign Up </Button>
     </View>
   )
 }
