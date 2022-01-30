@@ -1,8 +1,6 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  /*Registration forms styles (aka Log In and Sign Up) */
-
   registrationInputView: {
     flexDirection: "row",
     justifyContent: "center",

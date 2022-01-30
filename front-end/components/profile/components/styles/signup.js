@@ -1,7 +1,6 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  /* Note: Style for registration inputs are in forms-style.tsx */
   signUpHeader: {
     textAlign: "center",
     fontWeight: "bold",
