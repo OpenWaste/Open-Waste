@@ -1,15 +1,15 @@
 import * as React from "react";
 import { View, ScrollView, KeyboardAvoidingView, Text, Image } from "react-native";
 import { Accordion, AlertDialog, Box, Button, Center, NativeBaseProvider, Input } from 'native-base';
-import { save, getValueFor, deleteValueFor } from '../../utils/PersistInfo';
+import { save, getValueFor, deleteValueFor } from '../../../utils/PersistInfo';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import Service from "../../service/service";
-import { UserResource } from "../../models/User";
+import Service from "../../../service/service";
+import { UserResource } from "../../../models/User";
 import { useNavigation } from '@react-navigation/native';
+import { showMessage } from "react-native-flash-message";
 
-import style from "../../styles/editprofile-style";
-import formStyle from "../../styles/forms-style";
-import { showMsg } from "../../utils/FlashMessage";
+import style from "./styles/edit-profile";
+import formStyle from "./styles/forms";
 import isEmail from 'validator/lib/isEmail';
 
 export class EditProfile extends React.Component {
@@ -21,14 +21,10 @@ export class EditProfile extends React.Component {
         <ScrollView>
           <KeyboardAvoidingView>
               <View style={style.header}></View> 
-              
               {/* TO DO: Pull profile pic from database. */}
               <Image style={style.profilePic} source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}} />
-              
               <Text style={style.username}> Edit Profile </Text>
-
               <EditForm />
-            
           </KeyboardAvoidingView>
         </ScrollView>
       </NativeBaseProvider>
@@ -93,16 +89,16 @@ function EditForm() {
 
         // Redirect and display success message
         navigation.navigate('ProfilePage');
-        showMsg('Successfully Updated Account', 'success')
+        showMessage({ messge: 'Successfully Updated Account', type: 'success' });
 
       }).catch(error =>{
         //If bad response, display error message
-        showMsg('An Error Has Occurred', 'danger');
+        showMessage({ message: 'An Error Has Occurred', type: 'danger' });
       })
     }
     // Display error message if email is not valid
     else{
-      showMsg('Invalid Email', 'danger');
+      showMessage({ message: 'Invalid Email', type: 'danger' });
     }
   }
 
@@ -162,63 +158,62 @@ function EditForm() {
 }
 
 function DeleteAccount() {
-    const [isOpen, setIsOpen] = React.useState(false)
-    const [username, setUsername] = React.useState('')
-    const onClose = () => setIsOpen(false)
-    const cancelRef = React.useRef(null)
-    const navigation = useNavigation();
+  const [isOpen, setIsOpen] = React.useState(false)
+  const [username, setUsername] = React.useState('')
+  const onClose = () => setIsOpen(false)
+  const cancelRef = React.useRef(null)
+  const navigation = useNavigation();
 
-    // Get username
-    getValueFor('username').then(output => {
-      setUsername(output);
-    }) 
+  // Get username
+  getValueFor('username').then(output => {
+    setUsername(output);
+  }) 
 
-    const handleDelete = () => {
+  const handleDelete = () => {
 
-      // Close dialog box
-      onClose()
-      
-      // Prepare info
-      const user: UserResource = {
-        username: username,
-        email: '',
-        password: '',
-      }
-
-      // Get response from delete-user endpoint
-      Service.deleteUser(user).then(output => {
-        // If response is good, delete persistent data
-        deleteValueFor('username');
-        deleteValueFor('email');
-        // Redirect and show success message
-        navigation.navigate('ProfilePage');
-        showMsg('Successfully Deleted Account', 'success')
-      }).catch(error =>{
-        // If response is bad, show error message
-        showMsg('An Error Has Occurred', 'danger');
-      })
-      
+    // Close dialog box
+    onClose()
+    
+    // Prepare info
+    const user: UserResource = {
+      username: username,
+      email: '',
+      password: '',
     }
 
-    return(
-        <Center>
-          <Button style={style.deleteBtn} _text={{color:'#D33333', paddingTop: 2, paddingBottom: 2}} colorScheme="danger" onPress={() => setIsOpen(!isOpen)}>Delete account</Button>
-          <AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}
->
-          <AlertDialog.Content>
-          <AlertDialog.CloseButton />
-          <AlertDialog.Header>Are you sure?</AlertDialog.Header>
-          <AlertDialog.Body>
-              This action will delete all your data from your device and cloud. This action is irreversable.
-          </AlertDialog.Body>
-          <AlertDialog.Footer>
-              <Button.Group space={2}>
-              <Button colorScheme="danger" onPress={handleDelete}>Delete</Button>
-              <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>Cancel</Button>                   
-              </Button.Group>
-          </AlertDialog.Footer>
-          </AlertDialog.Content>
-        </AlertDialog>
-        </Center>
-    )
+    // Get response from delete-user endpoint
+    Service.deleteUser(user).then(output => {
+      // If response is good, delete persistent data
+      deleteValueFor('username');
+      deleteValueFor('email');
+      // Redirect and show success message
+      navigation.navigate('ProfilePage');
+      showMessage({ message: 'Successfully Deleted Account', type: 'success' })
+    }).catch(error =>{
+      // If response is bad, show error message
+      showMessage({ message: 'An Error Has Occurred', type: 'danger' });
+    })
+    
+  }
+
+  return(
+    <Center>
+      <Button style={style.deleteBtn} _text={{color:'#D33333', paddingTop: 2, paddingBottom: 2}} colorScheme="danger" onPress={() => setIsOpen(!isOpen)}>Delete account</Button>
+      <AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}>
+      <AlertDialog.Content>
+      <AlertDialog.CloseButton />
+      <AlertDialog.Header>Are you sure?</AlertDialog.Header>
+      <AlertDialog.Body>
+          This action will delete all your data from your device and cloud. This action is irreversable.
+      </AlertDialog.Body>
+      <AlertDialog.Footer>
+        <Button.Group space={2}>
+          <Button colorScheme="danger" onPress={handleDelete}>Delete</Button>
+          <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>Cancel</Button>                   
+        </Button.Group>
+      </AlertDialog.Footer>
+      </AlertDialog.Content>
+    </AlertDialog>
+    </Center>
+  )
 }

@@ -1,32 +1,26 @@
 import React, { useRef } from "react";
 import { View, ScrollView, KeyboardAvoidingView, Text, TouchableOpacity } from "react-native";
-import loginStyle from "../../styles/login-style";
-import formStyle from "../../styles/forms-style";
+import loginStyle from "./styles/login";
+import formStyle from "./styles/forms";
 import { Button, Input, NativeBaseProvider } from 'native-base';
-import { showMsg } from '../../utils/FlashMessage';
+import { showMessage } from "react-native-flash-message";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import Service from "../../service/service";
-import { UserResource } from "../../models/User";
+import Service from "../../../service/service";
+import { UserResource } from "../../../models/User";
 import { useNavigation } from '@react-navigation/native';
-import { save } from '../../utils/PersistInfo';
+import { save } from '../../../utils/PersistInfo';
 
 export class LogIn extends React.Component {
   
   render() {
-
     return (
       <NativeBaseProvider>
         <ScrollView>
           <KeyboardAvoidingView>
-
             <Text style={loginStyle.LogInHeader}>Welcome Back</Text>
-            
             <LoginForm/>
-
             <Text style={loginStyle.forgotPass} onPress={() => this.props.navigation.navigate('ForgotPassword')}> Forgot Password? </Text>
-            
             <Text style={loginStyle.remainAsGuest} onPress={() => this.props.navigation.navigate('ProfilePage')}> Remain as Guest </Text>
-
           </KeyboardAvoidingView>
         </ScrollView>
       </NativeBaseProvider>
@@ -57,32 +51,22 @@ function LoginForm(){
     // Get response from authenticate-user endpoint
     Service.authenticateUser(user).then(resp => {
       if(resp.data == 'Authentication failed.'){
-        showMsg('Authentication Failed', 'danger');
+        showMessage({ message: 'Authentication Failed', type: 'danger' });
       }
       else{
-
-        // Find user's email
         Service.returnUserInfo(user).then((resp) => {
-          // Save email to persistent data
           save('email', resp.data.email)
         }).catch(error => {
           console.log(error.response)
         })
-        // Save username to persistent data
+
         save('username', username)
-        // Redirect and show success message
+
         navigation.navigate('ProfilePage');
-        showMsg('Success!', 'success');
+        showMessage({ message: 'Success!', type: 'success' });
       }
-      
     }).catch(error => {
-      // Else show error
-      if(error.toJSON().message === 'Network Error'){
-        showMsg('Network Error', 'warning');
-      }
-      else{
-        showMsg('An Error Has Occurred', 'danger');
-      }  
+      showMessage({ message: error.toJSON().message, type: 'warning' }); 
     })
   }
   

@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { View, ScrollView, SafeAreaView, Text, Image, Alert } from "react-native";
-import style from "../../styles/profile-style";
+import style from "./styles/profile";
 import { Button, NativeBaseProvider } from 'native-base';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from '@react-navigation/native';
-import { save, deleteValueFor, getValueFor } from '../../utils/PersistInfo';
-import { showMsg } from "../../utils/FlashMessage";
+import { save, getValueFor } from '../../../utils/PersistInfo';
+import { showMessage } from "react-native-flash-message";
 
 export class Profile extends React.Component {
 
@@ -77,7 +77,7 @@ function LogOutBtn(){
     save('username', "");
 
     // Display message
-    showMsg('Logged Out', 'success');
+    showMessage({ message: 'Logged Out', type: 'success' });
   }
 
   return(
@@ -90,7 +90,6 @@ function GetEmail() {
   const [email, setEmail] = React.useState('');
 
   useEffect(() => {
-    // Get email value
     getValueFor('email').then((output) => {
       setEmail(output)
     });

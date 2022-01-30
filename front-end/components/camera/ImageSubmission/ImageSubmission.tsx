@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View } from "react-native";
+import { View } from "react-native";import styles from "./styles";
 import {
   Text,
   Box,
@@ -69,8 +69,10 @@ export function ImageSubmission({ navigation }) {
         <Box m="10">
           <VStack space={8}>
             <Box width="100%">
-              <Heading color="#808080">Image Submission</Heading>
-              <Text mt="3" fontWeight="medium" color="#8A8A8A">
+              <Heading fontWeight="medium" style={styles.header}>
+                Image Submission
+              </Heading>
+              <Text mt="3" style={styles.text}>
                 If the app was not able to detect your item, upload a picture of
                 it so that it can be used to help improve the app.
               </Text>
@@ -90,10 +92,9 @@ export function ImageSubmission({ navigation }) {
                 p="1"
                 width="100%"
                 height="25%"
-                borderColor="#E5E5E5"
-                borderWidth="1"
                 rounded="5"
                 bg="#FFFFFF"
+                style={styles.box}
               >
                 <Button
                   onPress={pickImage}
