@@ -18,6 +18,7 @@ If you don't have an .env file with a Django secret key
 - Add a secret key to the variable **SECRET_KEY** in the .env file
 - Make sure to put the value of the secret key in quotation marks **""**
 - You can generate a secret key at https://djecrety.ir/
+- In order to send emails, you need to enter the correct SMTP credentials
 
 Run the server
 `py manage.py migrate`
