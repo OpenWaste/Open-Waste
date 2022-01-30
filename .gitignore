@@ -6,3 +6,4 @@
 
 # ignore migration fiels in back-end/Components
 back-end/Components/migrations/
+*.snap
