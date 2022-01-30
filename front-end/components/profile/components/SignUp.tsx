@@ -1,15 +1,15 @@
 import React, { useRef } from "react";
-import { Alert, View, ScrollView, KeyboardAvoidingView, Text, TouchableOpacity } from "react-native";
-import signUpStyle from "../../styles/signup-style";
-import formStyle from "../../styles/forms-style";
+import { View, ScrollView, KeyboardAvoidingView, Text, TouchableOpacity } from "react-native";
+import signUpStyle from "./styles/signup";
+import formStyle from "./styles/forms";
 import { Avatar, Button, Center, Input, NativeBaseProvider } from 'native-base';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import Service from "../../service/service";
-import { showMsg } from '../../utils/FlashMessage';
+import Service from "../../../service/service";
+import { showMessage } from "react-native-flash-message";
 import isEmail from 'validator/lib/isEmail';
-import { UserResource } from "../../models/User";
+import { UserResource } from "../../../models/User";
 import { useNavigation } from '@react-navigation/native';
-import { save } from '../../utils/PersistInfo';
+import { save } from '../../../utils/PersistInfo';
 
 export class SignUp extends React.Component {
 
@@ -47,8 +47,7 @@ export function SignUpForm() {
 
   const handleSubmit = () => {
 
-    // Check if email is valid
-    if(isEmail(email)){
+    if (isEmail(email)) {
       const user: UserResource = {
         username: username,
         password: password,
@@ -57,67 +56,60 @@ export function SignUpForm() {
   
       // Get response from create-user endpoint
       Service.submitAccountCreation(user).then((resp) => {
-        // If response is good, save user's info to persistent data
         save('username', username)
         save('email', email)
-        // Redirect and show success message
         navigation.navigate('ProfilePage');
-        showMsg('Success!', 'success');
+        showMessage({ message: 'Success!', type: 'success' });
       }).catch(error => {
-        // If response is bad, show error message
-        if(error.toJSON().message === 'Network Error'){
-          showMsg('Network Error', 'warning');
-        }
-        else{
-          showMsg('An Error Has Occurred', 'danger');
-        }
-        })
+        showMessage({ message: error.toJSON().message, type: 'warning' });
+      })
     }
-    //If email is invalid, indicate so
-    else{
-      showMsg('Invalid Email', 'danger');
+    else {
+      showMessage({ message: 'Invalid Email', type: 'warning' });
     }
       
   }
 
   return(
     <View>
-      <View style = {formStyle.registrationInputView}>
-        <MaterialIcons style = {formStyle.registrationIcons} name = "person" size = {22}/>
-        <Input style = {formStyle.registrationTextInputs} 
+      <View style={formStyle.registrationInputView}>
+        <MaterialIcons style={formStyle.registrationIcons} name="person" size={22}/>
+        <Input
+          style={formStyle.registrationTextInputs} 
           borderWidth="0" 
-          placeholder = "Username"
+          placeholder="Username"
           autoFocus={true}
           returnKeyType="next"
-          onChangeText = {value => setUsername(value)}
+          onChangeText={(value:any) => setUsername(value)}
           onSubmitEditing={() => ref_input2.current.focus()} />
       </View>
-      <View style = {formStyle.registrationInputView}>
-        <MaterialIcons style = {formStyle.registrationIcons} name = "lock" size = {22}/>
-        <Input type={show ? "text" : "password"} 
-          style = {formStyle.registrationTextInputs} 
+      <View style={formStyle.registrationInputView}>
+        <MaterialIcons style={formStyle.registrationIcons} name="lock" size={22}/>
+        <Input
+          type={show ? "text" : "password"} 
+          style={formStyle.registrationTextInputs} 
           borderWidth="0" 
-          placeholder = "Password"
+          placeholder="Password"
           returnKeyType="next"
           autoFocus={true}
-          onChangeText = {value => setPassword(value)}
+          onChangeText={(value:any) => setPassword(value)}
           onSubmitEditing={() => ref_input3.current.focus()}
           ref={ref_input2} />
         <TouchableOpacity onPress={showPass}>
-            {show ? <MaterialIcons style = {formStyle.registrationIcons} name = "visibility-off" size = {22}/> : <MaterialIcons style = {formStyle.registrationIcons} name = "remove-red-eye" size = {22}/>}
+          <MaterialIcons style={formStyle.registrationIcons} name={show ? "visibility-off" : "remove-red-eye"} size={22}/>
         </TouchableOpacity>
       </View>
-      <View style = {formStyle.registrationInputView}>
-        <MaterialIcons style = {formStyle.registrationIcons} name = "alternate-email" size = {22}/>
-        <Input style = {formStyle.registrationTextInputs} 
+      <View style={formStyle.registrationInputView}>
+        <MaterialIcons style={formStyle.registrationIcons} name="alternate-email" size={22}/>
+        <Input
+          style={formStyle.registrationTextInputs} 
           borderWidth="0" 
-          placeholder = "Email"
+          placeholder="Email"
           autoFocus={true}
-          onChangeText = {emailInput => setEmail(emailInput)}
-          ref={ref_input3} />
+          onChangeText={(emailInput:any) => setEmail(emailInput)}
+          ref={ref_input3}/>
       </View>
-
-      <Button style={signUpStyle.signUpBtn} onPress = {handleSubmit}> Sign Up </Button>
+      <Button style={signUpStyle.signUpBtn} onPress={handleSubmit}> Sign Up </Button>
     </View>
   )
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { ImageSubmission } from "./ImageSubmission/ImageSubmission";
-import displayCamera from "./Camera";
+import displayCamera from "./ImageRecognition/Camera";
 
 const Stack = createStackNavigator();
 const screens = [
