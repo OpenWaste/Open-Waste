@@ -25,6 +25,7 @@ from Components.views import (
     UpdatePassword,
     DeleteUser,
     UpdateUsernameAndEmail,
+    ResetPassword,
     GetUserInfo
 )
 import os
@@ -41,7 +42,8 @@ urlpatterns = [
     path('update-password', UpdatePassword.as_view()),
     path('user', GetUserInfo.as_view()),
     path('delete-user', DeleteUser.as_view()),
-    path('update-username-email', UpdateUsernameAndEmail.as_view())
+    path('update-username-email', UpdateUsernameAndEmail.as_view()),
+    path('reset-password', ResetPassword.as_view())
 ]
 # Remove admin endpoint for PROD when running in prod
 if os.getenv('PROD_MODE', 'False').title() == 'False':

@@ -8,6 +8,7 @@ from Components.serializer import ImageRecognitionSerializer
 from rest_framework.parsers import MultiPartParser
 from Components.machine_learning.predictor import Predictor
 from django.contrib.auth import authenticate
+from django.core.mail import send_mail
 
 
 class CreateUser(APIView):
@@ -175,6 +176,8 @@ class DeleteUser(APIView):
 
 
 class ImageRecognitionApiView(APIView):
+    def __init__(self):
+        self.p = Predictor()
 
     def post(self, request):
         # Validation (checks that an image was uploaded)
@@ -183,11 +186,8 @@ class ImageRecognitionApiView(APIView):
         # This will return a 400 Bad Request if no image was uploaded. Method returns here if is_valid=False.
         s.is_valid(raise_exception=True)
 
-        # Instantiate class used for image prediction
-        p = Predictor()
-
         # Returns HTTP Success code 200 and ML prediction in the form of `"prediction":"glass"`
-        return Response({"prediction": p.evaluate_image(io.BytesIO(base64.b64decode(s.validated_data.get('image'))))}, status=status.HTTP_200_OK)
+        return Response({"prediction": self.p.evaluate_image(io.BytesIO(base64.b64decode(s.validated_data.get('image'))))}, status=status.HTTP_200_OK)
 
 
 class ImageSubmissionApiView(APIView):
@@ -244,3 +244,30 @@ class UpdateApiView(APIView):
             # error: 404 NOT FOUND
             return Response({e.__class__.__name__: str(e)},
                             status=status.HTTP_404_NOT_FOUND)
+
+class ResetPassword(APIView):
+
+    def post(self, request):
+        try:
+            # requested email
+            email = request.data['email']
+
+            # sends an email to the request email (subject, message, from, to)
+            send_mail(
+                'Password reset',
+                'You requested a password reset. Here is your passcode: 123456',
+                'DigiWaste Concordia',
+                [email],
+                fail_silently=False,
+                )
+        # success: 200 OK
+            return Response(
+                        {"The email has been sent"},
+                        status=status.HTTP_200_OK
+                        )
+        except Exception as e:
+            # error: 400 BAD REQUEST
+            return Response(
+                {e.__class__.__name__: str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
