@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { PredictionResponse } from '../interfaces/service-types';
 import { ImageSubmissionResource } from '../models/ImageSubmission';
 import { UserResource } from '../models/User';
 
@@ -12,9 +13,9 @@ export default class Service {
     return instance.post(`/${endpoint}`, resource)
   }
 
-  static submitImagePrediction(base64Image: string): Promise<Object> {
+  static submitImagePrediction(base64Image: string | undefined): Promise<PredictionResponse> {
     return new Promise((resolve, reject) => {
-      this.post('prediction', { image: base64Image })
+      Service.post('prediction', { image: base64Image })
         .then(a => {
           resolve(a.data)
         })
@@ -30,7 +31,7 @@ export default class Service {
       image: image
     }
 
-    let resp = await this.post('image-submission', resource);
+    let resp = await Service.post('image-submission', resource);
     return resp
   }
 
@@ -41,7 +42,7 @@ export default class Service {
       password: data.password
     }
 
-    let resp = await this.post('create-user', resource);
+    let resp = await Service.post('create-user', resource);
     return resp
   }
 
@@ -51,7 +52,7 @@ export default class Service {
       password: data.password
     }
 
-    let resp = await this.post('authenticate-user', resource);
+    let resp = await Service.post('authenticate-user', resource);
     return resp
   }
 
@@ -61,7 +62,7 @@ export default class Service {
       password: data.password
     }
 
-    let resp = await this.post('update-password', resource);
+    let resp = await Service.post('update-password', resource);
     return resp
   }
 
@@ -70,7 +71,7 @@ export default class Service {
       username: data.username,
     }
 
-    let resp = this.post('user', resource);
+    let resp = Service.post('user', resource);
     return resp
   }
 
