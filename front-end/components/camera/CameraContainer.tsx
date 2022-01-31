@@ -1,11 +1,11 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { ImageSubmission } from "./ImageSubmission/ImageSubmission";
-import displayCamera from "./ImageRecognition/Camera";
+import DisplayCamera from "./ImageRecognition/Camera";
 
 const Stack = createStackNavigator();
 const screens = [
-  { name: "displayCamera", component: displayCamera },
+  { name: "DisplayCamera", component: DisplayCamera },
   { name: "ImageSubmission", component: ImageSubmission },
 ];
 export class Camera extends React.Component {
