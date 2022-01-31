@@ -50,7 +50,7 @@ export function ImageSubmission({ navigation }) {
       setStatusReponse(res.status);
       setIsOpen(!isOpen);
       setImageIsChosen(false);
-      navigation.navigate("displayCamera");
+      navigation.navigate("DisplayCamera");
     });
   };
 
