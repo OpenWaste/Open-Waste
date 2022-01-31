@@ -7,8 +7,8 @@ assignees: ''
 
 ---
 
-**Full Epic**
+## Full Epic
 As a ___, I want to ____, so that _____
 
-**Description**
+## Description
 **[TO DELETE]** *If applicable, provide more details about the epic.*

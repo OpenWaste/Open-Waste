@@ -13,9 +13,45 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path
+from Components.views import (
+    ImageRecognitionApiView,
+    ImageSubmissionApiView,
+    UpdateApiView,
+    CreateUser,
+    AuthenticateUser,
+    UpdatePassword,
+    DeleteUser,
+    UpdateUsernameAndEmail,
+    ResetPassword,
+    GetUserInfo
+)
+import os
+
+from django.conf import settings
+from django.views.static import serve
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('prediction', ImageRecognitionApiView.as_view()),
+    path('image-submission', ImageSubmissionApiView.as_view()),
+    path('update', UpdateApiView.as_view()),
+    path('create-user', CreateUser.as_view()),
+    path('authenticate-user', AuthenticateUser.as_view()),
+    path('update-password', UpdatePassword.as_view()),
+    path('user', GetUserInfo.as_view()),
+    path('delete-user', DeleteUser.as_view()),
+    path('update-username-email', UpdateUsernameAndEmail.as_view()),
+    path('reset-password', ResetPassword.as_view())
 ]
+# Remove admin endpoint for PROD when running in prod
+if os.getenv('PROD_MODE', 'False').title() == 'False':
+    urlpatterns.append(path('admin/', admin.site.urls))
+
+if settings.DEBUG:
+    urlpatterns += [
+        url(r'^media/(?P<path>.*)$', serve, {
+            'document_root': settings.MEDIA_ROOT
+        })
+    ]

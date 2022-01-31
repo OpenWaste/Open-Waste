@@ -1,6 +1,9 @@
-# ignore folders filled with images
-utils/data/*/*
-utils/data/*
-
 # ignore virtual environment
 .venv/*
+
+# ignore jetbrain files
+.idea/
+
+# ignore migration fiels in back-end/Components
+back-end/Components/migrations/
+*.snap

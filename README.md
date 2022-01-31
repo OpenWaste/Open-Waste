@@ -43,6 +43,23 @@ To run tests, with coverage
   npm run test:cov
 ```
 
+## Commit Convention Script
+Go to the script directory
+
+```bash
+  cd git-hooks
+```
+
+Run this command as administrator on Window
+
+```bash
+  install_hooks.bat
+```
+or if your are running Unix
+```
+  install_hooks.sh
+```
+
 ## Authors
 
 | Author                    | Student Id | Github Username                                   |

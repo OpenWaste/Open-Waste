@@ -19,6 +19,10 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+#this is where all photos are located for the database to fetch
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -27,9 +31,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False if (os.getenv('PROD_MODE', 'False').title() == 'True') else True
 
-ALLOWED_HOSTS = []
+# For now, during dev, we can set it to any allowed host, but we might want to change this later on in prod and
+# implement some sort of authentication mechanism (like JWT?) 
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -79,11 +85,23 @@ WSGI_APPLICATION = 'back_end.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
+if os.getenv('PROD_MODE', 'False').title() == 'True':
+    database_settings = {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USERNAME'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
+    }
+else:
+    database_settings = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+
+DATABASES = {
+    'default': database_settings
 }
 
 
@@ -129,3 +147,20 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# our user model
+AUTH_USER_MODEL = 'Components.DWUser'
+
+# image paths
+CATEGORY_IMG_PATH = 'sample_images/'
+BUILDING_IMG_PATH = 'building_images/'
+BIN_IMG_PATH = 'bin_images/'
+ACCEPTED_TRASH_IMG_PATH = 'accepted_trash_images/'
+PROFILE_PICTURE_PATH = 'profile_pictures/'
+
+# SEND EMAIL SETTINGS
+EMAIL_HOST = os.getenv('SMTP_HOST')
+EMAIL_PORT = os.getenv('SMTP_PORT')
+EMAIL_HOST_USER = os.getenv('SMTP_USERNAME')
+EMAIL_HOST_PASSWORD = os.getenv('SMTP_PASSWORD')
+EMAIL_USE_TLS = True
