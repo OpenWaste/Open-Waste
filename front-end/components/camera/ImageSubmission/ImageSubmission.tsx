@@ -128,7 +128,7 @@ export function ImageSubmission({ navigation }) {
                   })}
                 </Select>
                 <Box m="10">
-                  <Button onPress={handleSubmit}> Submit </Button>
+                  <Button onPress={handleSubmit} testID="submitButton"> Submit </Button>
                   {statusResponse === 0 ? (
                     <Center>
                       <AlertDialog
