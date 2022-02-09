@@ -4,7 +4,7 @@ import { ImageSubmissionResource } from '../models/ImageSubmission';
 import { UserResource } from '../models/User';
 
 const instance = axios.create({
-  baseURL: 'https://digiwaste.systems:42069'
+  baseURL: 'http://24.203.130.8:55012'
 });
 
 export default class Service {
@@ -46,7 +46,7 @@ export default class Service {
     return resp
   }
 
-  static async authenticateUser(data: UserResource) {
+  static async authenticateUser(data: UserResource):Promise<Object> {
     const resource = {
       username: data.username,
       password: data.password
@@ -63,15 +63,6 @@ export default class Service {
     }
 
     let resp = await Service.post('update-password', resource);
-    return resp
-  }
-
-  static returnUserInfo(data: UserResource): Promise<Object> {
-    const resource = {
-      username: data.username,
-    }
-
-    let resp = Service.post('user', resource);
     return resp
   }
 
