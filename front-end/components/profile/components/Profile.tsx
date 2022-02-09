@@ -4,7 +4,7 @@ import style from "./styles/profile";
 import { Button, NativeBaseProvider } from 'native-base';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from '@react-navigation/native';
-import { save, getValueFor } from '../../../utils/PersistInfo';
+import { deleteValueFor, getValueFor } from '../../../utils/PersistInfo';
 import { showMessage } from "react-native-flash-message";
 
 export class Profile extends React.Component {
@@ -24,8 +24,8 @@ export class Profile extends React.Component {
   }
 
   render() {
-    
-    if(this.state.username !== ""){
+
+    if(this.state.username != null){
       return (
         <NativeBaseProvider>
           <SafeAreaView>
@@ -65,7 +65,10 @@ function LogOutBtn(){
   const navigation = useNavigation();
 
   const handleLogOut = () => {
-    save('username', "");
+    deleteValueFor('username');
+    deleteValueFor('email');
+    deleteValueFor('submitted_images');
+    deleteValueFor('accepted_images');
     showMessage({ message: 'Logged Out', type: 'success' });
   }
 
