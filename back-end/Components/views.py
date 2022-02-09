@@ -52,8 +52,11 @@ class AuthenticateUser(APIView):
 
             # success: 200 OK
             if user is not None:
+
                 info = {
-                    "email": user.email
+                    "email": user.email,
+                    "submitted_images": user.imagesubmission_set.count(),
+                    "accepted_images": user.imagesubmission_set.filter(is_accepted=True).count()
                 }
 
                 return Response(info,
