@@ -18,6 +18,7 @@ import {
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
 import Service from "../../../service/service";
+import { getValueFor } from '../../../utils/PersistInfo';
 
 export function ImageSubmission({ navigation }) {
   const [image, setImage] = useState("");
@@ -57,9 +58,9 @@ export function ImageSubmission({ navigation }) {
   //Gets list of categories from endpoint
   useEffect(() => {
     if (categoriesList.length == 0) {
-      Service.getImageCategory().then((response) => {
-        setCategoriesList(response.categories);
-      });
+      getValueFor("categories").then(a => {
+        setCategoriesList(JSON.parse(a));
+      })
     }
   });
 
