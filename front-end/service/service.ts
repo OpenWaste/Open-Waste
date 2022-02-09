@@ -4,7 +4,7 @@ import { UserResource } from '../models/User';
 import { save } from '../utils/PersistInfo';
 
 const instance = axios.create({
-  baseURL: 'http://24.203.130.8:55012'
+  baseURL: 'https://digiwaste.systems:42069'
 });
 
 export default class Service {

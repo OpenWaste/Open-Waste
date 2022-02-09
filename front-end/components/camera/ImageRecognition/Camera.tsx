@@ -193,5 +193,4 @@ const ImageSubmissionButton = (props: ImageSubmissionButtonProperties) => {
   );
 };
 
-export default DisplayCamera;
 export { MapModal, CameraTriggerButton, PredictionText, PostPictureSnapButtons, ImageSubmissionButton, CameraView, PicturePreview };
