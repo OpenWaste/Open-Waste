@@ -235,7 +235,7 @@ class UpdateApiView(APIView):
             returned_category_instructions = []
             for ci in category_instructions:
                 category = Category.objects.get(pk=ci[0])
-                returned_category_instructions.append({category.name, ci[1]})
+                returned_category_instructions.append({"category_name":category.name, "instruction":ci[1]})
 
             # success: 200 OK
             return Response({"categories": category_list, "category_instructions": returned_category_instructions}, status=status.HTTP_200_OK)

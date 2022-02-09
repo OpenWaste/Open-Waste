@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { PredictionResponse } from '../interfaces/service-types';
-import { ImageSubmissionResource } from '../models/ImageSubmission';
+import { PredictionResponse, UpdateResponse } from '../interfaces/service-types';
 import { UserResource } from '../models/User';
+import { save } from '../utils/PersistInfo';
 
 const instance = axios.create({
   baseURL: 'https://digiwaste.systems:42069'
@@ -9,8 +9,8 @@ const instance = axios.create({
 
 export default class Service {
 
-  private static async post(endpoint: string, resource: any) {
-    return instance.post(`/${endpoint}`, resource)
+  private static async post<T>(endpoint: string, resource: any) {
+    return instance.post<T>(`/${endpoint}`, resource)
   }
 
   static submitImagePrediction(base64Image: string | undefined): Promise<PredictionResponse> {
@@ -100,19 +100,20 @@ export default class Service {
     return resp
   }
   
-  private static async get(endpoint: string) { 
-    return instance.get(`/${endpoint}`)
+  private static async get<T>(endpoint: string) { 
+    return instance.get<T>(`/${endpoint}`)
   }
 
-  static getImageCategory(): Promise<Object> {
-    return new Promise((resolve, reject) => {
-      this.get('update')
-        .then(a => {
-          resolve(a.data)
-        })
-        .catch(error => {
-          reject(error)
-        })
-    });
+  /**
+   * This function is called on app bootup (from App.tsx) to fetch categories and instructions;
+   * This information is then stored locally using expo-secure-storage
+   * The data can be retrieved using the getValueFor() function found in PersistInfo.tsx
+   */
+  static updateApplicationCache(): void {
+    this.get<UpdateResponse>('update')
+      .then(resp => {
+        save("categories", JSON.stringify(resp.data.categories))
+        save("category_instructions", JSON.stringify(resp.data.category_instructions))
+      })
   }
 }
