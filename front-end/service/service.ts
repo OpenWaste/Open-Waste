@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { PredictionResponse } from '../interfaces/service-types';
-import { ImageSubmissionResource } from '../models/ImageSubmission';
 import { UserResource } from '../models/User';
 
 const instance = axios.create({
