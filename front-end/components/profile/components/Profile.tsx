@@ -38,9 +38,7 @@ export class Profile extends React.Component {
                 <Button style={style.editBtn} onPress={() => this.props.navigation.navigate('EditProfile')}> Edit Profile </Button>
                 <LogOutBtn/>
               </View>
-              <GetEmail/>
-              <InfoBox style={style} iconName="image-search" headerText="Submitted Images" infoText=""/>
-              <InfoBox style={style} iconName="image" headerText="Accepted Images" infoText="" />
+              <ProfileInformation/>
             </ScrollView>
           </SafeAreaView>
         </NativeBaseProvider>
@@ -77,17 +75,29 @@ function LogOutBtn(){
   
 }
 
-function GetEmail() {
+function ProfileInformation() {
   const [email, setEmail] = React.useState('');
+  const [submittedImages, setSubmittedImages] = React.useState('');
+  const [acceptedImages, setAcceptedImages] = React.useState('');
 
   useEffect(() => {
     getValueFor('email').then((output) => {
       setEmail(output)
     });
+    getValueFor('submitted_images').then((output) => {
+      setSubmittedImages(output)
+    });
+    getValueFor('accepted_images').then((output) => {
+      setAcceptedImages(output)
+    });
   })
 
   return (
+    <>
     <InfoBox style={style} iconName="alternate-email" headerText="Email" infoText={email} />
+    <InfoBox style={style} iconName="image-search" headerText="Submitted Images" infoText={submittedImages}/>
+    <InfoBox style={style} iconName="image" headerText="Accepted Images" infoText={acceptedImages} />
+    </>
   );
 }
 
