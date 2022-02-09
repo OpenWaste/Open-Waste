@@ -3,7 +3,7 @@ import { PredictionResponse } from '../interfaces/service-types';
 import { UserResource } from '../models/User';
 
 const instance = axios.create({
-  baseURL: 'http://24.203.130.8:55012'
+  baseURL: 'https://digiwaste.systems:42069'
 });
 
 export default class Service {
