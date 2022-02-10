@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { PredictionResponse, UpdateResponse } from '../interfaces/service-types';
 import { UserResource } from '../models/User';
-import { save } from '../utils/PersistInfo';
+import { save, getValueFor } from '../utils/PersistInfo';
 
 const instance = axios.create({
   baseURL: 'https://digiwaste.systems:42069'
@@ -26,10 +26,14 @@ export default class Service {
   }
 
   static async submitImageCategory(image: string, category: string) {
-    const resource = {
+    let resource = {
       category: category,
       image: image
     }
+    let email = await getValueFor('email')
+
+    if(email != undefined)
+      resource.email = email;
 
     let resp = await Service.post('image-submission', resource);
     return resp
@@ -46,7 +50,7 @@ export default class Service {
     return resp
   }
 
-  static async authenticateUser(data: UserResource) {
+  static async authenticateUser(data: UserResource):Promise<Object> {
     const resource = {
       username: data.username,
       password: data.password
@@ -63,15 +67,6 @@ export default class Service {
     }
 
     let resp = await Service.post('update-password', resource);
-    return resp
-  }
-
-  static returnUserInfo(data: UserResource): Promise<Object> {
-    const resource = {
-      username: data.username,
-    }
-
-    let resp = Service.post('user', resource);
     return resp
   }
 
@@ -112,8 +107,8 @@ export default class Service {
   static updateApplicationCache(): void {
     this.get<UpdateResponse>('update')
       .then(resp => {
-        save("categories", JSON.stringify(resp.data.categories))
-        save("category_instructions", JSON.stringify(resp.data.category_instructions))
+        save("categories", resp.data.categories)
+        save("category_instructions", resp.data.category_instructions)
       })
   }
 }

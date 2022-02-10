@@ -35,7 +35,6 @@ function LoginForm(){
   const showPass = () => setShow(!show)
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [email, setEmail] = React.useState('');
  
   const navigation = useNavigation();
 
@@ -50,21 +49,14 @@ function LoginForm(){
 
     // Get response from authenticate-user endpoint
     Service.authenticateUser(user).then(resp => {
-      if(resp.data == 'Authentication failed.'){
-        showMessage({ message: 'Authentication Failed', type: 'danger' });
-      }
-      else{
-        Service.returnUserInfo(user).then((resp) => {
-          save('email', resp.data.email)
-        }).catch(error => {
-          console.log(error.response)
-        })
+      save('email', resp.data.email)
+      save('username', username)
+      save('submitted_images', resp.data.submitted_images)
+      save('accepted_images', resp.data.accepted_images)
 
-        save('username', username)
-
-        navigation.navigate('ProfilePage');
-        showMessage({ message: 'Success!', type: 'success' });
-      }
+      navigation.navigate('ProfilePage');
+      showMessage({ message: 'Success!', type: 'success' });
+      
     }).catch(error => {
       showMessage({ message: error.toJSON().message, type: 'warning' }); 
     })

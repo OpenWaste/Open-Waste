@@ -26,7 +26,6 @@ from Components.views import (
     DeleteUser,
     UpdateUsernameAndEmail,
     ResetPassword,
-    GetUserInfo
 )
 import os
 
@@ -40,7 +39,6 @@ urlpatterns = [
     path('create-user', CreateUser.as_view()),
     path('authenticate-user', AuthenticateUser.as_view()),
     path('update-password', UpdatePassword.as_view()),
-    path('user', GetUserInfo.as_view()),
     path('delete-user', DeleteUser.as_view()),
     path('update-username-email', UpdateUsernameAndEmail.as_view()),
     path('reset-password', ResetPassword.as_view())
