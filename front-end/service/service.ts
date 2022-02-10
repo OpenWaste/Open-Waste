@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { PredictionResponse, UpdateResponse } from '../interfaces/service-types';
 import { UserResource } from '../models/User';
-import { save } from '../utils/PersistInfo';
+import { save, getValueFor } from '../utils/PersistInfo';
 
 const instance = axios.create({
   baseURL: 'https://digiwaste.systems:42069'
@@ -26,10 +26,14 @@ export default class Service {
   }
 
   static async submitImageCategory(image: string, category: string) {
-    const resource = {
+    let resource = {
       category: category,
       image: image
     }
+    let email = await getValueFor('email')
+
+    if(email != undefined)
+      resource.email = email;
 
     let resp = await Service.post('image-submission', resource);
     return resp
