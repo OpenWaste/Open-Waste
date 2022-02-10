@@ -49,7 +49,6 @@ export function ImageSubmission() {
   const handleSubmit = () => {
     Service.submitImageCategory(image, category).then((res) => {
       setStatusReponse(res.status);
-      console.log("Hello")
       setImageIsChosen(false);
     });
   };
