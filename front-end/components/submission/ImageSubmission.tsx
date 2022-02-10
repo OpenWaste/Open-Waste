@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { View } from "react-native";import styles from "./styles";
+import { View } from "react-native";
+import styles from "./styles";
 import {
   Text,
   Box,
@@ -12,25 +13,24 @@ import {
   Image,
   AlertDialog,
   AspectRatio,
-  Flex,
   NativeBaseProvider,
 } from "native-base";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
-import Service from "../../../service/service";
-import { getValueFor } from '../../../utils/PersistInfo';
+import Service from "../../service/service";
+import { getValueFor } from '../../utils/PersistInfo';
 
-export function ImageSubmission({ navigation }) {
+// To ignore color scheme warnings given for dropdown color
+import { LogBox } from "react-native";
+LogBox.ignoreLogs(['NativeBase: The contrast ratio of 1:1'])
+
+export function ImageSubmission() {
   const [image, setImage] = useState("");
   const [imageIsChosen, setImageIsChosen] = useState(false);
   const [categoriesList, setCategoriesList] = useState([]);
   const [category, setCategory] = useState("");
-  const [isOpen, setIsOpen] = React.useState(false);
   const [statusResponse, setStatusReponse] = React.useState(0);
   const cancelRef = React.useRef(null);
-
-  //Closes modal
-  const onClose = () => setIsOpen(false);
 
   //Opens the camera roll
   const pickImage = async () => {
@@ -49,9 +49,8 @@ export function ImageSubmission({ navigation }) {
   const handleSubmit = () => {
     Service.submitImageCategory(image, category).then((res) => {
       setStatusReponse(res.status);
-      setIsOpen(!isOpen);
+      console.log("Hello")
       setImageIsChosen(false);
-      navigation.navigate("DisplayCamera");
     });
   };
 
@@ -125,7 +124,7 @@ export function ImageSubmission({ navigation }) {
                   onValueChange={(itemValue) => setCategory(itemValue)}
                 >
                   {categoriesList.map((value) => {
-                    return <Select.Item label={value} value={value} />;
+                    return <Select.Item key={value} label={value} value={value} />;
                   })}
                 </Select>
                 <Box m="10">
@@ -134,8 +133,6 @@ export function ImageSubmission({ navigation }) {
                     <Center>
                       <AlertDialog
                         leastDestructiveRef={cancelRef}
-                        isOpen={isOpen}
-                        onClose={onClose}
                       >
                         <AlertDialog.Content>
                           <AlertDialog.CloseButton />
@@ -148,12 +145,11 @@ export function ImageSubmission({ navigation }) {
                               <Button
                                 variant="unstyled"
                                 colorScheme="coolGray"
-                                onPress={onClose}
                                 ref={cancelRef}
                               >
                                 Cancel
                               </Button>
-                              <Button colorScheme="primary" onPress={onClose}>
+                              <Button colorScheme="primary">
                                 OK
                               </Button>
                             </Button.Group>
