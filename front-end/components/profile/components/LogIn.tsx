@@ -35,7 +35,6 @@ function LoginForm(){
   const showPass = () => setShow(!show)
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [email, setEmail] = React.useState('');
  
   const navigation = useNavigation();
 
@@ -52,8 +51,8 @@ function LoginForm(){
     Service.authenticateUser(user).then(resp => {
       save('email', resp.data.email)
       save('username', username)
-      save('submitted_images', resp.data.submitted_images.toString())
-      save('accepted_images', resp.data.accepted_images.toString())
+      save('submitted_images', resp.data.submitted_images)
+      save('accepted_images', resp.data.accepted_images)
 
       navigation.navigate('ProfilePage');
       showMessage({ message: 'Success!', type: 'success' });

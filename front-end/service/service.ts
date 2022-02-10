@@ -103,8 +103,8 @@ export default class Service {
   static updateApplicationCache(): void {
     this.get<UpdateResponse>('update')
       .then(resp => {
-        save("categories", JSON.stringify(resp.data.categories))
-        save("category_instructions", JSON.stringify(resp.data.category_instructions))
+        save("categories", resp.data.categories)
+        save("category_instructions", resp.data.category_instructions)
       })
   }
 }

@@ -59,7 +59,7 @@ export function ImageSubmission({ navigation }) {
   useEffect(() => {
     if (categoriesList.length == 0) {
       getValueFor("categories").then(a => {
-        setCategoriesList(JSON.parse(a));
+        setCategoriesList(a);
       })
     }
   });
