@@ -3,29 +3,33 @@ import { View, ScrollView, SafeAreaView, Text, Image, Alert } from "react-native
 import style from "./styles/profile";
 import { Button, NativeBaseProvider } from 'native-base';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { useNavigation } from '@react-navigation/native';
 import { deleteValueFor, getValueFor } from '../../../utils/PersistInfo';
 import { showMessage } from "react-native-flash-message";
 
 export class Profile extends React.Component {
 
-  state = { username: "" };
-
-  componentDidUpdate(){
-    getValueFor('username').then(output => {
-      this.setState({ username: output })
-    })
+  constructor(props) {
+    super(props);
+    this.state = { username: null };
+  }
+  
+  componentDidMount() {
+    this.focusSubscription = this.props.navigation.addListener('focus', () => {
+      getValueFor('username').then(output => {
+        this.setState({ username: output })
+      }).catch(() => this.setState({username:null}))
+    }
+  );
+  }
+  componentWillUnmount() {
+    this.focusSubscription()
   }
 
-  componentDidMount(){
-    getValueFor('username').then(output => {
-      this.setState({ username: output })
-    })
-  }
 
   render() {
-
+    
     if(this.state.username != null){
+      
       return (
         <NativeBaseProvider>
           <SafeAreaView>
@@ -36,7 +40,7 @@ export class Profile extends React.Component {
               <Text style={style.username}> {this.state.username} </Text>
               <View style={style.btnView}>
                 <Button style={style.editBtn} onPress={() => this.props.navigation.navigate('EditProfile')}> Edit Profile </Button>
-                <LogOutBtn/>
+                <this.LogOutBtn/>
               </View>
               <ProfileInformation/>
             </ScrollView>
@@ -58,25 +62,26 @@ export class Profile extends React.Component {
       );
     }
   }
-}
 
-function LogOutBtn(){
+   LogOutBtn = () =>{
 
-  const navigation = useNavigation();
-
-  const handleLogOut = () => {
-    deleteValueFor('username');
-    deleteValueFor('email');
-    deleteValueFor('submitted_images');
-    deleteValueFor('accepted_images');
-    showMessage({ message: 'Logged Out', type: 'success' });
-  }
-
-  return (
-    <Button style={style.logOutBtn} onPress={handleLogOut}> Log Out </Button>
-  )
+    const handleLogOut = () => {
+      deleteValueFor('username');
+      deleteValueFor('email');
+      deleteValueFor('submitted_images');
+      deleteValueFor('accepted_images');
+      this.setState({username:null})
+      showMessage({ message: 'Logged Out', type: 'success' });
+    }
   
+    return (
+      <Button style={style.logOutBtn} onPress={handleLogOut}> Log Out </Button>
+    )
+    
+  }
 }
+
+
 
 function ProfileInformation() {
   const [email, setEmail] = React.useState('');
