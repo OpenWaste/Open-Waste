@@ -179,11 +179,15 @@ class ImageSubmissionApiView(APIView):
             # values
             category = request.data['category']
             image = request.data['image']
-            email = request.data['email']
+            email = None
+            try:
+                email = request.data['email']
+            except:
+                pass
             
             # get the category selected
             category_selected = Category.objects.get(name=category)
-            user = DWUser.objects.get(email=email)
+            user = DWUser.objects.get(email=email) if email is not None else None
 
             ImageSubmission(
                 category=category_selected,
