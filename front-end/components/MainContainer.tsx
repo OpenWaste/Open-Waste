@@ -11,11 +11,11 @@ import { ProfileNavigator } from "./profile/ProfileNavigator";
 import { ImageSubmission } from "./submission/ImageSubmission";
 
 const screens = [
+  { name: "Map", component: Map, icon: "map" },
   { name: "Submission", component: ImageSubmission, icon: "upload-file"},
   { name: "Camera", component: DisplayCamera, icon: "photo-camera" },
-  { name: "Map", component: Map, icon: "map" },
-  { name: "Settings", component: Settings, icon: "settings" },
   { name: "Profile", component: ProfileNavigator, icon: "person" },
+  { name: "Settings", component: Settings, icon: "settings" },
 ];
 
 const Tab = createBottomTabNavigator();
