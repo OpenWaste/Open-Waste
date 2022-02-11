@@ -83,7 +83,7 @@ class ImageSubmission(models.Model):
     category = models.ForeignKey(
         Category, to_field='name', on_delete=models.CASCADE, default=1)
     submission_Image = models.ImageField(
-        null=True, blank=True, upload_to=settings.ACCEPTED_TRASH_IMG_PATH)
+        null=True, blank=True, upload_to=settings.IMAGE_SUBMISSION_PATH)
     is_accepted = models.BooleanField(default=False)
     submitted_by = models.ForeignKey(
-        DWUser, on_delete=models.CASCADE, default=1)
+        DWUser, on_delete=models.CASCADE, default=1,  null=True)

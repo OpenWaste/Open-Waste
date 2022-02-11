@@ -57,7 +57,7 @@ export function ImageSubmission() {
   useEffect(() => {
     if (categoriesList.length == 0) {
       getValueFor("categories").then(a => {
-        setCategoriesList(JSON.parse(a));
+        setCategoriesList(a);
       })
     }
   });

@@ -155,7 +155,7 @@ AUTH_USER_MODEL = 'Components.DWUser'
 CATEGORY_IMG_PATH = 'sample_images/'
 BUILDING_IMG_PATH = 'building_images/'
 BIN_IMG_PATH = 'bin_images/'
-ACCEPTED_TRASH_IMG_PATH = 'accepted_trash_images/'
+IMAGE_SUBMISSION_PATH = 'image_submissions/'
 PROFILE_PICTURE_PATH = 'profile_pictures/'
 
 # SEND EMAIL SETTINGS

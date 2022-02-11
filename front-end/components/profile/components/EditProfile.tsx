@@ -155,6 +155,8 @@ function DeleteAccount() {
       // If response is good, delete persistent data
       deleteValueFor('username');
       deleteValueFor('email');
+      deleteValueFor('submitted_images');
+      deleteValueFor('accepted_images');
       // Redirect and show success message
       navigation.navigate('ProfilePage');
       showMessage({ message: 'Successfully Deleted Account', type: 'success' })
