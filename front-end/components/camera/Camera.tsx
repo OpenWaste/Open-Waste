@@ -14,7 +14,7 @@ import style from "./styles";
 import { Button, NativeBaseProvider } from "native-base";
 import Service from "../../service/service";
 import { useIsFocused } from "@react-navigation/native";
-import MapView from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { MapModalProperties, CameraTriggerButtonProperties, PredictionTextProperties, PostPictureSnapButtonsProperties, CameraViewProperties, PicturePreviewProperties } from "../../interfaces/camera-types";
 
 export default function DisplayCamera() {
@@ -106,7 +106,9 @@ const MapModal = (props: MapModalProperties) => {
         <View style={style.modalView}>
 
           <MaterialIcons testID="modal-close" style={style.modalCloseButton} name="cancel" size={30} onPress={() => props.visibilitySetter(false)} />
-          <MapView style={style.map}
+          <MapView
+            style={style.map}
+            provider={PROVIDER_GOOGLE}
             initialRegion={{
               latitude: 45.494862,
               longitude: -73.57790,
