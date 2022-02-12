@@ -236,19 +236,57 @@ class ResetPassword(APIView):
     def post(self, request):
         try:
             # requested email
-            email = request.data['email']
+            email = request.data['email'].lower()
 
-            # sends an email to the request email (subject, message, from, to)
-            send_mail(
+            user = DWUser.objects.get(email=email) 
+            # success: 200 OK
+            if user is not None:
+
+                passcode = DWUser.objects.make_random_password(length=8)
+
+                # sends an email to the request email (subject, message, from, to)
+                send_mail(
                 'Password reset',
-                'You requested a password reset. Here is your passcode: 123456',
+                'Hey ' + user.username + ', you requested a password reset. Here is your passcode: ' + passcode,
                 'DigiWaste Concordia',
                 [email],
                 fail_silently=False,
                 )
-        # success: 200 OK
-            return Response(
+                user.passcode = passcode
+                user.save()
+                # success: 200 OK
+                return Response(
                         {"The email has been sent"},
+                        status=status.HTTP_200_OK
+                        )
+        except Exception as e:
+            # error: 400 BAD REQUEST
+            return Response(
+                {e.__class__.__name__: str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+class VerifyEmail(APIView):
+
+    def post(self, request):
+        try:
+            # requested passcode
+            passcode = request.data['passcode']
+            email = request.data['email'].lower()
+
+            user = DWUser.objects.get(passcode=passcode, email=email)
+            # success: 200 OK
+            if user is not None:
+                # Returned info
+                info = {
+                    "username": user.username,
+                }
+                # Reset the passcode to the default value (empty string)
+                user.passcode = ''
+                user.save()
+                # success: 200 OK
+                return Response(
+                        info,
                         status=status.HTTP_200_OK
                         )
         except Exception as e:

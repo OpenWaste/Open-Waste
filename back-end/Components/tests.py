@@ -298,13 +298,15 @@ class ResetPassword(TestCase):
     def setUp(self):
         self.client = Client()
         self.path = '/reset-password'
+         # create user
+        self.user = self.client.post(CREATE_USER_PATH, {'username': 'John',
+                                                        'email': TEST_EMAIL,
+                                                        'password': 'John123'})
 
     def test_reset_password_success(self):
-        # email example
-        valid_email = 'myemail@gmail.com'
         
         # POST to that email
-        response = self.client.post(self.path, {'email': valid_email})
+        response = self.client.post(self.path, {'email': TEST_EMAIL})
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue('The email has been sent' in response.data)
@@ -313,5 +315,31 @@ class ResetPassword(TestCase):
         
         # POST with no email
         response = self.client.post(self.path, {'': ""})
+
+        self.assertEqual(response.status_code, 400)
+
+class VerifyEmail(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.path = '/verify-email'
+        # create user
+        self.user = self.client.post(CREATE_USER_PATH, {'username': 'John',
+                                                        'email': TEST_EMAIL,
+                                                        'password': 'John123'})
+    def test_verify_email_success(self):
+        # user
+        user_info = {'passcode': '',
+                     'email': TEST_EMAIL}
+        # POST to that email
+        response = self.client.post(self.path, user_info)
+            
+        self.assertEqual(response.status_code, 200)
+
+    def test_verify_email_fail(self):
+        # user
+        user_info = {'': '',
+                     '': ''}
+        # POST with no parameters
+        response = self.client.post(self.path, user_info)
 
         self.assertEqual(response.status_code, 400)
