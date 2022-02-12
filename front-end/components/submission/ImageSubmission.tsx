@@ -35,19 +35,21 @@ export function ImageSubmission() {
   //Opens the camera roll
   const pickImage = async () => {
     let res = await ImagePicker.launchImageLibraryAsync({
+      base64: true,
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: false,
     });
 
     if (!res.cancelled) {
-      setImage(res.uri);
+      setImage(res);
       setImageIsChosen(!imageIsChosen);
+      setImageIsChosen(true);
     }
   };
 
   //Calls the service to submit using POST
   const handleSubmit = () => {
-    Service.submitImageCategory(image, category).then((res) => {
+    Service.submitImageCategory(image.base64, category).then((res) => {
       setStatusReponse(res.status);
       setImageIsChosen(false);
     });
@@ -77,15 +79,19 @@ export function ImageSubmission() {
               </Text>
             </Box>
             {imageIsChosen ? (
-              <AspectRatio w="100%" ratio={1}>
+              <Button 
+              variant="unstyled" 
+              onPress={pickImage}>
+                <AspectRatio w="100%" ratio={1}>
                 <Image
                   style={{ resizeMode: "contain" }}
                   width="100%"
                   height="100%"
-                  source={{ uri: image }}
+                  source={{ uri: image.uri }}
                   alt="chosen image"
                 />
               </AspectRatio>
+              </Button>
             ) : (
               <Box
                 p="1"
