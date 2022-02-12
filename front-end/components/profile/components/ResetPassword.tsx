@@ -8,6 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import { showMessage } from "react-native-flash-message";
 import Service from "../../../service/service";
 import { deleteValueFor, getValueFor } from '../../../utils/PersistInfo';
+import { UserResource } from "../../../models/User";
 
 export class ResetPassword extends React.Component {
   img = require("../../../assets/forgotpass.png");
