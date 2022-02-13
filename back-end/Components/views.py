@@ -2,13 +2,14 @@ import base64
 import io
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, serializers
 from Components.models import Category, CategoryInstructions, ImageSubmission, DWUser
 from Components.serializer import ImageRecognitionSerializer
 from rest_framework.parsers import MultiPartParser
 from Components.machine_learning.predictor import Predictor
 from django.contrib.auth import authenticate
 from django.core.mail import send_mail
+from django.core.files.base import ContentFile
 
 
 class CreateUser(APIView):
@@ -180,8 +181,24 @@ class ImageSubmissionApiView(APIView):
             category = request.data['category']
             image = request.data['image']
             email = None
+
+            # valid base64 string can start with "data:image..."
+            if image.startswith("data:image/jpeg;base64,"):
+                format, imgstr = image.split(';base64,') 
+                ext = format.split('/')[-1]
+                
+                # decode it to get the actual image
+                image = ContentFile(base64.b64decode(imgstr), name='submitted_image.' + ext)
+            # valid base64 string starts with "/9j/4AA..."
+            elif image.startswith("/9j/4AAQSkZJRgABA"):
+                # decode the image
+                image = ContentFile(base64.b64decode(image), name='submitted_image.jpeg')
+            else:
+                raise serializers.ValidationError("Invalid base64 jpeg image provided")
+            
+            
             try:
-                email = request.data['email']
+                email = request.data['email']  
             except:
                 pass
             
