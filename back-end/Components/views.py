@@ -188,12 +188,13 @@ class ImageSubmissionApiView(APIView):
                 ext = format.split('/')[-1]
                 
                 # decode it to get the actual image
-                image = ContentFile(base64.b64decode(imgstr), name='submitted_image.' + ext)
+                image = ContentFile(base64.b64decode(imgstr), name=f'{category}_image.' + ext)
             # valid base64 string starts with "/9j/4AA..."
             elif image.startswith("/9j/4AAQSkZJRgABA"):
                 # decode the image
-                image = ContentFile(base64.b64decode(image), name='submitted_image.jpeg')
+                image = ContentFile(base64.b64decode(image), name=f'{category}_image.jpeg')
             else:
+                # if its not a base 64, its not valid
                 raise serializers.ValidationError("Invalid base64 jpeg image provided")
             
             
