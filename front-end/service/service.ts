@@ -109,6 +109,8 @@ export default class Service {
       .then(resp => {
         save("categories", resp.data.categories)
         save("category_instructions", resp.data.category_instructions)
+        save("bins", resp.data.bins)
+        save("buildings", resp.data.buildings)
       })
   }
 }
