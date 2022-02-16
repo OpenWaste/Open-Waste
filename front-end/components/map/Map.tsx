@@ -1,44 +1,39 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { View } from "react-native";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import { getValueFor } from "../../utils/PersistInfo";
 import styles from "./styles";
 
-interface Region {
-  latitude: number,
-  longitude: number,
-  latitudeDelta: number,
-  longitudeDelta: number,
-}
+export function Map() {
+  const [region, setRegion] = useState({
+    latitude: 45.494862,
+    longitude: -73.57790,
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.01
+  });
+  const [bins, setBins] = useState([]);
+  const [buildings, setBuildings] = useState([]);
 
-export class Map extends Component<{}, {region: Region}> {
-  constructor(props:any) {
-    super(props);
-    this.state = {
-      region: {
-        latitude: 45.494862,
-        longitude: -73.57790,
-        latitudeDelta: 0.01,
-        longitudeDelta: 0.01,
-      },
-    };
-  }
-  // TODO: set initial state of region to current location
-  // componentDidMount() {}
-  
-  onRegionChange = (region:Region) => {
-    (this.state.region as Region) = region
-  }
+  useEffect(() => {
+    if (!bins || bins.length == 0) {
+      getValueFor('bins').then(bins => {
+        setBins(bins);
+      })
+    }
+    if (!buildings || buildings.length == 0) {
+      getValueFor('buildings').then(buildings => {
+        setBuildings(buildings);
+      })
+    }
+  })
 
-  render() {
-    return (
-      <View>
-        <MapView
-          region={this.state.region}
-          provider={PROVIDER_GOOGLE}
-          style={styles.map}
-          onRegionChange={this.onRegionChange}
-        />
-      </View>
-    );
-  }
+  return (
+    <View>
+      <MapView
+        region={region}
+        provider={PROVIDER_GOOGLE}
+        style={styles.map}
+      />
+    </View>
+  );
 }
