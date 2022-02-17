@@ -89,4 +89,21 @@ export default StyleSheet.create({
     position: "absolute",
     left: 55,
   },
+
+  swipeUpWindowContent: {flex: 1, marginTop: 40},
+  swipeUpWindowHeader: {
+    flex: 1,
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 40,
+    backgroundColor: '#F1F1F1',
+  },
+  swipeUpWindowHeaderContent:{
+    marginTop: 0,
+  },
+  swipeUpWindowModal: {
+    backgroundColor: '#005252',
+    marginTop: 0,
+  }
 });
