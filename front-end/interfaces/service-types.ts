@@ -14,7 +14,14 @@ interface CategoryInstruction {
     instruction:string
 }
 
-interface Bin {
+export interface Region {
+    latitude:number,
+    longitude:number,
+    latitudeDelta:number,
+    longitudeDelta:number
+}
+
+export interface Bin {
     id:number
     building_id:number
     address:string
@@ -25,7 +32,7 @@ interface Bin {
     accepted_categories:string
 }
 
-interface Building {
+export interface Building {
     id:number
     building_name:string
 }
