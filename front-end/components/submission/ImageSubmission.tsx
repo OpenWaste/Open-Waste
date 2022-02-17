@@ -29,8 +29,10 @@ export function ImageSubmission() {
   const [imageIsChosen, setImageIsChosen] = useState(false);
   const [categoriesList, setCategoriesList] = useState([]);
   const [category, setCategory] = useState("");
-  const [statusResponse, setStatusReponse] = React.useState(0);
   const cancelRef = React.useRef(null);
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const onClose = () => setIsOpen(false);
 
   //Opens the camera roll
   const pickImage = async () => {
@@ -48,11 +50,17 @@ export function ImageSubmission() {
   };
 
   //Calls the service to submit using POST
-  const handleSubmit = () => {
-    Service.submitImageCategory(image.base64, category).then((res) => {
-      setStatusReponse(res.status);
-      setImageIsChosen(false);
-    });
+  const handleSubmit = async () => {
+        await Service.submitImageCategory(image.base64, category).then(res => {
+        if(res == 200)
+        {
+          setIsOpen(!isOpen);
+          setImageIsChosen(false);
+          setCategory("");
+        }
+      }).catch( () => {
+         //left it here to avoid unpromise
+      });
   };
 
   //Gets list of categories from endpoint
@@ -134,10 +142,9 @@ export function ImageSubmission() {
                 </Select>
                 <Box m="10">
                   <Button onPress={handleSubmit}> Submit </Button>
-                  {statusResponse === 0 ? (
                     <Center>
                       <AlertDialog
-                        leastDestructiveRef={cancelRef}
+                        leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}
                       >
                         <AlertDialog.Content>
                           <AlertDialog.CloseButton />
@@ -150,11 +157,12 @@ export function ImageSubmission() {
                               <Button
                                 variant="unstyled"
                                 colorScheme="coolGray"
+                                onPress={onClose}
                                 ref={cancelRef}
                               >
                                 Cancel
                               </Button>
-                              <Button colorScheme="primary">
+                              <Button colorScheme="primary" onPress={onClose}>
                                 OK
                               </Button>
                             </Button.Group>
@@ -162,9 +170,6 @@ export function ImageSubmission() {
                         </AlertDialog.Content>
                       </AlertDialog>
                     </Center>
-                  ) : (
-                    <></>
-                  )}
                 </Box>
               </FormControl>
             </Box>

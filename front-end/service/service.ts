@@ -35,8 +35,9 @@ export default class Service {
     if(email != undefined)
       resource.email = email;
 
-    let resp = await Service.post('image-submission', resource);
-    return resp
+  let response =  await Service.post('image-submission', resource)
+
+    return response.status;
   }
 
   static async submitAccountCreation(data: UserResource) {
