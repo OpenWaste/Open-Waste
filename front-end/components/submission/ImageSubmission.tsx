@@ -31,8 +31,9 @@ export function ImageSubmission() {
   const [category, setCategory] = useState("");
   const cancelRef = React.useRef(null);
   const [isOpen, setIsOpen] = React.useState(false);
+  const [isError, setIsError] = React.useState(false);
 
-  const onClose = () => setIsOpen(false);
+  const onClose = () => {setIsOpen(false), setIsError(false)};
 
   //Opens the camera roll
   const pickImage = async () => {
@@ -51,15 +52,14 @@ export function ImageSubmission() {
 
   //Calls the service to submit using POST
   const handleSubmit = async () => {
-        await Service.submitImageCategory(image.base64, category).then(res => {
-        if(res == 200)
-        {
+        await Service.submitImageCategory(image.base64, category)
+        .then( () => {
           setIsOpen(!isOpen);
           setImageIsChosen(false);
           setCategory("");
-        }
-      }).catch( () => {
-         //left it here to avoid unpromise
+        })
+        .catch( () => {
+         setIsError(!isError);
       });
   };
 
@@ -151,6 +151,36 @@ export function ImageSubmission() {
                           <AlertDialog.Header>Success</AlertDialog.Header>
                           <AlertDialog.Body>
                             Your image was successfully submitted.
+                          </AlertDialog.Body>
+                          <AlertDialog.Footer>
+                            <Button.Group space={2}>
+                              <Button
+                                variant="unstyled"
+                                colorScheme="coolGray"
+                                onPress={onClose}
+                                ref={cancelRef}
+                              >
+                                Cancel
+                              </Button>
+                              <Button colorScheme="primary" onPress={onClose}>
+                                OK
+                              </Button>
+                            </Button.Group>
+                          </AlertDialog.Footer>
+                        </AlertDialog.Content>
+                      </AlertDialog>
+                    </Center>
+
+                    <Center>
+                      <AlertDialog
+                        leastDestructiveRef={cancelRef} isOpen={isError} onClose={onClose}
+                      >
+                        <AlertDialog.Content>
+                          <AlertDialog.CloseButton />
+                          <AlertDialog.Header>Error</AlertDialog.Header>
+                          <AlertDialog.Body>
+                            Selected image was not submitted 
+                            Please try again later.
                           </AlertDialog.Body>
                           <AlertDialog.Footer>
                             <Button.Group space={2}>
