@@ -6,6 +6,8 @@ import json
 
 CONTENT_TYPE = 'application/json'
 TEST_EMAIL = 'John@gmail.com'
+USER_NAME = 'John'
+PASSWORD = 'John123'
 CREATE_USER_PATH = '/create-user'
 
 class CreateUser(TestCase):
@@ -15,9 +17,9 @@ class CreateUser(TestCase):
 
     def test_user_creation_success(self):
         # user
-        user_info = {'username': 'John',
+        user_info = {'username': USER_NAME,
                      'email': TEST_EMAIL,
-                     'password': 'John123'}
+                     'password': PASSWORD}
 
         # post request
         response = self.client.post(self.path, user_info)
@@ -27,8 +29,8 @@ class CreateUser(TestCase):
 
     def test_user_creation_fail(self):
         # user
-        user_info = {'username': 'John',
-                     'password': 'John123'}
+        user_info = {'username': USER_NAME,
+                     'password': PASSWORD}
 
         # post request
         response = self.client.post(self.path, user_info)
@@ -41,14 +43,14 @@ class AuthenticateUser(TestCase):
     def setUp(self):
         self.client = Client()
         self.path = '/authenticate-user'
-        self.user = self.client.post(CREATE_USER_PATH, {'username': 'John',
+        self.user = self.client.post(CREATE_USER_PATH, {'username': USER_NAME,
                                                       'email': TEST_EMAIL,
-                                                      'password': 'John123'})
+                                                      'password': PASSWORD})
 
     def test_authenticate_user_success_correct(self):
         # user
-        user_info = {'username': 'John',
-                     'password': 'John123'}
+        user_info = {'username': USER_NAME,
+                     'password': PASSWORD}
 
         # post request
         response = self.client.post(self.path, user_info)
@@ -58,8 +60,8 @@ class AuthenticateUser(TestCase):
 
     def test_authenticate_user_success_incorrect(self):
         # user
-        user_info = {'username': 'John',
-                     'password': 'John1234'}
+        user_info = {'username': USER_NAME,
+                     'password': PASSWORD}
 
         # post request
         response = self.client.post(self.path, user_info)
@@ -69,7 +71,7 @@ class AuthenticateUser(TestCase):
 
     def test_authenticate_user_fail_missing_param(self):
         # user
-        user_info = {'password': 'John1234'}
+        user_info = {'password': PASSWORD}
 
         # post request
         response = self.client.post(self.path, user_info)
@@ -85,7 +87,7 @@ class UpdatePassword(TestCase):
 
     def test_update_password_fail(self):
         # user
-        user_info = {'password': 'John123'}
+        user_info = {'password': PASSWORD}
 
         # patch request
         response = self.client.patch(self.path, user_info)
@@ -98,13 +100,13 @@ class UpdateUsernameAndEmail(TestCase):
     def setUp(self):
         self.client = Client()
         self.path = '/update-username-email'
-        self.user = self.client.post(CREATE_USER_PATH, {'username': 'John',
+        self.user = self.client.post(CREATE_USER_PATH, {'username': USER_NAME,
                                                       'email': TEST_EMAIL,
-                                                      'password': 'John123'})
+                                                      'password': PASSWORD})
 
     def test_update_username_and_email_success(self):
         # user
-        users_info = {'old_username': 'John',
+        users_info = {'old_username': USER_NAME,
                       'new_username': 'JohnCena',
                       'email': 'YouCannotSeeMe@gmail.com'}
 
@@ -136,12 +138,12 @@ class DeleteUser(TestCase):
 
     def test_delete_user_success(self):
         # create user
-        self.user = DWUser.objects.create_user({'username': 'John',
+        self.user = DWUser.objects.create_user({'username': USER_NAME,
                                                 'email': TEST_EMAIL,
-                                                'password': 'John123'})
+                                                'password': PASSWORD})
 
         # user
-        user_info = {'username': 'John'}
+        user_info = {'username': USER_NAME}
 
         # delete request
         response = self.client.delete(
@@ -299,9 +301,9 @@ class ResetPassword(TestCase):
         self.client = Client()
         self.path = '/reset-password'
          # create user
-        self.user = self.client.post(CREATE_USER_PATH, {'username': 'John',
+        self.user = self.client.post(CREATE_USER_PATH, {'username': USER_NAME,
                                                         'email': TEST_EMAIL,
-                                                        'password': 'John123'})
+                                                        'password': PASSWORD})
 
     def test_reset_password_success(self):
         
@@ -323,9 +325,9 @@ class VerifyEmail(TestCase):
         self.client = Client()
         self.path = '/verify-email'
         # create user
-        self.user = self.client.post(CREATE_USER_PATH, {'username': 'John',
+        self.user = self.client.post(CREATE_USER_PATH, {'username': USER_NAME,
                                                         'email': TEST_EMAIL,
-                                                        'password': 'John123'})
+                                                        'password': PASSWORD})
     def test_verify_email_success(self):
         # user
         user_info = {'passcode': '',
