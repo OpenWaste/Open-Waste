@@ -1,7 +1,7 @@
 from unicodedata import category
 from django.test import TestCase, Client
 from django.core.files.uploadedfile import SimpleUploadedFile
-from Components.models import Category, DWUser, CategoryInstructions
+from Components.models import Category, DWUser, CategoryInstructions, Bin, Building
 import json
 
 CONTENT_TYPE = 'application/json'
@@ -238,6 +238,16 @@ class ImageUpdate(TestCase):
             category=category_glass, instructions='1. dispose in trash bin 5').save()
         CategoryInstructions(
             category=category_trash, instructions='1. dispose in trash bin 6').save()
+
+        Building(1, 'hall building').save()  # For foreign key
+        Bin(id=1,
+            address='123 address street',
+            latitude=45.494800,
+            longitude=-73.57790,
+            floor_num=1,
+            location_description='description',
+            accepted_categories='C1',
+            building_id=1).save()
 
         # mock returned json
         update_mock = open('Components/mocks/update_mock.json')

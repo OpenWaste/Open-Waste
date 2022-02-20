@@ -3,7 +3,7 @@ import io
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, serializers
-from Components.models import Category, CategoryInstructions, ImageSubmission, DWUser
+from Components.models import *
 from Components.serializer import ImageRecognitionSerializer
 from rest_framework.parsers import MultiPartParser
 from Components.machine_learning.predictor import Predictor
@@ -231,18 +231,26 @@ class UpdateApiView(APIView):
     def get(self, request):
         try:
             # values
-            category = Category.objects.values_list('name')
-            category_list = [item for sublist in category for item in sublist]
+            category_list = Category.objects.values_list('name', flat=True)
             category_instructions = CategoryInstructions.objects.values_list(
                 'category', 'instructions')
 
             returned_category_instructions = []
-            for ci in category_instructions:
-                category = Category.objects.get(pk=ci[0])
-                returned_category_instructions.append({"category_name":category.name, "instruction":ci[1]})
+            for c, i in category_instructions:
+                category = Category.objects.get(pk=c)
+                returned_category_instructions.append({"category_name":category.name, "instruction":i})
+
+            bins = Bin.objects.values()
+            buildings = Building.objects.values()
 
             # success: 200 OK
-            return Response({"categories": category_list, "category_instructions": returned_category_instructions}, status=status.HTTP_200_OK)
+            return Response({
+                "categories": category_list,
+                "category_instructions": returned_category_instructions,
+                "bins":bins,
+                "buildings": buildings
+                },
+                status=status.HTTP_200_OK)
 
         except Exception as e:
             # error: 404 NOT FOUND
