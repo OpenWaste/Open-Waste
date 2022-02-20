@@ -155,15 +155,11 @@ export function ImageSubmission() {
                           <AlertDialog.Footer>
                             <Button.Group space={2}>
                               <Button
-                                variant="unstyled"
-                                colorScheme="coolGray"
+                                variant="subtle"
                                 onPress={onClose}
                                 ref={cancelRef}
                               >
-                                Cancel
-                              </Button>
-                              <Button colorScheme="primary" onPress={onClose}>
-                                OK
+                                Got it!
                               </Button>
                             </Button.Group>
                           </AlertDialog.Footer>
@@ -185,15 +181,11 @@ export function ImageSubmission() {
                           <AlertDialog.Footer>
                             <Button.Group space={2}>
                               <Button
-                                variant="unstyled"
-                                colorScheme="coolGray"
+                                variant="subtle"
                                 onPress={onClose}
                                 ref={cancelRef}
                               >
-                                Cancel
-                              </Button>
-                              <Button colorScheme="primary" onPress={onClose}>
-                                OK
+                                Ok
                               </Button>
                             </Button.Group>
                           </AlertDialog.Footer>
