@@ -74,7 +74,7 @@ function ValidatePasscode(){
           onChangeText={(value:any) => setPasscode(value)}
         />
       </View>
-      <Button style={passStyle.submitBtn} onPress={handleSubmit}> Submit </Button>      
+      <Button style={passStyle.verifyText} onPress={handleSubmit}> Submit </Button>      
   </View>
   )
 }
