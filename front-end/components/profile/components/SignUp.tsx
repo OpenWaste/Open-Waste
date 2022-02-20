@@ -58,6 +58,8 @@ export function SignUpForm() {
       Service.submitAccountCreation(user).then((resp) => {
         save('username', username)
         save('email', email)
+        save('submitted_images', 0)
+        save('accepted_images', 0)
         navigation.navigate('ProfilePage');
         showMessage({ message: 'Success!', type: 'success' });
       }).catch(error => {

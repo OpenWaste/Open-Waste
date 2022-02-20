@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { View } from "react-native";import styles from "./styles";
+import { View } from "react-native";
+import styles from "./styles";
 import {
   Text,
   Box,
@@ -12,54 +13,54 @@ import {
   Image,
   AlertDialog,
   AspectRatio,
-  Flex,
   NativeBaseProvider,
 } from "native-base";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
-import Service from "../../../service/service";
+import Service from "../../service/service";
+import { getValueFor } from '../../utils/PersistInfo';
 
-export function ImageSubmission({ navigation }) {
+// To ignore color scheme warnings given for dropdown color
+import { LogBox } from "react-native";
+LogBox.ignoreLogs(['NativeBase: The contrast ratio of 1:1'])
+
+export function ImageSubmission() {
   const [image, setImage] = useState("");
   const [imageIsChosen, setImageIsChosen] = useState(false);
   const [categoriesList, setCategoriesList] = useState([]);
   const [category, setCategory] = useState("");
-  const [isOpen, setIsOpen] = React.useState(false);
   const [statusResponse, setStatusReponse] = React.useState(0);
   const cancelRef = React.useRef(null);
-
-  //Closes modal
-  const onClose = () => setIsOpen(false);
 
   //Opens the camera roll
   const pickImage = async () => {
     let res = await ImagePicker.launchImageLibraryAsync({
+      base64: true,
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: false,
     });
 
     if (!res.cancelled) {
-      setImage(res.uri);
+      setImage(res);
       setImageIsChosen(!imageIsChosen);
+      setImageIsChosen(true);
     }
   };
 
   //Calls the service to submit using POST
   const handleSubmit = () => {
-    Service.submitImageCategory(image, category).then((res) => {
+    Service.submitImageCategory(image.base64, category).then((res) => {
       setStatusReponse(res.status);
-      setIsOpen(!isOpen);
       setImageIsChosen(false);
-      navigation.navigate("DisplayCamera");
     });
   };
 
   //Gets list of categories from endpoint
   useEffect(() => {
     if (categoriesList.length == 0) {
-      Service.getImageCategory().then((response) => {
-        setCategoriesList(response.categories);
-      });
+      getValueFor("categories").then(a => {
+        setCategoriesList(a);
+      })
     }
   });
 
@@ -78,15 +79,19 @@ export function ImageSubmission({ navigation }) {
               </Text>
             </Box>
             {imageIsChosen ? (
-              <AspectRatio w="100%" ratio={1}>
+              <Button 
+              variant="unstyled" 
+              onPress={pickImage}>
+                <AspectRatio w="100%" ratio={1}>
                 <Image
                   style={{ resizeMode: "contain" }}
                   width="100%"
                   height="100%"
-                  source={{ uri: image }}
+                  source={{ uri: image.uri }}
                   alt="chosen image"
                 />
               </AspectRatio>
+              </Button>
             ) : (
               <Box
                 p="1"
@@ -124,7 +129,7 @@ export function ImageSubmission({ navigation }) {
                   onValueChange={(itemValue) => setCategory(itemValue)}
                 >
                   {categoriesList.map((value) => {
-                    return <Select.Item label={value} value={value} />;
+                    return <Select.Item key={value} label={value} value={value} />;
                   })}
                 </Select>
                 <Box m="10">
@@ -133,8 +138,6 @@ export function ImageSubmission({ navigation }) {
                     <Center>
                       <AlertDialog
                         leastDestructiveRef={cancelRef}
-                        isOpen={isOpen}
-                        onClose={onClose}
                       >
                         <AlertDialog.Content>
                           <AlertDialog.CloseButton />
@@ -147,12 +150,11 @@ export function ImageSubmission({ navigation }) {
                               <Button
                                 variant="unstyled"
                                 colorScheme="coolGray"
-                                onPress={onClose}
                                 ref={cancelRef}
                               >
                                 Cancel
                               </Button>
-                              <Button colorScheme="primary" onPress={onClose}>
+                              <Button colorScheme="primary">
                                 OK
                               </Button>
                             </Button.Group>

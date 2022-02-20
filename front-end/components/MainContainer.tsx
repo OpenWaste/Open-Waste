@@ -4,16 +4,18 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import FlashMessage from "react-native-flash-message";
 
-import { Camera } from "./camera/CameraContainer";
+import DisplayCamera from "./camera/Camera";
 import { Map } from "./map/Map";
 import { Settings } from "./settings/Settings";
 import { ProfileNavigator } from "./profile/ProfileNavigator";
+import { ImageSubmission } from "./submission/ImageSubmission";
 
 const screens = [
-  { name: "Camera", component: Camera, icon: "photo-camera" },
   { name: "Map", component: Map, icon: "map" },
-  { name: "Settings", component: Settings, icon: "settings" },
+  { name: "Submission", component: ImageSubmission, icon: "upload-file"},
+  { name: "Camera", component: DisplayCamera, icon: "photo-camera" },
   { name: "Profile", component: ProfileNavigator, icon: "person" },
+  { name: "Settings", component: Settings, icon: "settings" },
 ];
 
 const Tab = createBottomTabNavigator();
@@ -23,7 +25,7 @@ export class MainContainer extends React.Component {
     return (
       <NavigationContainer>
         <Tab.Navigator
-          initialRouteName={screens[0].name}
+          initialRouteName={"Camera"}
           screenOptions={({ route }) => ({
             tabBarIcon: ({ color, size }) => {
               const icon = screens.find(

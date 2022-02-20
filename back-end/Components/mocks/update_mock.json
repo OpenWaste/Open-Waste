@@ -1,1 +1,38 @@
-{"categories":["cardboard","glass","metal","paper","plastic","trash"],"category_instructions":[["1. check if it is contaminated;\r\n2. if contaminated, throw in trash;\r\n3. if not, put in recycle bin;\r\n4. congratulate yourself","plastic"],["metal","1. if dirty, please wash;\r\n2. check recycle number (1-6);\r\n3. if recyclable, put in recylce bin;\r\n4. otherwise, throw in trash;"],["1. make sure item  does not contain electronic components;\r\n2. clean item;\r\n3. if item is large, make it smaller;\r\n4. dispose in recycle bin while being cautious not to get cut","paper"],["1. wash container;\r\n2. DO NOT BREAK;\r\n3. place in recycle bin;","cardboard"],["glass","1. dispose in trash bin 5"],["trash","1. dispose in trash bin 6"]]} 
+{
+    "categories":
+    [
+        "cardboard",
+        "glass",
+        "metal",
+        "paper",
+        "plastic",
+        "trash"
+    ],
+    "category_instructions":
+    [
+        ["1. check if it is contaminated;\r\n2. if contaminated, throw in trash;\r\n3. if not, put in recycle bin;\r\n4. congratulate yourself","plastic"],
+        ["metal","1. if dirty, please wash;\r\n2. check recycle number (1-6);\r\n3. if recyclable, put in recylce bin;\r\n4. otherwise, throw in trash;"],
+        ["1. make sure item  does not contain electronic components;\r\n2. clean item;\r\n3. if item is large, make it smaller;\r\n4. dispose in recycle bin while being cautious not to get cut","paper"],
+        ["1. wash container;\r\n2. DO NOT BREAK;\r\n3. place in recycle bin;","cardboard"],
+        ["glass","1. dispose in trash bin 5"],
+        ["trash","1. dispose in trash bin 6"]
+    ],
+    "bins":[
+        {
+            "id": 1,
+            "building_id": 1,
+            "address": "123 address street",
+            "latitude": 45.4948,
+            "longitude": -73.5779,
+            "floor_num": 1,
+            "location_description": "description",
+            "accepted_categories": "C1"
+        }
+    ],
+    "buildings":[
+        {
+            "id": 1,
+            "name": "hall building"
+        }
+    ]
+} 

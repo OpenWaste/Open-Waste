@@ -1,20 +1,14 @@
-import React, { useRef } from "react";
-import {
-  KeyboardAvoidingView,
-  ScrollView,
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import React, { useRef, useEffect } from "react";
+import { KeyboardAvoidingView, ScrollView, View, Text, Image, TouchableOpacity } from "react-native";
 import { Input, Button, NativeBaseProvider } from "native-base";
 import formStyle from "./styles/forms";
 import passStyle from "./styles/forgot-password";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
 import { showMessage } from "react-native-flash-message";
-import { UserResource } from "../../../models/User";
 import Service from "../../../service/service";
+import { deleteValueFor, getValueFor } from '../../../utils/PersistInfo';
+import { UserResource } from "../../../models/User";
 
 export class ResetPassword extends React.Component {
   img = require("../../../assets/forgotpass.png");
@@ -46,6 +40,12 @@ export function ResetPasswordForm() {
   const [pass2, setPass2] = React.useState("");
   const [username, setUsername] = React.useState("");
 
+  useEffect(() => {
+    getValueFor('username').then((output) => {
+      setUsername(output)
+    });
+  })
+
   const navigation = useNavigation();
 
   const handleSubmit = () => {
@@ -60,7 +60,9 @@ export function ResetPasswordForm() {
     };
 
     Service.changePassword(user).then(() => {
-      navigation.navigate("ProfilePage");
+      deleteValueFor('username');
+      deleteValueFor('email');
+      navigation.navigate("Registration");
       showMessage({ message: username, type: "success" });
     })
     .catch((error) => {

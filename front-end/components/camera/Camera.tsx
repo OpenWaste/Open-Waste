@@ -12,12 +12,12 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import style from "./styles";
 import { Button, NativeBaseProvider } from "native-base";
-import Service from "../../../service/service";
+import Service from "../../service/service";
 import { useIsFocused } from "@react-navigation/native";
-import MapView from "react-native-maps";
-import { MapModalProperties, CameraTriggerButtonProperties, PredictionTextProperties, PostPictureSnapButtonsProperties, ImageSubmissionButtonProperties, CameraViewProperties, PicturePreviewProperties } from "../../../interfaces/camera-types";
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import { MapModalProperties, CameraTriggerButtonProperties, PredictionTextProperties, PostPictureSnapButtonsProperties, CameraViewProperties, PicturePreviewProperties } from "../../interfaces/camera-types";
 
-export default function DisplayCamera({ navigation }) {
+export default function DisplayCamera() {
   const isFocused = useIsFocused();
   const [hasPermission, setHasPermission] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
@@ -45,7 +45,6 @@ export default function DisplayCamera({ navigation }) {
           isPictureTaken={picTaken}
           predictionString={modalText}
           modalVisibility={modalVisible}
-          navigator={navigation}
           cameraInstance={camera}
           pictureURI={picURI}
           cameraInstanceSetter={setCameraInstance}
@@ -80,7 +79,6 @@ const CameraView = (props: CameraViewProperties) => {
 
       <View style={style.footer}>
         <MapModal currentVisibilty={props.modalVisibility} visibilitySetter={props.modalVisibilitySetter} />
-        {!props.isPictureTaken || (props.isPictureTaken && props.predictionString.length > 0) ? <ImageSubmissionButton isPictureTaken={props.isPictureTaken} navigator={props.navigator} /> : <></>}
         {!props.isPictureTaken ? <CameraTriggerButton camera={props.cameraInstance} uriSetter={props.uriSetter} isPictureTakenSetter={props.isPictureTakenSetter} predictionTextSetter={props.predictionTextSetter} predictionFetcher={Service.submitImagePrediction} /> : <></>}
         {props.isPictureTaken && props.predictionString.length > 0 ? <PostPictureSnapButtons uriSetter={props.uriSetter} isPictureTakenSetter={props.isPictureTakenSetter} predictionTextSetter={props.predictionTextSetter} visibilitySetter={props.modalVisibilitySetter} /> : <></>}
       </View>
@@ -108,7 +106,9 @@ const MapModal = (props: MapModalProperties) => {
         <View style={style.modalView}>
 
           <MaterialIcons testID="modal-close" style={style.modalCloseButton} name="cancel" size={30} onPress={() => props.visibilitySetter(false)} />
-          <MapView style={style.map}
+          <MapView
+            style={style.map}
+            provider={PROVIDER_GOOGLE}
             initialRegion={{
               latitude: 45.494862,
               longitude: -73.57790,
@@ -179,19 +179,4 @@ const PostPictureSnapButtons = (props: PostPictureSnapButtonsProperties) => {
   );
 };
 
-const ImageSubmissionButton = (props: ImageSubmissionButtonProperties) => {
-  return (
-    <TouchableHighlight
-      testID="img-submission-btn"
-      style={!props.isPictureTaken ? style.imageSubmissionButton : {}}
-      activeOpacity={0.6}
-      underlayColor={"transparent"}
-      onPress={() => props.navigator.navigate("ImageSubmission")}
-    >
-      <MaterialIcons name="file-upload" size={60} color="#FFFFFF" />
-    </TouchableHighlight>
-  );
-};
-
-export default DisplayCamera;
-export { MapModal, CameraTriggerButton, PredictionText, PostPictureSnapButtons, ImageSubmissionButton, CameraView, PicturePreview };
+export { MapModal, CameraTriggerButton, PredictionText, PostPictureSnapButtons, CameraView, PicturePreview };
