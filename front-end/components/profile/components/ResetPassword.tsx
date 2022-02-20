@@ -19,7 +19,7 @@ export class ResetPassword extends React.Component {
         <ScrollView>
           <KeyboardAvoidingView>
             <View style={passStyle.container}>
-              <Image source={this.img} style={passStyle.resetImg} />
+              <Image source={{uri:this.img}} style={passStyle.resetImg} />
               <Text style={passStyle.header}>Reset Password</Text>
               <ResetPasswordForm />
             </View>
