@@ -23,6 +23,7 @@ class DWUser(AbstractUser):
     email = models.EmailField(blank=False)
     profile_picture = models.ImageField(
         null=True, blank=True, upload_to=settings.PROFILE_PICTURE_PATH)
+    passcode = models.CharField(max_length=8)
 
     def __str__(self):
         return self.username
