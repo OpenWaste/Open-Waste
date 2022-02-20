@@ -36,8 +36,6 @@ it('Press Submit Button', () => {
     insets: { top: 0, left: 0, right: 0, bottom: 0 },
   };
 
-  const logSpy = jest.spyOn(console, "log");
-
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
       <NavigationContainer>
@@ -49,5 +47,4 @@ it('Press Submit Button', () => {
 
   fireEvent.press(button);
 
-  expect(logSpy).toHaveBeenCalled();
 });
