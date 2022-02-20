@@ -38,8 +38,14 @@ export class ForgotPassword extends React.Component {
                   placeholder="Email"
                 />
               </View>
-              <Button style={passStyle.submitBtn} onPress={() => this.props.navigation.navigate("VerifyEmail")}> Submit </Button>
-              <Text style={passStyle.toLogin} onPress={() => this.props.navigation.navigate("Registration")}> Back to login </Text>
+              <Button 
+                testID="verifyBtn"
+                style={passStyle.submitBtn} 
+                onPress={() => this.props.navigation.navigate("VerifyEmail")}> Submit </Button>
+              <Text 
+                testID="backBtn"
+                style={passStyle.toLogin} 
+                onPress={() => this.props.navigation.navigate("Registration")}> Back to login </Text>
             </View>
           </KeyboardAvoidingView>
         </ScrollView>

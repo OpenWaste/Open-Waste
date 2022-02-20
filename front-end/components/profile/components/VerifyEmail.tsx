@@ -13,7 +13,11 @@ export class VerifyEmail extends React.Component {
           <Image source={this.img} style={passStyle.img} />
           <Text style={passStyle.verifyHeader}> Verify your email </Text>
           <Text style={passStyle.verifyText}> A password recovery instruction has been sent to your email. </Text>
-          <Button style={passStyle.okBtn} _text={{ color: "#0F968D" }} onPress={() => this.props.navigation.navigate("ResetPassword")}> OK </Button>
+          <Button
+            testID="okBtn"
+            style={passStyle.okBtn} 
+            _text={{ color: "#0F968D" }} 
+            onPress={() => this.props.navigation.navigate("ResetPassword")}> OK </Button>
         </View>
       </NativeBaseProvider>
     );

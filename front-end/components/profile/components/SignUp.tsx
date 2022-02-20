@@ -75,6 +75,7 @@ export function SignUpForm() {
       <View style={formStyle.registrationInputView}>
         <MaterialIcons style={formStyle.registrationIcons} name="person" size={22}/>
         <Input
+          testID="usernameField"
           style={formStyle.registrationTextInputs} 
           borderWidth="0" 
           placeholder="Username"
@@ -86,6 +87,7 @@ export function SignUpForm() {
       <View style={formStyle.registrationInputView}>
         <MaterialIcons style={formStyle.registrationIcons} name="lock" size={22}/>
         <Input
+          testID="passwordField"
           type={show ? "text" : "password"} 
           style={formStyle.registrationTextInputs} 
           borderWidth="0" 
@@ -102,6 +104,7 @@ export function SignUpForm() {
       <View style={formStyle.registrationInputView}>
         <MaterialIcons style={formStyle.registrationIcons} name="alternate-email" size={22}/>
         <Input
+          testID="emailField"
           style={formStyle.registrationTextInputs} 
           borderWidth="0" 
           placeholder="Email"
@@ -109,7 +112,10 @@ export function SignUpForm() {
           onChangeText={(emailInput:any) => setEmail(emailInput)}
           ref={ref_input3}/>
       </View>
-      <Button style={signUpStyle.signUpBtn} onPress={handleSubmit}> Sign Up </Button>
+      <Button 
+        testID="signUpBtn"
+        style={signUpStyle.signUpBtn} 
+        onPress={handleSubmit}> Sign Up </Button>
     </View>
   )
 }

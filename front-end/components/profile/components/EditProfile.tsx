@@ -32,7 +32,7 @@ export class EditProfile extends React.Component {
   }
 }
 
-function EditForm() {
+export function EditForm() {
 
   const navigation=useNavigation();
 
@@ -49,7 +49,7 @@ function EditForm() {
     setOldEmail(output);
   })
 
-  const handleCancel=() => {
+  const handleCancel = () => {
     navigation.navigate('ProfilePage')
   }
 
@@ -94,7 +94,7 @@ function EditForm() {
     <View>
       <Box m={3}>
         <Accordion>
-          <Accordion.Item>
+          <Accordion.Item testID="editUsernameAccordion">
             <Accordion.Summary _expanded={{ backgroundColor: '#0F968D' }}>Edit Username<Accordion.Icon /></Accordion.Summary>
             <Accordion.Details>
               <View style={formStyle.accordionInputView}>
@@ -110,7 +110,7 @@ function EditForm() {
 
       <Box m={3}>
         <Accordion>
-          <Accordion.Item>
+          <Accordion.Item testID="editEmailAccordion">
             <Accordion.Summary _expanded={{ backgroundColor: '#0F968D' }}> Edit Email <Accordion.Icon/></Accordion.Summary>
             <Accordion.Details>
               <View style={formStyle.accordionInputView}>
@@ -125,14 +125,20 @@ function EditForm() {
       </Box>
       <DeleteAccount/>
       <View style={style.btnView}>
-        <Button style={style.cancelBtn} onPress={handleCancel}> Cancel </Button>
-        <Button style={style.saveBtn} onPress={handleSubmit}> Save </Button>
+        <Button
+          testID="cancelBtn" 
+          style={style.cancelBtn} 
+          onPress={handleCancel}> Cancel </Button>
+        <Button 
+          testID="saveBtn"
+          style={style.saveBtn} 
+          onPress={handleSubmit}> Save </Button>
       </View> 
     </View>
   )
 }
 
-function DeleteAccount() {
+export function DeleteAccount() {
   const [isOpen, setIsOpen]=React.useState(false);
   const [username, setUsername]=React.useState('');
   const onClose=() => setIsOpen(false)
@@ -168,6 +174,7 @@ function DeleteAccount() {
   return (
     <Center>
       <Button
+        testID="deleteBtn"
         style={style.deleteBtn}
         _text={{color:'#D33333', paddingTop: 2, paddingBottom: 2}}
         colorScheme="danger"
