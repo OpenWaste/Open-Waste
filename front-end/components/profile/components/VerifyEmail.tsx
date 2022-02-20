@@ -16,10 +16,10 @@ export class VerifyEmail extends React.Component {
   render() {
     return (
       <NativeBaseProvider>
-        <View style={passStyle.verifyBg}>
+        <View style={passStyle.container}>
           <Image source={this.img} style={passStyle.img} />
-          <Text style={passStyle.verifyHeader}> Verify your email </Text>
-          <Text style={passStyle.verifyText}> Enter the passcode we sent to your email </Text>
+          <Text style={passStyle.header}> Verify your email </Text>
+          <Text style={passStyle.description}> Enter the passcode we sent to your email </Text>
           <ValidatePasscode/>
         </View>
       </NativeBaseProvider>
@@ -74,7 +74,7 @@ function ValidatePasscode(){
           onChangeText={(value:any) => setPasscode(value)}
         />
       </View>
-      <Button style={passStyle.verifyText} onPress={handleSubmit}> Submit </Button>      
+      <Button style={passStyle.submitBtn} onPress={handleSubmit}> Submit </Button>      
   </View>
   )
 }
