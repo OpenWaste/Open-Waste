@@ -18,7 +18,7 @@ export class ForgotPassword extends React.Component {
         <ScrollView>
           <KeyboardAvoidingView>
             <View style={passStyle.container}>
-              <Image source={this.img} style={passStyle.img} />
+              <Image source={{uri:this.img}} style={passStyle.img} />
 
               <Text style={passStyle.header}>Forgot Password?</Text>
               <Text style={passStyle.description}>
@@ -35,7 +35,7 @@ export class ForgotPassword extends React.Component {
   }
 }
 
-function ResetPassword(){
+export function ResetPassword(){
 
   const navigation=useNavigation();
 
@@ -61,7 +61,7 @@ function ResetPassword(){
       showMessage({ message: 'An Error Has Occurred', type: 'warning' });
     })
   }
-  
+
   return(
     <View>
       <View style={formStyle.registrationInputView}>
@@ -70,12 +70,16 @@ function ResetPassword(){
           name="alternate-email"
         />
         <TextInput
+          testID="emailField"
           style={formStyle.registrationTextInputs}
           placeholder="Email"
           onChangeText={(value:any) => setEmail(value)}
         />
       </View>
-      <Button style={passStyle.submitBtn} onPress={handleSubmit}> Submit </Button>      
+      <Button
+        testID="submitBtn" 
+        style={passStyle.submitBtn} 
+        onPress={handleSubmit}> Submit </Button>
   </View>
   )
 }

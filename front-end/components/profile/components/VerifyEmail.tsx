@@ -17,9 +17,15 @@ export class VerifyEmail extends React.Component {
     return (
       <NativeBaseProvider>
         <View style={passStyle.container}>
-          <Image source={this.img} style={passStyle.img} />
-          <Text style={passStyle.header}> Verify your email </Text>
-          <Text style={passStyle.description}> Enter the passcode we sent to your email </Text>
+          <Image 
+            testID="verifyImg"
+            source={{uri:this.img}} style={passStyle.img} />
+          <Text 
+            testID="verifyHeader"
+            style={passStyle.header}> Verify your email </Text>
+          <Text 
+            testID="verifyBody"
+            style={passStyle.description}> Enter the passcode we sent to your email </Text>
           <ValidatePasscode/>
         </View>
       </NativeBaseProvider>
@@ -27,7 +33,7 @@ export class VerifyEmail extends React.Component {
   }
 }
 
-function ValidatePasscode(){
+export function ValidatePasscode(){
 
   const navigation=useNavigation();
 
@@ -61,7 +67,7 @@ function ValidatePasscode(){
       showMessage({ message: 'Invalid Passcode', type: 'warning' });
     })
   }
-  
+
   return(
     <View>
       <View style={formStyle.registrationInputView}>
@@ -69,12 +75,15 @@ function ValidatePasscode(){
           style={formStyle.registrationIcons}
         />
         <TextInput
+          testID="passcodeField"
           style={formStyle.registrationTextInputs}
           placeholder="Passcode"
           onChangeText={(value:any) => setPasscode(value)}
         />
       </View>
-      <Button style={passStyle.submitBtn} onPress={handleSubmit}> Submit </Button>      
+      <Button 
+        testID="submitBtn"
+        style={passStyle.submitBtn} onPress={handleSubmit}> Submit </Button>
   </View>
   )
 }

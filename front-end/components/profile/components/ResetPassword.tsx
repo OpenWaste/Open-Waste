@@ -19,7 +19,7 @@ export class ResetPassword extends React.Component {
         <ScrollView>
           <KeyboardAvoidingView>
             <View style={passStyle.container}>
-              <Image source={this.img} style={passStyle.resetImg} />
+              <Image source={{uri:this.img}} style={passStyle.resetImg} />
               <Text style={passStyle.header}>Reset Password</Text>
               <ResetPasswordForm />
             </View>
@@ -30,7 +30,7 @@ export class ResetPassword extends React.Component {
   }
 }
 
-function ResetPasswordForm() {
+export function ResetPasswordForm() {
   const ref_input2 = useRef();
   const [show1, setShow1] = React.useState(false);
   const [show2, setShow2] = React.useState(false);
@@ -79,6 +79,7 @@ function ResetPasswordForm() {
           size={22}
         />
         <Input
+          testID="password1"
           type={show1 ? "text" : "password"}
           style={formStyle.registrationTextInputs}
           variant="underlined"
@@ -112,6 +113,7 @@ function ResetPasswordForm() {
           size={22}
         />
         <Input
+          testID="password2"
           type={show2 ? "text" : "password"}
           style={formStyle.registrationTextInputs}
           variant="underlined"
@@ -136,7 +138,10 @@ function ResetPasswordForm() {
           )}
         </TouchableOpacity>
       </View>
-      <Button style={passStyle.submitBtn} onPress={handleSubmit}> Submit </Button>
+      <Button 
+        testID="submitBtn"
+        style={passStyle.submitBtn} 
+        onPress={handleSubmit}> Submit </Button>
     </View>
   );
 }
