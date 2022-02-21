@@ -4,5 +4,8 @@ export default StyleSheet.create({
   map: {
     width: "100%",
     height: "100%"
+  },
+  marker: {
+    color:'red'
   }
 });

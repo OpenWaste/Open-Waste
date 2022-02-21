@@ -1,6 +1,7 @@
 import * as React from "react";
 import { MainContainer } from "./components/MainContainer";
 import Service from "./service/service";
+import "react-native-gesture-handler";
 
 export default function App() {
   

@@ -83,7 +83,7 @@ export class Profile extends React.Component {
 
 
 
-function ProfileInformation() {
+export function ProfileInformation() {
   const [email, setEmail] = React.useState('');
   const [submittedImages, setSubmittedImages] = React.useState('');
   const [acceptedImages, setAcceptedImages] = React.useState('');
@@ -102,22 +102,41 @@ function ProfileInformation() {
 
   return (
     <>
-    <InfoBox style={style} iconName="alternate-email" headerText="Email" infoText={email} />
-    <InfoBox style={style} iconName="image-search" headerText="Submitted Images" infoText={submittedImages}/>
-    <InfoBox style={style} iconName="image" headerText="Accepted Images" infoText={acceptedImages} />
+    <InfoBox
+      testID="emailBox" 
+      style={style} 
+      iconName="alternate-email" 
+      headerText="Email" 
+      infoText={email} />
+    <InfoBox
+      testID="submittedBox" 
+      style={style} 
+      iconName="image-search"
+      headerText="Submitted Images" 
+      infoText={submittedImages}/>
+    <InfoBox
+      testID="acceptedBox" 
+      style={style} 
+      iconName="image" 
+      headerText="Accepted Images" 
+      infoText={acceptedImages} />
     </>
   );
 }
 
-function InfoBox(props: any) {
+export function InfoBox(props: any) {
   return (
     <View style={props.style.userInfoView}>
       <View>
         <MaterialIcons style={props.style.userInfoIcons} name={props.iconName} size={50}/>
       </View>
       <View style={props.style.userInfo}>
-        <Text style={props.style.userInfoTextHeader}>{props.headerText}</Text>
-        <Text style={props.style.userInfoText}>{props.infoText}</Text>
+        <Text 
+          testID="header"
+          style={props.style.userInfoTextHeader}>{props.headerText}</Text>
+        <Text 
+          testID="info"
+          style={props.style.userInfoText}>{props.infoText}</Text>
       </View>
     </View>
   );

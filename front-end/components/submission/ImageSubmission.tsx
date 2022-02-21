@@ -140,12 +140,91 @@ export const ImageSubmissionView = (prop) => {
                 width="100%"
                 height="100%"
               >
-                <MaterialCommunityIcons
-                  name="image-outline"
-                  size={50}
-                  color="#8A8A8A"
-                />
-              </Button>
+                <Button
+                  onPress={pickImage}
+                  variant="unstyled"
+                  width="100%"
+                  height="100%"
+                >
+                  <MaterialCommunityIcons
+                    name="image-outline"
+                    size={50}
+                    color="#8A8A8A"
+                  />
+                </Button>
+              </Box>
+            )}
+            <Box>
+              <FormControl isRequired>
+                <FormControl.Label mt="4" color="#8A8A8A">
+                  Category
+                </FormControl.Label>
+                <Select
+                  bg="#F9F9F9"
+                  minWidth="100%"
+                  placeholder="Choose Categories"
+                  mt="2"
+                  selectedValue={category}
+                  onValueChange={(itemValue) => setCategory(itemValue)}
+                >
+                  {categoriesList.map((value) => {
+                    return <Select.Item key={value} label={value} value={value} />;
+                  })}
+                </Select>
+                <Box m="10">
+                  <Button onPress={handleSubmit}> Submit </Button>
+                    <Center>
+                      <AlertDialog
+                        leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}
+                      >
+                        <AlertDialog.Content>
+                          <AlertDialog.CloseButton />
+                          <AlertDialog.Header>Success</AlertDialog.Header>
+                          <AlertDialog.Body>
+                            Your image was successfully submitted.
+                          </AlertDialog.Body>
+                          <AlertDialog.Footer>
+                            <Button.Group space={2}>
+                              <Button
+                                variant="subtle"
+                                onPress={onClose}
+                                ref={cancelRef}
+                              >
+                                Got it!
+                              </Button>
+                            </Button.Group>
+                          </AlertDialog.Footer>
+                        </AlertDialog.Content>
+                      </AlertDialog>
+                    </Center>
+
+                    <Center>
+                      <AlertDialog
+                        leastDestructiveRef={cancelRef} isOpen={isError} onClose={onClose}
+                      >
+                        <AlertDialog.Content>
+                          <AlertDialog.CloseButton />
+                          <AlertDialog.Header>Error</AlertDialog.Header>
+                          <AlertDialog.Body>
+                            Selected image was not submitted 
+                            Please try again later.
+                          </AlertDialog.Body>
+                          <AlertDialog.Footer>
+                            <Button.Group space={2}>
+                              <Button
+                                variant="subtle"
+                                onPress={onClose}
+                                ref={cancelRef}
+                              >
+                                Ok
+                              </Button>
+                            </Button.Group>
+                          </AlertDialog.Footer>
+                        </AlertDialog.Content>
+                      </AlertDialog>
+                    </Center>
+                </Box>
+              </FormControl>
             </Box>
           )}
           <Box>
