@@ -9,6 +9,7 @@ import { Map } from "./map/Map";
 import { Settings } from "./settings/Settings";
 import { ProfileNavigator } from "./profile/ProfileNavigator";
 import { ImageSubmission } from "./submission/ImageSubmission";
+import { Information } from "./Information/Information";
 
 const screens = [
   { name: "Map", component: Map, icon: "map" },
