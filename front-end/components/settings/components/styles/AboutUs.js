@@ -28,5 +28,16 @@ export default StyleSheet.create({
       marginBottom: 20,
       marginTop: 20,
       color: "grey",
+    },
+    textHeader: {
+      // textAlign: "center",
+      fontWeight: "bold",
+      fontFamily: "Roboto",
+      fontSize: 18,
+      marginLeft: 25,
+      marginRight: 25,
+      marginBottom: 0,
+      marginTop: 20,
+      color: "grey",
     }
 });
