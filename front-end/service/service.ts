@@ -35,8 +35,9 @@ export default class Service {
     if(email != undefined)
       resource.email = email;
 
-    let resp = await Service.post('image-submission', resource);
-    return resp
+  let response =  await Service.post('image-submission', resource)
+
+    return response.status;
   }
 
   static async submitAccountCreation(data: UserResource) {
@@ -60,13 +61,13 @@ export default class Service {
     return resp
   }
 
-  static async changePassword(data: UserResource) {
+  static async changePassword(data: UserResource):Promise<Object> {
     const resource = {
       username: data.username,
       password: data.password
     }
 
-    let resp = await Service.post('update-password', resource);
+    let resp = await Service.patch('update-password', resource);
     return resp
   }
 
@@ -109,6 +110,27 @@ export default class Service {
       .then(resp => {
         save("categories", resp.data.categories)
         save("category_instructions", resp.data.category_instructions)
+        save("bins", resp.data.bins)
+        save("buildings", resp.data.buildings)
       })
+  }
+
+  static async resetPassword(data: any):Promise<Object> {
+    const resource = {
+      email: data.email,
+    }
+
+    let resp = await Service.post('reset-password', resource);
+    return resp
+  }
+
+  static async verifyEmail(data: any):Promise<Object> {
+    const resource = {
+      passcode: data.passcode,
+      email: data.email
+    }
+
+    let resp = await Service.post('verify-email', resource);
+    return resp
   }
 }
