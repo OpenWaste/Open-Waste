@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import {
   Text,
   View,
@@ -23,7 +23,7 @@ import {
   CameraViewProperties,
   PicturePreviewProperties,
 } from "../../interfaces/camera-types";
-import SwipeUpDownModal from 'react-native-swipe-modal-up-down';
+import BottomSheet from "@gorhom/bottom-sheet";
 
 export default function DisplayCamera() {
   const isFocused = useIsFocused();
@@ -127,8 +127,8 @@ const PicturePreview = (props: PicturePreviewProperties) => {
 
 // Represents the modal that contains a google map view
 const MapModal = (props: MapModalProperties) => {
-  let [ShowComment, setShowModelComment] = useState(false);
-  let [animateModal, setanimateModal] = useState(false);
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(() => ["25%", "50%"], []);
 
   return (
     <Modal
@@ -142,34 +142,6 @@ const MapModal = (props: MapModalProperties) => {
     >
       <View style={style.centeredView}>
         <View style={style.modalView}>
-
-          <SwipeUpDownModal
-            modalVisible={ShowComment}
-            PressToanimate={animateModal}
-            //if you don't pass HeaderContent you should pass marginTop in view of ContentModel to Make modal swipeable
-            ContentModal={
-              <View style={style.swipeUpWindowContent}>
-                
-              </View>
-            }
-            HeaderStyle={style.swipeUpWindowHeaderContent}
-            ContentModalStyle={style.swipeUpWindowModal}
-            HeaderContent={
-              <View style={style.swipeUpWindowHeader}>
-                <Button
-                  Title={"Press Me"}
-                  onPress={() => {
-                    setanimateModal(true);
-                  }}
-                />
-              </View>
-            }
-            onClose={() => {
-              setModelComment(false);
-              setanimateModal(false);
-            }}
-          />
-
           <MaterialIcons
             testID="modal-close"
             style={style.modalCloseButton}
@@ -187,6 +159,12 @@ const MapModal = (props: MapModalProperties) => {
               longitudeDelta: 0.01,
             }}
           />
+          <BottomSheet
+            ref={bottomSheetRef}
+            index={1}
+            snapPoints={snapPoints}
+            enablePanDownToClose={true}
+          ></BottomSheet>
         </View>
       </View>
     </Modal>
