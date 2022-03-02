@@ -6,6 +6,7 @@ import {
   TouchableHighlight,
   Image,
   ActivityIndicator,
+  ScrollView, 
 } from "react-native";
 import { Camera } from "expo-camera";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -164,7 +165,31 @@ const MapModal = (props: MapModalProperties) => {
             index={1}
             snapPoints={snapPoints}
             enablePanDownToClose={true}
-          ></BottomSheet>
+          >
+            <Text>Category: </Text>
+            <Text>Disposal Method: </Text>
+            <MaterialCommunityIcons
+              name='map-marker'
+              size={40}
+              color={styles.marker.color}
+            />
+            <ScrollView horizontal={true}>
+              // replace with bin images
+              <Text>Child </Text>
+              <Text>Child </Text>
+              <Text>Child </Text>
+              <Text>Child </Text>
+              <Text>Child </Text>
+              <Text>Child </Text>
+              <Text>Child </Text>
+              <Text>Child </Text>
+              <Text>Child </Text>
+              <Text>Child </Text>
+              <Text>Child </Text>
+              <Text>Child </Text>
+
+            </ScrollView>
+          </BottomSheet>
         </View>
       </View>
     </Modal>
