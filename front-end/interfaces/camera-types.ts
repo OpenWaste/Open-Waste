@@ -2,6 +2,7 @@ import { PredictionResponse } from "./service-types";
 import { Camera } from "expo-camera";
 
 export interface MapModalProperties{
+    category:string,
     currentVisibilty:boolean,
     visibilitySetter: (value:boolean) => void
   }

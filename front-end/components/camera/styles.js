@@ -5,7 +5,29 @@ export default StyleSheet.create({
     flex: 1,
     zIndex: -1,
   },
+  bottomSheetStyle: {
+    shadowOffset: { width: 10, height: 10 },
+    shadowColor: 'black',
+    shadowOpacity: 1,
+    elevation: 3,
+    // background color must be set
+    backgroundColor : "#0000" // invisible color
+  },
 
+  bottomSheetCloseButton: {
+    marginLeft: "auto",
+    marginRight: 10,
+  },
+
+  bottomSheetHeaderText: {
+    fontWeight:'bold',
+    fontFamily: "Roboto",
+    fontSize: 20,
+  },
+  bottomSheetContentText:{
+    fontFamily: "Roboto",
+    fontSize: 20,
+  },
   footer: {
     flex: 1,
     flexDirection: "row",
@@ -89,21 +111,4 @@ export default StyleSheet.create({
     position: "absolute",
     left: 55,
   },
-
-  swipeUpWindowContent: {flex: 1, marginTop: 40},
-  swipeUpWindowHeader: {
-    flex: 1,
-    alignContent: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 40,
-    backgroundColor: '#F1F1F1',
-  },
-  swipeUpWindowHeaderContent:{
-    marginTop: 0,
-  },
-  swipeUpWindowModal: {
-    backgroundColor: '#005252',
-    marginTop: 0,
-  }
 });

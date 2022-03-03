@@ -6,7 +6,6 @@ import {
   TouchableHighlight,
   Image,
   ActivityIndicator,
-  ScrollView, 
 } from "react-native";
 import { Camera } from "expo-camera";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -24,7 +23,9 @@ import {
   CameraViewProperties,
   PicturePreviewProperties,
 } from "../../interfaces/camera-types";
-import BottomSheet from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetScrollView, BottomSheetView } from "@gorhom/bottom-sheet";
+import { getValueFor } from "../../utils/PersistInfo";
+import { CategoryInstruction } from "../../interfaces/service-types";
 
 export default function DisplayCamera() {
   const isFocused = useIsFocused();
@@ -87,6 +88,7 @@ const CameraView = (props: CameraViewProperties) => {
 
       <View style={style.footer}>
         <MapModal
+          category={props.predictionString}
           currentVisibilty={props.modalVisibility}
           visibilitySetter={props.modalVisibilitySetter}
         />
@@ -129,7 +131,20 @@ const PicturePreview = (props: PicturePreviewProperties) => {
 // Represents the modal that contains a google map view
 const MapModal = (props: MapModalProperties) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ["25%", "50%"], []);
+  const snapPoints = useMemo(() => ["8%", "50%"], []);
+  const [bottomSheetVisible, setBottomSheetVisible] = useState(true);
+  const [instruction, setInstruction] = useState("");
+  const INSTRUCTION_SEPARATOR = ';'
+  
+  getValueFor("category_instructions").then(val => {
+    let rawInstructions = (val as CategoryInstruction[]).filter(el => el.category_name == props.category)[0].instruction;
+    let processedInstructions = ""
+    rawInstructions.split(INSTRUCTION_SEPARATOR).forEach((step, index) => {
+      if(step.length > 0)
+        processedInstructions += index+1 + ". " + step + "\n"
+    })
+    setInstruction(processedInstructions)
+  }).catch(() => {})
 
   return (
     <Modal
@@ -160,35 +175,46 @@ const MapModal = (props: MapModalProperties) => {
               longitudeDelta: 0.01,
             }}
           />
+          
           <BottomSheet
             ref={bottomSheetRef}
             index={1}
             snapPoints={snapPoints}
-            enablePanDownToClose={true}
+            enableContentPanningGesture={false}
+            enableHandlePanningGesture={false}
+            enableOverDrag={false}
+            style={style.bottomSheetStyle}
           >
-            <Text>Category: </Text>
-            <Text>Disposal Method: </Text>
+            {bottomSheetVisible?
             <MaterialCommunityIcons
-              name='map-marker'
-              size={40}
-              color={styles.marker.color}
-            />
-            <ScrollView horizontal={true}>
-              // replace with bin images
-              <Text>Child </Text>
-              <Text>Child </Text>
-              <Text>Child </Text>
-              <Text>Child </Text>
-              <Text>Child </Text>
-              <Text>Child </Text>
-              <Text>Child </Text>
-              <Text>Child </Text>
-              <Text>Child </Text>
-              <Text>Child </Text>
-              <Text>Child </Text>
-              <Text>Child </Text>
 
-            </ScrollView>
+              style={style.bottomSheetCloseButton}
+              name="arrow-collapse"
+              size={30}
+              onPress={() => { bottomSheetRef.current?.collapse(); setBottomSheetVisible(false) }}
+            />
+            :
+            <MaterialCommunityIcons
+
+              style={style.bottomSheetCloseButton}
+              name="arrow-expand"
+              size={30}
+              onPress={() => { bottomSheetRef.current?.expand(); setBottomSheetVisible(true) }}
+            />}
+            <BottomSheetScrollView >
+              <BottomSheetView style={{ padding: 10 }}>
+                <Text><Text style={style.bottomSheetHeaderText}>Category:</Text> <Text style={style.bottomSheetContentText}> {props.category} </Text></Text>
+                <Text><Text style={style.bottomSheetHeaderText}>Disposal Method:</Text><Text style={style.bottomSheetContentText}> {"\n" + instruction}</Text></Text>
+                <MaterialCommunityIcons
+                  name='map-marker'
+                  size={40}
+                />
+              </BottomSheetView>
+            </BottomSheetScrollView>
+
+
+
+
           </BottomSheet>
         </View>
       </View>
