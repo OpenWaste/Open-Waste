@@ -10,6 +10,7 @@ import isEmail from 'validator/lib/isEmail';
 import { UserResource } from "../../../models/User";
 import { useNavigation } from '@react-navigation/native';
 import { save } from '../../../utils/PersistInfo';
+import i18next from '../../language/i18n'
 
 export class SignUp extends React.Component {
 
@@ -20,6 +21,7 @@ export class SignUp extends React.Component {
         <ScrollView>
           <KeyboardAvoidingView>
           <Text style={signUpStyle.signUpHeader}>Create an Account</Text>
+          <MyComponent/>
           <Center style={signUpStyle.addProfilePic}>
             <Avatar size='40' source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}}>
               <Avatar.Badge bg="green.200" />
@@ -118,6 +120,20 @@ export function SignUpForm() {
         testID="signUpBtn"
         style={signUpStyle.signUpBtn} 
         onPress={handleSubmit}> Sign Up </Button>
+    </View>
+  )
+}
+
+function MyComponent () {
+  return (
+    <View>
+      <Text>{i18next.t('Test')}</Text>
+      <Text
+              testID="forgotBtn"  
+              onPress={() => i18next.changeLanguage("en", (err, t) => {
+                if (err) return console.log('something went wrong loading', err);
+                t('key'); // -> same as i18next.t
+              })}> Forgot Password? </Text>   
     </View>
   )
 }

@@ -10,15 +10,17 @@ import { UserResource } from "../../../models/User";
 import { useNavigation } from '@react-navigation/native';
 import { save } from '../../../utils/PersistInfo';
 import { LoginFormProperties } from "../../../interfaces/profile-types";
+import i18next from '../../language/i18n'
 
 export class LogIn extends React.Component {
-  
   render() {
     return (
       <NativeBaseProvider>
         <ScrollView>
           <KeyboardAvoidingView>
             <Text style={loginStyle.LogInHeader}>Welcome Back</Text>
+            <Text style={loginStyle.LogInHeader}></Text>
+            <MyComponent/>
             <LoginForm/>
             <Text
               testID="forgotBtn" 
@@ -107,5 +109,20 @@ export const LoginForm = (prop) => {
           onPress={handleSubmit}> Log In </Button>      
     </View>
     </NativeBaseProvider>
+  )
+}
+
+function MyComponent () {
+  return (
+    <View>
+      <Text>{i18next.t('Test')}</Text>
+      <Text
+              testID="forgotBtn" 
+              style={loginStyle.forgotPass} 
+              onPress={() => i18next.changeLanguage("fr", (err, t) => {
+                if (err) return console.log('something went wrong loading', err);
+                t('key'); // -> same as i18next.t
+              })}> Forgot Password? </Text>   
+    </View>
   )
 }
