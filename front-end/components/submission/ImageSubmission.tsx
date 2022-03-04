@@ -13,6 +13,7 @@ import {
   Image,
   AlertDialog,
   AspectRatio,
+  Spinner,
   NativeBaseProvider,
 } from "native-base";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -31,9 +32,10 @@ export function ImageSubmission() {
   const [category, setCategory] = useState("");
   const [isOpen, setIsOpen] = React.useState(false);
   const [isError, setIsError] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const onClose = () => {
-    setIsOpen(false), setIsError(false);
+    setIsOpen(false),setIsError(false),setIsLoading(false);
   };
 
   //Opens the camera roll
@@ -44,6 +46,7 @@ export function ImageSubmission() {
       allowsEditing: false,
     });
 
+
     if (!res.cancelled) {
       setImage(res);
       setImageIsChosen(!imageIsChosen);
@@ -53,6 +56,7 @@ export function ImageSubmission() {
 
   //Calls the service to submit using POST
   const handleSubmit = () => {
+    setIsLoading(true);
      Service.submitImageCategory(image.base64, category)
       .then(() => {
         setIsOpen(!isOpen);
@@ -66,8 +70,6 @@ export function ImageSubmission() {
             save("submitted_images", 1)
           })
         }).catch()
-
-
       })
       .catch((e) => {
         setIsError(!isError);
@@ -101,6 +103,7 @@ export function ImageSubmission() {
         onClose={onClose}
         pickImage={pickImage}
         handleSubmit={handleSubmit}
+        isLoading={isLoading}
       />
     </NativeBaseProvider>
   );
@@ -108,6 +111,7 @@ export function ImageSubmission() {
 
 export const ImageSubmissionView = (prop) => {
   const cancelRef = React.useRef(null);
+
   return (
     <View>
       <Box m="10">
@@ -177,8 +181,8 @@ export const ImageSubmissionView = (prop) => {
                   );
                 })}
               </Select>
-              <Box m="10">
-                <Button onPress={prop.handleSubmit}> Submit </Button>
+              <Box m="10">               
+                <Button onPress={prop.handleSubmit}>{prop.isLoading?<Spinner size="sm" color="white" />:"Submit"}</Button>
                 <Center>
                   <AlertDialog
                     leastDestructiveRef={cancelRef}
@@ -186,7 +190,6 @@ export const ImageSubmissionView = (prop) => {
                     onClose={prop.onClose}
                   >
                     <AlertDialog.Content>
-                      <AlertDialog.CloseButton />
                       <AlertDialog.Header>Success</AlertDialog.Header>
                       <AlertDialog.Body>
                         Your image was successfully submitted.
@@ -194,15 +197,11 @@ export const ImageSubmissionView = (prop) => {
                       <AlertDialog.Footer>
                         <Button.Group space={2}>
                           <Button  testID = "SuccessAlert"
-                            variant="unstyled"
-                            colorScheme="coolGray"
+                            colorScheme="primary"
                             onPress={prop.onClose}
                             ref={cancelRef}
                           >
-                            Cancel
-                          </Button>
-                          <Button colorScheme="primary" onPress={prop.onClose}>
-                            OK
+                            Ok
                           </Button>
                         </Button.Group>
                       </AlertDialog.Footer>
@@ -216,7 +215,6 @@ export const ImageSubmissionView = (prop) => {
                     onClose={prop.onClose}
                   >
                     <AlertDialog.Content>
-                      <AlertDialog.CloseButton />
                       <AlertDialog.Header>Error</AlertDialog.Header>
                       <AlertDialog.Body>
                         Selected image was not submitted Please try again later.
@@ -230,9 +228,6 @@ export const ImageSubmissionView = (prop) => {
                             ref={prop.cancelRef}
                           >
                             Cancel
-                          </Button>
-                          <Button colorScheme="primary" onPress={prop.onClose}>
-                            OK
                           </Button>
                         </Button.Group>
                       </AlertDialog.Footer>
