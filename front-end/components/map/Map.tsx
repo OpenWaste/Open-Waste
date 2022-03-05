@@ -40,7 +40,6 @@ export function Map() {
   const markerOnPress = (bin:Bin) => {
     setSelectedBin(bin);
     Service.getBinImages(bin.id).then((resp) => {
-      console.log(resp.data)
       setBinImages(resp.data);
     })
     if (bottomSheetRef.current){
