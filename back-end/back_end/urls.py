@@ -25,6 +25,7 @@ from Components.views import (
     UpdatePassword,
     DeleteUser,
     UpdateUsernameAndEmail,
+    BinImagesView,
     ResetPassword,
     VerifyEmail,
 )
@@ -42,6 +43,7 @@ urlpatterns = [
     path('update-password', UpdatePassword.as_view()),
     path('delete-user', DeleteUser.as_view()),
     path('update-username-email', UpdateUsernameAndEmail.as_view()),
+    path('bin-images/<int:bid>', BinImagesView.as_view()),
     path('reset-password', ResetPassword.as_view()),
     path('verify-email', VerifyEmail.as_view())
 ]

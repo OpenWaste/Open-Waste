@@ -4,7 +4,7 @@ import { UserResource } from '../models/User';
 import { save, getValueFor } from '../utils/PersistInfo';
 
 const instance = axios.create({
-  baseURL: 'https://digiwaste.systems:42069'
+  baseURL: 'http://15b6-173-179-223-197.ngrok.io'
 });
 
 export default class Service {
@@ -110,6 +110,11 @@ export default class Service {
         save("bins", resp.data.bins)
         save("buildings", resp.data.buildings)
       })
+  }
+
+  static async getBinImages(bid:number):Promise<Object> {
+    let resp = await Service.get(`bin-images/${bid}`)
+    return resp
   }
 
   static async resetPassword(data: any):Promise<Object> {

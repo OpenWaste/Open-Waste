@@ -3,6 +3,7 @@ import { View, Text } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import BottomSheet from '@gorhom/bottom-sheet'
+import Service from "../../service/service";
 import { Region, Bin, Building } from '../../interfaces/service-types'
 import styles from "./styles";
 import { getValueFor } from "../../utils/PersistInfo";
@@ -17,7 +18,9 @@ export function Map() {
   const [bins, setBins] = useState<Bin[]>([]);
   const [buildings, setBuildings] = useState<Building[]>([]);
   const [selectedBin, setSelectedBin] = useState<Bin>(null);
+  const [binImages, setBinImages] = useState([]);
 
+  const mapRef = useRef<MapView>(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ['3%', '33%', '80%'], []);
 
@@ -36,10 +39,14 @@ export function Map() {
 
   const markerOnPress = (bin:Bin) => {
     setSelectedBin(bin);
+    Service.getBinImages(bin.id).then((resp) => {
+      console.log(resp.data)
+      setBinImages(resp.data);
+    })
     if (bottomSheetRef.current){
       bottomSheetRef.current.snapToIndex(1);
     };
-    setRegion({
+    mapRef.current?.animateToRegion({
       longitude: bin.longitude,
       latitude: bin.latitude,
       latitudeDelta: 0.01,
@@ -50,7 +57,8 @@ export function Map() {
   return (
     <View>
       <MapView
-        region={region}
+        ref={mapRef}
+        initialRegion={region}
         provider={PROVIDER_GOOGLE}
         style={styles.map}
       >
