@@ -6,18 +6,29 @@ import { AboutUs } from "./components/AboutUs";
 import { Privacy } from "./components/Privacy";
 import { Language } from "./components/Language";
 
-const { Navigator, Screen } = createStackNavigator();
+const Stack = createStackNavigator();
+
+const screens = [
+  {name: "Setting", component: Setting},
+  {name: "About us", component: AboutUs},
+  {name: "Privacy", component: Privacy},
+  {name: "Language", component: Language},
+];
 
 export class Settings extends React.Component {
   render() {
     return (
       <NativeBaseProvider>
-        <Navigator initialRouteName="Setting">
-          <Screen name="Setting" component={ Setting }></Screen>
-          <Screen name="About us" component={ AboutUs }></Screen>
-          <Screen name="Privacy" component={ Privacy }></Screen>
-          <Screen name="Language" component={ Language }></Screen>
-        </Navigator>
+        <Stack.Navigator screenOptions={{ headerShown: true }} initialRouteName="Setting">
+        {screens.map((screen) => {
+                    return (
+                        <Stack.Screen 
+                            name = {screen.name} 
+                            component = {screen.component}
+                        />
+                    );
+                })}
+        </Stack.Navigator>
       </NativeBaseProvider>
     );
   }
