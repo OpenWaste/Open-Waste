@@ -20,6 +20,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import * as ImagePicker from "expo-image-picker";
 import Service from "../../service/service";
 import { getValueFor, save } from "../../utils/PersistInfo";
+import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 
 // To ignore color scheme warnings given for dropdown color
 import { LogBox } from "react-native";
@@ -41,11 +42,9 @@ export function ImageSubmission() {
   //Opens the camera roll
   const pickImage = async () => {
     let res = await ImagePicker.launchImageLibraryAsync({
-      base64: true,
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: false,
     });
-
 
     if (!res.cancelled) {
       setImage(res);
@@ -55,9 +54,17 @@ export function ImageSubmission() {
   };
 
   //Calls the service to submit using POST
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setIsLoading(true);
-     Service.submitImageCategory(image.base64, category)
+  
+    let convert = await manipulateAsync(image.uri,[],
+      { compress: 1, format: SaveFormat.JPEG, base64: true }).catch((e) => {
+        setIsError(!isError);
+      });
+
+    if(convert != undefined)
+    {
+     Service.submitImageCategory(convert.base64, category)
       .then(() => {
         setIsOpen(!isOpen);
         setImageIsChosen(false);
@@ -74,6 +81,7 @@ export function ImageSubmission() {
       .catch((e) => {
         setIsError(!isError);
       });
+    }
   };
 
   //Gets list of categories from endpoint
@@ -182,7 +190,9 @@ export const ImageSubmissionView = (prop) => {
                 })}
               </Select>
               <Box m="10">               
-                <Button onPress={prop.handleSubmit}>{prop.isLoading?<Spinner size="sm" color="white" />:"Submit"}</Button>
+                <Button isLoading={prop.isLoading} isLoadingText="Submitting" _loading={{
+                bg: "primary.500"}}
+                onPress={prop.handleSubmit}>Submit</Button>
                 <Center>
                   <AlertDialog
                     leastDestructiveRef={cancelRef}
@@ -196,8 +206,7 @@ export const ImageSubmissionView = (prop) => {
                       </AlertDialog.Body>
                       <AlertDialog.Footer>
                         <Button.Group space={2}>
-                          <Button  testID = "SuccessAlert"
-                            colorScheme="primary"
+                          <Button testID = "SuccessAlert"
                             onPress={prop.onClose}
                             ref={cancelRef}
                           >
@@ -221,13 +230,11 @@ export const ImageSubmissionView = (prop) => {
                       </AlertDialog.Body>
                       <AlertDialog.Footer>
                         <Button.Group space={2}>
-                          <Button  testID = "ErrorAlert"
-                            variant="unstyled"
-                            colorScheme="coolGray"
+                          <Button testID = "ErrorAlert"
                             onPress={prop.onClose}
                             ref={prop.cancelRef}
                           >
-                            Cancel
+                            Ok
                           </Button>
                         </Button.Group>
                       </AlertDialog.Footer>
