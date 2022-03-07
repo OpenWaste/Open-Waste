@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { View, Text, Image } from "react-native";
+import styles from './styles'
+import { Heading } from "native-base";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import BottomSheet from '@gorhom/bottom-sheet'
 import Service from "../../service/service";
 import { Region, Bin, Building } from '../../interfaces/service-types'
-import styles from "./styles";
 import { getValueFor } from "../../utils/PersistInfo";
 import { NativeBaseProvider, ScrollView } from "native-base";
 
@@ -23,7 +24,7 @@ export function Map() {
 
   const mapRef = useRef<MapView>(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['3%', '33%', '80%'], []);
+  const snapPoints = useMemo(() => ['3%', '33%'], []);
 
   useEffect(() => {
     if (!bins || bins.length == 0) {
@@ -52,6 +53,11 @@ export function Map() {
       latitudeDelta: 0.01,
       longitudeDelta: 0.01
     });
+  }
+
+  const getBuildingName = (bid:number) => {
+    const building = buildings.find(({id}) => id === bid);
+    return building?.building_name;
   }
 
   return (
@@ -84,12 +90,16 @@ export function Map() {
             index={1}
             snapPoints={snapPoints}
           >
-          <Text>{selectedBin.location_description}</Text>
+          <Heading style={styles.header}>{selectedBin.location_description}</Heading>
+          <Text style={styles.text}>{getBuildingName(selectedBin.building_id)}</Text>
           <ScrollView
             horizontal={true}
-            height={40}>
+            style={styles.imageScroll}>
             {binImages.map((base64_img:string, index:number) => {
-              return <Image key={index.toString()} source={{uri: `data:image/png;base64,${base64_img}`}} style={{width: 50, height: 50}}/>
+              return <Image
+                key={index.toString()}
+                source={{uri: `data:image/png;base64,${base64_img}`}}
+                style={styles.image}/>
             })}
           </ScrollView>
           </BottomSheet>

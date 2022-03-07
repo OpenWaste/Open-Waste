@@ -4,7 +4,7 @@ import { UserResource } from '../models/User';
 import { save, getValueFor } from '../utils/PersistInfo';
 
 const instance = axios.create({
-  baseURL: 'http://ac73-173-179-223-197.ngrok.io'
+  baseURL: 'https://digiwaste.systems:42069'
 });
 
 export default class Service {
