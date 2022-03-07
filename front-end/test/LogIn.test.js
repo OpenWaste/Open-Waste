@@ -1,10 +1,8 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import {render, fireEvent, waitFor} from '@testing-library/react-native';
-import userEvent from '@testing-library/user-event';
+import { render, fireEvent } from '@testing-library/react-native';
 import {LogIn, LoginForm} from '../components/profile/components/LogIn'
 import { NativeBaseProvider } from "native-base";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { NavigationContainer } from '@react-navigation/native';
 
 it('renders correctly', async () => {
