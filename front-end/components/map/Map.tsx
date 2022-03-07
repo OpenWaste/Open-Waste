@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Image } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import BottomSheet from '@gorhom/bottom-sheet'
@@ -7,6 +7,7 @@ import Service from "../../service/service";
 import { Region, Bin, Building } from '../../interfaces/service-types'
 import styles from "./styles";
 import { getValueFor } from "../../utils/PersistInfo";
+import { NativeBaseProvider, ScrollView } from "native-base";
 
 export function Map() {
   const [region, setRegion] = useState<Region>({
@@ -54,37 +55,46 @@ export function Map() {
   }
 
   return (
-    <View>
-      <MapView
-        ref={mapRef}
-        initialRegion={region}
-        provider={PROVIDER_GOOGLE}
-        style={styles.map}
-      >
-        {bins.map((bin:Bin) => {
-          return <Marker
-            key={bin.id}
-            coordinate={{longitude:bin.longitude, latitude:bin.latitude}}
-            onPress={() => markerOnPress(bin)}
-          >
-            <MaterialCommunityIcons
-              name='map-marker'
-              size={40}
-              color={styles.marker.color}
-            />
-          </Marker>
-        })}
-      </MapView>
-      {!selectedBin ? null :
-        //TODO: Extract this component to potentially be reused
-        <BottomSheet
-          ref={bottomSheetRef}
-          index={1}
-          snapPoints={snapPoints}
+    <NativeBaseProvider>
+      <View>
+        <MapView
+          ref={mapRef}
+          initialRegion={region}
+          provider={PROVIDER_GOOGLE}
+          style={styles.map}
         >
-        <Text>{selectedBin.location_description}</Text>
-        </BottomSheet>
-      }
-    </View>
+          {bins.map((bin:Bin) => {
+            return <Marker
+              key={bin.id}
+              coordinate={{longitude:bin.longitude, latitude:bin.latitude}}
+              onPress={() => markerOnPress(bin)}
+            >
+              <MaterialCommunityIcons
+                name='map-marker'
+                size={40}
+                color={styles.marker.color}
+              />
+            </Marker>
+          })}
+        </MapView>
+        {!selectedBin ? null :
+          //TODO: Extract this component to potentially be reused
+          <BottomSheet
+            ref={bottomSheetRef}
+            index={1}
+            snapPoints={snapPoints}
+          >
+          <Text>{selectedBin.location_description}</Text>
+          <ScrollView
+            horizontal={true}
+            height={40}>
+            {binImages.map((base64_img:string, index:number) => {
+              return <Image key={index.toString()} source={{uri: `data:image/png;base64,${base64_img}`}} style={{width: 50, height: 50}}/>
+            })}
+          </ScrollView>
+          </BottomSheet>
+        }
+      </View>
+    </NativeBaseProvider>
   );
 }
