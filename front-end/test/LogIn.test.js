@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { render, fireEvent } from '@testing-library/react-native';
-import {LogIn, LoginForm} from '../components/profile/components/LogIn'
+import { LogIn, LoginForm } from '../components/profile/components/LogIn'
 import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from '@react-navigation/native';
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import {render, fireEvent, waitFor} from '@testing-library/react-native';
+import { render, fireEvent } from '@testing-library/react-native';
 import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from '@react-navigation/native';
-import {ResetPassword, ResetPasswordForm} from '../components/profile/components/ResetPassword'
+import { ResetPassword, ResetPasswordForm } from '../components/profile/components/ResetPassword'
 
 it('renders correctly', async () => {
     const tree = await renderer.create(<ResetPassword/>).toJSON();
