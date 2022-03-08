@@ -8,11 +8,12 @@ pipeline {
     stage('Run unit tests'){
       steps {
         sh 'cd front-end'
+        sh 'npm cache clean -f'
         sh 'npm install --legacy-peer-deps'
         sh 'npm test'
       }
     }
-    
+
     stage('SonarQube analysis') {
       environment {
           SCANNER_HOME = tool 'Sonar-scanner'
