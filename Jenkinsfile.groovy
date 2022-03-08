@@ -4,6 +4,14 @@ pipeline {
   tools {nodejs "node"}
     
   stages {
+
+    stage('Run unit tests'){
+      steps {
+        sh 'cd front-end'
+        sh 'npm install --legacy-peer-deps'
+        sh 'npm test'
+      }
+    }
     
     stage('SonarQube analysis') {
       environment {
