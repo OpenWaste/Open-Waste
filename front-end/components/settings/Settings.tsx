@@ -23,6 +23,7 @@ export class Settings extends React.Component {
         {screens.map((screen) => {
                     return (
                         <Stack.Screen 
+                            key = {screen.name}
                             name = {screen.name} 
                             component = {screen.component}
                         />

@@ -16,7 +16,7 @@ export class AboutUs extends React.Component {
           <View style={style.viewMain}>
             <Image source={require("../../../assets/digitizingWaste.png")} style = { style.logo1 }/>
             <Text style={style.text}>Digitizing Waste is an open collaboration based out of Concordia University, in Montreal, Canada, that aims to accelerate adoption of circular economy through data-driven tools. </Text>
-            <Text style={style.text}>Our waste sorting app was developed by a group of capstone students (list of student or should we just put our group name?) in SOEN 490 with the supervision of members of CP3 and ZWC. </Text>
+            <Text style={style.text}>Our waste sorting app was developed by a group of capstone students in SOEN 490 with the supervision of members of CP3 and ZWC. </Text>
           </View>
           <View style={style.viewMain}>
             <Image source={require("../../../assets/CP3.png")} style = { style.logo2 }/>

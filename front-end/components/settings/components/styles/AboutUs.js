@@ -46,7 +46,7 @@ export default StyleSheet.create({
       backgroundColor: 'white',
     },
     logo1: {
-      resizeMode: 'contain',
+      resizeMode: 'center',
       flex: 1,
       width: 335,
       marginTop: -37,
@@ -75,6 +75,7 @@ export default StyleSheet.create({
     viewSub2: {
       flex: 2,
       marginTop: 5,
+      backgroundColor: 'white',
     },
     image1: {
       width: 25,
