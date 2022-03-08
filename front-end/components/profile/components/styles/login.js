@@ -7,8 +7,8 @@ export default StyleSheet.create({
     fontFamily: 'Roboto',
     fontSize: 40,
     marginTop: '10%',
-    marginLeft: '10%',
-    marginRight: '40%',
+    marginLeft: '5%',
+    marginRight: '10%',
     color: 'grey',
   },
 

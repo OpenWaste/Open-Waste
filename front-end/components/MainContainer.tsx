@@ -9,13 +9,14 @@ import { Map } from "./map/Map";
 import { Settings } from "./settings/Settings";
 import { ProfileNavigator } from "./profile/ProfileNavigator";
 import { ImageSubmission } from "./submission/ImageSubmission";
+import i18next from './language/i18n';
 
 const screens = [
-  { name: "Map", component: Map, icon: "map" },
-  { name: "Submission", component: ImageSubmission, icon: "upload-file"},
-  { name: "Camera", component: DisplayCamera, icon: "photo-camera" },
+  { name: i18next.t('Map'), component: Map, icon: "map" },
+  { name: i18next.t('Submission'), component: ImageSubmission, icon: "upload-file"},
+  { name: i18next.t('Camera'), component: DisplayCamera, icon: "photo-camera" },
   { name: "Profile", component: ProfileNavigator, icon: "person" },
-  { name: "Settings", component: Settings, icon: "settings" },
+  { name: i18next.t('Settings'), component: Settings, icon: "settings" },
 ];
 
 const Tab = createBottomTabNavigator();

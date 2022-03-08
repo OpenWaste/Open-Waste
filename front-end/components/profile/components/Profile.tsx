@@ -5,6 +5,7 @@ import { Button, NativeBaseProvider } from 'native-base';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { deleteValueFor, getValueFor } from '../../../utils/PersistInfo';
 import { showMessage } from "react-native-flash-message";
+import i18next from '../../language/i18n';
 
 export class Profile extends React.Component {
 
@@ -39,7 +40,7 @@ export class Profile extends React.Component {
               <Image style={style.profilePic} source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}} />
               <Text style={style.username}> {this.state.username} </Text>
               <View style={style.btnView}>
-                <Button style={style.editBtn} onPress={() => this.props.navigation.navigate('EditProfile')}> Edit Profile </Button>
+                <Button style={style.editBtn} onPress={() => this.props.navigation.navigate('EditProfile')}> {i18next.t('EditProfile')} </Button>
                 <this.LogOutBtn/>
               </View>
               <ProfileInformation/>
@@ -55,8 +56,8 @@ export class Profile extends React.Component {
             <View style={style.header}></View>
             {/* TODO: Pull profile pic from database. */}
             <Image style={style.profilePic} source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}} />
-            <Text style={style.username}> Guest </Text>
-            <Button style={style.loginBtn} onPress={() => this.props.navigation.navigate('Registration')}> Log In </Button>
+            <Text style={style.username}> {i18next.t('Guest')} </Text>
+            <Button style={style.loginBtn} onPress={() => this.props.navigation.navigate('Registration')}> {i18next.t('LogIn')} </Button>
           </View>
         </NativeBaseProvider>
       );
@@ -75,7 +76,7 @@ export class Profile extends React.Component {
     }
   
     return (
-      <Button style={style.logOutBtn} onPress={handleLogOut}> Log Out </Button>
+      <Button style={style.logOutBtn} onPress={handleLogOut}> {i18next.t('LogOut')} </Button>
     )
     
   }
@@ -106,19 +107,19 @@ export function ProfileInformation() {
       testID="emailBox" 
       style={style} 
       iconName="alternate-email" 
-      headerText="Email" 
+      headerText={i18next.t('Email')} 
       infoText={email} />
     <InfoBox
       testID="submittedBox" 
       style={style} 
       iconName="image-search"
-      headerText="Submitted Images" 
+      headerText={i18next.t('SubmittedImages')}
       infoText={submittedImages}/>
     <InfoBox
       testID="acceptedBox" 
       style={style} 
       iconName="image" 
-      headerText="Accepted Images" 
+      headerText={i18next.t('AcceptedImages')}
       infoText={acceptedImages} />
     </>
   );

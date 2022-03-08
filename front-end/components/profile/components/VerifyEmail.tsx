@@ -9,6 +9,7 @@ import { showMessage } from "react-native-flash-message";
 import formStyle from "./styles/forms";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { getValueFor } from '../../../utils/PersistInfo';
+import i18next from '../../language/i18n';
 
 export class VerifyEmail extends React.Component {
   img = require("../../../assets/mailbox.png");
@@ -22,10 +23,10 @@ export class VerifyEmail extends React.Component {
             source={{uri:this.img}} style={passStyle.img} />
           <Text 
             testID="verifyHeader"
-            style={passStyle.header}> Verify your email </Text>
+            style={passStyle.header}> {i18next.t('VerifyEmail')} </Text>
           <Text 
             testID="verifyBody"
-            style={passStyle.description}> Enter the passcode we sent to your email </Text>
+            style={passStyle.description}> {i18next.t('VerifyEmailText')} </Text>
           <ValidatePasscode/>
         </View>
       </NativeBaseProvider>
@@ -83,7 +84,7 @@ export function ValidatePasscode(){
       </View>
       <Button 
         testID="submitBtn"
-        style={passStyle.submitBtn} onPress={handleSubmit}> Submit </Button>
+        style={passStyle.submitBtn} onPress={handleSubmit}> {i18next.t('Submit')} </Button>
   </View>
   )
 }

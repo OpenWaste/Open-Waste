@@ -9,6 +9,7 @@ import { showMessage } from "react-native-flash-message";
 import Service from "../../../service/service";
 import { deleteValueFor, getValueFor } from '../../../utils/PersistInfo';
 import { UserResource } from "../../../models/User";
+import i18next from '../../language/i18n';
 
 export class ResetPassword extends React.Component {
   img = require("../../../assets/forgotpass.png");
@@ -20,7 +21,7 @@ export class ResetPassword extends React.Component {
           <KeyboardAvoidingView>
             <View style={passStyle.container}>
               <Image source={{uri:this.img}} style={passStyle.resetImg} />
-              <Text style={passStyle.header}>Reset Password</Text>
+              <Text style={passStyle.header}>{i18next.t('ResetPassword')}</Text>
               <ResetPasswordForm />
             </View>
           </KeyboardAvoidingView>
@@ -83,7 +84,7 @@ export function ResetPasswordForm() {
           type={show1 ? "text" : "password"}
           style={formStyle.registrationTextInputs}
           variant="underlined"
-          placeholder="New password"
+          placeholder={i18next.t('NewPassword')}
           autoFocus={true}
           returnKeyType="next"
           onChangeText={(value:any) => setPass1(value)}
@@ -117,7 +118,7 @@ export function ResetPasswordForm() {
           type={show2 ? "text" : "password"}
           style={formStyle.registrationTextInputs}
           variant="underlined"
-          placeholder="New password"
+          placeholder={i18next.t('NewPassword')}
           autoFocus={true}
           ref={ref_input2}
           onChangeText={(value:any) => setPass2(value)}

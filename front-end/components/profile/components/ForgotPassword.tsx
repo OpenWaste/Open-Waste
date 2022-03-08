@@ -8,9 +8,9 @@ import Service from "../../../service/service";
 import { save } from '../../../utils/PersistInfo';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from "react-native-flash-message";
+import i18next from '../../language/i18n';
 
 export class ForgotPassword extends React.Component {
-  img = require("../../../assets/forgotpass.png");
 
   render() {
     return (
@@ -18,15 +18,13 @@ export class ForgotPassword extends React.Component {
         <ScrollView>
           <KeyboardAvoidingView>
             <View style={passStyle.container}>
-              <Image source={{uri:this.img}} style={passStyle.img} />
 
-              <Text style={passStyle.header}>Forgot Password?</Text>
+              <Text style={passStyle.header}> {i18next.t('ForgotPassword')} </Text>
               <Text style={passStyle.description}>
-                Do not worry! We will help you recover it. Enter the e-mail
-                address associated to your account.
+                {i18next.t('ForgotPasswordText')}
               </Text>
               <ResetPassword/>
-              <Text style={passStyle.toLogin} onPress={() => this.props.navigation.navigate("Registration")}> Back to login </Text>
+              <Text style={passStyle.toLogin} onPress={() => this.props.navigation.navigate("BackToLogin")}> </Text>
             </View>
           </KeyboardAvoidingView>
         </ScrollView>
@@ -79,7 +77,7 @@ export function ResetPassword(){
       <Button
         testID="submitBtn" 
         style={passStyle.submitBtn} 
-        onPress={handleSubmit}> Submit </Button>
+        onPress={handleSubmit}> {i18next.t('Submit')} </Button>
   </View>
   )
 }

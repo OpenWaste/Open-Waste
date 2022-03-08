@@ -10,7 +10,7 @@ import { UserResource } from "../../../models/User";
 import { useNavigation } from '@react-navigation/native';
 import { save } from '../../../utils/PersistInfo';
 import { LoginFormProperties } from "../../../interfaces/profile-types";
-import i18next from '../../language/i18n'
+import i18next from '../../language/i18n';
 
 export class LogIn extends React.Component {
   render() {
@@ -18,18 +18,18 @@ export class LogIn extends React.Component {
       <NativeBaseProvider>
         <ScrollView>
           <KeyboardAvoidingView>
-            <Text style={loginStyle.LogInHeader}>Welcome Back</Text>
-            <Text style={loginStyle.LogInHeader}></Text>
-            <MyComponent/>
+            <Text style={loginStyle.LogInHeader}> {i18next.t('WelcomeBack')} </Text>
             <LoginForm/>
             <Text
               testID="forgotBtn" 
               style={loginStyle.forgotPass} 
-              onPress={() => this.props.navigation.navigate('ForgotPassword')}> Forgot Password? </Text>
+              onPress={() => this.props.navigation.navigate('ForgotPassword')}> {i18next.t('ForgotPassword')} </Text>
             <Text 
               testID="remainBtn"
               style={loginStyle.remainAsGuest} 
-              onPress={() => this.props.navigation.navigate('ProfilePage')}> Remain as Guest </Text>
+              onPress={() => this.props.navigation.navigate('ProfilePage')}> {i18next.t('RemainAsGuest')} </Text>
+            <MyComponentFR/>
+            <MyComponentENG/>
           </KeyboardAvoidingView>
         </ScrollView>
       </NativeBaseProvider>
@@ -81,7 +81,7 @@ export const LoginForm = (prop) => {
             inputProps={{ "data-testid": "content-input" }}
             borderWidth="0" 
             style={formStyle.registrationTextInputs}
-            placeholder="Username"
+            placeholder={i18next.t('Username')}
             autoFocus={true}
             returnKeyType="next"
             onChangeText={(value:any) => setUsername(value)}
@@ -95,7 +95,7 @@ export const LoginForm = (prop) => {
             type={show ? "text" : "password"} 
             style={formStyle.registrationTextInputs} 
             variant="underlined" 
-            placeholder="Password"
+            placeholder={i18next.t('Password')}
             autoFocus={true}
             onChangeText={(value:any) => setPassword(value)}
             ref={ref_input2} />
@@ -106,23 +106,36 @@ export const LoginForm = (prop) => {
         <Button 
           testID='loginBtn'
           style={loginStyle.logInBtn} 
-          onPress={handleSubmit}> Log In </Button>      
+          onPress={handleSubmit}> {i18next.t('LogIn')} </Button>      
     </View>
     </NativeBaseProvider>
   )
 }
 
-function MyComponent () {
+function MyComponentFR () {
   return (
     <View>
-      <Text>{i18next.t('Test')}</Text>
       <Text
               testID="forgotBtn" 
-              style={loginStyle.forgotPass} 
+              style={loginStyle.logInBtn}
               onPress={() => i18next.changeLanguage("fr", (err, t) => {
                 if (err) return console.log('something went wrong loading', err);
                 t('key'); // -> same as i18next.t
-              })}> Forgot Password? </Text>   
+              })}> Change Language To French </Text>   
+    </View>
+  )
+}
+
+function MyComponentENG () {
+  return (
+    <View>
+      <Text
+              testID="forgotBtn" 
+              style={loginStyle.logInBtn}
+              onPress={() => i18next.changeLanguage("en", (err, t) => {
+                if (err) return console.log('something went wrong loading', err);
+                t('key'); // -> same as i18next.t
+              })}> Change Language To English </Text>   
     </View>
   )
 }

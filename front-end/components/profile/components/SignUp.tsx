@@ -20,8 +20,7 @@ export class SignUp extends React.Component {
       <NativeBaseProvider>
         <ScrollView>
           <KeyboardAvoidingView>
-          <Text style={signUpStyle.signUpHeader}>Create an Account</Text>
-          <MyComponent/>
+          <Text style={signUpStyle.signUpHeader}> {i18next.t('CreateAnAccount')} </Text>
           <Center style={signUpStyle.addProfilePic}>
             <Avatar size='40' source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}}>
               <Avatar.Badge bg="green.200" />
@@ -82,7 +81,7 @@ export function SignUpForm() {
           testID="usernameField"
           style={formStyle.registrationTextInputs} 
           borderWidth="0" 
-          placeholder="Username"
+          placeholder={i18next.t('Username')}
           autoFocus={true}
           returnKeyType="next"
           onChangeText={(value:any) => setUsername(value)}
@@ -95,7 +94,7 @@ export function SignUpForm() {
           type={show ? "text" : "password"} 
           style={formStyle.registrationTextInputs} 
           borderWidth="0" 
-          placeholder="Password"
+          placeholder={i18next.t('Password')}
           returnKeyType="next"
           autoFocus={true}
           onChangeText={(value:any) => setPassword(value)}
@@ -111,7 +110,7 @@ export function SignUpForm() {
           testID="emailField"
           style={formStyle.registrationTextInputs} 
           borderWidth="0" 
-          placeholder="Email"
+          placeholder={i18next.t('Email')}
           autoFocus={true}
           onChangeText={(emailInput:any) => setEmail(emailInput)}
           ref={ref_input3}/>
@@ -119,21 +118,7 @@ export function SignUpForm() {
       <Button 
         testID="signUpBtn"
         style={signUpStyle.signUpBtn} 
-        onPress={handleSubmit}> Sign Up </Button>
-    </View>
-  )
-}
-
-function MyComponent () {
-  return (
-    <View>
-      <Text>{i18next.t('Test')}</Text>
-      <Text
-              testID="forgotBtn"  
-              onPress={() => i18next.changeLanguage("en", (err, t) => {
-                if (err) return console.log('something went wrong loading', err);
-                t('key'); // -> same as i18next.t
-              })}> Forgot Password? </Text>   
+        onPress={handleSubmit}> {i18next.t('SignUp')} </Button>
     </View>
   )
 }
