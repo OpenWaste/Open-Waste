@@ -56,32 +56,30 @@ export function ImageSubmission() {
   //Calls the service to submit using POST
   const handleSubmit = async () => {
     setIsLoading(true);
+    await manipulateAsync(image.uri,[],
+      { compress: 1, format: SaveFormat.JPEG, base64: true }).then((res)=>{
+        Service.submitImageCategory(res.base64, category)
+        .then(() => {
+          setIsOpen(!isOpen);
+          setImageIsChosen(false);
+          setCategory("");
   
-    let convert = await manipulateAsync(image.uri,[],
-      { compress: 1, format: SaveFormat.JPEG, base64: true }).catch((e) => {
+          getValueFor("email").then(a => {
+            getValueFor("submitted_images").then(a=> {
+              save("submitted_images", +a + 1);
+            }).catch(() => {
+              save("submitted_images", 1)
+            })
+          }).catch()
+        })
+        .catch((e) => {
+          setIsError(!isError);
+        });
+
+      }).catch((e) => {
         setIsError(!isError);
       });
-
-    if(convert != undefined)
-    {
-     Service.submitImageCategory(convert.base64, category)
-      .then(() => {
-        setIsOpen(!isOpen);
-        setImageIsChosen(false);
-        setCategory("");
-
-        getValueFor("email").then(a => {
-          getValueFor("submitted_images").then(a=> {
-            save("submitted_images", +a + 1);
-          }).catch(() => {
-            save("submitted_images", 1)
-          })
-        }).catch()
-      })
-      .catch((e) => {
-        setIsError(!isError);
-      });
-    }
+    
   };
 
   //Gets list of categories from endpoint
