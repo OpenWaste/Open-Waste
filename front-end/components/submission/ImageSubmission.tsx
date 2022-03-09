@@ -54,10 +54,10 @@ export function ImageSubmission() {
   };
 
   //Calls the service to submit using POST
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     setIsLoading(true);
-    await manipulateAsync(image.uri,[],
-      { compress: 1, format: SaveFormat.JPEG, base64: true }).then((res)=>{
+    manipulateAsync(image.uri,[],{ compress: 1, format: SaveFormat.JPEG, base64: true })
+    .then((res)=>{
         Service.submitImageCategory(res.base64, category)
         .then(() => {
           setIsOpen(!isOpen);
@@ -75,10 +75,9 @@ export function ImageSubmission() {
         .catch((e) => {
           setIsError(!isError);
         });
-
-      }).catch((e) => {
-        setIsError(!isError);
-      });
+    }).catch((e) => {
+      setIsError(!isError);
+    });
     
   };
 
