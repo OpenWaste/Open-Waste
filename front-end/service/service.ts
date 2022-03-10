@@ -112,6 +112,16 @@ export default class Service {
       })
   }
 
+  static async getBinImages(bid:number):Promise<Object> {
+    let resp = await Service.get(`bin-images/${bid}`)
+    return resp
+  }
+
+  static async getBuildingImages(bid:number):Promise<Object> {
+    let resp = await Service.get(`building-images/${bid}`)
+    return resp
+  }
+
   static async resetPassword(data: any):Promise<Object> {
     const resource = {
       email: data.email,
