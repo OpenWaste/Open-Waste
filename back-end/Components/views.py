@@ -270,6 +270,17 @@ class BinImagesView(APIView):
             return Response({e.__class__.__name__: str(e)},
                             status=status.HTTP_404_NOT_FOUND)
 
+class BuildingImagesView(APIView):
+    def get(self, request, bid:int):
+        try:
+            images = BuildingImages.objects.filter(building_id=bid).values_list('building_images', flat=True)
+
+            return Response(images, status = status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({e.__class__.__name__: str(e)},
+                            status=status.HTTP_404_NOT_FOUND)
+
 class ResetPassword(APIView):
 
     def post(self, request):

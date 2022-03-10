@@ -1,7 +1,7 @@
 from unicodedata import category
 from django.test import TestCase, Client
 from django.core.files.uploadedfile import SimpleUploadedFile
-from Components.models import Category, DWUser, CategoryInstructions, Bin, BinImages, Building
+from Components.models import Category, DWUser, CategoryInstructions, Bin, BinImages, Building, BuildingImages
 import json
 
 CONTENT_TYPE = 'application/json'
@@ -311,13 +311,12 @@ class BinImagesTest(TestCase):
         self.path = '/bin-images/1'
 
     def test_get_bin_images(self):
-        Building(1, 'hall building').save()  # For foreign key
+        Building(1, 'hall building', '123 address', 45, 46).save()  # For foreign key
         Bin(id=1,
-            address='123 address street',
-            latitude=45.494800,
-            longitude=-73.57790,
-            floor_num=1,
-            location_description='description',
+            location_name='second floor hall bins',
+            floor_number=2,
+            room_number='n/a',
+            disposal_type='d_type',
             accepted_categories='C1',
             building_id=1).save()
         BinImages(id=1, bin_images='base64img', bin_id=1).save()
@@ -328,6 +327,19 @@ class BinImagesTest(TestCase):
 
         self.assertEquals(response.json(), ['base64img', 'base64img2'])
 
+class BuildingImagesTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.path = 'building-images/1'
+
+    def test_get_building_images(self):
+        Building(1, 'hall building', '123 address', 45, 46).save()
+        BuildingImages(id=1, building_images='base64img', building_id=1).save()
+        BuildingImages(id=2, building_images='base64img', building_id=1).save()
+
+        response = self.client.get(self.path)
+        
+        self.assertEquals(response.json(), ['base64img', 'base64img2'])
 
 
 class ResetPassword(TestCase):
