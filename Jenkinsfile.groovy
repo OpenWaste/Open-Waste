@@ -11,7 +11,7 @@ pipeline {
       }
       steps {
       //Perform SonarQube Analysis on front-end and back-end directories
-      withSonarQubeEnv(credentialsId: 'd56e9146-e2fa-4ee5-b50c-4dfad9c7abb8', installationName: 'Sonar') {
+      withSonarQubeEnv(credentialsId: 'a7c4e63bfe39828e0d70db7b8bba466e266e1972', installationName: 'Sonar') {
         sh '''$SCANNER_HOME/bin/sonar-scanner \
         -Dsonar.projectKey=projectKey \
         -Dsonar.projectName=DigitizingWaste \
