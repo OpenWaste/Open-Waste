@@ -241,13 +241,12 @@ class ImageUpdate(TestCase):
         CategoryInstructions(
             category=category_trash, instructions='1. dispose in trash bin 6').save()
 
-        Building(1, 'hall building').save()  # For foreign key
+        Building(id=1, building_name='hall building', address='123 address street', latitude=45, longitude=46).save()  # For foreign key
         Bin(id=1,
-            address='123 address street',
-            latitude=45.494800,
-            longitude=-73.57790,
-            floor_num=1,
-            location_description='description',
+            location_name='First Floor Hall Building',
+            floor_number=1,
+            room_number='H123',
+            disposal_type='disposal type',
             accepted_categories='C1',
             building_id=1).save()
 
@@ -311,7 +310,7 @@ class BinImagesTest(TestCase):
         self.path = '/bin-images/1'
 
     def test_get_bin_images(self):
-        Building(1, 'hall building', '123 address', 45, 46).save()  # For foreign key
+        Building(id=1, building_name='hall building', address='123 address street', latitude=45, longitude=46).save()  # For foreign key
         Bin(id=1,
             location_name='second floor hall bins',
             floor_number=2,
@@ -326,21 +325,6 @@ class BinImagesTest(TestCase):
         response = self.client.get(self.path)
 
         self.assertEquals(response.json(), ['base64img', 'base64img2'])
-
-class BuildingImagesTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.path = 'building-images/1'
-
-    def test_get_building_images(self):
-        Building(1, 'hall building', '123 address', 45, 46).save()
-        BuildingImages(id=1, building_images='base64img', building_id=1).save()
-        BuildingImages(id=2, building_images='base64img', building_id=1).save()
-
-        response = self.client.get(self.path)
-        
-        self.assertEquals(response.json(), ['base64img', 'base64img2'])
-
 
 class ResetPassword(TestCase):
     def setUp(self):
