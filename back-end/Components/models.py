@@ -6,8 +6,6 @@ from django.conf import settings
 
 class Category(models.Model):
     name = models.CharField(max_length=200, unique=True)
-    category_sample_image = models.ImageField(
-        null=True, blank=True, upload_to=settings.CATEGORY_IMG_PATH)
 
     def __str__(self):
         return self.name
