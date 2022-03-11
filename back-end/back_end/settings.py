@@ -19,7 +19,7 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-#this is where all photos are located for the database to fetch
+# this is where all photos are located for the database to fetch
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
@@ -34,7 +34,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = False if (os.getenv('PROD_MODE', 'False').title() == 'True') else True
 
 # For now, during dev, we can set it to any allowed host, but we might want to change this later on in prod and
-# implement some sort of authentication mechanism (like JWT?) 
+# implement some sort of authentication mechanism (like JWT?)
 ALLOWED_HOSTS = ['*']
 
 
@@ -155,6 +155,7 @@ AUTH_USER_MODEL = 'Components.DWUser'
 CATEGORY_IMG_PATH = 'sample_images/'
 BUILDING_IMG_PATH = 'building_images/'
 BIN_IMG_PATH = 'bin_images/'
+FLOOR_IMG_PATH = 'floor_images/'
 IMAGE_SUBMISSION_PATH = 'image_submissions/'
 PROFILE_PICTURE_PATH = 'profile_pictures/'
 

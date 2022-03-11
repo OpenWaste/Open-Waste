@@ -23,16 +23,18 @@ export interface Region {
 
 export interface Bin {
     id:number
-    building_id:number
-    address:string
-    latitude:number
-    longitude:number
-    floor_num:number
-    location_description:string
+    location_name:string
+    floor_number:number
+    room_number:string
+    disposal_type:string
     accepted_categories:string
+    building_id:number
 }
 
 export interface Building {
     id:number
     building_name:string
+    address:string
+    latitude:number
+    longitude:number
 }
