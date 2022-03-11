@@ -1,9 +1,9 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import {render, fireEvent, waitFor} from '@testing-library/react-native';
+import { render, fireEvent } from '@testing-library/react-native';
 import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from '@react-navigation/native';
-import {SignUp, SignUpForm} from '../components/profile/components/SignUp'
+import { SignUp, SignUpForm } from '../components/profile/components/SignUp'
 
 it('renders correctly', async () => {
     const tree = await renderer.create(<SignUp/>).toJSON();
@@ -37,7 +37,7 @@ it('Enter username field', () => {
     insets: { top: 0, left: 0, right: 0, bottom: 0 },
   };
 
-  const { getByTestId, getByText } = render(
+  const { getByTestId } = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
       <NavigationContainer>
         <SignUpForm/>
@@ -55,7 +55,7 @@ it('Enter Password Field', () => {
     insets: { top: 0, left: 0, right: 0, bottom: 0 },
   };
 
-  const { getByTestId, getByText } = render(
+  const { getByTestId } = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
       <NavigationContainer>
         <SignUpForm/>
@@ -73,7 +73,7 @@ it('Enter email Field', () => {
     insets: { top: 0, left: 0, right: 0, bottom: 0 },
   };
 
-  const { getByTestId, getByText } = render(
+  const { getByTestId } = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
       <NavigationContainer>
         <SignUpForm/>
