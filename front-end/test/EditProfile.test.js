@@ -1,9 +1,9 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import {render, fireEvent, waitFor} from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
 import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from '@react-navigation/native';
-import {EditProfile, EditForm, DeleteAccount} from '../components/profile/components/EditProfile'
+import { EditProfile, EditForm, DeleteAccount } from '../components/profile/components/EditProfile'
 
 it('renders correctly', async () => {
     const tree = await renderer.create(<EditProfile/>).toJSON();

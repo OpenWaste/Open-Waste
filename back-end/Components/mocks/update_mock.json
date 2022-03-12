@@ -19,20 +19,22 @@
     ],
     "bins":[
         {
-            "id": 1,
-            "building_id": 1,
-            "address": "123 address street",
-            "latitude": 45.4948,
-            "longitude": -73.5779,
-            "floor_num": 1,
-            "location_description": "description",
-            "accepted_categories": "C1"
+            "id":1,
+            "location_name":"First Floor Hall Building",
+            "floor_number":1,
+            "room_number":"H123",
+            "disposal_type":"disposal type",
+            "accepted_categories":"C1",
+            "building_id":1
         }
     ],
     "buildings":[
         {
             "id": 1,
-            "name": "hall building"
+            "building_name": "hall building",
+            "address": "123 address street",
+            "latitude": 45,
+            "longitude": 46
         }
     ]
 } 

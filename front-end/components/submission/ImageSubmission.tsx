@@ -18,7 +18,7 @@ import {
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
 import Service from "../../service/service";
-import { getValueFor } from "../../utils/PersistInfo";
+import { getValueFor, save } from "../../utils/PersistInfo";
 import i18next from '../language/i18n';
 
 // To ignore color scheme warnings given for dropdown color
@@ -53,14 +53,24 @@ export function ImageSubmission() {
   };
 
   //Calls the service to submit using POST
-  const handleSubmit = async () => {
-    await Service.submitImageCategory(image.base64, category)
+  const handleSubmit = () => {
+     Service.submitImageCategory(image.base64, category)
       .then(() => {
         setIsOpen(!isOpen);
         setImageIsChosen(false);
         setCategory("");
+
+        getValueFor("email").then(a => {
+          getValueFor("submitted_images").then(a=> {
+            save("submitted_images", +a + 1);
+          }).catch(() => {
+            save("submitted_images", 1)
+          })
+        }).catch()
+
+
       })
-      .catch(() => {
+      .catch((e) => {
         setIsError(!isError);
       });
   };
