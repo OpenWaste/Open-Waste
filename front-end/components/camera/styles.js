@@ -5,13 +5,9 @@ export default StyleSheet.create({
     flex: 1,
     zIndex: -1,
   },
-  bottomSheetStyle: {
-    shadowOffset: { width: 10, height: 10 },
-    shadowColor: 'black',
-    shadowOpacity: 1,
-    elevation: 3,
-    // background color must be set
-    backgroundColor : "#0000" // invisible color
+  bottomSheetViewStyle: {
+    paddingHorizontal:10,
+    paddingBottom:10
   },
 
   bottomSheetCloseButton: {
@@ -22,11 +18,16 @@ export default StyleSheet.create({
   bottomSheetHeaderText: {
     fontWeight:'bold',
     fontFamily: "Roboto",
-    fontSize: 20,
+    fontSize: 18,
+  },
+  bottomSheetSubHeaderText: {
+    fontWeight:'bold',
+    fontFamily: "Roboto",
+    fontSize: 17,
   },
   bottomSheetContentText:{
     fontFamily: "Roboto",
-    fontSize: 20,
+    fontSize: 16,
   },
   footer: {
     flex: 1,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useRef, useMemo, useContext } from "react";
 import {
   Text,
   View,
@@ -14,7 +14,7 @@ import style from "./styles";
 import { Button, NativeBaseProvider } from "native-base";
 import Service from "../../service/service";
 import { useIsFocused } from "@react-navigation/native";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import {
   MapModalProperties,
   CameraTriggerButtonProperties,
@@ -24,14 +24,15 @@ import {
   PicturePreviewProperties,
 } from "../../interfaces/camera-types";
 import BottomSheet, { BottomSheetScrollView, BottomSheetView } from "@gorhom/bottom-sheet";
+import { Building, CategoryInstruction } from "../../interfaces/service-types";
+import * as ExpoLocation from 'expo-location'
 import { getValueFor } from "../../utils/PersistInfo";
-import { CategoryInstruction } from "../../interfaces/service-types";
 
 export default function DisplayCamera() {
   const isFocused = useIsFocused();
   const [hasPermission, setHasPermission] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const [modalText, setModalText] = useState("");
+  const [modalText, setModalText] = useState<string>("");
   const [picTaken, setPicTaken] = useState(false);
   const [picURI, setPicURI] = useState("");
   const [camera, setCameraInstance] = useState(null);
@@ -40,6 +41,7 @@ export default function DisplayCamera() {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === "granted");
+
     })();
   }, []);
 
@@ -47,7 +49,8 @@ export default function DisplayCamera() {
     return <Text>No access to camera</Text>;
   }
 
-  if (isFocused) {
+  if (isFocused) {    
+
     return (
       <NativeBaseProvider>
         <CameraView
@@ -133,18 +136,55 @@ const MapModal = (props: MapModalProperties) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ["8%", "50%"], []);
   const [bottomSheetVisible, setBottomSheetVisible] = useState(true);
-  const [instruction, setInstruction] = useState("");
+  const [instruction, setInstruction] = useState<string>();
+  const [closestBuilding, setClosestBuilding] = useState<Building>();
+  const mapRef = useRef<MapView>(null);
   const INSTRUCTION_SEPARATOR = ';'
-  
-  getValueFor("category_instructions").then(val => {
-    let rawInstructions = (val as CategoryInstruction[]).filter(el => el.category_name == props.category)[0].instruction;
-    let processedInstructions = ""
-    rawInstructions.split(INSTRUCTION_SEPARATOR).forEach((step, index) => {
-      if(step.length > 0)
-        processedInstructions += index+1 + ". " + step + "\n"
+
+  if (props.category.length > 0 && instruction == undefined) {
+    getValueFor("category_instructions").then(val => {
+      const categoryInstructions = val as CategoryInstruction[]
+
+      let rawInstructions = categoryInstructions.filter(el => el.category_name == props.category)[0].instruction;
+      let processedInstructions = ""
+      rawInstructions.split(INSTRUCTION_SEPARATOR).forEach((step, index) => {
+        if (step.length > 0)
+          processedInstructions += index + 1 + ". " + step + "\n"
+      })
+      setInstruction(processedInstructions)
+
     })
-    setInstruction(processedInstructions)
-  }).catch(() => {})
+  }
+
+  if (closestBuilding == undefined) {
+
+    getValueFor("buildings").then(val => {
+      var buildings = val as Building[]
+
+      ExpoLocation.getCurrentPositionAsync().then(position => {
+        let closestBuildingVar: Building
+        let closestBuildingDistance: number
+
+        buildings.forEach((building, index) => {
+          if (index == 0) {
+            closestBuildingVar = building
+            closestBuildingDistance = distance(building.latitude, building.longitude, position.coords.latitude, position.coords.longitude)
+          } else {
+
+            let newDistance = distance(building.latitude, building.longitude, position.coords.latitude, position.coords.longitude);
+            if (newDistance > closestBuildingDistance) {
+              closestBuildingDistance = newDistance
+              closestBuildingVar = building
+            }
+          }
+        })
+        setClosestBuilding(closestBuildingVar)
+
+      })
+    })
+  }
+
+
 
   return (
     <Modal
@@ -166,15 +206,37 @@ const MapModal = (props: MapModalProperties) => {
             onPress={() => props.visibilitySetter(false)}
           />
           <MapView
+            ref={mapRef}
             style={style.map}
             provider={PROVIDER_GOOGLE}
+            showsUserLocation={true}
+            followsUserLocation={true}
+            showsMyLocationButton={false}
+            onMapReady={()=> {
+              if(closestBuilding != undefined)
+                mapRef.current?.animateToRegion({latitude:closestBuilding?.latitude, longitude:closestBuilding?.longitude, latitudeDelta:0.02, longitudeDelta:0.02}, 1000)
+            }}
             initialRegion={{
               latitude: 45.494862,
               longitude: -73.5779,
-              latitudeDelta: 0.01,
-              longitudeDelta: 0.01,
+              latitudeDelta: 0.02,
+              longitudeDelta: 0.02,
             }}
-          />
+          >
+            {
+              (closestBuilding != undefined) ? 
+                <Marker
+                  key={closestBuilding.id}
+                  coordinate={{ longitude: closestBuilding.longitude, latitude: closestBuilding.latitude }}
+                >
+                  <MaterialCommunityIcons
+                    name='map-marker'
+                    size={55}
+                    style={{'color':'red'}}
+                  />
+                </Marker> : <></>
+            }
+          </MapView>
           
           <BottomSheet
             ref={bottomSheetRef}
@@ -183,7 +245,6 @@ const MapModal = (props: MapModalProperties) => {
             enableContentPanningGesture={false}
             enableHandlePanningGesture={false}
             enableOverDrag={false}
-            style={style.bottomSheetStyle}
           >
             {bottomSheetVisible?
             <MaterialCommunityIcons
@@ -202,25 +263,39 @@ const MapModal = (props: MapModalProperties) => {
               onPress={() => { bottomSheetRef.current?.expand(); setBottomSheetVisible(true) }}
             />}
             <BottomSheetScrollView >
-              <BottomSheetView style={{ padding: 10 }}>
-                <Text><Text style={style.bottomSheetHeaderText}>Category:</Text> <Text style={style.bottomSheetContentText}> {props.category} </Text></Text>
-                <Text><Text style={style.bottomSheetHeaderText}>Disposal Method:</Text><Text style={style.bottomSheetContentText}> {"\n" + instruction}</Text></Text>
-                <MaterialCommunityIcons
+              <BottomSheetView style={style.bottomSheetViewStyle}>
+                <Text><Text style={style.bottomSheetHeaderText}>Category:</Text> <Text style={style.bottomSheetContentText}> {props.category + "\n"} </Text></Text>
+
+                <Text><Text style={style.bottomSheetHeaderText}>Disposal Method</Text><Text style={style.bottomSheetContentText}> {"\n" + instruction}</Text></Text>
+
+                <Text><Text style={style.bottomSheetHeaderText}>Closest Building</Text><Text style={style.bottomSheetContentText}> <MaterialCommunityIcons
                   name='map-marker'
-                  size={40}
-                />
+                  size={25}
+                  style={{'color':'red'}}
+                /></Text></Text>
+
+                <Text style={style.bottomSheetHeaderText}>{closestBuilding?.building_name}</Text>
+                <Text>{closestBuilding?.address}</Text>
               </BottomSheetView>
             </BottomSheetScrollView>
-
-
-
-
           </BottomSheet>
         </View>
       </View>
     </Modal>
   );
 };
+
+function distance(lat1, lon1, lat2, lon2) {
+  var p = 0.017453292519943295;    // Math.PI / 180
+  var c = Math.cos;
+  var a = 0.5 - c((lat2 - lat1) * p)/2 + 
+          c(lat1 * p) * c(lat2 * p) * 
+          (1 - c((lon2 - lon1) * p))/2;
+
+  return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+}
+
+
 
 // Camera trigger button: displayed only before a picture is taken
 const CameraTriggerButton = (props: CameraTriggerButtonProperties) => {
