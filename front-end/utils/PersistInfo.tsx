@@ -1,4 +1,4 @@
-import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function save(key:string, value:string|object|boolean|number): Promise<void>{
   return new Promise((resolve, reject) => {
@@ -19,7 +19,7 @@ export function save(key:string, value:string|object|boolean|number): Promise<vo
       reject("Invalid value type passed; unable to save to secure store")
     }
     
-    SecureStore.setItemAsync(key, valueToStore).then(() => {
+    AsyncStorage.setItem(key, valueToStore).then(() => {
       resolve()
     }).catch((error) => {
       reject(error)
@@ -29,7 +29,7 @@ export function save(key:string, value:string|object|boolean|number): Promise<vo
 
 export function getValueFor(key:string): Promise<string|object|boolean|number> {
   return new Promise((resolve, reject) => {
-    SecureStore.getItemAsync(key).then(value => {
+    AsyncStorage.getItem(key).then(value => {
       if(value == null){
         reject(`Key '${key}' is not associated with any value`)
       } else {
@@ -48,5 +48,5 @@ export function getValueFor(key:string): Promise<string|object|boolean|number> {
   }
 
 export async function deleteValueFor(key:string): Promise<void> {
-    return await SecureStore.deleteItemAsync(key);
+    return await AsyncStorage.removeItem(key);
   }
