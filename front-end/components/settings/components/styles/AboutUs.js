@@ -75,7 +75,7 @@ export default StyleSheet.create({
     viewSub2: {
       flex: 2,
       marginTop: 5,
-      backgroundColor: 'white',
+      backgroundColor: '#FFFFFF',
     },
     image1: {
       width: 25,
