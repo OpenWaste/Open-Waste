@@ -1,9 +1,9 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import {render, fireEvent, waitFor} from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
 import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from '@react-navigation/native';
-import {VerifyEmail, ValidatePasscode} from '../components/profile/components/VerifyEmail'
+import { VerifyEmail, ValidatePasscode } from '../components/profile/components/VerifyEmail'
 
 it('renders correctly', async () => {
     const tree = await renderer.create(<VerifyEmail/>).toJSON();

@@ -1,6 +1,3 @@
-# Images stored locally for the backend
-media/*
-
 .idea/
 *.pyc
 

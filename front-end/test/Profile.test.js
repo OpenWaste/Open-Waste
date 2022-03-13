@@ -1,9 +1,8 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
-import {render, fireEvent, waitFor} from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
 import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from '@react-navigation/native';
-import {Profile, ProfileInformation, InfoBox} from '../components/profile/components/Profile'
+import { ProfileInformation, InfoBox } from '../components/profile/components/Profile'
 
 it('Profile Information Renders Properly', () => {
 
@@ -25,9 +24,9 @@ it('Profile Information Renders Properly', () => {
   
   // Returning null, will investigate later
 
-  //expect(queryByTestId('emailBox')).not.toBeNull();
-  //expect(queryByTestId('submittedBox')).not.toBeNull();
-  //expect(queryByTestId('acceptedBox')).not.toBeNull();
+  expect(queryByTestId('emailBox')).not.toBeNull();
+  expect(queryByTestId('submittedBox')).not.toBeNull();
+  expect(queryByTestId('acceptedBox')).not.toBeNull();
 });
 
 it('Info Box Renders Properly', () => {

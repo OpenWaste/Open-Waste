@@ -25,30 +25,27 @@ export default class Service {
     });
   }
 
-  static async submitImageCategory(image: string, category: string) {
+  static async submitImageCategory(image: string, category: string):Promise<Object> {
     let resource = {
       category: category,
       image: image
     }
-    let email = await getValueFor('email')
+    let email = await getValueFor('email').catch();
 
     if(email != undefined)
       resource.email = email;
 
-  let response =  await Service.post('image-submission', resource)
-
-    return response.status;
+    return await Service.post('image-submission', resource)
   }
 
-  static async submitAccountCreation(data: UserResource) {
+  static async submitAccountCreation(data: UserResource):Promise<Object> {
     const resource = {
       username: data.username,
       email: data.email,
       password: data.password
     }
 
-    let resp = await Service.post('create-user', resource);
-    return resp
+    return await Service.post('create-user', resource);
   }
 
   static async authenticateUser(data: UserResource):Promise<Object> {
@@ -113,6 +110,16 @@ export default class Service {
         save("bins", resp.data.bins)
         save("buildings", resp.data.buildings)
       })
+  }
+
+  static async getBinImages(bid:number):Promise<Object> {
+    let resp = await Service.get(`bin-images/${bid}`)
+    return resp
+  }
+
+  static async getBuildingImages(bid:number):Promise<Object> {
+    let resp = await Service.get(`building-images/${bid}`)
+    return resp
   }
 
   static async resetPassword(data: any):Promise<Object> {
