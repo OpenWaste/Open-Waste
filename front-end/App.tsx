@@ -16,7 +16,7 @@ const App = () => {
   });
 
   // Allows to 'remember' if you are a first time user; If yes, show the onboarding screen, else do not show.
-  const [isFirstLaunch, setIsFirstLauch] = React.useState(null); 
+  const [isFirstLaunch, setIsFirstLauch] = React.useState(false); 
 
   React.useEffect(() => {
     AsyncStorage.getItem('AlreadyLaunched').then(value => {
@@ -30,10 +30,7 @@ const App = () => {
     });
   }, []);
 
-  if(isFirstLaunch == null) {
-    return null;
-  }
-  else if (isFirstLaunch == true) { // First time user.
+  if (isFirstLaunch) { // First time user.
     return (
       <NavigationContainer independent={true}>
         <AppStack.Navigator screenOptions={{headerMode: "false"}}>
@@ -43,9 +40,7 @@ const App = () => {
       </NavigationContainer>
     );
   }
-  else { // Returning user.
-    return <MainContainer />
-  }
+  return <MainContainer />
 }
 
 export default App;
