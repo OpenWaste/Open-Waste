@@ -1,5 +1,6 @@
-import { Image, StyleSheet } from 'react-native';
+import { Image } from 'react-native';
 import React from 'react';
+import styles from "./styles";
 
 import Onboarding from 'react-native-onboarding-swiper'; 
 
@@ -59,14 +60,4 @@ const OnboardingScreen = ({navigation}) => {
 };
 
 export default OnboardingScreen;
-
-const styles = StyleSheet.create({
-    onboardingImg: {
-        width: "50%",
-        height: "50%",
-        padding: "40%",
-        margin: "-15%",    
-        resizeMode: "contain",
-    },
-});
 
