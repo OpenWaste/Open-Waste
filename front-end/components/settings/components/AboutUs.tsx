@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, View, Text, Image, Button, TouchableHighlight } from "react-native";
+import { ScrollView, View, Text, Image, TouchableHighlight } from "react-native";
 import style from "./styles/AboutUs";
 import { NativeBaseProvider } from "native-base";
 import { Linking } from 'react-native';
@@ -7,7 +7,6 @@ import Clipboard from '@react-native-community/clipboard';
 
 
 export class AboutUs extends React.Component {
-  img = require("../../../assets/mailbox.png");
 
   render() {
     return (
@@ -22,9 +21,9 @@ export class AboutUs extends React.Component {
             <Image source={require("../../../assets/CP3.png")} style = { style.logo2 }/>
             <Text style={style.textHeader}>Concordia Precious Plastic Project </Text>
             <Text style={style.text}>CP3 is a multi-disciplinary student-led initiative supporting 
-Concordia University’s plastic waste management by recycling plastic 
-on-site and raising awareness of the plastic crisis. 
-We are a group of students across all four faculties united by the goal of protecting the environment and giving plastic waste a new life. </Text>
+            Concordia University’s plastic waste management by recycling plastic 
+            on-site and raising awareness of the plastic crisis. 
+            We are a group of students across all four faculties united by the goal of protecting the environment and giving plastic waste a new life. </Text>
           </View>
           <View style={style.viewMain}>
             <Image source={require("../../../assets/zeroWaste.png")} style = { style.logo2 }/>
@@ -35,27 +34,26 @@ We are a group of students across all four faculties united by the goal of prote
             <Text style={style.textHeader}>Contact Us </Text>
             <View style={ style.viewMain2 }>
               <View style={ style.viewSub1 } >
-              <TouchableHighlight onPress={() => Linking.openURL('mailto:cp3@concordia.ca')}>
-                <Image source={require("../../../assets/mail.png")} style = { style.image1 }>
-                </Image>
-              </TouchableHighlight>
+                <TouchableHighlight onPress={() => Linking.openURL('mailto:cp3@concordia.ca')}>
+                  <Image source={require("../../../assets/mail.png")} style = { style.image1 }>
+                  </Image>
+                </TouchableHighlight>
               </View>
               <View style={ style.viewSub2 } >
-                <Button onPress={() => Linking.openURL('mailto:cp3@concordia.ca') }
-        title="cp3@concordia.ca" />
+                <Text style={style.links} onPress={() => Linking.openURL('mailto:cp3@concordia.ca') }
+                title="cp3@concordia.ca"> cp3@concordia.ca </Text>
               </View>
             </View>
-            
             <View style={ style.viewMain2 }>
               <View style={ style.viewSub1 } >
-              <TouchableHighlight onPress={() => Linking.openURL('mailto:zerowaste@concordia.ca')}>
-                <Image source={require("../../../assets/mail.png")} style = { style.image1 }>
-                </Image>
-              </TouchableHighlight>
+                <TouchableHighlight onPress={() => Linking.openURL('mailto:zerowaste@concordia.ca')}>
+                  <Image source={require("../../../assets/mail.png")} style = { style.image1 }>
+                  </Image>
+                </TouchableHighlight>
               </View>
               <View style={ style.viewSub2 } >
-                <Button onPress={() => Linking.openURL('mailto:zerowaste@concordia.ca') }
-        title="zerowaste@concordia.ca" />
+                <Text style={style.links} onPress={() => Linking.openURL('mailto:zerowaste@concordia.ca') }
+                title="zerowaste@concordia.ca"> zerowaste@concordia.ca </Text>
               </View>
             </View>
           </View>
@@ -64,12 +62,12 @@ We are a group of students across all four faculties united by the goal of prote
             <Text style={style.textHeader}>Social Media </Text>
             <View style={ style.viewMain2 }>
               <View style={ style.viewSub2 } >
-                <Button onPress={() => Clipboard.setString('cp3@concordia.ca')}
-        title="cp3@concordia.ca" />
+                <Text style={style.links} onPress={() => Clipboard.setString('cp3@concordia.ca')}
+                title="cp3@concordia.ca"> cp3@concordia.ca </Text>
               </View>
               <View style={ style.viewSub2 } >
-                <Button onPress={() => Clipboard.setString('zerowaste@concordia.ca')}
-        title="zerowaste@concordia.ca" />
+                <Text style={style.links} onPress={() => Clipboard.setString('zerowaste@concordia.ca')}
+                title="zerowaste@concordia.ca"> zerowaste@concordia.ca </Text>
               </View>
             </View>
             
@@ -134,9 +132,9 @@ We are a group of students across all four faculties united by the goal of prote
                 </Image>
               </TouchableHighlight>
               </View>
-              <View style={ style.viewSub2 } >
-                <Button onPress={() => Linking.openURL('mailto:zerowaste@concordia.ca') }
-        title="zerowaste@concordia.ca" />
+              <View style={ style.viewSub3 } >
+                <Text style={style.links} onPress={() => Linking.openURL('mailto:zerowaste@concordia.ca') }
+                title="zerowaste@concordia.ca"> zerowaste@concordia.ca</Text>
               </View>
             </View>
       </ScrollView>

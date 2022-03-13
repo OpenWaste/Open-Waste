@@ -15,7 +15,7 @@ const screens = [
   {name: "Language", component: Language},
 ];
 
-export class Settings extends React.Component {
+export class SettingsNavigator extends React.Component {
   render() {
     return (
       <NativeBaseProvider>

@@ -71,22 +71,33 @@ export default StyleSheet.create({
     viewSub1: {
       flex: 1,
       marginTop: 20,
+      marginBottom: 10,
     },
     viewSub2: {
       flex: 2,
-      marginTop: 5,
+      marginTop: 20,
       backgroundColor: '#FFFFFF',
+    },
+    viewSub3: {
+      flex: 2,
+      marginTop: 20,
     },
     image1: {
       width: 25,
       height: 15,
       flex: 1,
       marginLeft: 40,
+      marginBottom: 10,
     },
     image2: {
       width: 25,
       height: 25,
       flex: 1,
       marginLeft: 20,
+      marginTop: 10,
+    },
+    links: {
+      color: 'blue',
+      textAlign: 'center'
     }
 });
