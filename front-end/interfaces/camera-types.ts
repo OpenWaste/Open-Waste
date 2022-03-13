@@ -1,4 +1,4 @@
-import { PredictionResponse } from "./service-types";
+import {Building, PredictionResponse} from "./service-types";
 import { Camera } from "expo-camera";
 
 export interface MapModalProperties{
@@ -26,9 +26,10 @@ export interface PostPictureSnapButtonsProperties {
   visibilitySetter: (value:boolean) => void
 }
 
-export interface ImageSubmissionButtonProperties {
-  isPictureTaken:boolean,
-  navigator:any
+export interface MapBottomSheetProperties {
+  category:string
+  instruction:string|undefined
+  closestBuilding:Building|undefined
 }
 
 export interface PicturePreviewProperties {

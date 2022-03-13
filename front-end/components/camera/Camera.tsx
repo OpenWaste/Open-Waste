@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef, useMemo, useContext } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import {
   Text,
   View,
   Modal,
   TouchableHighlight,
   Image,
-  ActivityIndicator,
+  ActivityIndicator, ScrollView,
 } from "react-native";
 import { Camera } from "expo-camera";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -21,9 +21,9 @@ import {
   PredictionTextProperties,
   PostPictureSnapButtonsProperties,
   CameraViewProperties,
-  PicturePreviewProperties,
+  PicturePreviewProperties, MapBottomSheetProperties,
 } from "../../interfaces/camera-types";
-import BottomSheet, { BottomSheetScrollView, BottomSheetView } from "@gorhom/bottom-sheet";
+import BottomSheet from "@gorhom/bottom-sheet";
 import { Building, CategoryInstruction } from "../../interfaces/service-types";
 import * as ExpoLocation from 'expo-location'
 import { getValueFor } from "../../utils/PersistInfo";
@@ -71,7 +71,7 @@ export default function DisplayCamera() {
   return <View />;
 }
 
-const CameraView = (props: CameraViewProperties) => {
+export const CameraView = (props: CameraViewProperties) => {
   return (
     <View style={style.fullScreenView}>
       {props.isPictureTaken ? (
@@ -121,7 +121,7 @@ const CameraView = (props: CameraViewProperties) => {
   );
 };
 
-const PicturePreview = (props: PicturePreviewProperties) => {
+export const PicturePreview = (props: PicturePreviewProperties) => {
   return (
     <Image
       testID="pic-preview"
@@ -132,10 +132,7 @@ const PicturePreview = (props: PicturePreviewProperties) => {
 };
 
 // Represents the modal that contains a google map view
-const MapModal = (props: MapModalProperties) => {
-  const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ["8%", "50%"], []);
-  const [bottomSheetVisible, setBottomSheetVisible] = useState(true);
+export const MapModal = (props: MapModalProperties) => {
   const [instruction, setInstruction] = useState<string>();
   const [closestBuilding, setClosestBuilding] = useState<Building>();
   const mapRef = useRef<MapView>(null);
@@ -183,8 +180,6 @@ const MapModal = (props: MapModalProperties) => {
       })
     })
   }
-
-
 
   return (
     <Modal
@@ -237,55 +232,68 @@ const MapModal = (props: MapModalProperties) => {
                 </Marker> : <></>
             }
           </MapView>
-          
-          <BottomSheet
-            ref={bottomSheetRef}
-            index={1}
-            snapPoints={snapPoints}
-            enableContentPanningGesture={false}
-            enableHandlePanningGesture={false}
-            enableOverDrag={false}
-          >
-            {bottomSheetVisible?
-            <MaterialCommunityIcons
+          <MapBottomSheet category={props.category} instruction={instruction} closestBuilding={closestBuilding}/>
 
-              style={style.bottomSheetCloseButton}
-              name="arrow-collapse"
-              size={30}
-              onPress={() => { bottomSheetRef.current?.collapse(); setBottomSheetVisible(false) }}
-            />
-            :
-            <MaterialCommunityIcons
-
-              style={style.bottomSheetCloseButton}
-              name="arrow-expand"
-              size={30}
-              onPress={() => { bottomSheetRef.current?.expand(); setBottomSheetVisible(true) }}
-            />}
-            <BottomSheetScrollView >
-              <BottomSheetView style={style.bottomSheetViewStyle}>
-                <Text><Text style={style.bottomSheetHeaderText}>Category:</Text> <Text style={style.bottomSheetContentText}> {props.category + "\n"} </Text></Text>
-
-                <Text><Text style={style.bottomSheetHeaderText}>Disposal Method</Text><Text style={style.bottomSheetContentText}> {"\n" + instruction}</Text></Text>
-
-                <Text><Text style={style.bottomSheetHeaderText}>Closest Building</Text><Text style={style.bottomSheetContentText}> <MaterialCommunityIcons
-                  name='map-marker'
-                  size={25}
-                  style={{'color':'red'}}
-                /></Text></Text>
-
-                <Text style={style.bottomSheetHeaderText}>{closestBuilding?.building_name}</Text>
-                <Text>{closestBuilding?.address}</Text>
-              </BottomSheetView>
-            </BottomSheetScrollView>
-          </BottomSheet>
         </View>
       </View>
     </Modal>
   );
 };
 
-function distance(lat1, lon1, lat2, lon2) {
+export const MapBottomSheet = (props: MapBottomSheetProperties) => {
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(() => ["8%", "50%"], []);
+  const [bottomSheetVisible, setBottomSheetVisible] = useState(true);
+
+  return (
+      <BottomSheet
+          ref={bottomSheetRef}
+          index={1}
+          snapPoints={snapPoints}
+          enableContentPanningGesture={false}
+          enableHandlePanningGesture={false}
+          enableOverDrag={false}
+      >
+        {bottomSheetVisible?
+            <MaterialCommunityIcons
+
+                style={style.bottomSheetCloseButton}
+                name="arrow-collapse"
+                size={30}
+                onPress={() => { bottomSheetRef.current?.collapse(); setBottomSheetVisible(false) }}
+            />
+            :
+            <MaterialCommunityIcons
+
+                style={style.bottomSheetCloseButton}
+                name="arrow-expand"
+                size={30}
+                onPress={() => { bottomSheetRef.current?.expand(); setBottomSheetVisible(true) }}
+            />}
+        <ScrollView >
+          <View style={style.bottomSheetViewStyle}>
+            <Text><Text style={style.bottomSheetHeaderText}>Category:</Text> <Text style={style.bottomSheetContentText}> {props.category + "\n"} </Text></Text>
+
+            {
+              (props.instruction != undefined)?
+                  <Text testID="instruction-text"><Text style={style.bottomSheetHeaderText}>Disposal Method</Text><Text style={style.bottomSheetContentText}> {"\n" + props.instruction}</Text></Text>:<></>
+            }
+
+            <Text><Text style={style.bottomSheetHeaderText}>Closest Building</Text><Text style={style.bottomSheetContentText}> <MaterialCommunityIcons
+                name='map-marker'
+                size={25}
+                style={{'color':'red'}}
+            /></Text></Text>
+
+            <Text style={style.bottomSheetHeaderText}>{props.closestBuilding?.building_name}</Text>
+            <Text>{props.closestBuilding?.address}</Text>
+          </View>
+        </ScrollView>
+      </BottomSheet>
+  )
+}
+
+function distance(lat1: number, lon1: number, lat2: number, lon2: number) {
   var p = 0.017453292519943295;    // Math.PI / 180
   var c = Math.cos;
   var a = 0.5 - c((lat2 - lat1) * p)/2 + 
@@ -298,7 +306,7 @@ function distance(lat1, lon1, lat2, lon2) {
 
 
 // Camera trigger button: displayed only before a picture is taken
-const CameraTriggerButton = (props: CameraTriggerButtonProperties) => {
+export const CameraTriggerButton = (props: CameraTriggerButtonProperties) => {
   return (
     <TouchableHighlight
       testID="camera-snap-btn"
@@ -319,7 +327,7 @@ const CameraTriggerButton = (props: CameraTriggerButtonProperties) => {
   );
 };
 
-const PredictionText = (props: PredictionTextProperties) => {
+export const PredictionText = (props: PredictionTextProperties) => {
   return (
     <View style={style.predictionTextContainer}>
       {props.predictionString.length > 0 ? (
@@ -339,7 +347,7 @@ const PredictionText = (props: PredictionTextProperties) => {
 
 // Buttons rendered after a picture has been taken AND a prediction was returned
 // This includes the CANCEL and NEXT button. The latter of which triggers the MapModal
-const PostPictureSnapButtons = (props: PostPictureSnapButtonsProperties) => {
+export const PostPictureSnapButtons = (props: PostPictureSnapButtonsProperties) => {
   return (
     <>
       <TouchableHighlight
@@ -365,13 +373,4 @@ const PostPictureSnapButtons = (props: PostPictureSnapButtonsProperties) => {
       </Button>
     </>
   );
-};
-
-export {
-  MapModal,
-  CameraTriggerButton,
-  PredictionText,
-  PostPictureSnapButtons,
-  CameraView,
-  PicturePreview,
 };
