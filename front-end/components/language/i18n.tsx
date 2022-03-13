@@ -1,11 +1,9 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import english from "./en.json"
-import french from "./fr.json"
+import english from "./en.json";
+import french from "./fr.json";
+import { deleteValueFor, getValueFor } from '../../utils/PersistInfo';
 
-// the translations
-// (tip move them in a JSON file and import them,
-// or even better, manage them separated from your code: https://react.i18next.com/guides/multiple-translation-files)
 const resources = {
   en: {
     translation: english
@@ -18,14 +16,19 @@ const resources = {
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
+    compatibilityJSON: 'v3',
     resources,
-    lng: "en", // language to use, more information here: https://www.i18next.com/overview/configuration-options#languages-namespaces-resources
-    // you can use the i18n.changeLanguage function to change the language manually: https://www.i18next.com/overview/api#changelanguage
-    // if you're using a language detector, do not define the lng option
+    lng: "en",
 
     interpolation: {
       escapeValue: false // react already safes from xss
     }
   });
 
-  export default i18n;
+getValueFor('language').then((output) => {
+    if(output == 'fr'){
+      i18n.changeLanguage("fr")
+   }
+});
+
+export default i18n;

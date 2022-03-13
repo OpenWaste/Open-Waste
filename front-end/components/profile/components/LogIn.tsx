@@ -11,6 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { save } from '../../../utils/PersistInfo';
 import { LoginFormProperties } from "../../../interfaces/profile-types";
 import i18next from '../../language/i18n';
+import { deleteValueFor, getValueFor } from '../../../utils/PersistInfo';
 
 export class LogIn extends React.Component {
   render() {
@@ -121,6 +122,10 @@ function MyComponentFR () {
               onPress={() => i18next.changeLanguage("fr", (err, t) => {
                 if (err) return console.log('something went wrong loading', err);
                 t('key'); // -> same as i18next.t
+              }).then(resp => {
+                save('language', 'fr') 
+              }).catch(error => {
+                showMessage({ message: error.toJSON().message, type: 'warning' }); 
               })}> Change Language To French </Text>   
     </View>
   )
@@ -135,6 +140,10 @@ function MyComponentENG () {
               onPress={() => i18next.changeLanguage("en", (err, t) => {
                 if (err) return console.log('something went wrong loading', err);
                 t('key'); // -> same as i18next.t
+              }).then(resp => {
+                deleteValueFor('language')
+              }).catch(error => {
+                showMessage({ message: error.toJSON().message, type: 'warning' }); 
               })}> Change Language To English </Text>   
     </View>
   )
