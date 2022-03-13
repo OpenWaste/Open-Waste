@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MapModal, CameraTriggerButton, PredictionText, PostPictureSnapButtons, ImageSubmissionButton, CameraView, PicturePreview } from '../components/camera/ImageRecognition/Camera'
+import { MapModal, CameraTriggerButton, PredictionText, PostPictureSnapButtons, ImageSubmissionButton, CameraView, PicturePreview } from '../components/camera/Camera'
 import { NativeBaseProvider } from "native-base";
 import { fireEvent, render } from '@testing-library/react-native'
 

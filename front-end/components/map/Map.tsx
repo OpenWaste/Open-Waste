@@ -1,44 +1,98 @@
-import React, { Component } from "react";
-import { View } from "react-native";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-import styles from "./styles";
+import React, { useState, useEffect, useMemo, useRef } from "react";
+import { View, Text, Image } from "react-native";
+import styles from './styles'
+import { Heading } from "native-base";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import BottomSheet from '@gorhom/bottom-sheet'
+import Service from "../../service/service";
+import { Region, Building } from '../../interfaces/service-types'
+import { getValueFor } from "../../utils/PersistInfo";
+import { NativeBaseProvider, ScrollView } from "native-base";
 
-interface Region {
-  latitude: number,
-  longitude: number,
-  latitudeDelta: number,
-  longitudeDelta: number,
-}
+export function Map() {
+  const [region, setRegion] = useState<Region>({
+    latitude: 45.494862,
+    longitude: -73.57790,
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.01
+  });
+  const [buildings, setBuildings] = useState<Building[]>([]);
+  const [selectedBuilding, setSelectedBuilding] = useState<Building>(null);
+  const [buildingImages, setBuildingImages] = useState([]);
 
-export class Map extends Component<{}, {region: Region}> {
-  constructor(props:any) {
-    super(props);
-    this.state = {
-      region: {
-        latitude: 45.494862,
-        longitude: -73.57790,
-        latitudeDelta: 0.01,
-        longitudeDelta: 0.01,
-      },
+  const mapRef = useRef<MapView>(null);
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(() => ['3%', '33%'], []);
+
+  useEffect(() => {
+    if (!buildings || buildings.length == 0) {
+      getValueFor('buildings').then(buildings => {
+        setBuildings(buildings);
+      });
+    }
+  })
+
+  const markerOnPress = (building:Building) => {
+    setSelectedBuilding(building);
+    Service.getBuildingImages(building.id).then((resp) => {
+      setBuildingImages(resp.data);
+    })
+    if (bottomSheetRef.current){
+      bottomSheetRef.current.snapToIndex(1);
     };
-  }
-  // TODO: set initial state of region to current location
-  // componentDidMount() {}
-  
-  onRegionChange = (region:Region) => {
-    (this.state.region as Region) = region
+    mapRef.current?.animateToRegion({
+      longitude: building.longitude,
+      latitude: building.latitude,
+      latitudeDelta: 0.01,
+      longitudeDelta: 0.01
+    });
   }
 
-  render() {
-    return (
+  return (
+    <NativeBaseProvider>
       <View>
         <MapView
-          region={this.state.region}
+          ref={mapRef}
+          initialRegion={region}
           provider={PROVIDER_GOOGLE}
           style={styles.map}
-          onRegionChange={this.onRegionChange}
-        />
+        >
+          {buildings.map((building:Building) => {
+            return <Marker
+              key={building.id}
+              coordinate={{longitude:building.longitude, latitude:building.latitude}}
+              onPress={() => markerOnPress(building)}
+            >
+              <MaterialCommunityIcons
+                name='map-marker'
+                size={40}
+                color={styles.marker.color}
+              />
+            </Marker>
+          })}
+        </MapView>
+        {!selectedBuilding ? null :
+          <BottomSheet
+            ref={bottomSheetRef}
+            index={1}
+            snapPoints={snapPoints}
+          >
+          <Heading style={styles.header}>{selectedBuilding.building_name}</Heading>
+          <Text style={styles.text}>{selectedBuilding.address}</Text>
+          <ScrollView
+            horizontal={true}
+            style={styles.imageScroll}>
+            {buildingImages.map((base64_img:string, index:number) => {
+              return <Image
+                key={index.toString()}
+                source={{uri: `data:image/png;base64,${base64_img}`}}
+                style={styles.image}/>
+            })}
+          </ScrollView>
+          </BottomSheet>
+        }
       </View>
-    );
-  }
+    </NativeBaseProvider>
+  );
 }

@@ -25,29 +25,29 @@ export default class Service {
     });
   }
 
-  static async submitImageCategory(image: string, category: string) {
+  static async submitImageCategory(image: string, category: string):Promise<Object> {
     let resource = {
       category: category,
       image: image
     }
-    let email = await getValueFor('email')
-
-    if(email != undefined)
+    try {
+      let email = await getValueFor('email')
       resource.email = email;
-
-    let resp = await Service.post('image-submission', resource);
-    return resp
+      return Service.post('image-submission', resource)
+    }
+    catch {
+      return Service.post('image-submission', resource)
+    }
   }
 
-  static async submitAccountCreation(data: UserResource) {
+  static async submitAccountCreation(data: UserResource):Promise<Object> {
     const resource = {
       username: data.username,
       email: data.email,
       password: data.password
     }
 
-    let resp = await Service.post('create-user', resource);
-    return resp
+    return await Service.post('create-user', resource);
   }
 
   static async authenticateUser(data: UserResource):Promise<Object> {
@@ -60,13 +60,13 @@ export default class Service {
     return resp
   }
 
-  static async changePassword(data: UserResource) {
+  static async changePassword(data: UserResource):Promise<Object> {
     const resource = {
       username: data.username,
       password: data.password
     }
 
-    let resp = await Service.post('update-password', resource);
+    let resp = await Service.patch('update-password', resource);
     return resp
   }
 
@@ -109,6 +109,37 @@ export default class Service {
       .then(resp => {
         save("categories", resp.data.categories)
         save("category_instructions", resp.data.category_instructions)
+        save("bins", resp.data.bins)
+        save("buildings", resp.data.buildings)
       })
+  }
+
+  static async getBinImages(bid:number):Promise<Object> {
+    let resp = await Service.get(`bin-images/${bid}`)
+    return resp
+  }
+
+  static async getBuildingImages(bid:number):Promise<Object> {
+    let resp = await Service.get(`building-images/${bid}`)
+    return resp
+  }
+
+  static async resetPassword(data: any):Promise<Object> {
+    const resource = {
+      email: data.email,
+    }
+
+    let resp = await Service.post('reset-password', resource);
+    return resp
+  }
+
+  static async verifyEmail(data: any):Promise<Object> {
+    const resource = {
+      passcode: data.passcode,
+      email: data.email
+    }
+
+    let resp = await Service.post('verify-email', resource);
+    return resp
   }
 }
