@@ -19,16 +19,27 @@ export default StyleSheet.create({
     fontWeight:'bold',
     fontFamily: "Roboto",
     fontSize: 18,
+    color: 808080,
+    justifyContent: 'center'
   },
   bottomSheetSubHeaderText: {
     fontWeight:'bold',
     fontFamily: "Roboto",
     fontSize: 17,
+    color: 808080
   },
+
   bottomSheetContentText:{
     fontFamily: "Roboto",
     fontSize: 16,
+    color:808080
   },
+
+  verticallyAlignedView:{
+    flex: 1,
+    flexDirection: 'row',
+  },
+   
   footer: {
     flex: 1,
     flexDirection: "row",

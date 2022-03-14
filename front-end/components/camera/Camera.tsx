@@ -279,14 +279,15 @@ export const MapBottomSheet = (props: MapBottomSheetProperties) => {
                   <Text testID="instruction-text"><Text style={style.bottomSheetHeaderText}>Disposal Method</Text><Text style={style.bottomSheetContentText}> {"\n" + props.instruction}</Text></Text>:<></>
             }
 
-            <Text><Text style={style.bottomSheetHeaderText}>Closest Building</Text><Text style={style.bottomSheetContentText}> <MaterialCommunityIcons
+            <View style={style.verticallyAlignedView}>
+              <MaterialCommunityIcons
                 name='map-marker'
                 size={25}
                 style={{'color':'red'}}
-            /></Text></Text>
-
+            />
             <Text style={style.bottomSheetHeaderText}>{props.closestBuilding?.building_name}</Text>
-            <Text>{props.closestBuilding?.address}</Text>
+            </View>
+            <Text style={style.bottomSheetContentText}>{props.closestBuilding?.address}</Text>
           </View>
         </ScrollView>
       </BottomSheet>
