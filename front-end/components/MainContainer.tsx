@@ -6,7 +6,7 @@ import FlashMessage from "react-native-flash-message";
 
 import DisplayCamera from "./camera/Camera";
 import { Map } from "./map/Map";
-import { Settings } from "./settings/Settings";
+import { SettingsNavigator } from "./settings/SettingsNavigator";
 import { ProfileNavigator } from "./profile/ProfileNavigator";
 import { ImageSubmission } from "./submission/ImageSubmission";
 import i18next from './language/i18n';
@@ -16,7 +16,7 @@ const screens = [
   { name: i18next.t('Submission'), component: ImageSubmission, icon: "upload-file"},
   { name: i18next.t('Camera'), component: DisplayCamera, icon: "photo-camera" },
   { name: "Profile", component: ProfileNavigator, icon: "person" },
-  { name: i18next.t('Settings'), component: Settings, icon: "settings" },
+  { name: i18next.t('Settings'), component: SettingsNavigator, icon: "settings" },
 ];
 
 const Tab = createBottomTabNavigator();

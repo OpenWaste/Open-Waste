@@ -112,7 +112,7 @@ export function SignUpForm() {
           borderWidth="0" 
           placeholder={i18next.t('Email')}
           autoFocus={true}
-          onChangeText={(emailInput:any) => setEmail(emailInput)}
+          onChangeText={(emailInput:any) => setEmail(emailInput.toLowerCase())}
           ref={ref_input3}/>
       </View>
       <Button 
