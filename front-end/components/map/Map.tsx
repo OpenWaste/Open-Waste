@@ -4,6 +4,7 @@ import styles from './styles'
 import { Heading } from "native-base";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import * as ExpoLocation from 'expo-location'
 import BottomSheet from '@gorhom/bottom-sheet'
 import Service from "../../service/service";
 import { Region, Building } from '../../interfaces/service-types'
@@ -17,6 +18,7 @@ export function Map() {
     latitudeDelta: 0.01,
     longitudeDelta: 0.01
   });
+  const [currentPosition, setCurrentPosition] = useState<Object>(null);
   const [buildings, setBuildings] = useState<Building[]>([]);
   const [selectedBuilding, setSelectedBuilding] = useState<Building>(null);
   const [buildingImages, setBuildingImages] = useState([]);
@@ -31,6 +33,13 @@ export function Map() {
         setBuildings(buildings);
       });
     }
+
+    ExpoLocation.getCurrentPositionAsync().then( (position) => {
+      setCurrentPosition({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      })
+    })
   })
 
   const markerOnPress = (building:Building) => {
@@ -58,6 +67,18 @@ export function Map() {
           provider={PROVIDER_GOOGLE}
           style={styles.map}
         >
+          {currentPosition ?
+            <Marker
+              key='user'
+              coordinate={currentPosition}
+            >
+              <MaterialCommunityIcons 
+                name='account-circle'
+                size={40}
+                style={styles.user}
+              />
+            </Marker> : null
+          }
           {buildings.map((building:Building) => {
             return <Marker
               key={building.id}

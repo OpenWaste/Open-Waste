@@ -24,7 +24,8 @@ const Tab = createBottomTabNavigator();
 export class MainContainer extends React.Component {
   render() {
     return (
-      <NavigationContainer>
+      <NavigationContainer independent={true}>
+        
         <Tab.Navigator
           initialRouteName={"Camera"}
           screenOptions={({ route }) => ({
