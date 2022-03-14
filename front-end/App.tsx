@@ -2,6 +2,7 @@ import * as React from "react";
 import { MainContainer } from "./components/MainContainer";
 import Service from "./service/service";
 import "react-native-gesture-handler";
+import * as Location from 'expo-location';
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -13,6 +14,7 @@ const AppStack = createStackNavigator();
 const App = () => {
   React.useEffect(() => {
     Service.updateApplicationCache()
+    Location.requestForegroundPermissionsAsync().then(() => {})
   });
 
   // Allows to 'remember' if you are a first time user; If yes, show the onboarding screen, else do not show.

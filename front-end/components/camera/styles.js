@@ -5,7 +5,30 @@ export default StyleSheet.create({
     flex: 1,
     zIndex: -1,
   },
+  bottomSheetViewStyle: {
+    paddingHorizontal:10,
+    paddingBottom:10
+  },
 
+  bottomSheetCloseButton: {
+    marginLeft: "auto",
+    marginRight: 10,
+  },
+
+  bottomSheetHeaderText: {
+    fontWeight:'bold',
+    fontFamily: "Roboto",
+    fontSize: 18,
+  },
+  bottomSheetSubHeaderText: {
+    fontWeight:'bold',
+    fontFamily: "Roboto",
+    fontSize: 17,
+  },
+  bottomSheetContentText:{
+    fontFamily: "Roboto",
+    fontSize: 16,
+  },
   footer: {
     flex: 1,
     flexDirection: "row",

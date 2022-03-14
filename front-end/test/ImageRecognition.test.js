@@ -1,7 +1,16 @@
 import * as React from 'react';
-import { MapModal, CameraTriggerButton, PredictionText, PostPictureSnapButtons, ImageSubmissionButton, CameraView, PicturePreview } from '../components/camera/Camera'
+import {
+  MapModal,
+  CameraTriggerButton,
+  PredictionText,
+  PostPictureSnapButtons,
+  CameraView,
+  PicturePreview,
+  MapBottomSheet
+} from '../components/camera/Camera'
 import { NativeBaseProvider } from "native-base";
 import { fireEvent, render } from '@testing-library/react-native'
+
 
 describe('CameraView Component Tests', () => {
 
@@ -15,11 +24,11 @@ describe('CameraView Component Tests', () => {
       <NativeBaseProvider initialWindowMetrics={inset}>
         <CameraView
           isPictureTaken={true}
-          predictionString={true}
+          predictionString="test"
           modalVisibility={true}
           navigator={null}
           cameraInstance={null}
-          pictureURI={""}
+          pictureURI=""
           cameraInstanceSetter={() => { }}
           modalVisibilitySetter={() => { }}
           isPictureTakenSetter={() => { }}
@@ -62,7 +71,6 @@ describe('CameraView Component Tests', () => {
     expect(queryByTestId("prediction-text")).not.toBeNull()
     expect(queryByTestId("cancel-btn")).not.toBeNull()
     expect(queryByTestId("next-btn")).not.toBeNull()
-    expect(queryByTestId("img-submission-btn")).not.toBeNull()
 
     //should not render
     expect(queryByTestId("cv-camera-component")).toBeNull()
@@ -100,7 +108,6 @@ describe('CameraView Component Tests', () => {
     //should render
     expect(queryByTestId("cv-camera-component")).not.toBeNull()
     expect(queryByTestId("camera-snap-btn")).not.toBeNull()
-    expect(queryByTestId("img-submission-btn")).not.toBeNull()
 
 
     //should not render
@@ -159,7 +166,7 @@ describe('MapModal Component Tests', () => {
 
     let visibility = true
     let visibilitySetterMock = jest.fn()
-    const { getByTestId } = render(<MapModal currentVisibilty={visibility} visibilitySetter={visibilitySetterMock} />)
+    const { getByTestId } = render(<MapModal category="test" currentVisibilty={visibility} visibilitySetter={visibilitySetterMock} />)
 
     //Confirm that visibility has been set to true
     expect(getByTestId("map-modal").props.visible).toBe(true)
@@ -172,10 +179,29 @@ describe('MapModal Component Tests', () => {
   });
 })
 
+describe('MapBottomSheet Component Tests', () => {
+
+  it('MapBottomSheet should not render instruction wrapper if undefined', () => {
+
+    const {queryByTestId} = render(<MapBottomSheet category="test" instruction={undefined} closestBuilding={undefined}/>)
+
+    expect(queryByTestId("instruction-text")).toBeNull()
+  });
+
+  it('MapBottomSheet should render instruction wrapper if defined', () => {
+
+    const {queryByTestId} = render(<MapBottomSheet category="test" instruction="test" closestBuilding={undefined}/>)
+
+    expect(queryByTestId("instruction-text")).not.toBeNull()
+  });
+})
+
+
+
 describe('CameraTriggerButton Component Tests', () => {
 
   it('CameraTriggerButton renders correctly', () => {
-    cameraMock = {
+    let cameraMock = {
       takePictureAsync: () => {
       }
     }
@@ -186,23 +212,23 @@ describe('CameraTriggerButton Component Tests', () => {
 
 
   it('Camera snaps a picture upon pressing trigger by calling its helper functions', async () => {
-    pictureMock = {
+    let pictureMock = {
       uri: "testUri",
       base64: "test64"
     }
 
-    cameraMock = {
+    let cameraMock = {
       takePictureAsync: jest.fn((value) => { return Promise.resolve(pictureMock) })
     }
 
-    predictionResponseMock = {
+    let predictionResponseMock = {
       prediction: "predictionMock"
     }
 
-    predictionFetcher = jest.fn((value) => { return Promise.resolve(predictionResponseMock) })
-    uriSetterMock = jest.fn()
-    pictureTakenSetterMock = jest.fn()
-    predictionTextSetterMock = jest.fn()
+    let predictionFetcher = jest.fn((value) => { return Promise.resolve(predictionResponseMock) })
+    let uriSetterMock = jest.fn()
+    let pictureTakenSetterMock = jest.fn()
+    let predictionTextSetterMock = jest.fn()
 
 
     const { getByTestId } = render(<CameraTriggerButton camera={cameraMock} uriSetter={uriSetterMock} isPictureTakenSetter={pictureTakenSetterMock} predictionTextSetter={predictionTextSetterMock} predictionFetcher={predictionFetcher} />)
@@ -279,9 +305,9 @@ describe('PostPictureSnapButtons Component Tests', () => {
       insets: { top: 0, left: 0, right: 0, bottom: 0 },
     };
 
-    uriSetterMock = jest.fn()
-    pictureTakenSetterMock = jest.fn()
-    predictionTextSetterMock = jest.fn()
+    let uriSetterMock = jest.fn()
+    let pictureTakenSetterMock = jest.fn()
+    let predictionTextSetterMock = jest.fn()
 
 
     const { getByTestId } = render(<NativeBaseProvider initialWindowMetrics={inset}><PostPictureSnapButtons uriSetter={uriSetterMock} isPictureTakenSetter={pictureTakenSetterMock} predictionTextSetter={predictionTextSetterMock} visibilitySetter={() => { }} /></NativeBaseProvider>)
@@ -307,7 +333,7 @@ describe('PostPictureSnapButtons Component Tests', () => {
       insets: { top: 0, left: 0, right: 0, bottom: 0 },
     };
 
-    visibilitySetterMock = jest.fn()
+    let visibilitySetterMock = jest.fn()
 
 
     const { getByTestId } = render(<NativeBaseProvider initialWindowMetrics={inset}><PostPictureSnapButtons uriSetter={() => { }} isPictureTakenSetter={() => { }} predictionTextSetter={() => { }} visibilitySetter={visibilitySetterMock} /></NativeBaseProvider>)
@@ -322,46 +348,6 @@ describe('PostPictureSnapButtons Component Tests', () => {
 
   });
 })
-
-describe('ImageSubmissionButton Component Tests', () => {
-
-  it('ImageSubmissionButton renders correctly', () => {
-    const tree = render(<ImageSubmissionButton isPictureTaken={false} navigator={() => { }} />).toJSON();
-    expect(tree).toMatchSnapshot();
-  });
-
-  it('Pressing on Image submission button navigates to image submission page BEFORE a pic has been taken', () => {
-    const navigatorMock = {
-      navigate: jest.fn()
-    }
-
-    const { getByTestId } = render(<ImageSubmissionButton isPictureTaken={false} navigator={navigatorMock} />)
-
-    fireEvent.press(getByTestId("img-submission-btn"))
-
-    expect(navigatorMock.navigate).toHaveBeenCalledTimes(1)
-    expect(navigatorMock.navigate).toHaveBeenCalledWith("ImageSubmission")
-
-  });
-
-
-
-  it('Pressing on Image submission button navigates to image submission page AFTER a pic has been taken', () => {
-    const navigatorMock = {
-      navigate: jest.fn()
-    }
-
-    const { getByTestId } = render(<ImageSubmissionButton isPictureTaken={true} navigator={navigatorMock} />)
-
-    fireEvent.press(getByTestId("img-submission-btn"))
-
-    expect(navigatorMock.navigate).toHaveBeenCalledTimes(1)
-    expect(navigatorMock.navigate).toHaveBeenCalledWith("ImageSubmission")
-
-  });
-
-})
-
 
 describe('PicturePreview Component Tests', () => {
 

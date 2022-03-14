@@ -9,7 +9,7 @@ export interface UpdateResponse {
     buildings:Building[]
 }
 
-interface CategoryInstruction {
+export interface CategoryInstruction {
     category_name:string,
     instruction:string
 }
