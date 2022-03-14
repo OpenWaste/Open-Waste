@@ -69,16 +69,16 @@ function LanguagesPicker () {
         <TouchableHighlight>
           <View style={ passStyle.checkMark }>
             <Text
-              style={{width: 300}}
+              style={ passStyle.wideBlack }
               onPress={setEnglish}> Anglais </Text>
           </View>
         </TouchableHighlight>
         <TouchableHighlight>
           <View style={ passStyle.checkMark } >
             <Text
-              style={{width: 300}}
+              style={ passStyle.wideGreen }
               onPress={setFrench}> Français </Text>
-            <MaterialIcons name="check"/>
+            <MaterialIcons style={{color: 'green'}} name="check" size={20}/>
           </View>
         </TouchableHighlight>
       </View>
@@ -89,15 +89,15 @@ function LanguagesPicker () {
           <TouchableHighlight>
             <View style={ passStyle.checkMark }>
               <Text
-                style={{width: 300}}
+                style={ passStyle.wideGreen }
                 onPress={setEnglish}> English </Text>
-              <MaterialIcons name="check"/>
+              <MaterialIcons style={{color: 'green'}} name="check" size={20}/>
             </View>
           </TouchableHighlight>
           <TouchableHighlight>
             <View style={ passStyle.checkMark }>
               <Text
-                style={{width: 300}}
+                style={ passStyle.wideBlack }
                 onPress={setFrench}> French </Text>
             </View>
           </TouchableHighlight>

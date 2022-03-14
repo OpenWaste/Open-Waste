@@ -13,5 +13,13 @@ export default StyleSheet.create({
         marginLeft: "5%",
         marginRight: "5%",
         marginTop: "5%",
-      }
+      },
+    wideGreen: {
+        width: 300,
+        color: "green"
+    },
+    wideBlack: {
+      width: 300,
+      color: "black"
+    }
 });
