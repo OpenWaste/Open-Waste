@@ -70,14 +70,14 @@ function LanguagesPicker () {
           <View style={ passStyle.checkMark }>
             <Text
               style={ passStyle.wideBlack }
-              onPress={setEnglish}> Anglais </Text>
+              onPress={setEnglish}> English </Text>
           </View>
         </TouchableHighlight>
         <TouchableHighlight>
           <View style={ passStyle.checkMark } >
             <Text
               style={ passStyle.wideGreen }
-              onPress={setFrench}> Français </Text>
+              onPress={setFrench}> French </Text>
             <MaterialIcons style={{color: 'green'}} name="check" size={20}/>
           </View>
         </TouchableHighlight>
