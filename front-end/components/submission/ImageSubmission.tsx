@@ -13,12 +13,14 @@ import {
   Image,
   AlertDialog,
   AspectRatio,
+  Spinner,
   NativeBaseProvider,
 } from "native-base";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
 import Service from "../../service/service";
 import { getValueFor, save } from "../../utils/PersistInfo";
+import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 
 // To ignore color scheme warnings given for dropdown color
 import { LogBox } from "react-native";
@@ -31,15 +33,15 @@ export function ImageSubmission() {
   const [category, setCategory] = useState("");
   const [isOpen, setIsOpen] = React.useState(false);
   const [isError, setIsError] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const onClose = () => {
-    setIsOpen(false), setIsError(false);
+    setIsOpen(false),setIsError(false),setIsLoading(false);
   };
 
   //Opens the camera roll
   const pickImage = async () => {
     let res = await ImagePicker.launchImageLibraryAsync({
-      base64: true,
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: false,
     });
@@ -52,26 +54,26 @@ export function ImageSubmission() {
   };
 
   //Calls the service to submit using POST
-  const handleSubmit = () => {
-     Service.submitImageCategory(image.base64, category)
-      .then(() => {
-        setIsOpen(!isOpen);
-        setImageIsChosen(false);
-        setCategory("");
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    try {
+      let convertedImage = await manipulateAsync(image.uri,[],{ compress: 1, format: SaveFormat.JPEG, base64: true });
+      await Service.submitImageCategory(convertedImage.base64, category)
 
-        getValueFor("email").then(a => {
-          getValueFor("submitted_images").then(a=> {
-            save("submitted_images", +a + 1);
-          }).catch(() => {
-            save("submitted_images", 1)
-          })
-        }).catch()
+      setIsOpen(!isOpen);
+      setImageIsChosen(false);
+      setCategory("");
 
-
-      })
-      .catch((e) => {
-        setIsError(!isError);
-      });
+      
+      let email = await getValueFor("email").catch(()=>{})
+      if(email != undefined) {
+        let numberOfSubmittedImages = await getValueFor("submitted_images").catch(() => save("submitted_images", 1))
+        save("submitted_images", +numberOfSubmittedImages + 1);
+      }
+    }
+    catch {
+      setIsError(true);
+    }
   };
 
   //Gets list of categories from endpoint
@@ -101,6 +103,7 @@ export function ImageSubmission() {
         onClose={onClose}
         pickImage={pickImage}
         handleSubmit={handleSubmit}
+        isLoading={isLoading}
       />
     </NativeBaseProvider>
   );
@@ -108,6 +111,7 @@ export function ImageSubmission() {
 
 export const ImageSubmissionView = (prop) => {
   const cancelRef = React.useRef(null);
+
   return (
     <View>
       <Box m="10">
@@ -177,8 +181,10 @@ export const ImageSubmissionView = (prop) => {
                   );
                 })}
               </Select>
-              <Box m="10">
-                <Button onPress={prop.handleSubmit}> Submit </Button>
+              <Box m="10">               
+                <Button isLoading={prop.isLoading} isLoadingText="Submitting" _loading={{
+                bg: "primary.500"}}
+                onPress={prop.handleSubmit}>Submit</Button>
                 <Center>
                   <AlertDialog
                     leastDestructiveRef={cancelRef}
@@ -186,23 +192,17 @@ export const ImageSubmissionView = (prop) => {
                     onClose={prop.onClose}
                   >
                     <AlertDialog.Content>
-                      <AlertDialog.CloseButton />
                       <AlertDialog.Header>Success</AlertDialog.Header>
                       <AlertDialog.Body>
                         Your image was successfully submitted.
                       </AlertDialog.Body>
                       <AlertDialog.Footer>
                         <Button.Group space={2}>
-                          <Button  testID = "SuccessAlert"
-                            variant="unstyled"
-                            colorScheme="coolGray"
+                          <Button testID = "SuccessAlert"
                             onPress={prop.onClose}
                             ref={cancelRef}
                           >
-                            Cancel
-                          </Button>
-                          <Button colorScheme="primary" onPress={prop.onClose}>
-                            OK
+                            Ok
                           </Button>
                         </Button.Group>
                       </AlertDialog.Footer>
@@ -216,23 +216,17 @@ export const ImageSubmissionView = (prop) => {
                     onClose={prop.onClose}
                   >
                     <AlertDialog.Content>
-                      <AlertDialog.CloseButton />
                       <AlertDialog.Header>Error</AlertDialog.Header>
                       <AlertDialog.Body>
                         Selected image was not submitted Please try again later.
                       </AlertDialog.Body>
                       <AlertDialog.Footer>
                         <Button.Group space={2}>
-                          <Button  testID = "ErrorAlert"
-                            variant="unstyled"
-                            colorScheme="coolGray"
+                          <Button testID = "ErrorAlert"
                             onPress={prop.onClose}
                             ref={prop.cancelRef}
                           >
-                            Cancel
-                          </Button>
-                          <Button colorScheme="primary" onPress={prop.onClose}>
-                            OK
+                            Ok
                           </Button>
                         </Button.Group>
                       </AlertDialog.Footer>

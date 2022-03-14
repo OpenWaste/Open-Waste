@@ -30,12 +30,14 @@ export default class Service {
       category: category,
       image: image
     }
-    let email = await getValueFor('email').catch();
-
-    if(email != undefined)
+    try {
+      let email = await getValueFor('email')
       resource.email = email;
-
-    return await Service.post('image-submission', resource)
+      return Service.post('image-submission', resource)
+    }
+    catch {
+      return Service.post('image-submission', resource)
+    }
   }
 
   static async submitAccountCreation(data: UserResource):Promise<Object> {
