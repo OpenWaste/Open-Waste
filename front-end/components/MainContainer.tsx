@@ -12,11 +12,11 @@ import { ImageSubmission } from "./submission/ImageSubmission";
 import i18next from './i18n';
 
 const screens = [
-  { name: i18next.t('Map'), component: Map, icon: "map" },
-  { name: i18next.t('Submission'), component: ImageSubmission, icon: "upload-file"},
-  { name: i18next.t('Camera'), component: DisplayCamera, icon: "photo-camera" },
+  { name: "Map", component: Map, icon: "map" },
+  { name: "Submission", component: ImageSubmission, icon: "upload-file"},
+  { name: "Camera", component: DisplayCamera, icon: "photo-camera" },
   { name: "Profile", component: ProfileNavigator, icon: "person" },
-  { name: i18next.t('Settings'), component: SettingsNavigator, icon: "settings" },
+  { name: "Settings", component: SettingsNavigator, icon: "settings" },
 ];
 
 const Tab = createBottomTabNavigator();
