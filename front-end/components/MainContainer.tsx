@@ -9,7 +9,7 @@ import { Map } from "./map/Map";
 import { SettingsNavigator } from "./settings/SettingsNavigator";
 import { ProfileNavigator } from "./profile/ProfileNavigator";
 import { ImageSubmission } from "./submission/ImageSubmission";
-import i18next from './language/i18n';
+import i18next from './i18n';
 
 const screens = [
   { name: i18next.t('Map'), component: Map, icon: "map" },
@@ -40,6 +40,7 @@ export class MainContainer extends React.Component {
             tabBarInactiveTintColor: "#808080",
             headerShown: false,
             tabBarHideOnKeyboard: true,
+            unmountOnBlur: true,
           })}
         >
           {screens.map((screen) => {

@@ -8,7 +8,7 @@ import Service from "../../../service/service";
 import { save } from '../../../utils/PersistInfo';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from "react-native-flash-message";
-import i18next from '../../language/i18n';
+import i18next from '../../i18n';
 
 export class ForgotPassword extends React.Component {
 

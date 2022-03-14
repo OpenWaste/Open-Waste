@@ -20,7 +20,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import * as ImagePicker from "expo-image-picker";
 import Service from "../../service/service";
 import { getValueFor, save } from "../../utils/PersistInfo";
-import i18next from '../language/i18n';
+import i18next from '../i18n';
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 
 // To ignore color scheme warnings given for dropdown color

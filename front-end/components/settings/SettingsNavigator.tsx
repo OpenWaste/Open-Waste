@@ -5,6 +5,7 @@ import { Setting } from "./components/Settings";
 import { AboutUs } from "./components/AboutUs";
 import { Privacy } from "./components/Privacy";
 import { Language } from "./components/Language";
+import i18next from '../i18n';
 
 const Stack = createStackNavigator();
 

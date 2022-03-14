@@ -5,7 +5,7 @@ import { Button, NativeBaseProvider } from 'native-base';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { deleteValueFor, getValueFor } from '../../../utils/PersistInfo';
 import { showMessage } from "react-native-flash-message";
-import i18next from '../../language/i18n';
+import i18next from '../../i18n';
 
 export class Profile extends React.Component {
 

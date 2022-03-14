@@ -10,8 +10,7 @@ import { UserResource } from "../../../models/User";
 import { useNavigation } from '@react-navigation/native';
 import { save } from '../../../utils/PersistInfo';
 import { LoginFormProperties } from "../../../interfaces/profile-types";
-import i18next from '../../language/i18n';
-import { deleteValueFor, getValueFor } from '../../../utils/PersistInfo';
+import i18next from '../../i18n';
 
 export class LogIn extends React.Component {
   render() {
@@ -29,8 +28,6 @@ export class LogIn extends React.Component {
               testID="remainBtn"
               style={loginStyle.remainAsGuest} 
               onPress={() => this.props.navigation.navigate('ProfilePage')}> {i18next.t('RemainAsGuest')} </Text>
-            <MyComponentFR/>
-            <MyComponentENG/>
           </KeyboardAvoidingView>
         </ScrollView>
       </NativeBaseProvider>
@@ -110,41 +107,5 @@ export const LoginForm = (prop) => {
           onPress={handleSubmit}> {i18next.t('LogIn')} </Button>      
     </View>
     </NativeBaseProvider>
-  )
-}
-
-function MyComponentFR () {
-  return (
-    <View>
-      <Text
-              testID="forgotBtn" 
-              style={loginStyle.logInBtn}
-              onPress={() => i18next.changeLanguage("fr", (err, t) => {
-                if (err) return console.log('something went wrong loading', err);
-                t('key'); // -> same as i18next.t
-              }).then(resp => {
-                save('language', 'fr') 
-              }).catch(error => {
-                showMessage({ message: error.toJSON().message, type: 'warning' }); 
-              })}> Change Language To French </Text>   
-    </View>
-  )
-}
-
-function MyComponentENG () {
-  return (
-    <View>
-      <Text
-              testID="forgotBtn" 
-              style={loginStyle.logInBtn}
-              onPress={() => i18next.changeLanguage("en", (err, t) => {
-                if (err) return console.log('something went wrong loading', err);
-                t('key'); // -> same as i18next.t
-              }).then(resp => {
-                deleteValueFor('language')
-              }).catch(error => {
-                showMessage({ message: error.toJSON().message, type: 'warning' }); 
-              })}> Change Language To English </Text>   
-    </View>
   )
 }

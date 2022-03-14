@@ -16,6 +16,7 @@ import Service from "../../service/service";
 import { useIsFocused } from "@react-navigation/native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { MapModalProperties, CameraTriggerButtonProperties, PredictionTextProperties, PostPictureSnapButtonsProperties, CameraViewProperties, PicturePreviewProperties } from "../../interfaces/camera-types";
+import i18next from '../i18n';
 
 export default function DisplayCamera() {
   const isFocused = useIsFocused();
@@ -35,7 +36,7 @@ export default function DisplayCamera() {
 
 
   if (!hasPermission) {
-    return <Text>No access to camera</Text>;
+    return <Text>{i18next.t('NoCameraAccess')}</Text>;
   }
 
   if (isFocused) {

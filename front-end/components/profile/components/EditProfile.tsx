@@ -11,7 +11,7 @@ import { showMessage } from "react-native-flash-message";
 import style from "./styles/edit-profile";
 import formStyle from "./styles/forms";
 import isEmail from 'validator/lib/isEmail';
-import i18next from '../../language/i18n';
+import i18next from '../../i18n';
 
 export class EditProfile extends React.Component {
     

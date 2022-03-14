@@ -4,7 +4,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 
 import { LogIn } from "./LogIn";
 import { SignUp } from "./SignUp";
-import i18next from '../../language/i18n';
+import i18next from '../../i18n';
 
 const Tab = createMaterialTopTabNavigator();
 

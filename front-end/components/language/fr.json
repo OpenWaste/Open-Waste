@@ -8,6 +8,7 @@
     "Email": "Courriel électronique",
     "WelcomeBack": "Bon Retour",
     "ForgotPassword": "Oublié votre mot de passe?",
+    "ForgotPasswordText": "Ne vous inquiétez pas! On va vous aider à le récuperer. Entrez le courriel électronique associé a votre compte",
     "RemainAsGuest": "Rester un invité",
     "Submit": "Soumettre",
     "Category": "Categorie",
@@ -39,5 +40,18 @@
     "Map": "Carte",
     "Submission": "Soumission",
     "Camera": "Caméra",
-    "Settings": "Réglages"
+    "Settings": "Réglages",
+    "NoCameraAccess": "Pas d'accès à la caméra",
+    "ContactUs": "Contactez Nous",
+    "SocialMedia": "Médias Sociaux",
+    "AboutUs": "À propos de nous",
+    "Privacy": "Intimité",
+    "Language": "Langue",
+    "OurMission": "Notre mission est de détourner et de réduire autant que possible les déchets sur le campus loin des sites d'enfouissement, et de les réduire, réutiliser, recycler et pourrir.",
+    "AboutUsPart1": "Digitizing Waste est une collaboration ouverte basée à l'Université Concordia, à Montréal, au Canada, qui vise à accélérer l'adoption de l'économie circulaire grâce à des outils basés sur les données.",
+    "AboutUsPart2": "Notre application de tri des déchets a été développée par un groupe d'étudiants Capstone en SOEN 490 avec la supervision de membres de CP3 et ZWC.",
+    "AboutUsPart3": "Concordia Precious Plastic Project",
+    "AboutUsPart4": "CP3 est une initiative multidisciplinaire dirigée par des étudiants qui soutient la gestion des déchets plastiques de l'Université Concordia en recyclant le plastique sur place et en sensibilisant à la crise du plastique. Nous sommes un groupe d'étudiants des quatre facultés unis par l'objectif de protéger l'environnement et de donner une nouvelle vie aux déchets plastiques.",
+    "AboutUsPart5": "Nous vous remercions de votre contribution à ce projet ! En testant l'application et en soumettant vos images de déchets, vous contribuez à former notre algorithme qui, nous l'espérons, démystifiera le tri des déchets sur la planète.",
+    "AboutUsPart6": "Vous souhaitez contribuer au développement de ce projet et d'autres initiatives de déchets intelligents ? Contactez-nous à:"
 }

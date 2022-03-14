@@ -40,5 +40,20 @@
     "Map": "Map",
     "Submission": "Submission",
     "Camera": "Camera",
-    "Settings": "Settings"
+    "Settings": "Settings",
+    "NoCameraAccess": "No access to the camera",
+    "ContactUs": "Contact Us",
+    "SocialMedia": "Social Media",
+    "AboutUs": "About us",
+    "Privacy": "Privacy",
+    "Language": "Language",
+    "English": "English",
+    "French": "French",
+    "OurMission": "Our mission is to divert and reduce as much waste on campus away from landfill, and instead reduce, reuse, recycle and rot.",
+    "AboutUsPart1": "Digitizing Waste is an open collaboration based out of Concordia University, in Montreal, Canada, that aims to accelerate adoption of circular economy through data-driven tools.",
+    "AboutUsPart2": "Our waste sorting app was developed by a group of capstone students in SOEN 490 with the supervision of members of CP3 and ZWC.",
+    "AboutUsPart3": "Concordia Precious Plastic Project",
+    "AboutUsPart4": "CP3 is a multi-disciplinary student-led initiative supporting Concordia University’s plastic waste management by recycling plastic on-site and raising awareness of the plastic crisis. We are a group of students across all four faculties united by the goal of protecting the environment and giving plastic waste a new life.",
+    "AboutUsPart5": "We are grateful for your contributions to this project! By testing the app and submitting your waste images, you are helping to train our algorithm that we hope will demystify waste sorting around the planet.",
+    "AboutUsPart6": "Want to contribute to the development of this project and other smart waste initiatives? Contact us at:"
   }
