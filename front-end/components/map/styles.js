@@ -5,6 +5,9 @@ export default StyleSheet.create({
     width: "100%",
     height: "100%"
   },
+  user: {
+    color: '#4287f5'
+  },
   marker: {
     color:'red'
   },
