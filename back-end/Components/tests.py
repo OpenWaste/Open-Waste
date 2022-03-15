@@ -1,4 +1,3 @@
-import logging
 from unicodedata import category
 from django.test import TestCase, Client
 from django.core.files.uploadedfile import SimpleUploadedFile
