@@ -1,7 +1,5 @@
-from unicodedata import category
 from django.test import TestCase, Client
 from django.core.files.uploadedfile import SimpleUploadedFile
-from matplotlib import image
 from Components.models import Category, DWUser, CategoryInstructions, Bin, BinImages, Building, BuildingImages
 import json
 
