@@ -12,7 +12,7 @@ export default StyleSheet.create({
 
   bottomSheetCloseButton: {
     marginLeft: "auto",
-    marginRight: 10,
+    marginRight: "auto",
   },
 
   bottomSheetHeaderText: {
