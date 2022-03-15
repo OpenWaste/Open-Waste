@@ -1,6 +1,8 @@
+import logging
 from unicodedata import category
 from django.test import TestCase, Client
 from django.core.files.uploadedfile import SimpleUploadedFile
+from matplotlib import image
 from Components.models import Category, DWUser, CategoryInstructions, Bin, BinImages, Building, BuildingImages
 import json
 
@@ -8,7 +10,10 @@ CONTENT_TYPE = 'application/json'
 TEST_EMAIL = 'John@gmail.com'
 USER_NAME = 'John'
 PASSWORD = 'John123'
+WRONG_PASSWORD = 'John1234'
 CREATE_USER_PATH = '/create-user'
+VALID_IMAGE = '/9j/4AAQSkZJRgABAQEAYABgAAD/2wCEAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDIBERISGBUYLxoaL2NCOEJjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY//CABEIAGAAYAMBIgACEQEDEQH/xAAbAAEAAwEBAQEAAAAAAAAAAAAAAQUGBAMCB//aAAgBAQAAAAD9FAAAAFlcTT1gHfqyMvXA0lsKvMg0VxCanNg6db6PjJ8gPbS97hzXgHTrPWE+eS5hre0HHkUd2tAZLiXV+mEwoaT/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/9oACgICEAMQAAAAAAAAAAAAAAAA/8QALxAAAgIAAwYEBQUBAAAAAAAAAQIDBAURIAAQITFBUQYSMIETFCIjcTJCYZGh8f/aAAgBAQABPwD1OnqdNFDB5raiWQ/CiPI9W/G0WDUoxxiLnuzHaTBqEgOURQ90Y7X8FmqIZYiZYRzI5r6GE0hbt/WM4k4t/PYbAADIaMYoinZDIAIpRmB2PUa8AjAoO/VnOnHkDYcG6q41+HpQ1WSEkZo/m9j/AM0+IJlSkkX73fP2GuhcNK0soBK8mXuNopkniWSNgytyO+WVIIi7sFQcydsQuG9aaTLJBwRew0dN9WpNck8kKZ9yeQ2w7DfkAT8Z2Y8wOC78Rw354AiZ0K/pU8V2tU5qcnkmTLsRyOqjTe7YEacBzZuw2r14q0QiiXJR/umzWjsQGGZAQf7G16k9GyYn4jmrdxpwymKlNVYfcbi+vEqYuU2VR91PqTf02wqAWMSiVhminzN+B6OK1/lsSmQDJSfMPff4dQGxPIRyQAe/o+JIwtmB8uJTI7v/xAAUEQEAAAAAAAAAAAAAAAAAAABQ/9oACAECAQE/ABP/xAAUEQEAAAAAAAAAAAAAAAAAAABQ/9oACAEDAQE/ABP/2Q=='
+
 
 class CreateUser(TestCase):
     def setUp(self):
@@ -44,8 +49,8 @@ class AuthenticateUser(TestCase):
         self.client = Client()
         self.path = '/authenticate-user'
         self.user = self.client.post(CREATE_USER_PATH, {'username': USER_NAME,
-                                                      'email': TEST_EMAIL,
-                                                      'password': PASSWORD})
+                                                        'email': TEST_EMAIL,
+                                                        'password': PASSWORD})
 
     def test_authenticate_user_success_correct(self):
         # user
@@ -61,7 +66,7 @@ class AuthenticateUser(TestCase):
     def test_authenticate_user_success_incorrect(self):
         # user
         user_info = {'username': USER_NAME,
-                     'password': PASSWORD}
+                     'password': WRONG_PASSWORD}
 
         # post request
         response = self.client.post(self.path, user_info)
@@ -101,8 +106,8 @@ class UpdateUsernameAndEmail(TestCase):
         self.client = Client()
         self.path = '/update-username-email'
         self.user = self.client.post(CREATE_USER_PATH, {'username': USER_NAME,
-                                                      'email': TEST_EMAIL,
-                                                      'password': PASSWORD})
+                                                        'email': TEST_EMAIL,
+                                                        'password': PASSWORD})
 
     def test_update_username_and_email_success(self):
         # user
@@ -174,7 +179,6 @@ class ImageSubmissionTest(TestCase):
             'image.jpg', b"image_content", content_type='image/jpeg')
         # url to end point
         self.path = '/image-submission'
-
         # insert 'plastic' category into test db
         Category(name='plastic').save()
         DWUser(email='admin@admin.com').save()
@@ -182,9 +186,9 @@ class ImageSubmissionTest(TestCase):
     def test_image_submission_success(self):
         # stub image object
         img_param = {'category': 'plastic',
-                     'image': self.image,
+                     'image': VALID_IMAGE,
+                     'accepted': True,
                      'email': 'admin@admin.com'}
-
         # post request
         response = self.client.post(self.path, img_param)
 
@@ -241,7 +245,8 @@ class ImageUpdate(TestCase):
         CategoryInstructions(
             category=category_trash, instructions='1. dispose in trash bin 6').save()
 
-        Building(id=1, building_name='hall building', address='123 address street', latitude=45, longitude=46).save()  # For foreign key
+        Building(id=1, building_name='hall building', address='123 address street',
+                 latitude=45, longitude=46).save()  # For foreign key
         Bin(id=1,
             location_name='First Floor Hall Building',
             floor_number=1,
@@ -272,7 +277,7 @@ class ImageRecognitionTest(TestCase):
         self.path = '/prediction'
 
     def test_prediction_endpoint_success(self):
-        valid_image = '/9j/4AAQSkZJRgABAQEAYABgAAD/2wCEAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDIBERISGBUYLxoaL2NCOEJjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY//CABEIAGAAYAMBIgACEQEDEQH/xAAbAAEAAwEBAQEAAAAAAAAAAAAAAQUGBAMCB//aAAgBAQAAAAD9FAAAAFlcTT1gHfqyMvXA0lsKvMg0VxCanNg6db6PjJ8gPbS97hzXgHTrPWE+eS5hre0HHkUd2tAZLiXV+mEwoaT/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/9oACgICEAMQAAAAAAAAAAAAAAAA/8QALxAAAgIAAwYEBQUBAAAAAAAAAQIDBAURIAAQITFBUQYSMIETFCIjcTJCYZGh8f/aAAgBAQABPwD1OnqdNFDB5raiWQ/CiPI9W/G0WDUoxxiLnuzHaTBqEgOURQ90Y7X8FmqIZYiZYRzI5r6GE0hbt/WM4k4t/PYbAADIaMYoinZDIAIpRmB2PUa8AjAoO/VnOnHkDYcG6q41+HpQ1WSEkZo/m9j/AM0+IJlSkkX73fP2GuhcNK0soBK8mXuNopkniWSNgytyO+WVIIi7sFQcydsQuG9aaTLJBwRew0dN9WpNck8kKZ9yeQ2w7DfkAT8Z2Y8wOC78Rw354AiZ0K/pU8V2tU5qcnkmTLsRyOqjTe7YEacBzZuw2r14q0QiiXJR/umzWjsQGGZAQf7G16k9GyYn4jmrdxpwymKlNVYfcbi+vEqYuU2VR91PqTf02wqAWMSiVhminzN+B6OK1/lsSmQDJSfMPff4dQGxPIRyQAe/o+JIwtmB8uJTI7v/xAAUEQEAAAAAAAAAAAAAAAAAAABQ/9oACAECAQE/ABP/xAAUEQEAAAAAAAAAAAAAAAAAAABQ/9oACAEDAQE/ABP/2Q=='
+        valid_image = VALID_IMAGE
 
         response = self.client.post(self.path, {'image': valid_image})
 
@@ -304,13 +309,15 @@ class ImageRecognitionTest(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertTrue('prediction' not in response.data)
 
+
 class BinImagesTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.path = '/bin-images/1'
 
     def test_get_bin_images(self):
-        Building(id=1, building_name='hall building', address='123 address street', latitude=45, longitude=46).save()  # For foreign key
+        Building(id=1, building_name='hall building', address='123 address street',
+                 latitude=45, longitude=46).save()  # For foreign key
         Bin(id=1,
             location_name='second floor hall bins',
             floor_number=2,
@@ -326,17 +333,18 @@ class BinImagesTest(TestCase):
 
         self.assertEquals(response.json(), ['base64img', 'base64img2'])
 
+
 class ResetPassword(TestCase):
     def setUp(self):
         self.client = Client()
         self.path = '/reset-password'
-         # create user
+        # create user
         self.user = self.client.post(CREATE_USER_PATH, {'username': USER_NAME,
                                                         'email': TEST_EMAIL,
                                                         'password': PASSWORD})
 
     def test_reset_password_success(self):
-        
+
         # POST to that email
         response = self.client.post(self.path, {'email': TEST_EMAIL})
 
@@ -344,11 +352,12 @@ class ResetPassword(TestCase):
         self.assertTrue('The email has been sent' in response.data)
 
     def test_reset_password_fail(self):
-        
+
         # POST with no email
         response = self.client.post(self.path, {'': ""})
 
         self.assertEqual(response.status_code, 400)
+
 
 class VerifyEmail(TestCase):
     def setUp(self):
@@ -358,13 +367,14 @@ class VerifyEmail(TestCase):
         self.user = self.client.post(CREATE_USER_PATH, {'username': USER_NAME,
                                                         'email': TEST_EMAIL,
                                                         'password': PASSWORD})
+
     def test_verify_email_success(self):
         # user
         user_info = {'passcode': '',
                      'email': TEST_EMAIL}
         # POST to that email
         response = self.client.post(self.path, user_info)
-            
+
         self.assertEqual(response.status_code, 200)
 
     def test_verify_email_fail(self):
