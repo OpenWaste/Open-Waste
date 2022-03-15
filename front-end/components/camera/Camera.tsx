@@ -273,7 +273,7 @@ export const MapBottomSheet = (props: MapBottomSheetProperties) => {
             />}
         <ScrollView >
           <View style={style.bottomSheetViewStyle}>
-            <Text><Text style={style.bottomSheetHeaderText}>Category:</Text> <Text stFyle={style.bottomSheetContentText}> {props.category + "\n"} </Text></Text>
+            <Text><Text style={style.bottomSheetHeaderText}>Category:</Text> <Text style={style.bottomSheetContentText}> {props.category + "\n"} </Text></Text>
 
             {
               (props.instruction != undefined)?
