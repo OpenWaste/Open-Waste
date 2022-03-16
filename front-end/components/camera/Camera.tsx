@@ -24,9 +24,10 @@ import {
   PicturePreviewProperties, MapBottomSheetProperties,
 } from "../../interfaces/camera-types";
 import BottomSheet from "@gorhom/bottom-sheet";
-import { Building, CategoryInstruction } from "../../interfaces/service-types";
+import { Building, CategoryInstruction, Bin } from "../../interfaces/service-types";
 import * as ExpoLocation from 'expo-location'
 import { getValueFor } from "../../utils/PersistInfo";
+import styles from '../map/styles'
 
 export default function DisplayCamera() {
   const isFocused = useIsFocused();
@@ -135,6 +136,7 @@ export const PicturePreview = (props: PicturePreviewProperties) => {
 export const MapModal = (props: MapModalProperties) => {
   const [instruction, setInstruction] = useState<string>();
   const [closestBuilding, setClosestBuilding] = useState<Building>();
+  const [bins, setBins] = useState<Bin[]>();
   const mapRef = useRef<MapView>(null);
   const INSTRUCTION_SEPARATOR = ';'
 
@@ -176,9 +178,19 @@ export const MapModal = (props: MapModalProperties) => {
           }
         })
         setClosestBuilding(closestBuildingVar)
-
+        
       })
     })
+  }
+
+  if (bins == undefined && closestBuilding!=undefined) {
+    getValueFor("bins").then(val =>{
+      const allBins = val as Bin[]
+
+      let nearestBuildingBins = allBins.filter((bin) => bin.building_id == closestBuilding.id);
+      setBins(nearestBuildingBins);
+    }
+    )
   }
 
   return (
@@ -232,7 +244,8 @@ export const MapModal = (props: MapModalProperties) => {
                   </Marker> : <></>
               }
             </MapView>
-            <MapBottomSheet category={props.category} instruction={instruction} closestBuilding={closestBuilding}/>
+            {/* <MapBottomSheet category={props.category} instruction={instruction} closestBuilding={closestBuilding}/> */}
+            <MapBottomSheet category={props.category} instruction={instruction} closestBuilding={closestBuilding} bins={bins}/>
 
           </View>
         </View>
@@ -242,7 +255,7 @@ export const MapModal = (props: MapModalProperties) => {
 
 export const MapBottomSheet = (props: MapBottomSheetProperties) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ["4%", "50%"], []);
+  const snapPoints = useMemo(() => ["5%", "50%"], []);
   const [bottomSheetVisible, setBottomSheetVisible] = useState(true);
 
   return (
@@ -253,14 +266,14 @@ export const MapBottomSheet = (props: MapBottomSheetProperties) => {
           enableContentPanningGesture={false}
           enableHandlePanningGesture={false}
           enableOverDrag={false}
-          handleComponent={() =><View></View>}
+          handleComponent={() =><></>}
       >
         {bottomSheetVisible?
             <MaterialCommunityIcons
 
                 style={style.bottomSheetCloseButton}
                 name="chevron-down"
-                size={30}
+                size={40}
                 onPress={() => { bottomSheetRef.current?.collapse(); setBottomSheetVisible(false) }}
             />
             :
@@ -268,7 +281,7 @@ export const MapBottomSheet = (props: MapBottomSheetProperties) => {
 
                 style={style.bottomSheetCloseButton}
                 name="chevron-up"
-                size={30}
+                size={40}
                 onPress={() => { bottomSheetRef.current?.expand(); setBottomSheetVisible(true) }}
             />}
         <ScrollView >
@@ -280,15 +293,41 @@ export const MapBottomSheet = (props: MapBottomSheetProperties) => {
                   <Text testID="instruction-text"><Text style={style.bottomSheetHeaderText}>Disposal Method</Text><Text style={style.bottomSheetContentText}> {"\n" + props.instruction}</Text></Text>:<></>
             }
 
-            <View style={style.verticallyAlignedView}>
-              <MaterialCommunityIcons
-                name='map-marker'
-                size={25}
-                style={{'color':'red'}}
-            />
-            <Text style={style.bottomSheetHeaderText}>{props.closestBuilding?.building_name}</Text>
-            </View>
-            <Text style={style.bottomSheetContentText}>{props.closestBuilding?.address}</Text>
+            <><Text style={style.bottomSheetHeaderText}>{props.closestBuilding?.building_name} - {props.bins.length} Bins</Text></>
+
+            {props.bins.map((bin:Bin) => {
+              return <>
+                <View style={style.verticallyAlignedView}>
+                <MaterialCommunityIcons
+                  name='map-marker'
+                  size={25}
+                  style={{'color':'red'}}
+                />
+                  <Text style={style.bottomSheetContentText}>{bin.location_name} - Floor {bin.floor_number}</Text>
+                
+              </View>
+              <ScrollView
+                horizontal={true}>
+                  <Text>Picture</Text>
+                  <Text>Picture</Text>
+                  <Text>Picture</Text>
+                  <Text>Picture</Text>
+                  <Text>Picture</Text>
+                  <Text>Picture</Text>
+                  <Text>Picture</Text>
+                  <Text>Picture</Text>
+                  <Text>Picture</Text>
+                  <Text>Picture</Text>
+                  <Text>Picture</Text>
+                  <Text>Picture</Text>
+                  <Text>Picture</Text>
+                  <Text>Picture</Text>
+
+              </ScrollView>
+
+            </>
+          })}
+            
           </View>
         </ScrollView>
       </BottomSheet>

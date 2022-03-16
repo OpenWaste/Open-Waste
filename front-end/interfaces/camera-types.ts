@@ -1,4 +1,4 @@
-import {Building, PredictionResponse} from "./service-types";
+import {Bin, Building, PredictionResponse} from "./service-types";
 import { Camera } from "expo-camera";
 
 export interface MapModalProperties{
@@ -30,6 +30,7 @@ export interface MapBottomSheetProperties {
   category:string
   instruction:string|undefined
   closestBuilding:Building|undefined
+  bins:Bin[]|undefined
 }
 
 export interface PicturePreviewProperties {
