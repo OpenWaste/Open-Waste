@@ -182,67 +182,67 @@ export const MapModal = (props: MapModalProperties) => {
   }
 
   return (
-    <Modal
-      testID="map-modal"
-      animationType="slide"
-      transparent={true}
-      visible={props.currentVisibilty}
-      onRequestClose={() => {
-        props.visibilitySetter(false);
-      }}
-    >
-      <View style={style.centeredView}>
-        <View style={style.modalView}>
-          <MaterialIcons
-            testID="modal-close"
-            style={style.modalCloseButton}
-            name="cancel"
-            size={30}
-            onPress={() => props.visibilitySetter(false)}
-          />
-          <MapView
-            ref={mapRef}
-            style={style.map}
-            provider={PROVIDER_GOOGLE}
-            showsUserLocation={true}
-            followsUserLocation={true}
-            showsMyLocationButton={false}
-            onMapReady={()=> {
-              if(closestBuilding != undefined)
-                mapRef.current?.animateToRegion({latitude:closestBuilding?.latitude, longitude:closestBuilding?.longitude, latitudeDelta:0.02, longitudeDelta:0.02}, 1000)
-            }}
-            initialRegion={{
-              latitude: 45.494862,
-              longitude: -73.5779,
-              latitudeDelta: 0.02,
-              longitudeDelta: 0.02,
-            }}
-          >
-            {
-              (closestBuilding != undefined) ? 
-                <Marker
-                  key={closestBuilding.id}
-                  coordinate={{ longitude: closestBuilding.longitude, latitude: closestBuilding.latitude }}
-                >
-                  <MaterialCommunityIcons
-                    name='map-marker'
-                    size={55}
-                    style={{'color':'red'}}
-                  />
-                </Marker> : <></>
-            }
-          </MapView>
-          <MapBottomSheet category={props.category} instruction={instruction} closestBuilding={closestBuilding}/>
+      <Modal
+        testID="map-modal"
+        animationType="slide"
+        transparent={true}
+        visible={props.currentVisibilty}
+        onRequestClose={() => {
+          props.visibilitySetter(false);
+        }}
+      >
+        <View style={style.centeredView}>
+          <View style={style.modalView}>
+            <MaterialIcons
+              testID="modal-close"
+              style={style.modalCloseButton}
+              name="cancel"
+              size={30}
+              onPress={() => props.visibilitySetter(false)}
+            />
+            <MapView
+              ref={mapRef}
+              style={style.map}
+              provider={PROVIDER_GOOGLE}
+              showsUserLocation={true}
+              followsUserLocation={true}
+              showsMyLocationButton={false}
+              onMapReady={()=> {
+                if(closestBuilding != undefined)
+                  mapRef.current?.animateToRegion({latitude:closestBuilding?.latitude, longitude:closestBuilding?.longitude, latitudeDelta:0.02, longitudeDelta:0.02}, 1000)
+              }}
+              initialRegion={{
+                latitude: 45.494862,
+                longitude: -73.5779,
+                latitudeDelta: 0.02,
+                longitudeDelta: 0.02,
+              }}
+            >
+              {
+                (closestBuilding != undefined) ? 
+                  <Marker
+                    key={closestBuilding.id}
+                    coordinate={{ longitude: closestBuilding.longitude, latitude: closestBuilding.latitude }}
+                  >
+                    <MaterialCommunityIcons
+                      name='map-marker'
+                      size={55}
+                      style={{'color':'red'}}
+                    />
+                  </Marker> : <></>
+              }
+            </MapView>
+            <MapBottomSheet category={props.category} instruction={instruction} closestBuilding={closestBuilding}/>
 
+          </View>
         </View>
-      </View>
-    </Modal>
+      </Modal>
   );
 };
 
 export const MapBottomSheet = (props: MapBottomSheetProperties) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ["8%", "50%"], []);
+  const snapPoints = useMemo(() => ["4%", "50%"], []);
   const [bottomSheetVisible, setBottomSheetVisible] = useState(true);
 
   return (
@@ -253,12 +253,13 @@ export const MapBottomSheet = (props: MapBottomSheetProperties) => {
           enableContentPanningGesture={false}
           enableHandlePanningGesture={false}
           enableOverDrag={false}
+          handleComponent={() =><View></View>}
       >
         {bottomSheetVisible?
             <MaterialCommunityIcons
 
                 style={style.bottomSheetCloseButton}
-                name="arrow-collapse"
+                name="chevron-down"
                 size={30}
                 onPress={() => { bottomSheetRef.current?.collapse(); setBottomSheetVisible(false) }}
             />
@@ -266,7 +267,7 @@ export const MapBottomSheet = (props: MapBottomSheetProperties) => {
             <MaterialCommunityIcons
 
                 style={style.bottomSheetCloseButton}
-                name="arrow-expand"
+                name="chevron-up"
                 size={30}
                 onPress={() => { bottomSheetRef.current?.expand(); setBottomSheetVisible(true) }}
             />}
@@ -279,14 +280,15 @@ export const MapBottomSheet = (props: MapBottomSheetProperties) => {
                   <Text testID="instruction-text"><Text style={style.bottomSheetHeaderText}>Disposal Method</Text><Text style={style.bottomSheetContentText}> {"\n" + props.instruction}</Text></Text>:<></>
             }
 
-            <Text><Text style={style.bottomSheetHeaderText}>Closest Building</Text><Text style={style.bottomSheetContentText}> <MaterialCommunityIcons
+            <View style={style.verticallyAlignedView}>
+              <MaterialCommunityIcons
                 name='map-marker'
                 size={25}
                 style={{'color':'red'}}
-            /></Text></Text>
-
+            />
             <Text style={style.bottomSheetHeaderText}>{props.closestBuilding?.building_name}</Text>
-            <Text>{props.closestBuilding?.address}</Text>
+            </View>
+            <Text style={style.bottomSheetContentText}>{props.closestBuilding?.address}</Text>
           </View>
         </ScrollView>
       </BottomSheet>
