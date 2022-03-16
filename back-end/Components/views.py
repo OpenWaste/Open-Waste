@@ -202,7 +202,7 @@ class ImageSubmissionApiView(APIView):
                 raise serializers.ValidationError(
                     "Invalid base64 jpeg image provided")
             try:
-                email = request.data['email']
+                email = request.data['email'].lower()
             except:
                 pass
 
