@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { View, ScrollView, KeyboardAvoidingView, Text, Image } from "react-native";
 import { Accordion, AlertDialog, Box, Button, Center, NativeBaseProvider, Input } from 'native-base';
 import { save, getValueFor, deleteValueFor } from '../../../utils/PersistInfo';
@@ -13,9 +13,8 @@ import formStyle from "./styles/forms";
 import isEmail from 'validator/lib/isEmail';
 
 export class EditProfile extends React.Component {
-    
+  
   render() {
-    
     return (
       <NativeBaseProvider>
         <ScrollView>
@@ -35,59 +34,66 @@ export class EditProfile extends React.Component {
 export function EditForm() {
 
   const navigation=useNavigation();
-
   const [oldUsername, setOldUsername]=React.useState('');
   const [newUsername, setNewUsername]=React.useState('');
   const [oldEmail, setOldEmail]=React.useState('');
   const [newEmail, setNewEmail]=React.useState('');
+  const [isChange, setIsChange]=React.useState(false);
 
-  getValueFor('username').then(output => {
-    setOldUsername(output);
-  })
+  useEffect(()=>{
+    getValueFor('username').then(output => {
+      setOldUsername(output);
+      setNewUsername(output);
+    });
 
-  getValueFor('email').then(output => {
-    setOldEmail(output);
-  })
+    getValueFor('email').then(output => {
+      setOldEmail(output);
+      setNewEmail(output);
+    });
+  }, [])
 
   const handleCancel = () => {
-    navigation.navigate('ProfilePage')
+    navigation.navigate('ProfilePage');
   }
 
   const handleSubmit=() => {
 
-    if (newUsername == '' && newEmail == '') {
-      showMessage({ message: "Please fill a new username or email", type: "warning" })
-      return;
-    }
-    else if(newUsername==''){
-      setNewUsername(oldUsername)
-    }
-    else if(newEmail==''){
-      setNewEmail(oldEmail);
-    }
+    if(isChange)
+    {
+      if(newUsername==''){
+        showMessage({ message: "Please fill a new username", type: "warning" })
+        return;
+      }
+      else if(newEmail==''){
+        showMessage({ message: "Please fill a new email", type: "warning" })
+        return;
+      }
+      else if(!isEmail(newEmail)){
+        showMessage({ message: 'Invalid Email', type: 'warning' });
+        return;
+      }
+        
+      const user={
+        old_username: oldUsername,
+        new_username: newUsername,
+        email: newEmail,
+      }
 
-    if(!isEmail(newEmail)){
-      showMessage({ message: 'Invalid Email', type: 'warning' });
-      return;
-    }
-      
-    const user={
-      old_username: oldUsername,
-      new_username: newUsername,
-      email: newEmail,
-    }
+      // Get response from update-username-email endpoint
+      Service.updateUsernameEmail(user).then(() => {
+        save('username', newUsername);
+        save('email', newEmail);
 
-    // Get response from update-username-email endpoint
-    Service.updateUsernameEmail(user).then(() => {
-      save('username', newUsername);
-      save('email', newEmail);
-
+        navigation.navigate('ProfilePage');
+        showMessage({ message: 'Successfully Updated Account', type: 'success' });
+      }).catch(() =>{
+        showMessage({ message: 'An Error Has Occurred', type: 'warning' });
+      });
+    }
+    else
+    {
       navigation.navigate('ProfilePage');
-      showMessage({ message: 'Successfully Updated Account', type: 'success' });
-
-    }).catch(() =>{
-      showMessage({ message: 'An Error Has Occurred', type: 'warning' });
-    })
+    }
   }
 
   return(
@@ -99,7 +105,7 @@ export function EditForm() {
             <Accordion.Details>
               <View style={formStyle.accordionInputView}>
                 <MaterialIcons style={formStyle.registrationIcons} name="person" size={22}/>
-                <Input style={formStyle.registrationTextInputs} onChangeText={(value:any) => setNewUsername(value)} borderColor="transparent">
+                <Input style={formStyle.registrationTextInputs} onChangeText={(value:any) => {setNewUsername(value); setIsChange(true)}} borderColor="transparent">
                   {oldUsername}
                 </Input>
               </View>
@@ -115,7 +121,7 @@ export function EditForm() {
             <Accordion.Details>
               <View style={formStyle.accordionInputView}>
                 <MaterialIcons style={formStyle.registrationIcons} name="alternate-email" size={22}/>
-                <Input style={formStyle.registrationTextInputs} onChangeText={(value:any) => setNewEmail(value)} borderColor="transparent">
+                <Input style={formStyle.registrationTextInputs} onChangeText={(value:any) => {setNewEmail(value); setIsChange(true)}} borderColor="transparent">
                   {oldEmail}
                 </Input>
               </View>
