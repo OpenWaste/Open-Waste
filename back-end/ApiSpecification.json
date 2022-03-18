@@ -57,7 +57,7 @@
             }
           },
           "404": {
-            "description": "Categories not found"
+            "description": "Not found"
           }
         }
       }
@@ -100,7 +100,7 @@
     "/create-user": {
       "post": {
         "tags": [
-          "User Creation, Authentication Password Update And Password Reset Endpoint"
+          "User Endpoint"
         ],
         "summary": "Send information to create user",
         "description": "Send username, email and password to create a user",
@@ -128,7 +128,7 @@
     "/authenticate-user": {
       "post": {
         "tags": [
-          "User Creation, Authentication Password Update And Password Reset Endpoint"
+          "User Endpoint"
         ],
         "summary": "Send information to sign-in",
         "description": "Send username and password to authenticate user",
@@ -145,13 +145,13 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully authenticated the credentials"
+            "description": "Info"
           },
           "400": {
             "description": "Invalid request"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Authentication failed"
           }
         }
       }
@@ -159,7 +159,7 @@
     "/update-password": {
       "patch": {
         "tags": [
-          "User Creation, Authentication Password Update And Password Reset Endpoint"
+          "User Endpoint"
         ],
         "summary": "Send information to change password",
         "description": "Send username and new password to change current password",
@@ -187,7 +187,7 @@
     "/reset-password": {
       "post": {
         "tags": [
-          "User Creation, Authentication Password Update And Password Reset Endpoint"
+          "User Endpoint"
         ],
         "summary": "Send information to reset password",
         "description": "Send email to reset current password",
@@ -211,6 +211,138 @@
           }
         }
       }
+    },
+    "/update-username-email": {
+      "patch": {
+        "tags": [
+          "User Endpoint"
+        ],
+        "summary": "Send information to update username and email",
+        "description": "Send old username, new username and email to update current username",
+        "requestBody": {
+          "description": "User info",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUsernameAndEmail"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated username and email"
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      }
+    },
+    "/delete-user": {
+      "patch": {
+        "tags": [
+          "User Endpoint"
+        ],
+        "summary": "Send information to delete user",
+        "description": "Send username to delete user",
+        "requestBody": {
+          "description": "User info",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteUser"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "The user is deleted or The user does not exist"
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      }
+    },
+    "/bin-images/<int:bid>": {
+      "get": {
+        "tags": [
+          "Bin Images Endpoint"
+        ],
+        "summary": "Retrieve bin images",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Images succesfully retrieved",
+            "content": {
+              "image/png": {
+                "schema": {
+                  "$ref": "#/components/schemas/BinImages"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/building-images/<int:bid>": {
+      "get": {
+        "tags": [
+          "Building Images Endpoint"
+        ],
+        "summary": "Retrieve building images",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Images succesfully retrieved",
+            "content": {
+              "image/png": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuildingImages"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/verify-email": {
+      "post": {
+        "tags": [
+          "User Endpoint"
+        ],
+        "summary": "Send information to verify email",
+        "description": "Send passcode and email to verify email",
+        "requestBody": {
+          "description": "User info",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyEmail"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Info, Status"
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -218,8 +350,7 @@
       "ImageSubmissionPayload": {
         "required": [
           "category",
-          "image",
-          "email"
+          "image"
         ],
         "type": "object",
         "properties": {
@@ -243,9 +374,16 @@
           }
         },
         "example": {
-          "category": "cardboard",
-          "image": "string",
-          "email": "admin@amind.com"
+          "example 1": {
+            "category": "cardboard",
+            "image": "string",
+            "email": "admin@amind.com"
+          },
+          "example 2": {
+            "category": "cardboard",
+            "image": "string",
+            "email": null
+          }
         }
       },
       "ImagePredictionPayload": {
@@ -315,6 +453,19 @@
             [
               "trash, Dispose in thrash bin."
             ]
+          ],
+          "bins": [
+            "VA",
+            "GM",
+            "MB",
+            "EV",
+            "H",
+            "LB"
+          ],
+          "buildings": [
+            "VA entrance vestibule",
+            "VA 1st floor elevators",
+            "VA battery box"
           ]
         }
       },
@@ -392,6 +543,83 @@
         },
         "example": {
           "email": "Bob123@email.com"
+        }
+      },
+      "UpdateUsernameAndEmail": {
+        "required": [
+          "old_username",
+          "new_username",
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "old_username": {
+            "type": "string"
+          },
+          "new_username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "old_username": "Deedeemegadoodoo",
+          "new_username": "Megadeedeemegadoodoo",
+          "email": "Bob123@email.com"
+        }
+      },
+      "DeleteUser": {
+        "required": [
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "username": "Deedeemegadoodoo"
+        }
+      },
+      "BinImages": {
+        "type": "object",
+        "properties": {
+          "bin_images": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        }
+      },
+      "BuildingImages": {
+        "type": "object",
+        "properties": {
+          "building_images": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        }
+      },
+      "VerifyEmail": {
+        "required": [
+          "passcode",
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "passcode": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
         }
       }
     }
