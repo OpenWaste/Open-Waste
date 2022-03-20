@@ -11,22 +11,21 @@ it('Profile Information Renders Properly', () => {
     insets: { top: 0, left: 0, right: 0, bottom: 0 },
   };
 
-  const {queryByTestId} = render(
-    <NativeBaseProvider initialWindowMetrics={inset}>
-      <NavigationContainer>
-        <ProfileInformation
-          style={""}
-          iconName={""}
-          headerText={""}
-          infoText={""}/>
-      </NavigationContainer>
-    </NativeBaseProvider>);
-  
+  const {queryByText} = render(
+      <NativeBaseProvider initialWindowMetrics={inset}>
+        <NavigationContainer>
+          <ProfileInformation
+            style={""}
+            iconName={""}
+            headerText={""}
+            infoText={""}/>
+        </NavigationContainer>
+      </NativeBaseProvider>); 
   // Returning null, will investigate later
 
-  expect(queryByTestId('emailBox')).not.toBeNull();
-  expect(queryByTestId('submittedBox')).not.toBeNull();
-  expect(queryByTestId('acceptedBox')).not.toBeNull();
+  expect(queryByText('Email')).not.toBeNull();
+  expect(queryByText('Submitted Images')).not.toBeNull();
+  expect(queryByText('Accepted Images')).not.toBeNull();
 });
 
 it('Info Box Renders Properly', () => {
