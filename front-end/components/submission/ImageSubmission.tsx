@@ -182,9 +182,8 @@ export const ImageSubmissionView = (prop) => {
                 })}
               </Select>
               <Box m="10">               
-                <Button isLoading={prop.isLoading} isLoadingText="Submitting" _loading={{
-                bg: "primary.500"}}
-                onPress={prop.handleSubmit}> {i18next.t('Submit')} </Button>
+                <Text style={styles.submitBttn}
+                onPress={prop.handleSubmit}> {i18next.t('Submit')} </Text>
                 <Center>
                   <AlertDialog
                     leastDestructiveRef={cancelRef}
@@ -227,12 +226,13 @@ export const ImageSubmissionView = (prop) => {
                       <AlertDialog.Footer>
                         <Button.Group space={2}>
                           <Button testID = "ErrorAlert"
+                            style={styles.cancelBttn}
                             onPress={prop.onClose}
                             ref={prop.cancelRef}
                           >
                             {i18next.t('Cancel')}
                           </Button>
-                          <Button colorScheme="primary" onPress={prop.onClose}>
+                          <Button style={styles.okBttn} colorScheme="primary" onPress={prop.onClose}>
                             OK
                           </Button>
                         </Button.Group>

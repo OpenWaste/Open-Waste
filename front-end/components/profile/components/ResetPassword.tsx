@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { KeyboardAvoidingView, ScrollView, View, Text, Image, TouchableOpacity } from "react-native";
-import { Input, Button, NativeBaseProvider } from "native-base";
+import { Input, NativeBaseProvider } from "native-base";
 import formStyle from "./styles/forms";
 import passStyle from "./styles/forgot-password";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -139,10 +139,10 @@ export function ResetPasswordForm() {
           )}
         </TouchableOpacity>
       </View>
-      <Button 
+      <Text 
         testID="submitBtn"
         style={passStyle.submitBtn} 
-        onPress={handleSubmit}> Submit </Button>
+        onPress={handleSubmit}> Submit </Text>
     </View>
   );
 }

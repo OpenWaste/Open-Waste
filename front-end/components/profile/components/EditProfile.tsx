@@ -96,7 +96,7 @@ export function EditForm() {
       <Box m={3}>
         <Accordion>
           <Accordion.Item testID="editUsernameAccordion">
-          <Accordion.Summary _expanded={{ backgroundColor: '#0F968D' }}> {i18next.t('EditUsername')} <Accordion.Icon /></Accordion.Summary>
+          <Accordion.Summary _expanded={{ backgroundColor: '#0F968D' }}> <Text style={style.editBttn}>{i18next.t('EditUsername')}</Text> <Accordion.Icon /></Accordion.Summary>
             <Accordion.Details>
               <View style={formStyle.accordionInputView}>
                 <MaterialIcons style={formStyle.registrationIcons} name="person" size={22}/>
@@ -112,7 +112,7 @@ export function EditForm() {
       <Box m={3}>
         <Accordion>
           <Accordion.Item testID="editEmailAccordion">
-            <Accordion.Summary _expanded={{ backgroundColor: '#0F968D' }}> {i18next.t('EditEmail')} <Accordion.Icon/></Accordion.Summary>
+            <Accordion.Summary _expanded={{ backgroundColor: '#0F968D' }}> <Text style={style.editBttn}>{i18next.t('EditEmail')}</Text> <Accordion.Icon/></Accordion.Summary>
             <Accordion.Details>
               <View style={formStyle.accordionInputView}>
                 <MaterialIcons style={formStyle.registrationIcons} name="alternate-email" size={22}/>
@@ -126,14 +126,14 @@ export function EditForm() {
       </Box>
       <DeleteAccount/>
       <View style={style.btnView}>
-        <Button
+        <Text
           testID="cancelBtn" 
           style={style.cancelBtn} 
-          onPress={handleCancel}> {i18next.t('Cancel')} </Button>
-        <Button 
+          onPress={handleCancel}> {i18next.t('Cancel')} </Text>
+        <Text 
           testID="saveBtn"
           style={style.saveBtn} 
-          onPress={handleSubmit}> {i18next.t('Save')}  </Button>
+          onPress={handleSubmit}> {i18next.t('Save')}  </Text>
       </View> 
     </View>
   )

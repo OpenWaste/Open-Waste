@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { View, ScrollView, KeyboardAvoidingView, Text, TouchableOpacity } from "react-native";
 import signUpStyle from "./styles/signup";
 import formStyle from "./styles/forms";
-import { Avatar, Button, Center, Input, NativeBaseProvider } from 'native-base';
+import { Avatar, Center, Input, NativeBaseProvider } from 'native-base';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Service from "../../../service/service";
 import { showMessage } from "react-native-flash-message";
@@ -115,10 +115,10 @@ export function SignUpForm() {
           onChangeText={(emailInput:any) => setEmail(emailInput.toLowerCase())}
           ref={ref_input3}/>
       </View>
-      <Button 
+      <Text 
         testID="signUpBtn"
         style={signUpStyle.signUpBtn} 
-        onPress={handleSubmit}> {i18next.t('SignUp')} </Button>
+        onPress={handleSubmit}> {i18next.t('SignUp')} </Text>
     </View>
   )
 }

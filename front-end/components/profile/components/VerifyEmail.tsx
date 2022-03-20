@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { View, Text, TextInput, Image } from "react-native";
 import passStyle from "./styles/forgot-password";
-import { Button, NativeBaseProvider } from "native-base";
+import { NativeBaseProvider } from "native-base";
 import { useNavigation } from '@react-navigation/native';
 import Service from "../../../service/service";
 import { save } from '../../../utils/PersistInfo';
@@ -82,9 +82,9 @@ export function ValidatePasscode(){
           onChangeText={(value:any) => setPasscode(value)}
         />
       </View>
-      <Button 
+      <Text 
         testID="submitBtn"
-        style={passStyle.submitBtn} onPress={handleSubmit}> {i18next.t('Submit')} </Button>
+        style={passStyle.submitBtn} onPress={handleSubmit}> {i18next.t('Submit')} </Text>
   </View>
   )
 }

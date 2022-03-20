@@ -2,7 +2,7 @@ import React from "react";
 import { View, ScrollView, KeyboardAvoidingView, Text, TextInput, Image } from "react-native";
 import passStyle from "./styles/forgot-password";
 import formStyle from "./styles/forms";
-import { Button, NativeBaseProvider } from "native-base";
+import { NativeBaseProvider } from "native-base";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Service from "../../../service/service";
 import { save } from '../../../utils/PersistInfo';
@@ -70,14 +70,14 @@ export function ResetPassword(){
         <TextInput
           testID="emailField"
           style={formStyle.registrationTextInputs}
-          placeholder="Email"
+          placeholder={i18next.t('Email')}
           onChangeText={(value:any) => setEmail(value)}
         />
       </View>
-      <Button
+      <Text
         testID="submitBtn" 
         style={passStyle.submitBtn} 
-        onPress={handleSubmit}> {i18next.t('Submit')} </Button>
+        onPress={handleSubmit}> {i18next.t('Submit')} </Text>
   </View>
   )
 }

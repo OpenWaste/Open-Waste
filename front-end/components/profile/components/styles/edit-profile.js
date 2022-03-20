@@ -58,6 +58,13 @@ export default StyleSheet.create({
     fontFamily: "Roboto",
     width: "30%",
     marginRight: "2%",
+    color: "white",
+    textAlign: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderColor: '#BDBDBD',
+    borderWidth: 2,
+    borderRadius: 5, 
   },
 
   saveBtn: {
@@ -65,5 +72,16 @@ export default StyleSheet.create({
     fontFamily: "Roboto",
     width: "30%",
     marginLeft: "2%",
+    color: "white",
+    textAlign: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderColor: '#0F968D',
+    borderWidth: 2,
+    borderRadius: 5, 
+  },
+  editBttn: {
+    position: "absolute",
+    marginLeft: "10%",
   },
 });

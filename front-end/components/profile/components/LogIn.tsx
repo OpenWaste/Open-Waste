@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { View, ScrollView, KeyboardAvoidingView, Text, TouchableOpacity } from "react-native";
 import loginStyle from "./styles/login";
 import formStyle from "./styles/forms";
-import { Button, Input, NativeBaseProvider } from 'native-base';
+import { Input, NativeBaseProvider } from 'native-base';
 import { showMessage } from "react-native-flash-message";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Service from "../../../service/service";
@@ -101,10 +101,10 @@ export const LoginForm = (prop) => {
             <MaterialIcons style={formStyle.registrationIcons} name={show ? "visibility-off" : "remove-red-eye"} size={22}/>
           </TouchableOpacity>
         </View>
-        <Button 
+        <Text 
           testID='loginBtn'
           style={loginStyle.logInBtn} 
-          onPress={handleSubmit}> {i18next.t('LogIn')} </Button>      
+          onPress={handleSubmit}> {i18next.t('LogIn')} </Text>      
     </View>
     </NativeBaseProvider>
   )
