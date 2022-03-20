@@ -9,7 +9,6 @@ import { Map } from "./map/Map";
 import { SettingsNavigator } from "./settings/SettingsNavigator";
 import { ProfileNavigator } from "./profile/ProfileNavigator";
 import { ImageSubmission } from "./submission/ImageSubmission";
-import i18next from './i18n';
 
 const screens = [
   { name: "Map", component: Map, icon: "map" },

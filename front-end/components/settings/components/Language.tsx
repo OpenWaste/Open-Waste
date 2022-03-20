@@ -8,7 +8,6 @@ import { save } from '../../../utils/PersistInfo';
 import { showMessage } from "react-native-flash-message";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from '@react-navigation/native';
-import i18n from "../../i18n";
 
 export class Language extends React.Component {
 
@@ -31,30 +30,38 @@ function LanguagesPicker () {
   const navigation = useNavigation();
 
   const setFrench = () => {
-    i18next.changeLanguage("fr", (err, t) => {
-      if (err) return console.log('something went wrong loading', err);
-      t('key'); // -> same as i18next.t
-    }).then(resp => {
-      save('language', 'fr')
-    }).catch(error => {
-      showMessage({ message: error.toJSON().message, type: 'warning' }); 
-    })
-
-    setSelectedLanguage('french');
-    navigation.navigate('Camera');
+    getValueFor('language').then((output) => {
+      if(output == 'en'){
+        i18next.changeLanguage("fr", (err, t) => {
+          if (err) return console.log('something went wrong loading', err);
+          t('key'); // -> same as i18next.t
+        }).then(resp => {
+          save('language', 'fr')
+        }).catch(error => {
+          showMessage({ message: error.toJSON().message, type: 'warning' }); 
+        })
+    
+        setSelectedLanguage('french');
+        navigation.navigate('Camera');
+      }
+    });
   }
 
   const setEnglish = () => {
-    i18next.changeLanguage("en", (err, t) => {
-      if (err) return console.log('something went wrong loading', err);
-      t('key'); // -> same as i18next.t
-    }).then(resp => {
-      deleteValueFor('language')
-    }).catch(error => {
-      showMessage({ message: error.toJSON().message, type: 'warning' }); 
-    })
-    setSelectedLanguage('english');
-    navigation.navigate('Camera');
+    getValueFor('language').then((output) => {
+      if(output == 'fr'){
+        i18next.changeLanguage("en", (err, t) => {
+          if (err) return console.log('something went wrong loading', err);
+          t('key'); // -> same as i18next.t
+        }).then(resp => {
+          save('language', 'en')
+        }).catch(error => {
+          showMessage({ message: error.toJSON().message, type: 'warning' }); 
+        })
+        setSelectedLanguage('english');
+        navigation.navigate('Camera');
+     }
+    });
   }
 
   getValueFor('language').then((output) => {

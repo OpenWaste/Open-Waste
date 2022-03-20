@@ -11,7 +11,7 @@ const Stack = createStackNavigator();
 
 const screens = [
   {name: "Setting", component: Setting},
-  {name: "About us", component: AboutUs},
+  {name: "AboutUs", component: AboutUs},
   {name: "Privacy", component: Privacy},
   {name: "Language", component: Language},
 ];
