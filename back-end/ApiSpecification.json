@@ -241,7 +241,7 @@
       }
     },
     "/delete-user": {
-      "patch": {
+      "delete": {
         "tags": [
           "User Endpoint"
         ],
