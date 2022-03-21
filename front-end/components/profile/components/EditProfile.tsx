@@ -158,7 +158,6 @@ export function EditForm() {
         <Accordion>
           <Accordion.Item testID="editEmailAccordion">
             <Accordion.Summary _expanded={{ backgroundColor: "#0F968D" }}>
-              {" "}
               Edit Email <Accordion.Icon />
             </Accordion.Summary>
             <Accordion.Details>
@@ -189,12 +188,10 @@ export function EditForm() {
           style={style.cancelBtn}
           onPress={handleCancel}
         >
-          {" "}
-          Cancel{" "}
+          Cancel
         </Button>
         <Button testID="saveBtn" style={style.saveBtn} onPress={handleSubmit}>
-          {" "}
-          Save{" "}
+          Save
         </Button>
       </View>
     </View>
