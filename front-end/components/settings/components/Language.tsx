@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { View, Text, TouchableHighlight } from "react-native";
 import passStyle from "./styles/Language";
 import { NativeBaseProvider, Button } from "native-base";
@@ -29,6 +29,12 @@ function LanguagesPicker () {
 
   const navigation = useNavigation();
 
+  useEffect(() => {
+    getValueFor('language').then((output) => {
+      setSelectedLanguage(output)
+    });
+  })
+
   const setFrench = () => {
     i18next.changeLanguage("fr", (err, t) => {
       if (err) return console.log('something went wrong loading', err);
@@ -39,12 +45,9 @@ function LanguagesPicker () {
       showMessage({ message: error.toJSON().message, type: 'warning' }); 
     })
 
-    setSelectedLanguage('french');
-    getValueFor('language').then((output) => {
-      if(output != 'fr'){
-        navigation.navigate('Camera');
-     }
-    });
+    if(selectedLanguage != 'fr'){
+      navigation.navigate('Camera');
+    }
   }
 
   const setEnglish = () => {
@@ -56,22 +59,13 @@ function LanguagesPicker () {
     }).catch(error => {
       showMessage({ message: error.toJSON().message, type: 'warning' }); 
     })
-    setSelectedLanguage('english');
 
-    getValueFor('language').then((output) => {
-      if(output == 'fr'){
-        navigation.navigate('Camera');
-     }
-    });
+    if(selectedLanguage == 'fr'){
+      navigation.navigate('Camera');
+    }
   }
-
-  getValueFor('language').then((output) => {
-    if(output == 'fr'){
-      setSelectedLanguage('french');
-   }
-  });
   
-  if (selectedLanguage == 'french') {
+  if (selectedLanguage == 'fr') {
     return (
       <View>
         <TouchableHighlight>
