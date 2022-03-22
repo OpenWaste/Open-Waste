@@ -170,7 +170,9 @@ class ImageRecognitionApiView(APIView):
         s.is_valid(raise_exception=True)
 
         # Returns HTTP Success code 200 and ML prediction in the form of `"prediction":"glass"`
-        return Response({"prediction": self.p.evaluate_image(io.BytesIO(base64.b64decode(s.validated_data.get('image'))))}, status=status.HTTP_200_OK)
+        return Response(
+            {"prediction": self.p.evaluate_image(io.BytesIO(base64.b64decode(s.validated_data.get('image'))))},
+            status=status.HTTP_200_OK)
 
 
 class ImageSubmissionApiView(APIView):
@@ -184,9 +186,9 @@ class ImageSubmissionApiView(APIView):
 
             # valid base64 string can start with "data:image..."
             if image.startswith("data:image/jpeg;base64,"):
-                format, imgstr = image.split(';base64,') 
+                format, imgstr = image.split(';base64,')
                 ext = format.split('/')[-1]
-                
+
                 # decode it to get the actual image
                 image = ContentFile(base64.b64decode(imgstr), name=f'{category}_image.' + ext)
             # valid base64 string starts with "/9j/4AA..."
@@ -196,13 +198,12 @@ class ImageSubmissionApiView(APIView):
             else:
                 # if its not a base 64, its not valid
                 raise serializers.ValidationError("Invalid base64 jpeg image provided")
-            
-            
+
             try:
-                email = request.data['email']  
+                email = request.data['email']
             except:
                 pass
-            
+
             # get the category selected
             category_selected = Category.objects.get(name=category)
             user = DWUser.objects.get(email=email) if email is not None else None
@@ -238,7 +239,7 @@ class UpdateApiView(APIView):
             returned_category_instructions = []
             for c, i in category_instructions:
                 category = Category.objects.get(pk=c)
-                returned_category_instructions.append({"category_name":category.name, "instruction":i})
+                returned_category_instructions.append({"category_name": category.name, "instruction": i})
 
             bins = Bin.objects.values()
             buildings = Building.objects.values()
@@ -247,9 +248,9 @@ class UpdateApiView(APIView):
             return Response({
                 "categories": category_list,
                 "category_instructions": returned_category_instructions,
-                "bins":bins,
+                "bins": bins,
                 "buildings": buildings
-                },
+            },
                 status=status.HTTP_200_OK)
 
         except Exception as e:
@@ -257,29 +258,51 @@ class UpdateApiView(APIView):
             return Response({e.__class__.__name__: str(e)},
                             status=status.HTTP_404_NOT_FOUND)
 
+
+def convert_image_to_b64(img_path: str) -> str:
+    filetype = img_path.split(".")[-1]
+    with open("media/" + img_path, "rb") as img_file:
+        data = base64.b64encode(img_file.read())
+        return get_base64_header(filetype) + data.decode('utf-8')
+
+
+def get_base64_header(filetype: str) -> str:
+    abbreviation = ''
+    if filetype == 'jpeg' or filetype == 'jpg':
+        abbreviation = 'jpeg'
+    elif filetype == 'png':
+        abbreviation = 'png'
+    else:
+        raise ValueError("Image format was not in a supported format")
+
+    return 'data:image/' + abbreviation + ';base64,'
+
+
 class BinImagesView(APIView):
-    def get(self, request, bid:int):
+    def get(self, request, bid: int):
         try:
             images = BinImages.objects.filter(bin_id=bid).values_list('bin_images', flat=True)
-
-            return Response(images,
-            status=status.HTTP_200_OK)
+            base64_images = list(map(convert_image_to_b64, images))
+            return Response(base64_images,
+                            status=status.HTTP_200_OK)
 
         except Exception as e:
             # error: 404 NOT FOUND
             return Response({e.__class__.__name__: str(e)},
                             status=status.HTTP_404_NOT_FOUND)
 
+
 class BuildingImagesView(APIView):
-    def get(self, request, bid:int):
+    def get(self, request, bid: int):
         try:
             images = BuildingImages.objects.filter(building_id=bid).values_list('building_images', flat=True)
-
-            return Response(images, status = status.HTTP_200_OK)
+            base64_images = list(map(convert_image_to_b64, images))
+            return Response(base64_images, status=status.HTTP_200_OK)
 
         except Exception as e:
             return Response({e.__class__.__name__: str(e)},
                             status=status.HTTP_404_NOT_FOUND)
+
 
 class ResetPassword(APIView):
 
@@ -288,33 +311,33 @@ class ResetPassword(APIView):
             # requested email
             email = request.data['email'].lower()
 
-            user = DWUser.objects.get(email=email) 
+            user = DWUser.objects.get(email=email)
             # success: 200 OK
             if user is not None:
-
                 passcode = DWUser.objects.make_random_password(length=8)
 
                 # sends an email to the request email (subject, message, from, to)
                 send_mail(
-                'Password reset',
-                'Hey ' + user.username + ', you requested a password reset. Here is your passcode: ' + passcode,
-                'DigiWaste Concordia',
-                [email],
-                fail_silently=False,
+                    'Password reset',
+                    'Hey ' + user.username + ', you requested a password reset. Here is your passcode: ' + passcode,
+                    'DigiWaste Concordia',
+                    [email],
+                    fail_silently=False,
                 )
                 user.passcode = passcode
                 user.save()
                 # success: 200 OK
                 return Response(
-                        {"The email has been sent"},
-                        status=status.HTTP_200_OK
-                        )
+                    {"The email has been sent"},
+                    status=status.HTTP_200_OK
+                )
         except Exception as e:
             # error: 400 BAD REQUEST
             return Response(
                 {e.__class__.__name__: str(e)},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
 
 class VerifyEmail(APIView):
 
@@ -336,9 +359,9 @@ class VerifyEmail(APIView):
                 user.save()
                 # success: 200 OK
                 return Response(
-                        info,
-                        status=status.HTTP_200_OK
-                        )
+                    info,
+                    status=status.HTTP_200_OK
+                )
         except Exception as e:
             # error: 400 BAD REQUEST
             return Response(
