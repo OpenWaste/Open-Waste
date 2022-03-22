@@ -4,6 +4,7 @@ import english from "./language/en.json";
 import french from "./language/fr.json";
 import { getValueFor } from '../utils/PersistInfo';
 
+// json files used for translation 
 const resources = {
   en: {
     translation: english
@@ -13,6 +14,7 @@ const resources = {
   }
 };
 
+// using i18n, we set the default language to english and the json format to v3
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
@@ -25,10 +27,12 @@ i18n
     }
   });
 
+// set language to french on startup if the app was set to french previously
 getValueFor('language').then((output) => {
     if(output == 'fr'){
       i18n.changeLanguage("fr")
    }
 });
 
+// other files can call this and use the translations from the json files
 export default i18n;

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { View, Text, TouchableHighlight } from "react-native";
 import passStyle from "./styles/Language";
 import { NativeBaseProvider, Button } from "native-base";
-import i18next from '../../i18n';
+import i18next from '../../Translate';
 import { deleteValueFor, getValueFor } from '../../../utils/PersistInfo';
 import { save } from '../../../utils/PersistInfo';
 import { showMessage } from "react-native-flash-message";

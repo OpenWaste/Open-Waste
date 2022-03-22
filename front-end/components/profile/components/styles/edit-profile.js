@@ -85,7 +85,7 @@ export default StyleSheet.create({
 
   editBttn: {
     position: "absolute",
-    marginLeft: "10%",
+    marginLeft: "5%",
   },
 
   deleteAccBttn: {

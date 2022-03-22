@@ -9,7 +9,7 @@ import { showMessage } from "react-native-flash-message";
 import formStyle from "./styles/forms";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { getValueFor } from '../../../utils/PersistInfo';
-import i18next from '../../i18n';
+import i18next from '../../Translate';
 
 export class VerifyEmail extends React.Component {
   img = require("../../../assets/mailbox.png");

@@ -5,7 +5,7 @@ import { NativeBaseProvider } from 'native-base';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { deleteValueFor, getValueFor } from '../../../utils/PersistInfo';
 import { showMessage } from "react-native-flash-message";
-import i18next from '../../i18n';
+import i18next from '../../Translate';
 
 export class Profile extends React.Component {
 
@@ -98,12 +98,6 @@ export function ProfileInformation() {
     });
     getValueFor('accepted_images').then((output) => {
       setAcceptedImages(output)
-    });
-
-    getValueFor('language').then((output) => {
-      if(output == 'fr'){
-        il8n.changeLanguage("Fr")
-      }
     });
   })
 
