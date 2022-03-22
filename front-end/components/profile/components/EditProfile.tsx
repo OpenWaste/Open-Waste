@@ -194,8 +194,8 @@ export function DeleteAccount() {
       </AlertDialog.Body>
       <AlertDialog.Footer>
         <Button.Group space={2}>
-          <Button colorScheme="danger" onPress={handleDelete}> {i18next.t('Delete')} </Button>
-          <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}> {i18next.t('Cancel')} </Button>                   
+          <Text style={style.deleteAccBttn} onPress={handleDelete}> {i18next.t('Delete')} </Text>
+          <Text style={style.cancelDeleteAccBttn} onPress={onClose} ref={cancelRef}> {i18next.t('Cancel')} </Text>                   
         </Button.Group>
       </AlertDialog.Footer>
       </AlertDialog.Content>
