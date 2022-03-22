@@ -99,24 +99,27 @@ export function ProfileInformation() {
     getValueFor('accepted_images').then((output) => {
       setAcceptedImages(output)
     });
+
+    getValueFor('language').then((output) => {
+      if(output == 'fr'){
+        il8n.changeLanguage("Fr")
+      }
+    });
   })
 
   return (
     <>
     <InfoBox
-      testID="emailBox" 
       style={style} 
       iconName="alternate-email" 
       headerText={i18next.t('Email')} 
       infoText={email} />
     <InfoBox
-      testID="submittedBox" 
       style={style} 
       iconName="image-search"
       headerText={i18next.t('SubmittedImages')}
       infoText={submittedImages}/>
     <InfoBox
-      testID="acceptedBox" 
       style={style} 
       iconName="image" 
       headerText={i18next.t('AcceptedImages')}
