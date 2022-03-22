@@ -48,15 +48,6 @@ class BuildingImages(models.Model):
 
 
 class Bin(models.Model):
-    # CATEGORIES WILL NEED TO BE CHANGED WITH MORE INFO
-    CATEGORY1 = 'C1'
-    CATEGORY2 = 'C2'
-    CATEGORY3 = 'C3'
-    WASTE_CATEGORY_CHOICES = [
-        (CATEGORY1, 'Category1'),
-        (CATEGORY2, 'Category2'),
-        (CATEGORY3, 'Category3'),
-    ]
     building = models.ForeignKey(
         Building, on_delete=models.CASCADE, default=1)
     location_name = models.CharField(max_length=200)
@@ -64,7 +55,7 @@ class Bin(models.Model):
     room_number = models.CharField(max_length=200)
     disposal_type = models.CharField(max_length=200)
     accepted_categories = models.CharField(
-        max_length=30, blank=True, null=True, choices=WASTE_CATEGORY_CHOICES)
+        max_length=200, blank=True, null=True)
 
     def __str__(self):
         return f"Bin located in {self.building} building"
