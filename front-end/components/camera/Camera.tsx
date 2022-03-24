@@ -126,6 +126,11 @@ export const CameraView = (props: CameraViewProperties) => {
   );
 };
 
+/**
+ * It creates a React component that displays an image.
+ * @param {PicturePreviewProperties} props - PicturePreviewProperties
+ * @returns A component that renders an image.
+ */
 export const PicturePreview = (props: PicturePreviewProperties) => {
   return (
     <Image
@@ -386,6 +391,14 @@ export const MapBottomSheet = (props: MapBottomSheetProperties) => {
   );
 };
 
+/**
+ * Given two points on the Earth's surface, calculate the distance between them
+ * @param {number} lat1 - Latitude of the first point
+ * @param {number} lon1 - Longitude of the first point
+ * @param {number} lat2 - Latitude of the second point in decimal degrees
+ * @param {number} lon2 - Longitude of the second location in decimal degrees
+ * @returns The distance between the two points in kilometers.
+ */
 function distance(lat1: number, lon1: number, lat2: number, lon2: number) {
   var p = 0.017453292519943295; // Math.PI / 180
   var c = Math.cos;
