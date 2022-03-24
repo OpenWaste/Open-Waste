@@ -183,43 +183,49 @@ class ImageSubmissionApiView(APIView):
             category = request.data['category']
             image = request.data['image']
             email = None
-
             # valid base64 string can start with "data:image..."
             if image.startswith("data:image/jpeg;base64,"):
+
                 format, imgstr = image.split(';base64,')
                 ext = format.split('/')[-1]
-
                 # decode it to get the actual image
-                image = ContentFile(base64.b64decode(imgstr), name=f'{category}_image.' + ext)
+                image = ContentFile(base64.b64decode(
+                    imgstr), name=f'{category}_image.' + ext)
+                accepted = True
             # valid base64 string starts with "/9j/4AA..."
             elif image.startswith("/9j/4AAQSkZJRgABA"):
+
                 # decode the image
-                image = ContentFile(base64.b64decode(image), name=f'{category}_image.jpeg')
+                image = ContentFile(base64.b64decode(
+                    image), name=f'{category}_image.jpeg')
+                accepted = True
             else:
                 # if its not a base 64, its not valid
-                raise serializers.ValidationError("Invalid base64 jpeg image provided")
-
+                raise serializers.ValidationError(
+                    "Invalid base64 jpeg image provided")
             try:
-                email = request.data['email']
+                email = request.data['email'].lower()
             except:
                 pass
 
             # get the category selected
             category_selected = Category.objects.get(name=category)
-            user = DWUser.objects.get(email=email) if email is not None else None
+            user = DWUser.objects.get(
+                email=email) if email is not None else None
 
             ImageSubmission(
                 category=category_selected,
                 submission_Image=image,
+                is_accepted=accepted,
                 submitted_by=user
             ).save()
-
             # success: 200 OK
             return Response(
                 {"Successfully submitted"},
                 status=status.HTTP_200_OK
             )
         except Exception as e:
+
             # error: 400 BAD REQUEST
             return Response(
                 {e.__class__.__name__: str(e)},
@@ -239,7 +245,8 @@ class UpdateApiView(APIView):
             returned_category_instructions = []
             for c, i in category_instructions:
                 category = Category.objects.get(pk=c)
-                returned_category_instructions.append({"category_name": category.name, "instruction": i})
+                returned_category_instructions.append(
+                    {"category_name": category.name, "instruction": i})
 
             bins = Bin.objects.values()
             buildings = Building.objects.values()
@@ -319,7 +326,8 @@ class ResetPassword(APIView):
                 # sends an email to the request email (subject, message, from, to)
                 send_mail(
                     'Password reset',
-                    'Hey ' + user.username + ', you requested a password reset. Here is your passcode: ' + passcode,
+                    'Hey ' + user.username +
+                    ', you requested a password reset. Here is your passcode: ' + passcode,
                     'DigiWaste Concordia',
                     [email],
                     fail_silently=False,
