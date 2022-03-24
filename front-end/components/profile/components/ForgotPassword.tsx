@@ -18,7 +18,7 @@ export class ForgotPassword extends React.Component {
         <ScrollView>
           <KeyboardAvoidingView>
             <View style={passStyle.container}>
-              <Image source={{uri:this.img}} style={passStyle.img} />
+              <Image source={this.img} style={passStyle.img} />
 
               <Text style={passStyle.header}>Forgot Password?</Text>
               <Text style={passStyle.description}>
