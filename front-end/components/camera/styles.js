@@ -6,8 +6,8 @@ export default StyleSheet.create({
     zIndex: -1,
   },
   bottomSheetViewStyle: {
-    paddingHorizontal:10,
-    paddingBottom:10
+    paddingHorizontal: 10,
+    paddingBottom: 10,
   },
 
   bottomSheetCloseButton: {
@@ -16,30 +16,30 @@ export default StyleSheet.create({
   },
 
   bottomSheetHeaderText: {
-    fontWeight:'bold',
+    fontWeight: "bold",
     fontFamily: "Roboto",
     fontSize: 18,
     color: 808080,
-    justifyContent: 'center'
+    justifyContent: "center",
   },
   bottomSheetSubHeaderText: {
-    fontWeight:'bold',
+    fontWeight: "bold",
     fontFamily: "Roboto",
     fontSize: 17,
-    color: 808080
+    color: 808080,
   },
 
-  bottomSheetContentText:{
+  bottomSheetContentText: {
     fontFamily: "Roboto",
     fontSize: 16,
-    color:808080
+    color: 808080,
   },
 
-  verticallyAlignedView:{
+  verticallyAlignedView: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
-   
+
   footer: {
     flex: 1,
     flexDirection: "row",
@@ -122,5 +122,13 @@ export default StyleSheet.create({
   imageSubmissionButton: {
     position: "absolute",
     left: 55,
+  },
+
+  imageBin: {
+    borderRadius: 10,
+    aspectRatio: 1,
+    height: 200,
+    width: 200,
+    marginBottom: 20,
   },
 });

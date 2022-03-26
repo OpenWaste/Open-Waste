@@ -170,7 +170,9 @@ class ImageRecognitionApiView(APIView):
         s.is_valid(raise_exception=True)
 
         # Returns HTTP Success code 200 and ML prediction in the form of `"prediction":"glass"`
-        return Response({"prediction": self.p.evaluate_image(io.BytesIO(base64.b64decode(s.validated_data.get('image'))))}, status=status.HTTP_200_OK)
+        return Response(
+            {"prediction": self.p.evaluate_image(io.BytesIO(base64.b64decode(s.validated_data.get('image'))))},
+            status=status.HTTP_200_OK)
 
 
 class ImageSubmissionApiView(APIView):
@@ -264,13 +266,31 @@ class UpdateApiView(APIView):
                             status=status.HTTP_404_NOT_FOUND)
 
 
+def convert_image_to_b64(img_path: str) -> str:
+    filetype = img_path.split(".")[-1]
+    with open("media/" + img_path, "rb") as img_file:
+        data = base64.b64encode(img_file.read())
+        return get_base64_header(filetype) + data.decode('utf-8')
+
+
+def get_base64_header(filetype: str) -> str:
+    abbreviation = ''
+    if filetype == 'jpeg' or filetype == 'jpg':
+        abbreviation = 'jpeg'
+    elif filetype == 'png':
+        abbreviation = 'png'
+    else:
+        raise ValueError("Image format was not in a supported format")
+
+    return 'data:image/' + abbreviation + ';base64,'
+
+
 class BinImagesView(APIView):
     def get(self, request, bid: int):
         try:
-            images = BinImages.objects.filter(
-                bin_id=bid).values_list('bin_images', flat=True)
-
-            return Response(images,
+            images = BinImages.objects.filter(bin_id=bid).values_list('bin_images', flat=True)
+            base64_images = list(map(convert_image_to_b64, images))
+            return Response(base64_images,
                             status=status.HTTP_200_OK)
 
         except Exception as e:
@@ -282,10 +302,9 @@ class BinImagesView(APIView):
 class BuildingImagesView(APIView):
     def get(self, request, bid: int):
         try:
-            images = BuildingImages.objects.filter(
-                building_id=bid).values_list('building_images', flat=True)
-
-            return Response(images, status=status.HTTP_200_OK)
+            images = BuildingImages.objects.filter(building_id=bid).values_list('building_images', flat=True)
+            base64_images = list(map(convert_image_to_b64, images))
+            return Response(base64_images, status=status.HTTP_200_OK)
 
         except Exception as e:
             return Response({e.__class__.__name__: str(e)},
@@ -302,7 +321,6 @@ class ResetPassword(APIView):
             user = DWUser.objects.get(email=email)
             # success: 200 OK
             if user is not None:
-
                 passcode = DWUser.objects.make_random_password(length=8)
 
                 # sends an email to the request email (subject, message, from, to)
