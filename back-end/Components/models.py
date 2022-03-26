@@ -54,6 +54,8 @@ class Bin(models.Model):
     floor_number = models.IntegerField()
     room_number = models.CharField(max_length=200)
     disposal_type = models.CharField(max_length=200)
+    # `accepted_categories` are stored as a string in the form of "<category-1>;<category-2>",
+    # separating names with semicolons
     accepted_categories = models.CharField(
         max_length=200, blank=True, null=True)
 
