@@ -11,6 +11,7 @@ import { showMessage } from "react-native-flash-message";
 import i18next from '../../Translate';
 
 export class ForgotPassword extends React.Component {
+  img = require("../../../assets/forgotpass.png");
 
   render() {
     return (
@@ -18,6 +19,7 @@ export class ForgotPassword extends React.Component {
         <ScrollView>
           <KeyboardAvoidingView>
             <View style={passStyle.container}>
+              <Image source={this.img} style={passStyle.img} />
 
               <Text style={passStyle.header}> {i18next.t('ForgotPassword')} </Text>
               <Text style={passStyle.description}>
