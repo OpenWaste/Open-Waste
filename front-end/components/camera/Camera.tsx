@@ -363,9 +363,9 @@ export const MapBottomSheet = (props: MapBottomSheetProperties) => {
             </Text>
           </>
 
-          {binWithImages?.map((binWithImage: BinWithImage) => {
+          {binWithImages?.map((binWithImage: BinWithImage, index:number) => {
             return (
-              <>
+              <React.Fragment key={index.toString()}>
                 <View style={style.verticallyAlignedView}>
                   <MaterialCommunityIcons
                     name="map-marker"
@@ -382,7 +382,7 @@ export const MapBottomSheet = (props: MapBottomSheetProperties) => {
                   style={style.imageBin}
                   resizeMode="contain"
                 />
-              </>
+              </React.Fragment>
             );
           })}
         </View>
