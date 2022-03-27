@@ -19,7 +19,7 @@ export class VerifyEmail extends React.Component {
         <View style={passStyle.container}>
           <Image 
             testID="verifyImg"
-            source={{uri:this.img}} style={passStyle.img} />
+            source={this.img} style={passStyle.img} />
           <Text 
             testID="verifyHeader"
             style={passStyle.header}> Verify your email </Text>

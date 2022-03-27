@@ -154,7 +154,7 @@ export function Map() {
             {buildingImages.map((base64_img:string, index:number) => {
               return <Image
                 key={index.toString()}
-                source={{uri: `data:image/png;base64,${base64_img}`}}
+                source={{uri: base64_img}}
                 style={styles.image}/>
             })}
           </ScrollView>
