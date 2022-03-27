@@ -145,9 +145,8 @@ export function EditForm() {
                     setValue(value, "user");
                   }}
                   borderColor="transparent"
-                >
-                  {oldUsername}
-                </Input>
+                  defaultValue={oldUsername}
+                />
               </View>
             </Accordion.Details>
           </Accordion.Item>
@@ -173,9 +172,8 @@ export function EditForm() {
                     setValue(value, "email");
                   }}
                   borderColor="transparent"
-                >
-                  {oldEmail}
-                </Input>
+                  defaultValue={oldEmail}
+                />
               </View>
             </Accordion.Details>
           </Accordion.Item>

@@ -13,7 +13,6 @@ import {
   Image,
   AlertDialog,
   AspectRatio,
-  Spinner,
   NativeBaseProvider,
 } from "native-base";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
