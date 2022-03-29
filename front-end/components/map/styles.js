@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 export default StyleSheet.create({
   map: {
     width: "100%",
-    height: "100%"
+    height: "87%"
   },
   user: {
     color: '#4287f5'
@@ -69,7 +69,8 @@ export default StyleSheet.create({
     justifyContent: "space-between"
   },
   bottomSheet: {
-    padding: 10
+    padding: 10,
+    paddingTop: 0
   },
   pressable: {
     backgroundColor: '#C4C4C4'

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import {View, Text, Image, FlatList, Pressable, Linking, TouchableHighlight } from "react-native";
+import {View, Text, Image, FlatList, Pressable, Linking } from "react-native";
 import styles from './styles'
 import { Heading } from "native-base";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
@@ -95,12 +95,12 @@ export function Map() {
           {
             pressed
             ? <FlatList
+                keyboardShouldPersistTaps='never'
                 data={filteredBuildings} keyExtractor={index => index.id.toString()}
                 extraData = {query} 
                 renderItem = {({ item }) =>
                   <Pressable
-                    onPressIn={() => markerOnPress(item)}
-                    onPressOut={() => setPressed(false)}
+                    onPress={() => {markerOnPress(item); setPressed(false)}}
                     style={!pressed ? styles.pressable : null}
                   >
                     <HStack space={2} style={styles.flatList}>

@@ -1,11 +1,12 @@
-import { Icon, Input, VStack } from "native-base";
+import { Icon, Input } from "native-base";
 import React from "react";
+import { ScrollView } from "react-native"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import styles from './styles'
 
 // re-usable component SearchBar
 export function SearchBar(props) {
-    return <VStack w="100%" space={5} alignSelf="center">
+    return <ScrollView width="100%" space={5} alignSelf="center" keyboardShouldPersistTaps="never">
           <Input
             onFocus={props.focus}
             onChangeText={props.query}
@@ -23,5 +24,5 @@ export function SearchBar(props) {
               />
             }
           />
-        </VStack>;
+        </ScrollView>;
 }
