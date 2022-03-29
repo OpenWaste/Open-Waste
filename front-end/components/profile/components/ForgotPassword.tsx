@@ -2,12 +2,13 @@ import React from "react";
 import { View, ScrollView, KeyboardAvoidingView, Text, TextInput, Image } from "react-native";
 import passStyle from "./styles/forgot-password";
 import formStyle from "./styles/forms";
-import { Button, NativeBaseProvider } from "native-base";
+import { NativeBaseProvider } from "native-base";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Service from "../../../service/service";
 import { save } from '../../../utils/PersistInfo';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from "react-native-flash-message";
+import i18next from '../../Translate';
 
 export class ForgotPassword extends React.Component {
   img = require("../../../assets/forgotpass.png");
@@ -20,13 +21,12 @@ export class ForgotPassword extends React.Component {
             <View style={passStyle.container}>
               <Image source={this.img} style={passStyle.img} />
 
-              <Text style={passStyle.header}>Forgot Password?</Text>
+              <Text style={passStyle.header}> {i18next.t('ForgotPassword')} </Text>
               <Text style={passStyle.description}>
-                Do not worry! We will help you recover it. Enter the e-mail
-                address associated to your account.
+                {i18next.t('ForgotPasswordText')}
               </Text>
               <ResetPassword/>
-              <Text style={passStyle.toLogin} onPress={() => this.props.navigation.navigate("Registration")}> Back to login </Text>
+              <Text style={passStyle.toLogin} onPress={() => this.props.navigation.navigate("BackToLogin")}> </Text>
             </View>
           </KeyboardAvoidingView>
         </ScrollView>
@@ -72,14 +72,14 @@ export function ResetPassword(){
         <TextInput
           testID="emailField"
           style={formStyle.registrationTextInputs}
-          placeholder="Email"
+          placeholder={i18next.t('Email')}
           onChangeText={(value:any) => setEmail(value)}
         />
       </View>
-      <Button
+      <Text
         testID="submitBtn" 
         style={passStyle.submitBtn} 
-        onPress={handleSubmit}> Submit </Button>
+        onPress={handleSubmit}> {i18next.t('Submit')} </Text>
   </View>
   )
 }

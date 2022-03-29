@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { View, ScrollView, KeyboardAvoidingView, Text, TouchableOpacity } from "react-native";
 import signUpStyle from "./styles/signup";
 import formStyle from "./styles/forms";
-import { Avatar, Button, Center, Input, NativeBaseProvider } from 'native-base';
+import { Avatar, Center, Input, NativeBaseProvider } from 'native-base';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Service from "../../../service/service";
 import { showMessage } from "react-native-flash-message";
@@ -10,6 +10,7 @@ import isEmail from 'validator/lib/isEmail';
 import { UserResource } from "../../../models/User";
 import { useNavigation } from '@react-navigation/native';
 import { save } from '../../../utils/PersistInfo';
+import i18next from '../../Translate'
 
 export class SignUp extends React.Component {
 
@@ -19,7 +20,7 @@ export class SignUp extends React.Component {
       <NativeBaseProvider>
         <ScrollView>
           <KeyboardAvoidingView>
-          <Text style={signUpStyle.signUpHeader}>Create an Account</Text>
+          <Text style={signUpStyle.signUpHeader}> {i18next.t('CreateAnAccount')} </Text>
           <Center style={signUpStyle.addProfilePic}>
             <Avatar size='40' source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}}>
               <Avatar.Badge bg="green.200" />
@@ -80,7 +81,7 @@ export function SignUpForm() {
           testID="usernameField"
           style={formStyle.registrationTextInputs} 
           borderWidth="0" 
-          placeholder="Username"
+          placeholder={i18next.t('Username')}
           autoFocus={true}
           returnKeyType="next"
           onChangeText={(value:any) => setUsername(value)}
@@ -93,7 +94,7 @@ export function SignUpForm() {
           type={show ? "text" : "password"} 
           style={formStyle.registrationTextInputs} 
           borderWidth="0" 
-          placeholder="Password"
+          placeholder={i18next.t('Password')}
           returnKeyType="next"
           autoFocus={true}
           onChangeText={(value:any) => setPassword(value)}
@@ -109,15 +110,15 @@ export function SignUpForm() {
           testID="emailField"
           style={formStyle.registrationTextInputs} 
           borderWidth="0" 
-          placeholder="Email"
+          placeholder={i18next.t('Email')}
           autoFocus={true}
           onChangeText={(emailInput:any) => setEmail(emailInput.toLowerCase())}
           ref={ref_input3}/>
       </View>
-      <Button 
+      <Text 
         testID="signUpBtn"
         style={signUpStyle.signUpBtn} 
-        onPress={handleSubmit}> Sign Up </Button>
+        onPress={handleSubmit}> {i18next.t('SignUp')} </Text>
     </View>
   )
 }
