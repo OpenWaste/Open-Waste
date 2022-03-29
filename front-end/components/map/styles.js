@@ -31,18 +31,9 @@ export default StyleSheet.create({
     aspectRatio: 1,
     borderRadius: 10,
   },
-  flatList: {
-    paddingLeft: 15, 
-    marginTop: 15, 
-    paddingBottom: 15,
-    fontSize: 20,
-    borderBottomColor: '#26a69a',
-    borderBottomWidth: 1
-  },
   searchContainer: {
     marginTop: 60,
-    position: "relative",
-    zIndex: -1,
+    position: 'relative',
     backgroundColor: "#F9F9F9"
   },
   searchBar: {
@@ -54,6 +45,22 @@ export default StyleSheet.create({
     color: "#808080",
     backgroundColor: "#F9F9F9"
   },
+  flatList: {
+    flexWrap: 'wrap',
+    alignItems: 'baseline',
+    padding: 15,
+    borderBottomColor: '#C4C4C4',
+    borderBottomWidth: 1,
+    borderRadius: 4
+  },
+  flatListText: {
+    fontSize: 16,
+    color: '#808080'
+  },
+  flatListAddress: {
+    fontSize: 12,
+    color: '#C4C4C4'
+  },
   directionsButton: {
     backgroundColor: "#0F968D",
   },
@@ -63,5 +70,8 @@ export default StyleSheet.create({
   },
   bottomSheet: {
     padding: 10
+  },
+  pressable: {
+    backgroundColor: '#C4C4C4'
   }
 });

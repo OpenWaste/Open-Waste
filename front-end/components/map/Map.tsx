@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import {View, Text, Image, FlatList, Pressable, Linking } from "react-native";
+import {View, Text, Image, FlatList, Pressable, Linking, TouchableHighlight } from "react-native";
 import styles from './styles'
 import { Heading } from "native-base";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
@@ -25,6 +25,7 @@ export function Map() {
   const [buildingImages, setBuildingImages] = useState([]);
   const [query, setQuery] = useState('');
   const [filteredBuildings, setFilteredBuildings] = useState<Building[]>([]);
+  const [pressed, setPressed] = useState(true);
 
   const mapRef = useRef<MapView>(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -56,7 +57,7 @@ export function Map() {
 
   const findBuildings = (input: string) => {
     if (input) {
-      const regex = new RegExp(`${query.trim()}`, 'i');
+      const regex = new RegExp(`${query.trim()}`, 'gmi');
       setFilteredBuildings(
           buildings.filter((item) => item.building_name.search(regex) >= 0)
       );
@@ -86,18 +87,31 @@ export function Map() {
       <View>
         <View style={styles.searchContainer}>
           <SearchBar
+            focus={() => setPressed(true)}
             query={updateQuery}
             value={query}   
             placeholder="Find a..."
           />
-          <FlatList
-            data={filteredBuildings} keyExtractor={index => index.id.toString()}
-            extraData = {query} 
-            renderItem = {({ item }) =>
-              <Pressable onPress={() => markerOnPress(item)}>
-                <Text style={styles.flatList}>{item.building_name}</Text>
-              </Pressable> }
-          />
+          {
+            pressed
+            ? <FlatList
+                data={filteredBuildings} keyExtractor={index => index.id.toString()}
+                extraData = {query} 
+                renderItem = {({ item }) =>
+                  <Pressable
+                    onPressIn={() => markerOnPress(item)}
+                    onPressOut={() => setPressed(false)}
+                    style={!pressed ? styles.pressable : null}
+                  >
+                    <HStack space={2} style={styles.flatList}>
+                      <Text style={styles.flatListText}>{item.building_name}</Text>
+                      <Text style={styles.flatListAddress}>{item.address}</Text>
+                    </HStack>
+                  </Pressable>
+                }
+              />
+            : null
+          }
         </View>
         <MapView
           ref={mapRef}
@@ -105,31 +119,31 @@ export function Map() {
           provider={PROVIDER_GOOGLE}
           style={styles.map}
         >
-          {currentPosition ?
-            <Marker
-              key='user'
-              coordinate={currentPosition}
+        {currentPosition ?
+          <Marker
+            key='user'
+            coordinate={currentPosition}
+          >
+          <MaterialCommunityIcons 
+              name='account-circle'
+              size={40}
+              style={styles.user}
+          />
+          </Marker> : null
+        }
+        {buildings.map((building: Building) => {
+          return <Marker
+            key={building.id}
+            coordinate={{longitude:building.longitude, latitude:building.latitude}}
+            onPress={() => markerOnPress(building)}
             >
-              <MaterialCommunityIcons 
-                name='account-circle'
-                size={40}
-                style={styles.user}
-              />
-            </Marker> : null
-          }
-          {buildings.map((building: Building) => {
-            return <Marker
-              key={building.id}
-              coordinate={{longitude:building.longitude, latitude:building.latitude}}
-              onPress={() => markerOnPress(building)}
-            >
-              <MaterialCommunityIcons
-                name='map-marker'
-                size={40}
-                color={styles.marker.color}
-              />
-            </Marker>
-          })}
+            <MaterialCommunityIcons
+              name='map-marker'
+              size={40}
+              color={styles.marker.color}
+            />
+          </Marker>
+        })}
         </MapView>
         {!selectedBuilding ? null :
           <BottomSheet
@@ -142,7 +156,7 @@ export function Map() {
             <Heading style={styles.header}>{selectedBuilding.building_name}</Heading>
             <Button
               style={styles.directionsButton}
-              onPress={() => openMaps(selectedBuilding.building_name)}
+              onPress={() => openMaps(selectedBuilding.address)}
               leftIcon={<Icon as={MaterialCommunityIcons} name="directions" size="sm" />}>
               Get Directions
             </Button>

@@ -7,6 +7,7 @@ import styles from './styles'
 export function SearchBar(props) {
     return <VStack w="100%" space={5} alignSelf="center">
           <Input
+            onFocus={props.focus}
             onChangeText={props.query}
             placeholder={props.placeholder}
             value={props.value}
