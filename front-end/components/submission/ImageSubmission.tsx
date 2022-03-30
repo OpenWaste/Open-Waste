@@ -20,6 +20,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import * as ImagePicker from "expo-image-picker";
 import Service from "../../service/service";
 import { getValueFor, save } from "../../utils/PersistInfo";
+import i18next from '../Translate';
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 
 // To ignore color scheme warnings given for dropdown color
@@ -118,11 +119,10 @@ export const ImageSubmissionView = (prop) => {
         <VStack space={8}>
           <Box width="100%">
             <Heading fontWeight="medium" style={styles.header}>
-              Image Submission
+              {i18next.t('ImageSubmission')}
             </Heading>
             <Text mt="3" style={styles.text}>
-              If the app was not able to detect your item, upload a picture of
-              it so that it can be used to help improve the app.
+              {i18next.t('ImageSubmissionText')}
             </Text>
           </Box>
           {prop.imageIsChosen ? (
@@ -165,12 +165,12 @@ export const ImageSubmissionView = (prop) => {
           <Box>
             <FormControl isRequired>
               <FormControl.Label mt="4" color="#8A8A8A">
-                Category
+                {i18next.t('Category')}
               </FormControl.Label>
               <Select
                 bg="#F9F9F9"
                 minWidth="100%"
-                placeholder="Choose Categories"
+                placeholder={i18next.t('ChooseCategories')}
                 mt="2"
                 selectedValue={prop.category}
                 onValueChange={(itemValue) => prop.setCategory(itemValue)}
@@ -182,9 +182,8 @@ export const ImageSubmissionView = (prop) => {
                 })}
               </Select>
               <Box m="10">               
-                <Button isLoading={prop.isLoading} isLoadingText="Submitting" _loading={{
-                bg: "primary.500"}}
-                onPress={prop.handleSubmit}>Submit</Button>
+                <Text style={styles.submitBttn}
+                onPress={prop.handleSubmit}> {i18next.t('Submit')} </Text>
                 <Center>
                   <AlertDialog
                     leastDestructiveRef={cancelRef}
@@ -192,9 +191,9 @@ export const ImageSubmissionView = (prop) => {
                     onClose={prop.onClose}
                   >
                     <AlertDialog.Content>
-                      <AlertDialog.Header>Success</AlertDialog.Header>
+                      <AlertDialog.Header> {i18next.t('Success')} </AlertDialog.Header>
                       <AlertDialog.Body>
-                        Your image was successfully submitted.
+                        {i18next.t('YourImageWasSuccess')}
                       </AlertDialog.Body>
                       <AlertDialog.Footer>
                         <Button.Group space={2}>
@@ -202,7 +201,10 @@ export const ImageSubmissionView = (prop) => {
                             onPress={prop.onClose}
                             ref={cancelRef}
                           >
-                            Ok
+                            {i18next.t('Cancel')}
+                          </Button>
+                          <Button colorScheme="primary" onPress={prop.onClose}>
+                            OK
                           </Button>
                         </Button.Group>
                       </AlertDialog.Footer>
@@ -216,17 +218,22 @@ export const ImageSubmissionView = (prop) => {
                     onClose={prop.onClose}
                   >
                     <AlertDialog.Content>
-                      <AlertDialog.Header>Error</AlertDialog.Header>
+                      <AlertDialog.CloseButton />
+                      <AlertDialog.Header> {i18next.t('Error')} </AlertDialog.Header>
                       <AlertDialog.Body>
-                        Selected image was not submitted Please try again later.
+                        {i18next.t('YourImageWasFail')}
                       </AlertDialog.Body>
                       <AlertDialog.Footer>
                         <Button.Group space={2}>
                           <Button testID = "ErrorAlert"
+                            style={styles.cancelBttn}
                             onPress={prop.onClose}
                             ref={prop.cancelRef}
                           >
-                            Ok
+                            {i18next.t('Cancel')}
+                          </Button>
+                          <Button style={styles.okBttn} colorScheme="primary" onPress={prop.onClose}>
+                            OK
                           </Button>
                         </Button.Group>
                       </AlertDialog.Footer>

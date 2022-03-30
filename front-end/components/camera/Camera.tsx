@@ -34,6 +34,7 @@ import {
 } from "../../interfaces/service-types";
 import * as ExpoLocation from "expo-location";
 import { getValueFor } from "../../utils/PersistInfo";
+import i18next from '../Translate';
 
 export default function DisplayCamera() {
   const isFocused = useIsFocused();
@@ -52,7 +53,7 @@ export default function DisplayCamera() {
   }, []);
 
   if (!hasPermission) {
-    return <Text>No access to camera</Text>;
+    return <Text>{i18next.t('NoCameraAccess')}</Text>;
   }
 
   if (isFocused) {
