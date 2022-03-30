@@ -3,14 +3,28 @@ import { ScrollView, View, Text, Image, TouchableHighlight } from "react-native"
 import style from "./styles/AboutUs";
 import { NativeBaseProvider } from "native-base";
 import { Linking } from 'react-native';
-import Clipboard from '@react-native-community/clipboard';
-
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 export class AboutUs extends React.Component {
 
   render() {
     return (
       <NativeBaseProvider>
+        <View style={ style.viewElement }>
+              <View style={ style.viewItem1 } >
+                <TouchableHighlight style={style.leftIcon} underlayColor={"COLOR"} onPress={() => this.props.navigation.navigate('Setting')}>
+                  <MaterialIcons name="arrow-back-ios" size={26} color="gray"/>
+                </TouchableHighlight>
+              </View>
+              <View style={ style.viewItem2 } >
+                  <Text style={style.midText}>
+                    About us
+                  </Text>
+              </View>
+              <View style={ style.viewItem3 } >
+                  <MaterialIcons name="info" size={26} color="gray"/>
+              </View>
+            </View>
         <ScrollView style={style.container}>
           <View style={style.viewMain}>
             <Image source={require("../../../assets/digitizingWaste.png")} style = { style.logo1 }/>
@@ -62,11 +76,11 @@ export class AboutUs extends React.Component {
             <Text style={style.textHeader}>Social Media </Text>
             <View style={ style.viewMain2 }>
               <View style={ style.viewSub2 } >
-                <Text style={style.links} onPress={() => Clipboard.setString('cp3@concordia.ca')}
+                <Text style={style.links}
                 title="cp3@concordia.ca"> cp3@concordia.ca </Text>
               </View>
               <View style={ style.viewSub2 } >
-                <Text style={style.links} onPress={() => Clipboard.setString('zerowaste@concordia.ca')}
+                <Text style={style.links}
                 title="zerowaste@concordia.ca"> zerowaste@concordia.ca </Text>
               </View>
             </View>
