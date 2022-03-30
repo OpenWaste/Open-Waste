@@ -4,7 +4,7 @@ import style from "./styles/AboutUs";
 import { NativeBaseProvider } from "native-base";
 import { Linking } from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
-import i18next from '../../Translate';
+import i18next from '../../../Translate';
 
 export class AboutUs extends React.Component {
 

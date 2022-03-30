@@ -1,8 +1,8 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import english from "./language/en.json";
-import french from "./language/fr.json";
-import { getValueFor } from '../utils/PersistInfo';
+import english from "./components/language/en.json";
+import french from "./components/language/fr.json";
+import { getValueFor } from './utils/PersistInfo';
 
 // json files used for translation 
 const resources = {

@@ -34,7 +34,7 @@ import {
 } from "../../interfaces/service-types";
 import * as ExpoLocation from "expo-location";
 import { getValueFor } from "../../utils/PersistInfo";
-import i18next from '../Translate';
+import i18next from '../../Translate';
 
 export default function DisplayCamera() {
   const isFocused = useIsFocused();

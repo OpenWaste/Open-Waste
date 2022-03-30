@@ -3,9 +3,27 @@ import { View, Text } from "react-native";
 import { NativeBaseProvider } from 'native-base';
 
 import style from "./styles/Setting";
-import i18next from '../../Translate';
+import i18next from '../../../Translate';
+import { getValueFor } from '../../../utils/PersistInfo';
 
 export class Setting extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = { language: null };
+  }
+  
+  componentDidMount() {
+    this.focusSubscription = this.props.navigation.addListener('focus', () => {
+      getValueFor('language').then(output => {
+        this.setState({ language: output })
+      }).catch(() => this.setState({language:null}))
+    }
+  );
+  }
+  componentWillUnmount() {
+    this.focusSubscription()
+  }
     
   render() {
     
