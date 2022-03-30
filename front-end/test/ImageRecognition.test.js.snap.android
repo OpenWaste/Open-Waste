@@ -1,0 +1,530 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CameraTriggerButton Component Tests CameraTriggerButton renders correctly 1`] = `
+<View
+  accessible={true}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  testID="camera-snap-btn"
+>
+  <Text
+    allowFontScaling={false}
+    style={
+      Array [
+        Object {
+          "color": "#FFFFFF",
+          "fontSize": 60,
+        },
+        undefined,
+        Object {
+          "fontFamily": "material-community",
+          "fontStyle": "normal",
+          "fontWeight": "normal",
+        },
+        Object {},
+      ]
+    }
+  >
+    󰪥
+  </Text>
+</View>
+`;
+
+exports[`CameraView Component Tests CameraView renders correctly 1`] = `
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    Array [
+      Object {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    style={
+      Object {
+        "flex": 1,
+        "zIndex": -1,
+      }
+    }
+  >
+    <Image
+      source={
+        Object {
+          "uri": "",
+        }
+      }
+      style={
+        Object {
+          "flex": 1,
+          "zIndex": -1,
+        }
+      }
+      testID="pic-preview"
+    />
+    <View
+      style={
+        Object {
+          "flex": 1,
+          "flexDirection": "row",
+          "justifyContent": "space-evenly",
+          "left": 0,
+          "marginLeft": "auto",
+          "marginRight": "auto",
+          "position": "absolute",
+          "right": 0,
+          "top": "25%",
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "backgroundColor": "#0F968D",
+            "borderRadius": 20,
+            "color": "white",
+            "fontFamily": "Roboto",
+            "fontSize": 40,
+            "paddingBottom": 10,
+            "paddingHorizontal": 10,
+          }
+        }
+        testID="prediction-text"
+      >
+        test
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "bottom": 25,
+          "flex": 1,
+          "flexDirection": "row",
+          "justifyContent": "space-evenly",
+          "left": 0,
+          "marginLeft": "auto",
+          "marginRight": "auto",
+          "position": "absolute",
+          "right": 0,
+        }
+      }
+    >
+      <Modal
+        animationType="slide"
+        hardwareAccelerated={false}
+        onRequestClose={[Function]}
+        testID="map-modal"
+        transparent={true}
+        visible={true}
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flex": 1,
+              "justifyContent": "center",
+              "marginTop": 22,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "white",
+                "borderRadius": 20,
+                "elevation": 5,
+                "height": "95%",
+                "marginBottom": 75,
+                "overflow": "hidden",
+                "width": "95%",
+              }
+            }
+          >
+            <Text />
+            <AIRMap
+              initialRegion={null}
+              onChange={[Function]}
+              onLayout={[Function]}
+              onMapReady={[Function]}
+              onMarkerPress={[Function]}
+              region={null}
+              style={
+                Object {
+                  "height": "100%",
+                  "position": "absolute",
+                  "width": "100%",
+                  "zIndex": -1,
+                }
+              }
+            />
+            <View
+              enableContentPanningGesture={false}
+              enableHandlePanningGesture={false}
+              enableOverDrag={false}
+              handleComponent={[Function]}
+              index={1}
+              snapPoints={
+                Array [
+                  "5%",
+                  "50%",
+                ]
+              }
+            >
+              <Text />
+              <RCTScrollView>
+                <View>
+                  <View
+                    style={
+                      Object {
+                        "paddingBottom": 10,
+                        "paddingHorizontal": 10,
+                      }
+                    }
+                  >
+                    <Text>
+                      <Text
+                        style={
+                          Object {
+                            "color": 808080,
+                            "fontFamily": "Roboto",
+                            "fontSize": 18,
+                            "fontWeight": "bold",
+                            "justifyContent": "center",
+                          }
+                        }
+                      >
+                        Category:
+                      </Text>
+                       
+                      <Text
+                        style={
+                          Object {
+                            "color": 808080,
+                            "fontFamily": "Roboto",
+                            "fontSize": 16,
+                          }
+                        }
+                      >
+                         
+                        test
+
+                         
+                      </Text>
+                    </Text>
+                    <Text
+                      style={
+                        Object {
+                          "color": 808080,
+                          "fontFamily": "Roboto",
+                          "fontSize": 18,
+                          "fontWeight": "bold",
+                          "justifyContent": "center",
+                        }
+                      }
+                    >
+                       - 
+                       Bins
+                    </Text>
+                  </View>
+                </View>
+              </RCTScrollView>
+            </View>
+          </View>
+        </View>
+      </Modal>
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="cancel-btn"
+      >
+        <Text />
+      </View>
+      <View
+        _disabled={
+          Object {
+            "bg": "trueGray.300",
+            "opacity": "50",
+          }
+        }
+        _loading={
+          Object {
+            "bg": "warmGray.50",
+            "opacity": "50",
+          }
+        }
+        _text={
+          Object {
+            "color": "lightText",
+          }
+        }
+        accessibilityRole="button"
+        accessible={true}
+        colorScheme="primary"
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onHoverIn={[Function]}
+        onHoverOut={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#06b6d4",
+              "borderRadius": 4,
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "paddingBottom": 8,
+              "paddingLeft": 12,
+              "paddingRight": 12,
+              "paddingTop": 8,
+            },
+            Object {
+              "bottom": 0,
+              "height": "75%",
+              "marginBottom": "auto",
+              "marginTop": "auto",
+              "top": 0,
+              "width": "20%",
+            },
+          ]
+        }
+        testID="next-btn"
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={Object {}}
+          >
+            <Text
+              style={
+                Object {
+                  "backgroundColor": undefined,
+                  "color": "#FFFFFF",
+                  "fontFamily": undefined,
+                  "fontSize": 14,
+                  "fontStyle": "normal",
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 21,
+                  "textDecorationLine": undefined,
+                }
+              }
+            >
+              Next
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RNCSafeAreaProvider>
+`;
+
+exports[`PicturePreview Component Tests PicturePreview renders correctly 1`] = `
+<Image
+  source={
+    Object {
+      "uri": "",
+    }
+  }
+  style={
+    Object {
+      "flex": 1,
+      "zIndex": -1,
+    }
+  }
+  testID="pic-preview"
+/>
+`;
+
+exports[`PostPictureSnapButtons Component Tests PostPictureSnapButtons renders correctly 1`] = `
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    Array [
+      Object {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    accessible={true}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    testID="cancel-btn"
+  >
+    <Text
+      allowFontScaling={false}
+      style={
+        Array [
+          Object {
+            "color": "#EA4335",
+            "fontSize": 60,
+          },
+          undefined,
+          Object {
+            "fontFamily": "material",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          Object {},
+        ]
+      }
+    >
+      
+    </Text>
+  </View>
+  <View
+    _disabled={
+      Object {
+        "bg": "trueGray.300",
+        "opacity": "50",
+      }
+    }
+    _loading={
+      Object {
+        "bg": "warmGray.50",
+        "opacity": "50",
+      }
+    }
+    _text={
+      Object {
+        "color": "lightText",
+      }
+    }
+    accessibilityRole="button"
+    accessible={true}
+    colorScheme="primary"
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onHoverIn={[Function]}
+    onHoverOut={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#06b6d4",
+          "borderRadius": 4,
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "paddingBottom": 8,
+          "paddingLeft": 12,
+          "paddingRight": 12,
+          "paddingTop": 8,
+        },
+        Object {
+          "bottom": 0,
+          "height": "75%",
+          "marginBottom": "auto",
+          "marginTop": "auto",
+          "top": 0,
+          "width": "20%",
+        },
+      ]
+    }
+    testID="next-btn"
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        style={Object {}}
+      >
+        <Text
+          style={
+            Object {
+              "backgroundColor": undefined,
+              "color": "#FFFFFF",
+              "fontFamily": undefined,
+              "fontSize": 14,
+              "fontStyle": "normal",
+              "fontWeight": "500",
+              "letterSpacing": 0,
+              "lineHeight": 21,
+              "textDecorationLine": undefined,
+            }
+          }
+        >
+          Next
+        </Text>
+      </View>
+    </View>
+  </View>
+</RNCSafeAreaProvider>
+`;
+
+exports[`PredictionText Component Tests PredictionText renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+      "flexDirection": "row",
+      "justifyContent": "space-evenly",
+      "left": 0,
+      "marginLeft": "auto",
+      "marginRight": "auto",
+      "position": "absolute",
+      "right": 0,
+      "top": "25%",
+    }
+  }
+>
+  <ActivityIndicator
+    animating={true}
+    color="#95E0D3"
+    hidesWhenStopped={true}
+    size={100}
+    testID="spinner-component"
+  />
+</View>
+`;
