@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 export default StyleSheet.create({
   map: {
     width: "100%",
-    height: "87%"
+    height: "89%"
   },
   user: {
     color: '#4287f5'
@@ -32,7 +32,7 @@ export default StyleSheet.create({
     borderRadius: 10,
   },
   searchContainer: {
-    marginTop: 60,
+    marginTop: 30,
     position: 'relative',
     backgroundColor: "#F9F9F9"
   },
