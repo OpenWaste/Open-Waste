@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Setting } from "./components/Settings";
 import { AboutUs } from "./components/AboutUs";
 import { Language } from "./components/Language";
+import i18next from "../Translate";
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ export class SettingsNavigator extends React.Component {
                         <Stack.Screen 
                             key = {screen.name}
                             name = {screen.name} 
+                            options={{ title: i18next.t(screen.name) }}
                             component = {screen.component}
                         />
                     );

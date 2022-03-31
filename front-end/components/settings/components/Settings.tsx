@@ -1,10 +1,9 @@
 import * as React from "react";
-import { View, Text, Image, TouchableHighlight } from "react-native";
-import { Button, NativeBaseProvider } from 'native-base';
+import { View, Text, TouchableHighlight } from "react-native";
+import { NativeBaseProvider } from 'native-base';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-
-
 import style from "./styles/Settings";
+import i18next from '../../Translate';
 
 export class Setting extends React.Component {
     
