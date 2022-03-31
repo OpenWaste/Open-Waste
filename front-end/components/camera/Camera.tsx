@@ -400,7 +400,7 @@ export const MapBottomSheet = (props: MapBottomSheetProperties) => {
  * @param {number} lon2 - Longitude of the second location in decimal degrees
  * @returns The distance between the two points in kilometers.
  */
-function distance(lat1: number, lon1: number, lat2: number, lon2: number) {
+export function distance(lat1: number, lon1: number, lat2: number, lon2: number) {
   var p = 0.017453292519943295; // Math.PI / 180
   var c = Math.cos;
   var a =

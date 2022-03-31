@@ -349,6 +349,12 @@ exports[`CameraView Component Tests CameraView renders correctly 1`] = `
 </RNCSafeAreaProvider>
 `;
 
+exports[`DisplayCamera Parent Component Tests DisplayCamera renders correctly 1`] = `
+<Text>
+  No access to the camera
+</Text>
+`;
+
 exports[`PicturePreview Component Tests PicturePreview renders correctly 1`] = `
 <Image
   source={

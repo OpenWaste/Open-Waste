@@ -1,5 +1,5 @@
 import * as React from "react";
-import {
+import DisplayCamera, {
   MapModal,
   CameraTriggerButton,
   PredictionText,
@@ -7,9 +7,36 @@ import {
   CameraView,
   PicturePreview,
   MapBottomSheet,
+  distance
 } from "../components/camera/Camera";
 import { NativeBaseProvider } from "native-base";
 import { fireEvent, render } from "@testing-library/react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { save } from "../utils/PersistInfo";
+
+describe("DisplayCamera Parent Component Tests", () => {
+  it("DisplayCamera renders correctly", () => {
+    const tree = render(
+      <NavigationContainer>
+        <DisplayCamera />
+      </NavigationContainer>
+    ).toJSON();
+    expect(tree).toMatchSnapshot();
+  })
+})
+
+describe("Latitude/Longitude Distance Function Tests", () => {
+  it("returns 0 when both coordinates are equal", () => {
+
+    let val = distance(1, 1, 1, 1)
+    expect(val).toBe(0)
+  })
+
+  it("return expected value", () => {
+    let val = distance(2, 2, 1, 1)
+    expect(Math.floor(val)).toBe(157)
+  })
+})
 
 describe("CameraView Component Tests", () => {
   it("CameraView renders correctly", () => {
@@ -151,10 +178,14 @@ describe("CameraView Component Tests", () => {
   });
 });
 
-describe("MapModal Component Tests", () => {
-  it("MapModal calls visibility setter function on close", () => {
+describe("MapModal Component Tests", async () => {
+  it("MapModal calls visibility setter function on close", async () => {
     let visibility = true;
     let visibilitySetterMock = jest.fn();
+
+    let mockCategoryInstruction = [{"category_name":"test", "instruction":"test"}]
+    save("category_instructions", mockCategoryInstruction);
+
     const { getByTestId } = render(
       <MapModal
         category="test"
@@ -181,7 +212,7 @@ describe("MapBottomSheet Component Tests", () => {
         category="test"
         instruction={undefined}
         closestBuilding={undefined}
-        bins={[]}
+        bins={[{}]}
       />
     );
 
@@ -189,14 +220,15 @@ describe("MapBottomSheet Component Tests", () => {
   });
 
   it("MapBottomSheet should render instruction wrapper if defined", () => {
-    const { queryByTestId } = render(
-      <MapBottomSheet
-        category="test"
-        instruction="test"
-        closestBuilding={undefined}
-        bins={[]}
-      />
-    );
+    
+      const {queryByTestId} = render(
+        <MapBottomSheet
+          category="test"
+          instruction="test"
+          closestBuilding={undefined}
+          bins={[{}]}
+        />
+      );
 
     expect(queryByTestId("instruction-text")).not.toBeNull();
   });
