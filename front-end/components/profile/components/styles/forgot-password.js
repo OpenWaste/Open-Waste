@@ -43,6 +43,13 @@ export default StyleSheet.create({
     alignSelf: "center",
     marginTop: 20,
     width: "90%",
+    color: "white",
+    textAlign: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderColor: '#0F968D',
+    borderWidth: 2,
+    borderRadius: 5, 
   },
 
   toLogin: {

@@ -55,15 +55,56 @@ export default StyleSheet.create({
 
   cancelBtn: {
     backgroundColor: "#BDBDBD",
+    fontSize: 12,
     fontFamily: "Roboto",
-    width: "30%",
+    width: "40%",
     marginRight: "2%",
+    color: "white",
+    textAlign: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderColor: '#BDBDBD',
+    borderWidth: 2,
+    borderRadius: 5, 
   },
 
   saveBtn: {
     backgroundColor: "#0F968D",
+    fontSize: 12,
     fontFamily: "Roboto",
-    width: "30%",
+    width: "40%",
     marginLeft: "2%",
+    color: "white",
+    textAlign: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderColor: '#0F968D',
+    borderWidth: 2,
+    borderRadius: 5, 
+  },
+
+  editBttn: {
+    position: "absolute",
+    marginLeft: "5%",
+  },
+
+  deleteAccBttn: {
+    color: "white",
+    backgroundColor: "red",
+    textAlign: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderColor: 'red',
+    borderWidth: 2,
+    borderRadius: 5, 
+  },
+  cancelDeleteAccBttn: {
+    textAlign: "center",
+    backgroundColor: "white",
+    borderColor: 'white',
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderWidth: 2,
+    borderRadius: 5, 
   },
 });
