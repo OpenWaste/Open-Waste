@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import { View, Text, Image } from "react-native";
+import {View, Text, Image, FlatList, Pressable, Linking } from "react-native";
 import styles from './styles'
 import { Heading } from "native-base";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
@@ -9,7 +9,8 @@ import BottomSheet from '@gorhom/bottom-sheet'
 import Service from "../../service/service";
 import { Region, Building } from '../../interfaces/service-types'
 import { getValueFor } from "../../utils/PersistInfo";
-import { NativeBaseProvider, ScrollView } from "native-base";
+import { NativeBaseProvider, ScrollView, HStack, Button, Icon } from "native-base";
+import { SearchBar } from './SearchBar';
 
 export function Map() {
   const [region, setRegion] = useState<Region>({
@@ -22,6 +23,9 @@ export function Map() {
   const [buildings, setBuildings] = useState<Building[]>([]);
   const [selectedBuilding, setSelectedBuilding] = useState<Building>(null);
   const [buildingImages, setBuildingImages] = useState([]);
+  const [query, setQuery] = useState('');
+  const [filteredBuildings, setFilteredBuildings] = useState<Building[]>([]);
+  const [pressed, setPressed] = useState(true);
 
   const mapRef = useRef<MapView>(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -29,12 +33,10 @@ export function Map() {
 
   useEffect(() => {
     if (!buildings || buildings.length == 0) {
-      getValueFor('buildings').then(buildings => {
-        setBuildings(buildings);
-      });
+      getValueFor('buildings').then((buildings) => setBuildings(buildings));
     }
 
-    ExpoLocation.getCurrentPositionAsync().then( (position) => {
+    ExpoLocation.getCurrentPositionAsync().then((position) => {
       setCurrentPosition({
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
@@ -42,7 +44,29 @@ export function Map() {
     })
   })
 
-  const markerOnPress = (building:Building) => {
+  const openMaps = (parameter: string) => {
+    let destination = encodeURI(parameter);
+    let url = 'https://www.google.com/maps/dir/?api=1&destination=';
+    Linking.openURL(`${url}${destination}`);
+  }
+
+  const updateQuery = (input: string) => {
+    findBuildings(input);
+    setQuery(input);
+  }
+
+  const findBuildings = (input: string) => {
+    if (input) {
+      const regex = new RegExp(`${query.trim()}`, 'gmi');
+      setFilteredBuildings(
+          buildings.filter((item) => item.building_name.search(regex) >= 0)
+      );
+    } else {
+      setFilteredBuildings([]);
+    }
+  };
+
+  const markerOnPress = (building: Building) => {
     setSelectedBuilding(building);
     Service.getBuildingImages(building.id).then((resp) => {
       setBuildingImages(resp.data);
@@ -61,45 +85,82 @@ export function Map() {
   return (
     <NativeBaseProvider>
       <View>
+        <View style={styles.searchContainer}>
+          <SearchBar
+            focus={() => setPressed(true)}
+            query={updateQuery}
+            value={query}   
+            placeholder="Find a..."
+          />
+          {
+            pressed
+            ? <FlatList
+                keyboardShouldPersistTaps='never'
+                data={filteredBuildings} keyExtractor={index => index.id.toString()}
+                extraData = {query} 
+                renderItem = {({ item }) =>
+                  <Pressable
+                    onPress={() => {markerOnPress(item); setPressed(false)}}
+                    style={!pressed ? styles.pressable : null}
+                  >
+                    <HStack space={2} style={styles.flatList}>
+                      <Text style={styles.flatListText}>{item.building_name}</Text>
+                      <Text style={styles.flatListAddress}>{item.address}</Text>
+                    </HStack>
+                  </Pressable>
+                }
+              />
+            : null
+          }
+        </View>
         <MapView
           ref={mapRef}
           initialRegion={region}
           provider={PROVIDER_GOOGLE}
           style={styles.map}
         >
-          {currentPosition ?
-            <Marker
-              key='user'
-              coordinate={currentPosition}
+        {currentPosition ?
+          <Marker
+            key='user'
+            coordinate={currentPosition}
+          >
+          <MaterialCommunityIcons 
+              name='account-circle'
+              size={40}
+              style={styles.user}
+          />
+          </Marker> : null
+        }
+        {buildings.map((building: Building) => {
+          return <Marker
+            key={building.id}
+            coordinate={{longitude:building.longitude, latitude:building.latitude}}
+            onPress={() => markerOnPress(building)}
             >
-              <MaterialCommunityIcons 
-                name='account-circle'
-                size={40}
-                style={styles.user}
-              />
-            </Marker> : null
-          }
-          {buildings.map((building:Building) => {
-            return <Marker
-              key={building.id}
-              coordinate={{longitude:building.longitude, latitude:building.latitude}}
-              onPress={() => markerOnPress(building)}
-            >
-              <MaterialCommunityIcons
-                name='map-marker'
-                size={40}
-                color={styles.marker.color}
-              />
-            </Marker>
-          })}
+            <MaterialCommunityIcons
+              name='map-marker'
+              size={40}
+              color={styles.marker.color}
+            />
+          </Marker>
+        })}
         </MapView>
         {!selectedBuilding ? null :
           <BottomSheet
             ref={bottomSheetRef}
             index={1}
             snapPoints={snapPoints}
+            style={styles.bottomSheet}
           >
-          <Heading style={styles.header}>{selectedBuilding.building_name}</Heading>
+          <HStack style={styles.headerContainer}>
+            <Heading style={styles.header}>{selectedBuilding.building_name}</Heading>
+            <Button
+              style={styles.directionsButton}
+              onPress={() => openMaps(selectedBuilding.address)}
+              leftIcon={<Icon as={MaterialCommunityIcons} name="directions" size="sm" />}>
+              Get Directions
+            </Button>
+          </HStack>
           <Text style={styles.text}>{selectedBuilding.address}</Text>
           <ScrollView
             horizontal={true}

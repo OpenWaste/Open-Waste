@@ -24,7 +24,7 @@ import {
   CameraViewProperties,
   PicturePreviewProperties,
   MapBottomSheetProperties,
-  BinWithImage,
+  BinWithImage, ClosestBuildingMapMarkerProperties, MapBottomSheetOpenCloseButtonsProperties,
 } from "../../interfaces/camera-types";
 import BottomSheet from "@gorhom/bottom-sheet";
 import {
@@ -35,6 +35,7 @@ import {
 import * as ExpoLocation from "expo-location";
 import { getValueFor } from "../../utils/PersistInfo";
 import i18next from '../../Translate';
+import {LocationObject} from "expo-location";
 
 export default function DisplayCamera() {
   const isFocused = useIsFocused();
@@ -148,67 +149,24 @@ export const MapModal = (props: MapModalProperties) => {
   const [closestBuilding, setClosestBuilding] = useState<Building>();
   const [bins, setBins] = useState<Bin[]>();
   const mapRef = useRef<MapView>(null);
-  const INSTRUCTION_SEPARATOR = ";";
 
   if (props.category.length > 0 && instruction == undefined) {
     getValueFor("category_instructions").then((val) => {
-      const categoryInstructions = val as CategoryInstruction[];
-
-      let rawInstructions = categoryInstructions.filter(
-        (el) => el.category_name == props.category
-      )[0].instruction;
-      let processedInstructions = "";
-      rawInstructions.split(INSTRUCTION_SEPARATOR).forEach((step, index) => {
-        if (step.length > 0)
-          processedInstructions += index + 1 + ". " + step + "\n";
-      });
-      setInstruction(processedInstructions);
+      processRawInstructions(val as CategoryInstruction[], props.category, setInstruction);
     });
   }
 
   if (closestBuilding == undefined) {
     getValueFor("buildings").then((val) => {
-      var buildings = val as Building[];
-
       ExpoLocation.getCurrentPositionAsync().then((position) => {
-        let closestBuildingVar: Building;
-        let closestBuildingDistance: number;
-
-        buildings.forEach((building, index) => {
-          if (index == 0) {
-            closestBuildingVar = building;
-            closestBuildingDistance = distance(
-              building.latitude,
-              building.longitude,
-              position.coords.latitude,
-              position.coords.longitude
-            );
-          } else {
-            let newDistance = distance(
-              building.latitude,
-              building.longitude,
-              position.coords.latitude,
-              position.coords.longitude
-            );
-            if (newDistance > closestBuildingDistance) {
-              closestBuildingDistance = newDistance;
-              closestBuildingVar = building;
-            }
-          }
-        });
-        setClosestBuilding(closestBuildingVar);
+        processClosestBuilding(val as Building[], position, setClosestBuilding);
       });
     });
   }
 
   if (bins == undefined && closestBuilding != undefined) {
     getValueFor("bins").then((val) => {
-      const allBins = val as Bin[];
-
-      let nearestBuildingBins = allBins.filter(
-        (bin) => bin.building_id == closestBuilding.id
-      );
-      setBins(nearestBuildingBins);
+      processClosestBuildingBins(val as Bin[], closestBuilding, setBins);
     });
   }
 
@@ -257,23 +215,7 @@ export const MapModal = (props: MapModalProperties) => {
               longitudeDelta: 0.02,
             }}
           >
-            {closestBuilding != undefined ? (
-              <Marker
-                key={closestBuilding.id}
-                coordinate={{
-                  longitude: closestBuilding.longitude,
-                  latitude: closestBuilding.latitude,
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="map-marker"
-                  size={55}
-                  style={{ color: "red" }}
-                />
-              </Marker>
-            ) : (
-              <></>
-            )}
+            <ClosestBuildingMapMarker closestBuilding={closestBuilding}/>
           </MapView>
           <MapBottomSheet
             category={props.category}
@@ -286,6 +228,82 @@ export const MapModal = (props: MapModalProperties) => {
     </Modal>
   );
 };
+
+export const ClosestBuildingMapMarker = (props: ClosestBuildingMapMarkerProperties) => {
+  return (
+      <>
+        {props.closestBuilding != undefined ?
+            <Marker
+                testID="closest-building-marker"
+                key={props.closestBuilding.id}
+                coordinate={{
+                  longitude: props.closestBuilding.longitude,
+                  latitude: props.closestBuilding.latitude,
+                }}
+            >
+              <MaterialCommunityIcons
+                  name="map-marker"
+                  size={55}
+                  style={{ color: "red" }}
+              />
+            </Marker>
+         : <></>
+        }
+      </>
+  )
+}
+
+export function processRawInstructions(categoryInstructions:CategoryInstruction[], category:string, instructionSetterCallBack:(val:string)=>void):void {
+  const INSTRUCTION_SEPARATOR = ";";
+
+  let rawInstructions = categoryInstructions.filter(
+      (el) => el.category_name == category
+  )[0].instruction;
+  let processedInstructions = "";
+  rawInstructions.split(INSTRUCTION_SEPARATOR).forEach((step, index) => {
+    if (step.length > 0)
+      processedInstructions += index + 1 + ". " + step + "\n";
+  });
+  instructionSetterCallBack(processedInstructions);
+}
+
+export function processClosestBuilding(buildings:Building[], position:LocationObject, closestBuildingSetterCallBack:(val:Building)=>void):void {
+  let closestBuildingVar: Building|undefined;
+  let closestBuildingDistance: number;
+
+  buildings.forEach((building, index) => {
+    if (index == 0) {
+      closestBuildingVar = building;
+      closestBuildingDistance = distance(
+          building.latitude,
+          building.longitude,
+          position.coords.latitude,
+          position.coords.longitude
+      );
+    } else {
+      let newDistance = distance(
+          building.latitude,
+          building.longitude,
+          position.coords.latitude,
+          position.coords.longitude
+      );
+      if (newDistance < closestBuildingDistance) {
+        closestBuildingDistance = newDistance;
+        closestBuildingVar = building;
+      }
+    }
+  });
+
+  if(closestBuildingVar != undefined)
+    closestBuildingSetterCallBack(closestBuildingVar);
+}
+export function processClosestBuildingBins(bins:Bin[], closestBuilding:Building, binsSetterCallback:(val:Bin[])=>void):void {
+
+  let nearestBuildingBins = bins.filter(
+      (bin) => bin.building_id == closestBuilding.id
+  );
+  binsSetterCallback(nearestBuildingBins);
+}
 
 export const MapBottomSheet = (props: MapBottomSheetProperties) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -315,27 +333,12 @@ export const MapBottomSheet = (props: MapBottomSheetProperties) => {
       enableOverDrag={false}
       handleComponent={() => <></>}
     >
-      {bottomSheetVisible ? (
-        <MaterialCommunityIcons
-          style={style.bottomSheetCloseButton}
-          name="chevron-down"
-          size={40}
-          onPress={() => {
-            bottomSheetRef.current?.collapse();
-            setBottomSheetVisible(false);
-          }}
-        />
-      ) : (
-        <MaterialCommunityIcons
-          style={style.bottomSheetCloseButton}
-          name="chevron-up"
-          size={40}
-          onPress={() => {
-            bottomSheetRef.current?.expand();
-            setBottomSheetVisible(true);
-          }}
-        />
-      )}
+      <MapBottomSheetOpenCloseButtons
+          collapse={bottomSheetRef.current?.collapse}
+          expand={bottomSheetRef.current?.expand}
+          bottomSheetVisible={bottomSheetVisible}
+          bottomSheetVisibilitySetter={setBottomSheetVisible}
+      />
       <ScrollView>
         <View style={style.bottomSheetViewStyle}>
           <Text>
@@ -392,6 +395,43 @@ export const MapBottomSheet = (props: MapBottomSheetProperties) => {
   );
 };
 
+export const MapBottomSheetOpenCloseButtons = (props:MapBottomSheetOpenCloseButtonsProperties) => {
+
+  return(
+      <>
+        {props.bottomSheetVisible ? (
+            <MaterialCommunityIcons
+                testID="bottom-sheet-close-btn"
+                style={style.bottomSheetCloseButton}
+                name="chevron-down"
+                size={40}
+                onPress={() => {
+                  if (props.collapse) {
+                    props.collapse();
+                  }
+                  props.bottomSheetVisibilitySetter(false);
+                }}
+            />
+        ) : (
+            <MaterialCommunityIcons
+                testID="bottom-sheet-open-btn"
+                style={style.bottomSheetCloseButton}
+                name="chevron-up"
+                size={40}
+                onPress={() => {
+                  if (props.expand) {
+                    props.expand();
+                  }
+                  props.bottomSheetVisibilitySetter(true);
+                }}
+            />
+        )}
+      </>
+  )
+}
+
+
+
 /**
  * Given two points on the Earth's surface, calculate the distance between them
  * @param {number} lat1 - Latitude of the first point
@@ -400,7 +440,7 @@ export const MapBottomSheet = (props: MapBottomSheetProperties) => {
  * @param {number} lon2 - Longitude of the second location in decimal degrees
  * @returns The distance between the two points in kilometers.
  */
-function distance(lat1: number, lon1: number, lat2: number, lon2: number) {
+export function distance(lat1: number, lon1: number, lat2: number, lon2: number) {
   var p = 0.017453292519943295; // Math.PI / 180
   var c = Math.cos;
   var a =
