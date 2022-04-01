@@ -14,38 +14,39 @@ export default StyleSheet.create({
         marginRight: "5%",
         marginTop: "5%",
       },
-      leftIcon: {
-        marginLeft: 20,
-        marginRight: 0,
-        color: "grey",
-      },
-      rightIcon: {
-        marginLeft: 10,
-        marginRight: 0,
-        color: "grey",
-      },
       midText: {
         fontFamily: "Roboto",
         fontSize: 14,
         textAlign: "left",
-        marginLeft: 5,
-        marginRight: 45,
+        marginLeft: 0,
+        marginRight: 5,
         marginTop: 2,
         color: "grey",
+      },
+      midText2: {
+        fontFamily: "Roboto",
+        fontSize: 14,
+        textAlign: "left",
+        marginLeft: 0,
+        marginRight: 0,
+        marginTop: 2,
+        color: "grey",
+      },
+      leftIcon: {
+        marginLeft: 20,
+        marginRight: 20,
+        marginBottom: 10,
+      },
+      rightIcon: {
+        marginLeft: 200,
+        marginRight: 10,
       },
       viewElement: {
         flexDirection: "row",
         marginTop: 10,
         marginBottom: 10,
-      },
-      viewItem1: {
-        flex: 0.2,
-      },
-      viewItem2: {
-        flex: 1,
-      },
-      viewItem3: {
-        flex: 0.2,
+        borderBottomColor: 'gray',
+        borderBottomWidth: 1,
       },
       viewMain: {
         marginTop: 40,

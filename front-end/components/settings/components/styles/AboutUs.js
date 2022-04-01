@@ -106,8 +106,8 @@ export default StyleSheet.create({
       color: "grey",
     },
     rightIcon: {
-      marginLeft: 10,
-      marginRight: 0,
+      marginLeft: 60,
+      marginRight: 10,
       color: "grey",
     },
     midText: {
@@ -116,7 +116,7 @@ export default StyleSheet.create({
       fontWeight: "bold",
       textAlign: "left",
       marginLeft: 5,
-      marginRight: 45,
+      marginRight: 125,
       marginTop: 2,
       color: "grey",
     },
@@ -124,14 +124,5 @@ export default StyleSheet.create({
       flexDirection: "row",
       marginTop: 30,
       marginBottom: 10,
-    },
-    viewItem1: {
-      flex: 0.2,
-    },
-    viewItem2: {
-      flex: 1,
-    },
-    viewItem3: {
-      flex: 0.2,
     },
 });

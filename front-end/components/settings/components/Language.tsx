@@ -16,21 +16,15 @@ export class Language extends React.Component {
 
     return (
       <NativeBaseProvider>
-        <View style={ style.viewElement }>
-              <View style={ style.viewItem1 } >
-                <TouchableHighlight style={style.leftIcon} underlayColor={"COLOR"} onPress={() => this.props.navigation.navigate('Setting')}>
-                  <MaterialIcons name="arrow-back-ios" size={26} color="gray"/>
-                </TouchableHighlight>
-              </View>
-              <View style={ style.viewItem2 } >
-                  <Text style={style.midText}>
-                    Language
-                  </Text>
-              </View>
-              <View style={ style.viewItem3 } >
-                  <MaterialIcons name="language" size={26} color="gray"/>
-              </View>
-            </View>
+        <TouchableHighlight style={style.midText} underlayColor={"COLOR"} onPress={() => this.props.navigation.navigate('Setting')}>
+          <View style={ style.viewElement }> 
+                <MaterialIcons name="arrow-back-ios" size={26} color="gray" style={ style.leftIcon }/>
+                <Text style={style.midText}>
+                  Language
+                </Text>
+                <MaterialIcons name="language" size={26} color="gray" style={ style.rightIcon }/>  
+          </View>
+        </TouchableHighlight>
         <View>
             <LanguagesPicker/>
         </View>

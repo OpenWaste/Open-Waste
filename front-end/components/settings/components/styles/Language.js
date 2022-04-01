@@ -7,7 +7,7 @@ export default StyleSheet.create({
         color: "grey",
       },
       rightIcon: {
-        marginLeft: 10,
+        marginLeft: 50,
         marginRight: 0,
         color: "grey",
       },
@@ -17,7 +17,7 @@ export default StyleSheet.create({
         fontWeight: "bold",
         textAlign: "left",
         marginLeft: 5,
-        marginRight: 45,
+        marginRight: 125,
         marginTop: 2,
         color: "grey",
       },

@@ -11,21 +11,16 @@ export class AboutUs extends React.Component {
   render() {
     return (
       <NativeBaseProvider>
-        <View style={ style.viewElement }>
-              <View style={ style.viewItem1 } >
-                <TouchableHighlight style={style.leftIcon} underlayColor={"COLOR"} onPress={() => this.props.navigation.navigate('Setting')}>
-                  <MaterialIcons name="arrow-back-ios" size={26} color="gray"/>
-                </TouchableHighlight>
+            <TouchableHighlight style={style.midText} underlayColor={"COLOR"} onPress={() => this.props.navigation.navigate('Setting')}>
+              <View style={ style.viewElement }> 
+                    <MaterialIcons name="arrow-back-ios" size={26} color="gray" style={ style.leftIcon }/>
+                    <Text style={style.midText}>
+                      About us
+                    </Text>
+                    <MaterialIcons name="info" size={26} color="gray" style={ style.rightIcon }/>  
               </View>
-              <View style={ style.viewItem2 } >
-                  <Text style={style.midText}>
-                    About us
-                  </Text>
-              </View>
-              <View style={ style.viewItem3 } >
-                  <MaterialIcons name="info" size={26} color="gray"/>
-              </View>
-            </View>
+            </TouchableHighlight>
+
         <ScrollView style={style.container}>
           <View style={style.viewMain}>
             <Image source={require("../../../assets/digitizingWaste.png")} style = { style.logo1 }/>
@@ -72,17 +67,6 @@ export class AboutUs extends React.Component {
 
           <View style={style.viewMain}>
             <Text style={style.textHeader}>{i18next.t('SocialMedia')} </Text>
-            <View style={ style.viewMain2 }>
-              <View style={ style.viewSub2 } >
-                <Text style={style.links}
-                title="cp3@concordia.ca"> cp3@concordia.ca </Text>
-              </View>
-              <View style={ style.viewSub2 } >
-                <Text style={style.links}
-                title="zerowaste@concordia.ca"> zerowaste@concordia.ca </Text>
-              </View>
-            </View>
-            
             <View style={ style.viewMain2 }>
               <View style={ style.viewMain2 }>
                 <View>

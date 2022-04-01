@@ -16,44 +16,24 @@ export class Setting extends React.Component {
               Settings
             </Text>
           </View>
-          <View style={ style.viewElement }>
-              <View style={ style.viewItem1 } >
-                <TouchableHighlight style={style.leftIcon} underlayColor={"COLOR"} onPress={() => this.props.navigation.navigate('About us')}>
-                  <MaterialIcons name="info" size={26} color="gray"/>
-                </TouchableHighlight>
-              </View>
-              <View style={ style.viewItem2 } >
-                <TouchableHighlight style={style.midText} underlayColor={"COLOR"} onPress={() => this.props.navigation.navigate('About us')}>
+            <TouchableHighlight style={style.midText} underlayColor={"COLOR"} onPress={() => this.props.navigation.navigate('About us')}>
+            <View style={ style.viewElement }> 
+                  <MaterialIcons name="info" size={26} color="gray" style={ style.leftIcon }/>
                   <Text style={style.midText}>
                     About us
                   </Text>
-                </TouchableHighlight>
-              </View>
-              <View style={ style.viewItem3 } >
-                <TouchableHighlight style={style.rightIcon} underlayColor={"COLOR"} onPress={() => this.props.navigation.navigate('About us')}>
-                  <MaterialIcons name="arrow-forward-ios" size={16} color="gray"/>
-                </TouchableHighlight>
-              </View>
+                  <MaterialIcons name="arrow-forward-ios" size={16} color="gray" style={ style.rightIcon }/>  
             </View>
-            <View style={ style.viewElement }>
-              <View style={ style.viewItem1 } >
-                <TouchableHighlight style={style.leftIcon} underlayColor={"COLOR"} onPress={() => this.props.navigation.navigate('Language')}>
-                  <MaterialIcons name="language" size={26} color="gray"/>
-                </TouchableHighlight>
-              </View>
-              <View style={ style.viewItem2 } >
-                <TouchableHighlight style={style.midText} underlayColor={"COLOR"} onPress={() => this.props.navigation.navigate('Language')}>
-                  <Text style={style.midText}>
+            </TouchableHighlight>
+            <TouchableHighlight style={style.midText} underlayColor={"COLOR"} onPress={() => this.props.navigation.navigate('Language')}>
+            <View style={ style.viewElement }> 
+                  <MaterialIcons name="language" size={26} color="gray" style={ style.leftIcon }/>
+                  <Text style={style.midText2}>
                     Language
                   </Text>
-                </TouchableHighlight>
-              </View>
-              <View style={ style.viewItem3 } >
-                <TouchableHighlight style={style.rightIcon} underlayColor={"COLOR"} onPress={() => this.props.navigation.navigate('Language')}>
-                  <MaterialIcons name="arrow-forward-ios" size={16} color="gray"/>
-                </TouchableHighlight>
-              </View>
+                  <MaterialIcons name="arrow-forward-ios" size={16} color="gray" style={ style.rightIcon }/>  
             </View>
+            </TouchableHighlight>
       </NativeBaseProvider>
     );
   }
