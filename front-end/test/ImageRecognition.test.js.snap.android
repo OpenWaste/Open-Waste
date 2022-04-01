@@ -179,7 +179,31 @@ exports[`CameraView Component Tests CameraView renders correctly 1`] = `
                 ]
               }
             >
-              <Text />
+              <Text
+                allowFontScaling={false}
+                onPress={[Function]}
+                style={
+                  Array [
+                    Object {
+                      "color": undefined,
+                      "fontSize": 40,
+                    },
+                    Object {
+                      "marginLeft": "auto",
+                      "marginRight": "auto",
+                    },
+                    Object {
+                      "fontFamily": "material-community",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    Object {},
+                  ]
+                }
+                testID="bottom-sheet-close-btn"
+              >
+                󰅀
+              </Text>
               <RCTScrollView>
                 <View>
                   <View
@@ -347,6 +371,12 @@ exports[`CameraView Component Tests CameraView renders correctly 1`] = `
     </View>
   </View>
 </RNCSafeAreaProvider>
+`;
+
+exports[`DisplayCamera Parent Component Tests DisplayCamera renders correctly 1`] = `
+<Text>
+  No access to the camera
+</Text>
 `;
 
 exports[`PicturePreview Component Tests PicturePreview renders correctly 1`] = `

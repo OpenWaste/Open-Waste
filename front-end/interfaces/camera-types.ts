@@ -39,6 +39,17 @@ export interface PicturePreviewProperties {
   pictureURI: string;
 }
 
+export interface ClosestBuildingMapMarkerProperties {
+  closestBuilding: Building | undefined;
+}
+
+export interface MapBottomSheetOpenCloseButtonsProperties{
+  collapse: (() => void) | undefined;
+  expand: (() => void) | undefined;
+  bottomSheetVisible:boolean;
+  bottomSheetVisibilitySetter: (value:boolean) => void;
+}
+
 export interface BinWithImage {
   bin: Bin;
   imageBase64: string;
