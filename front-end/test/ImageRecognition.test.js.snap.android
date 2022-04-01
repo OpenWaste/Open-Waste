@@ -179,7 +179,31 @@ exports[`CameraView Component Tests CameraView renders correctly 1`] = `
                 ]
               }
             >
-              <Text />
+              <Text
+                allowFontScaling={false}
+                onPress={[Function]}
+                style={
+                  Array [
+                    Object {
+                      "color": undefined,
+                      "fontSize": 40,
+                    },
+                    Object {
+                      "marginLeft": "auto",
+                      "marginRight": "auto",
+                    },
+                    Object {
+                      "fontFamily": "material-community",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    Object {},
+                  ]
+                }
+                testID="bottom-sheet-close-btn"
+              >
+                󰅀
+              </Text>
               <RCTScrollView>
                 <View>
                   <View

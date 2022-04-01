@@ -7,7 +7,12 @@ import DisplayCamera, {
   CameraView,
   PicturePreview,
   MapBottomSheet,
-  distance
+  ClosestBuildingMapMarker,
+  MapBottomSheetOpenCloseButtons,
+  distance,
+  processRawInstructions,
+  processClosestBuilding,
+  processClosestBuildingBins
 } from "../components/camera/Camera";
 import { NativeBaseProvider } from "native-base";
 import { fireEvent, render } from "@testing-library/react-native";
@@ -36,6 +41,132 @@ describe("Latitude/Longitude Distance Function Tests", () => {
     let val = distance(2, 2, 1, 1)
     expect(Math.floor(val)).toBe(157)
   })
+})
+
+describe("processRawInstructions Tests", () => {
+  it("Sets correct properly formatted instructions", () => {
+    let actualCategory = "correctCategory"
+    let categoryInstructionInput = [{category_name:actualCategory, instruction:"step1;step2"}, {category_name:"incorrect", instruction:"otherstep1;otherstep2"}]
+    let expectedProcessedString = "1. step1\n2. step2\n";
+    let callBack = jest.fn();
+    processRawInstructions(categoryInstructionInput, actualCategory, callBack);
+
+    expect(callBack).toHaveBeenCalled();
+    expect(callBack).toHaveBeenCalledWith(expectedProcessedString);
+  })
+
+  it("Sets properly formatted instructions when category instructions ends with separator", () => {
+    let actualCategory = "correctCategory"
+    let categoryInstructionInput = [{category_name:actualCategory, instruction:"step1;step2;"}, {category_name:"incorrect", instruction:"otherstep1;otherstep2"}]
+    let expectedProcessedString = "1. step1\n2. step2\n";
+    let instructionSetterCallBack = jest.fn();
+    processRawInstructions(categoryInstructionInput, actualCategory, instructionSetterCallBack);
+
+    expect(instructionSetterCallBack).toHaveBeenCalled();
+    expect(instructionSetterCallBack).toHaveBeenCalledWith(expectedProcessedString);
+  })
+})
+
+describe("processClosestBuilding Tests", () => {
+  it("Sets closest building based on current location", () => {
+    let currentLocationObject = {coords:{latitude:1, longitude:1}, timestamp:1}
+    let closestBuilding = {id:1, building_name:"closest", address:"", latitude: 2, longitude:2}
+    let secondClosestBuilding = {id:1, building_name:"2ndClosest", address:"", latitude: 3, longitude:3}
+    let thirdClosestBuilding = {id:1, building_name:"3rdClosest", address:"", latitude: 4, longitude:4}
+    let closestBuildingCallback = jest.fn();
+
+    processClosestBuilding([thirdClosestBuilding,secondClosestBuilding,closestBuilding], currentLocationObject, closestBuildingCallback);
+
+    expect(closestBuildingCallback).toHaveBeenCalled();
+    expect(closestBuildingCallback).toHaveBeenCalledWith(closestBuilding);
+
+  })
+})
+
+describe("processClosestBuildingBins Tests", () => {
+  it("Returns only the bins of the closest Building", () => {
+    let closestBuilding = {id:1, building_name:"closest", address:"", latitude: 2, longitude:2}
+    let validBin1 = {id:1, building_id:1, location_name:"validBin1", floor_number:1, room_number:1, disposal_type:"validBin1", accepted_categories:"validBin1"}
+    let validBin2 = {id:1, building_id:1, location_name:"validBin2", floor_number:1, room_number:1, disposal_type:"validBin2", accepted_categories:"validBin2"}
+    let validBin3 = {id:1, building_id:1, location_name:"validBin3", floor_number:1, room_number:1, disposal_type:"validBin3", accepted_categories:"validBin3"}
+
+    let invalidBin1 = {id:1, building_id:2, location_name:"invalidBin1", floor_number:1, room_number:1, disposal_type:"invalidBin1", accepted_categories:"invalidBin1"}
+    let invalidBin2 = {id:1, building_id:3, location_name:"invalidBin2", floor_number:1, room_number:1, disposal_type:"invalidBin2", accepted_categories:"invalidBin2"}
+    let invalidBin3 = {id:1, building_id:4, location_name:"invalidBin3", floor_number:1, room_number:1, disposal_type:"invalidBin3", accepted_categories:"invalidBin3"}
+
+    let allBins = [validBin1, validBin2, validBin3, invalidBin1, invalidBin2, invalidBin3];
+    let allValidBins = [validBin1, validBin2, validBin3]
+
+    let binSetterCallback = jest.fn()
+
+    processClosestBuildingBins(allBins, closestBuilding, binSetterCallback)
+
+    expect(binSetterCallback).toHaveBeenCalled();
+    expect(binSetterCallback).toHaveBeenCalledWith(allValidBins);
+
+  })
+})
+
+describe("ClosestBuildingMapMarker Component Tests", () => {
+  it("Renders marker when closest building is not undefined", () => {
+    let closestBuilding = {id:1, building_name:"test", address:"", latitude:1, longitude:1}
+    const { queryByTestId } = render(
+        <ClosestBuildingMapMarker closestBuilding={closestBuilding}/>
+    );
+    expect(queryByTestId("closest-building-marker")).not.toBeNull();
+  })
+
+  it("Does NOT render marker when closest building is undefined", () => {
+    const { queryByTestId } = render(
+        <ClosestBuildingMapMarker closestBuilding={null}/>
+    );
+    expect(queryByTestId("closest-building-marker")).toBeNull();
+  })
+})
+
+describe("MapBottomSheetOpenCloseButtons Component Tests", () => {
+  it("Bottom Sheet should collapse on button press", () => {
+    let visibilitySetter = jest.fn();
+    let collapser = jest.fn();
+    let expander = jest.fn()
+
+    const { queryByTestId, getByTestId } = render(
+        <MapBottomSheetOpenCloseButtons bottomSheetVisible={true} expand={expander} collapse={collapser} bottomSheetVisibilitySetter={visibilitySetter}/>
+    );
+
+    //bottomsheet initially visible
+    expect(queryByTestId("bottom-sheet-close-btn")).not.toBeNull()
+    expect(queryByTestId("bottom-sheet-open-btn")).toBeNull()
+
+    //press button
+    fireEvent.press(getByTestId("bottom-sheet-close-btn"));
+
+    expect(visibilitySetter).toHaveBeenCalled()
+    expect(collapser).toHaveBeenCalled()
+    expect(expander).not.toHaveBeenCalled()
+  })
+
+  it("Bottom Sheet should expand on button press", () => {
+    let visibilitySetter = jest.fn();
+    let collapser = jest.fn();
+    let expander = jest.fn()
+
+    const { queryByTestId, getByTestId } = render(
+        <MapBottomSheetOpenCloseButtons bottomSheetVisible={false} expand={expander} collapse={collapser} bottomSheetVisibilitySetter={visibilitySetter}/>
+    );
+
+    //bottomsheet initially invisible
+    expect(queryByTestId("bottom-sheet-close-btn")).toBeNull()
+    expect(queryByTestId("bottom-sheet-open-btn")).not.toBeNull()
+
+    //press button
+    fireEvent.press(getByTestId("bottom-sheet-open-btn"));
+
+    expect(visibilitySetter).toHaveBeenCalled()
+    expect(collapser).not.toHaveBeenCalled()
+    expect(expander).toHaveBeenCalled()
+  })
+
 })
 
 describe("CameraView Component Tests", () => {
@@ -178,8 +309,8 @@ describe("CameraView Component Tests", () => {
   });
 });
 
-describe("MapModal Component Tests", async () => {
-  it("MapModal calls visibility setter function on close", async () => {
+describe("MapModal Component Tests", () => {
+  it("MapModal calls visibility setter function on close", () => {
     let visibility = true;
     let visibilitySetterMock = jest.fn();
 
