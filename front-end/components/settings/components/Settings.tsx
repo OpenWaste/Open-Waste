@@ -32,14 +32,14 @@ export class Setting extends React.Component {
       <NativeBaseProvider>
           <View style={ style.viewMain }>
             <Text style = { style.mainText }>
-              Settings
+              {i18next.t("Settings")}
             </Text>
           </View>
             <TouchableHighlight style={style.midText} underlayColor={"COLOR"} onPress={() => this.props.navigation.navigate('About us')}>
             <View style={ style.viewElement }> 
                   <MaterialIcons name="info" size={26} color="gray" style={ style.leftIcon }/>
                   <Text style={style.midText}>
-                    About us
+                    {i18next.t('AboutUs')}
                   </Text>
                   <MaterialIcons name="arrow-forward-ios" size={16} color="gray" style={ style.rightIcon }/>  
             </View>
@@ -48,7 +48,7 @@ export class Setting extends React.Component {
             <View style={ style.viewElement }> 
                   <MaterialIcons name="language" size={26} color="gray" style={ style.leftIcon }/>
                   <Text style={style.midText2}>
-                    Language
+                    {i18next.t('Language')}
                   </Text>
                   <MaterialIcons name="arrow-forward-ios" size={16} color="gray" style={ style.rightIcon }/>  
             </View>

@@ -50,10 +50,22 @@ export default StyleSheet.create({
         },
       wideGreen: {
         width: 300,
-        color: "green"
+        color: "green",
+        fontFamily: "Roboto",
+        fontSize: 14,
+        marginLeft: 5
       },
       wideBlack: {
         width: 300,
-        color: "black"
-    }
+        color: "grey",
+        fontFamily: "Roboto",
+        fontSize: 14,
+        marginLeft: 5
+    },
+      languageWarning: {
+        fontSize: 12,
+        textAlign: "center",
+        marginTop: 6,
+        color: "gray"
+      }
 });

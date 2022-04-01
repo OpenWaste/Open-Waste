@@ -11,7 +11,7 @@
     "RemainAsGuest": "Rester un visiteur",
     "Submit": "Soumettre",
     "Category": "Catégorie",
-    "ChooseCategories": "Choisir les Catégories",
+    "ChooseCategories": "Choisir une catégorie",
     "ImageSubmission": "Soumission d'Image",
     "ImageSubmissionText": "Si l'application n'a pas détecté votre object, télécharger une image pour nous aider à améliorer l'application.",
     "Success": "Succès",
@@ -53,5 +53,12 @@
     "AboutUsPart3": "Concordia Precious Plastic Project",
     "AboutUsPart4": "CP3 est une initiative multidisciplinaire dirigée par des étudiants qui soutient la gestion des déchets plastiques de  l'Université de Concordia en recyclant le plastique sur place et en sensibilisant à la crise du plastique. Nous sommes un groupe d'étudiants des quatre facultés unis par l'objectif de protéger l'environnement et de donner une nouvelle vie aux déchets plastiques.",
     "AboutUsPart5": "Nous vous remercions de votre contribution à ce projet ! En testant l'application et en soumettant vos images de déchets, vous contribuez à former notre algorithme qui, nous l'espérons, démystifiera le tri des déchets sur la planète.",
-    "AboutUsPart6": "Vous souhaitez contribuer au développement de ce projet et d'autres initiatives de déchets intelligents ? Contactez-nous à:"
+    "AboutUsPart6": "Vous souhaitez contribuer au développement de ce projet et d'autres initiatives de déchets intelligents ? Contactez-nous à:",
+    "AppRestart": "*Redémarrez l'application pour les onglets au bas de la page",
+    "plastic": "Plastique",
+    "metal": "Métal",
+    "paper": "Papier",
+    "cardboard": "Carton",
+    "glass": "Verre",
+    "trash": "Déchet"
 }

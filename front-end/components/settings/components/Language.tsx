@@ -20,13 +20,16 @@ export class Language extends React.Component {
           <View style={ style.viewElement }> 
                 <MaterialIcons name="arrow-back-ios" size={26} color="gray" style={ style.leftIcon }/>
                 <Text style={style.midText}>
-                  Language
+                  {i18next.t("Language")}
                 </Text>
                 <MaterialIcons name="language" size={26} color="gray" style={ style.rightIcon }/>  
           </View>
         </TouchableHighlight>
         <View>
-            <LanguagesPicker/>
+          <LanguagesPicker/>
+        </View>
+        <View>
+          <Text style={style.languageWarning}>{i18next.t("AppRestart")}</Text>
         </View>
       </NativeBaseProvider>
     );

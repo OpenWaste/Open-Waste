@@ -55,5 +55,12 @@
     "AboutUsPart3": "Concordia Precious Plastic Project",
     "AboutUsPart4": "CP3 is a multi-disciplinary student-led initiative supporting Concordia University’s plastic waste management by recycling plastic on-site and raising awareness of the plastic crisis. We are a group of students across all four faculties united by the goal of protecting the environment and giving plastic waste a new life.",
     "AboutUsPart5": "We are grateful for your contributions to this project! By testing the app and submitting your waste images, you are helping to train our algorithm that we hope will demystify waste sorting around the planet.",
-    "AboutUsPart6": "Want to contribute to the development of this project and other smart waste initiatives? Contact us at:"
+    "AboutUsPart6": "Want to contribute to the development of this project and other smart waste initiatives? Contact us at:",
+    "AppRestart": "*App restart required for the tabs at the bottom",
+    "plastic": "Plastic",
+    "metal": "Metal",
+    "paper": "Paper",
+    "cardboard": "Cardboard",
+    "glass": "Glass",
+    "trash": "Trash"
   }

@@ -151,7 +151,7 @@ export const ImageSubmissionView = (prop) => {
               >
                 {prop.categoriesList.map((value) => {
                   return (
-                    <Select.Item key={value} label={value} value={value} />
+                    <Select.Item key={value} label={i18next.t(value)} value={value} />
                   );
                 })}
               </Select>
