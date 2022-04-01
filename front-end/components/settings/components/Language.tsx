@@ -1,3 +1,4 @@
+import style from "./styles/Language";
 import React, { useEffect } from "react";
 import { View, Text, TouchableHighlight } from "react-native";
 import passStyle from "./styles/Language";
@@ -15,6 +16,15 @@ export class Language extends React.Component {
 
     return (
       <NativeBaseProvider>
+        <TouchableHighlight style={style.midText} underlayColor={"COLOR"} onPress={() => this.props.navigation.navigate('Setting')}>
+          <View style={ style.viewElement }> 
+                <MaterialIcons name="arrow-back-ios" size={26} color="gray" style={ style.leftIcon }/>
+                <Text style={style.midText}>
+                  Language
+                </Text>
+                <MaterialIcons name="language" size={26} color="gray" style={ style.rightIcon }/>  
+          </View>
+        </TouchableHighlight>
         <View>
             <LanguagesPicker/>
         </View>

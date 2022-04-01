@@ -3,7 +3,7 @@ import { ScrollView, View, Text, Image, TouchableHighlight } from "react-native"
 import style from "./styles/AboutUs";
 import { NativeBaseProvider } from "native-base";
 import { Linking } from 'react-native';
-import Clipboard from '@react-native-community/clipboard';
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import i18next from '../../Translate';
 
 export class AboutUs extends React.Component {
@@ -11,6 +11,16 @@ export class AboutUs extends React.Component {
   render() {
     return (
       <NativeBaseProvider>
+            <TouchableHighlight style={style.midText} underlayColor={"COLOR"} onPress={() => this.props.navigation.navigate('Setting')}>
+              <View style={ style.viewElement }> 
+                    <MaterialIcons name="arrow-back-ios" size={26} color="gray" style={ style.leftIcon }/>
+                    <Text style={style.midText}>
+                      About us
+                    </Text>
+                    <MaterialIcons name="info" size={26} color="gray" style={ style.rightIcon }/>  
+              </View>
+            </TouchableHighlight>
+
         <ScrollView style={style.container}>
           <View style={style.viewMain}>
             <Image source={require("../../../assets/digitizingWaste.png")} style = { style.logo1 }/>
@@ -57,17 +67,6 @@ export class AboutUs extends React.Component {
 
           <View style={style.viewMain}>
             <Text style={style.textHeader}>{i18next.t('SocialMedia')} </Text>
-            <View style={ style.viewMain2 }>
-              <View style={ style.viewSub2 } >
-                <Text style={style.links} onPress={() => Clipboard.setString('cp3@concordia.ca')}
-                title="cp3@concordia.ca"> cp3@concordia.ca </Text>
-              </View>
-              <View style={ style.viewSub2 } >
-                <Text style={style.links} onPress={() => Clipboard.setString('zerowaste@concordia.ca')}
-                title="zerowaste@concordia.ca"> zerowaste@concordia.ca </Text>
-              </View>
-            </View>
-            
             <View style={ style.viewMain2 }>
               <View style={ style.viewMain2 }>
                 <View>
