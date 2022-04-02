@@ -9,4 +9,4 @@ it('renders correctly', async () => {
       <ProfileNavigator/>
        </NavigationContainer>).toJSON();
     expect(tree).toMatchSnapshot();
-  });
+});

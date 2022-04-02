@@ -9,14 +9,10 @@ import {
 } from "../components/submission/ImageSubmission";
 import { NativeBaseProvider } from "native-base";
 import { fireEvent, render } from "@testing-library/react-native";
+import inset from './utils/constants';
 
 describe("Image Submission Component Tests", () => {
   it("Image Submission view properly", () => {
-    //These values need to be passed into NativeBaseProvider for it to work properly with JEST
-    const inset = {
-      frame: { x: 0, y: 0, width: 0, height: 0 },
-      insets: { top: 0, left: 0, right: 0, bottom: 0 },
-    };
     const tree = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
         <ImageSubmission />
@@ -26,11 +22,6 @@ describe("Image Submission Component Tests", () => {
   });
 
   it("Image Submission image button + success alert", () => {
-    const inset = {
-      frame: { x: 0, y: 0, width: 0, height: 0 },
-      insets: { top: 0, left: 0, right: 0, bottom: 0 },
-    };
-
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
         <ImageSubmissionView
@@ -60,11 +51,6 @@ describe("Image Submission Component Tests", () => {
   });
 
   it("ImageSubmission Press Image Icon Button + submitButton", () => {
-    const inset = {
-      frame: { x: 0, y: 0, width: 0, height: 0 },
-      insets: { top: 0, left: 0, right: 0, bottom: 0 },
-    };
-
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
         <ImageSubmissionView
@@ -95,11 +81,6 @@ describe("Image Submission Component Tests", () => {
   });
 
   it("ImageSubmission Press Icon Button", () => {
-    const inset = {
-      frame: { x: 0, y: 0, width: 0, height: 0 },
-      insets: { top: 0, left: 0, right: 0, bottom: 0 },
-    };
-
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
         <ImageSubmissionView
@@ -126,11 +107,6 @@ describe("Image Submission Component Tests", () => {
   });
 
   it("Image Submission Image Icon Button  + Error Alert", () => {
-    const inset = {
-      frame: { x: 0, y: 0, width: 0, height: 0 },
-      insets: { top: 0, left: 0, right: 0, bottom: 0 },
-    };
-
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
         <ImageSubmissionView
@@ -159,11 +135,9 @@ describe("Image Submission Component Tests", () => {
   });
 
   it("Handle Submit Success ensure isLoading is set",(done) => {
-
     const myMock = jest.fn();
     const setIsLoading = jest.fn();
   
-
     try {
       handleSubmit(
         setIsLoading,
@@ -229,8 +203,6 @@ describe("Image Submission Component Tests", () => {
     };
 
     var response = submitImageCategory(object,"plastic");
-
     expect(response).not.toBeNull();  
   });
-
 });

@@ -4,6 +4,7 @@ import { render } from '@testing-library/react-native';
 import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from '@react-navigation/native';
 import { EditProfile, EditForm, DeleteAccount } from '../components/profile/components/EditProfile'
+import inset from './utils/constants';
 
 it('renders correctly', async () => {
     const tree = await renderer.create(<EditProfile/>).toJSON();
@@ -11,12 +12,6 @@ it('renders correctly', async () => {
   });
 
 it('Edit Form Renders Properly', () => {
-
-  const inset = {
-    frame: { x: 0, y: 0, width: 0, height: 0 },
-    insets: { top: 0, left: 0, right: 0, bottom: 0 },
-  };
-
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
       <NavigationContainer>
@@ -31,12 +26,6 @@ it('Edit Form Renders Properly', () => {
 });
 
 it('Delete Modal Renders Properly', () => {
-
-  const inset = {
-    frame: { x: 0, y: 0, width: 0, height: 0 },
-    insets: { top: 0, left: 0, right: 0, bottom: 0 },
-  };
-
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
       <NavigationContainer>

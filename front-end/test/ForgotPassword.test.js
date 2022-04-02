@@ -4,6 +4,7 @@ import { render, fireEvent } from '@testing-library/react-native';
 import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from '@react-navigation/native';
 import { ForgotPassword, ResetPassword } from '../components/profile/components/ForgotPassword'
+import inset from './utils/constants';
 
 it('renders correctly', async () => {
     const tree = await renderer.create(<ForgotPassword/>).toJSON();
@@ -11,12 +12,6 @@ it('renders correctly', async () => {
   });
 
 it('Reset Password Form Renders Properly', () => {
-
-  const inset = {
-    frame: { x: 0, y: 0, width: 0, height: 0 },
-    insets: { top: 0, left: 0, right: 0, bottom: 0 },
-  };
-
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
       <NavigationContainer>
@@ -29,15 +24,8 @@ it('Reset Password Form Renders Properly', () => {
 });
 
 it('Press Submit Button', () => {
-
-  const inset = {
-    frame: { x: 0, y: 0, width: 0, height: 0 },
-    insets: { top: 0, left: 0, right: 0, bottom: 0 },
-  };
-
   const fakeNavigation = {
     navigate: jest.fn(),
-  
   };
 
   const {queryByTestId} = render(
@@ -50,5 +38,4 @@ it('Press Submit Button', () => {
   const button = queryByTestId("submitBtn");
 
   fireEvent.press(button);
-
 });

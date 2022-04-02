@@ -4,6 +4,7 @@ import { render } from '@testing-library/react-native';
 import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from '@react-navigation/native';
 import { VerifyEmail, ValidatePasscode } from '../components/profile/components/VerifyEmail'
+import inset from './utils/constants';
 
 it('renders correctly', async () => {
     const tree = await renderer.create(<VerifyEmail/>).toJSON();
@@ -11,15 +12,8 @@ it('renders correctly', async () => {
   });
 
 it('ValidatePasscode Renders Correctly', () => {
-
-  const inset = {
-    frame: { x: 0, y: 0, width: 0, height: 0 },
-    insets: { top: 0, left: 0, right: 0, bottom: 0 },
-  };
-
   const fakeNavigation = {
     navigate: jest.fn(),
-  
   };
 
   const { queryByTestId } = render(
