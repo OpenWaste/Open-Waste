@@ -4,7 +4,7 @@ import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from '@react-navigation/native';
 import { AboutUs } from '../components/settings/components/AboutUs'
 import renderer from 'react-test-renderer';
-import { inset } from './utils/constants';
+import { inset, fakeNavigation } from './utils/constants';
 
 it('renders correctly', async () => {
   const tree = await renderer.create(
