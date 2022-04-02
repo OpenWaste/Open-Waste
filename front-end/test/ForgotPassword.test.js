@@ -7,7 +7,7 @@ import {
   ForgotPassword,
   ResetPassword,
 } from "../components/profile/components/ForgotPassword";
-import inset from "./utils/constants";
+import { inset, fakeNavigation } from "./utils/constants";
 
 describe("ForgotPassword Tests", () => {
   it("renders correctly", async () => {
@@ -29,10 +29,6 @@ describe("ForgotPassword Tests", () => {
   });
 
   it("Press Submit Button", () => {
-    const fakeNavigation = {
-      navigate: jest.fn(),
-    };
-
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
         <NavigationContainer>

@@ -4,7 +4,7 @@ import { render, fireEvent } from "@testing-library/react-native";
 import { LogIn, LoginForm } from "../components/profile/components/LogIn";
 import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from "@react-navigation/native";
-import inset from "./utils/constants";
+import { inset, fakeNavigation } from "./utils/constants";
 
 describe("LogIn Tests", () => {
   it("renders correctly", async () => {
@@ -27,10 +27,6 @@ describe("LogIn Tests", () => {
   });
 
   it("Press Forgot Password Button", () => {
-    const fakeNavigation = {
-      navigate: jest.fn(),
-    };
-
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
         <NavigationContainer>
@@ -45,10 +41,6 @@ describe("LogIn Tests", () => {
   });
 
   it("Press Remain Guest Button", () => {
-    const fakeNavigation = {
-      navigate: jest.fn(),
-    };
-
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
         <NavigationContainer>

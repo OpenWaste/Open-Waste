@@ -7,7 +7,7 @@ import {
   VerifyEmail,
   ValidatePasscode,
 } from "../components/profile/components/VerifyEmail";
-import inset from "./utils/constants";
+import { inset, fakeNavigation } from "./utils/constants";
 
 describe("VerifyEmail Tests", () => {
   it("renders correctly", async () => {
@@ -16,10 +16,6 @@ describe("VerifyEmail Tests", () => {
   });
 
   it("ValidatePasscode Renders Correctly", () => {
-    const fakeNavigation = {
-      navigate: jest.fn(),
-    };
-
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
         <NavigationContainer>
