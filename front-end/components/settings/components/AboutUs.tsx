@@ -65,8 +65,16 @@ export class AboutUs extends React.Component {
             </View>
           </View>
 
-          <View style={style.viewMain}>
-            <Text style={style.textHeader}>{i18next.t('SocialMedia')} </Text>
+          <View style={ style.viewMain }>
+            <Text style={ style.textHeader }>{i18next.t('SocialMedia')} </Text>
+            <View style={ style.viewMain2 }>
+              <View style={ style.viewSub2 }>
+                <Text style={ style.text2 }>CP3 Concordia</Text>
+              </View>
+              <View style={ style.viewSub2 }>
+                <Text style={ style.text2 }>Zero Waste Concordia</Text>
+              </View>
+            </View>
             <View style={ style.viewMain2 }>
               <View style={ style.viewMain2 }>
                 <View>

@@ -27,6 +27,12 @@ export default StyleSheet.create({
       marginTop: 20,
       color: "grey",
     },
+    text2: {
+      fontFamily: "Roboto",
+      fontSize: 14,
+      textAlign: 'center',
+      color: "grey",
+    },
     textHeader: {
       fontWeight: "bold",
       fontFamily: "Roboto",
