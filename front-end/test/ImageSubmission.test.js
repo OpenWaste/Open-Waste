@@ -9,7 +9,7 @@ import {
 } from "../components/submission/ImageSubmission";
 import { NativeBaseProvider } from "native-base";
 import { fireEvent, render } from "@testing-library/react-native";
-import inset from './utils/constants';
+import { inset } from './utils/constants';
 
 describe("Image Submission Component Tests", () => {
   it("Image Submission view properly", () => {

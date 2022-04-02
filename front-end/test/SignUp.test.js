@@ -4,11 +4,11 @@ import { render, fireEvent } from "@testing-library/react-native";
 import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from "@react-navigation/native";
 import { SignUp, SignUpForm } from "../components/profile/components/SignUp";
-import inset from "./utils/constants";
+import { inset } from './utils/constants';
 
 describe("SignUp Tests", () => {
-  it("renders correctly", async () => {
-    const tree = await renderer.create(<SignUp />).toJSON();
+  it("renders correctly", () => {
+    const tree = renderer.create(<SignUp />).toJSON();
     expect(tree).toMatchSnapshot();
   });
 

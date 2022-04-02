@@ -7,7 +7,7 @@ import {
   ResetPassword,
   ResetPasswordForm,
 } from "../components/profile/components/ResetPassword";
-import inset from "./utils/constants";
+import { inset } from './utils/constants';
 
 describe("ResetPassword Tests", () => {
   it("renders correctly", async () => {

@@ -18,7 +18,7 @@ import { NativeBaseProvider } from "native-base";
 import { fireEvent, render } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { save } from "../utils/PersistInfo";
-import inset from './utils/constants';
+import { inset } from './utils/constants';
 
 describe("DisplayCamera Parent Component Tests", () => {
   it("DisplayCamera renders correctly", () => {

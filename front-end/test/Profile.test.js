@@ -3,7 +3,7 @@ import { render } from '@testing-library/react-native';
 import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from '@react-navigation/native';
 import { ProfileInformation, InfoBox } from '../components/profile/components/Profile'
-import inset from './utils/constants';
+import { inset } from './utils/constants';
 
 describe("Profile Tests", () => {
   it('Profile Information Renders Properly', () => {

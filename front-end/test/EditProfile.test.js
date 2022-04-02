@@ -8,7 +8,7 @@ import {
   EditForm,
   DeleteAccount,
 } from "../components/profile/components/EditProfile";
-import inset from "./utils/constants";
+import { inset } from './utils/constants';
 
 describe("EditProfile tests", () => {
   it("renders correctly", async () => {
