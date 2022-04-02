@@ -18,6 +18,7 @@ import { NativeBaseProvider } from "native-base";
 import { fireEvent, render } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { save } from "../utils/PersistInfo";
+import { inset } from './utils/constants';
 
 describe("DisplayCamera Parent Component Tests", () => {
   it("DisplayCamera renders correctly", () => {
@@ -32,7 +33,6 @@ describe("DisplayCamera Parent Component Tests", () => {
 
 describe("Latitude/Longitude Distance Function Tests", () => {
   it("returns 0 when both coordinates are equal", () => {
-
     let val = distance(1, 1, 1, 1)
     expect(val).toBe(0)
   })
@@ -171,11 +171,6 @@ describe("MapBottomSheetOpenCloseButtons Component Tests", () => {
 
 describe("CameraView Component Tests", () => {
   it("CameraView renders correctly", () => {
-    //These values need to be passed into NativeBaseProvider for it to work properly with JEST
-    const inset = {
-      frame: { x: 0, y: 0, width: 0, height: 0 },
-      insets: { top: 0, left: 0, right: 0, bottom: 0 },
-    };
     const tree = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
         <CameraView
@@ -197,12 +192,6 @@ describe("CameraView Component Tests", () => {
   });
 
   it("CameraView renders correct components after picture is processed", () => {
-    //These values need to be passed into NativeBaseProvider for it to work properly with JEST
-    const inset = {
-      frame: { x: 0, y: 0, width: 0, height: 0 },
-      insets: { top: 0, left: 0, right: 0, bottom: 0 },
-    };
-
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
         <CameraView
@@ -234,12 +223,6 @@ describe("CameraView Component Tests", () => {
   });
 
   it("CameraView renders correct components before picture is taken", () => {
-    //These values need to be passed into NativeBaseProvider for it to work properly with JEST
-    const inset = {
-      frame: { x: 0, y: 0, width: 0, height: 0 },
-      insets: { top: 0, left: 0, right: 0, bottom: 0 },
-    };
-
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
         <CameraView
@@ -271,12 +254,6 @@ describe("CameraView Component Tests", () => {
   });
 
   it("CameraView renders correct components while prediction is loading", () => {
-    //These values need to be passed into NativeBaseProvider for it to work properly with JEST
-    const inset = {
-      frame: { x: 0, y: 0, width: 0, height: 0 },
-      insets: { top: 0, left: 0, right: 0, bottom: 0 },
-    };
-
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
         <CameraView
@@ -467,11 +444,6 @@ describe("PredictionText Component Tests", () => {
 
 describe("PostPictureSnapButtons Component Tests", () => {
   it("PostPictureSnapButtons renders correctly", () => {
-    //These values need to be passed into NativeBaseProvider for it to work properly with JEST
-    const inset = {
-      frame: { x: 0, y: 0, width: 0, height: 0 },
-      insets: { top: 0, left: 0, right: 0, bottom: 0 },
-    };
     const tree = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
         <PostPictureSnapButtons
@@ -486,12 +458,6 @@ describe("PostPictureSnapButtons Component Tests", () => {
   });
 
   it("Cancel button returns to original state by calling helper functions", () => {
-    //These values need to be passed into NativeBaseProvider for it to work properly with JEST
-    const inset = {
-      frame: { x: 0, y: 0, width: 0, height: 0 },
-      insets: { top: 0, left: 0, right: 0, bottom: 0 },
-    };
-
     let uriSetterMock = jest.fn();
     let pictureTakenSetterMock = jest.fn();
     let predictionTextSetterMock = jest.fn();
@@ -520,12 +486,6 @@ describe("PostPictureSnapButtons Component Tests", () => {
   });
 
   it("Next button sets MapModal visibility to true", () => {
-    //These values need to be passed into NativeBaseProvider for it to work properly with JEST
-    const inset = {
-      frame: { x: 0, y: 0, width: 0, height: 0 },
-      insets: { top: 0, left: 0, right: 0, bottom: 0 },
-    };
-
     let visibilitySetterMock = jest.fn();
 
     const { getByTestId } = render(
