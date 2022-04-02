@@ -5,7 +5,7 @@ import { Heading } from "native-base";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ExpoLocation from 'expo-location'
-import BottomSheet from '@gorhom/bottom-sheet'
+import BottomSheet, {BottomSheetScrollView} from '@gorhom/bottom-sheet'
 import Service from "../../service/service";
 import { Region, Building } from '../../interfaces/service-types'
 import { getValueFor } from "../../utils/PersistInfo";
@@ -29,7 +29,7 @@ export function Map() {
 
   const mapRef = useRef<MapView>(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['3%', '33%'], []);
+  const snapPoints = useMemo(() => ['3%','33%', '50%'], []);
 
   useEffect(() => {
     if (!buildings || buildings.length == 0) {
@@ -152,7 +152,6 @@ export function Map() {
             snapPoints={snapPoints}
             style={styles.bottomSheet}
           >
-          <HStack style={styles.headerContainer}>
             <Heading style={styles.header}>{selectedBuilding.building_name}</Heading>
             <Button
               style={styles.directionsButton}
@@ -160,9 +159,8 @@ export function Map() {
               leftIcon={<Icon as={MaterialCommunityIcons} name="directions" size="sm" />}>
               Get Directions
             </Button>
-          </HStack>
           <Text style={styles.text}>{selectedBuilding.address}</Text>
-          <ScrollView
+          <BottomSheetScrollView
             horizontal={true}
             style={styles.imageScroll}>
             {buildingImages.map((base64_img:string, index:number) => {
@@ -171,7 +169,7 @@ export function Map() {
                 source={{uri: base64_img}}
                 style={styles.image}/>
             })}
-          </ScrollView>
+          </BottomSheetScrollView>
           </BottomSheet>
         }
       </View>

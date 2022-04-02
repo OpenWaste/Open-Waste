@@ -41,7 +41,7 @@ const App = () => {
       else {
         setIsFrench(false);
       }
-    });
+    }).catch(() => {});
   }, []);
 
   if (isFirstLaunch) { // First time user.
