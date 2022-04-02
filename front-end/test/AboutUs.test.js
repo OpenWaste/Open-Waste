@@ -4,6 +4,7 @@ import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from '@react-navigation/native';
 import { AboutUs } from '../components/settings/components/AboutUs'
 import renderer from 'react-test-renderer';
+import { inset } from './utils/constants';
 
 it('renders correctly', async () => {
   const tree = await renderer.create(
@@ -14,12 +15,6 @@ it('renders correctly', async () => {
 });
 
 it('Heaader for showing About Us Page Renders Properly', () => {
-
-  const inset = {
-    frame: { x: 0, y: 0, width: 0, height: 0 },
-    insets: { top: 0, left: 0, right: 0, bottom: 0 },
-  };
-
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
       <NavigationContainer>
@@ -27,23 +22,11 @@ it('Heaader for showing About Us Page Renders Properly', () => {
                 style={""}
         </AboutUs>
       </NavigationContainer>
-    </NativeBaseProvider>);
-    
+    </NativeBaseProvider>);  
   expect(queryByTestId('p1')).not.toBeNull();  
 });
 
 it('Press header', () => {
-
-  const inset = {
-    frame: { x: 0, y: 0, width: 0, height: 0 },
-    insets: { top: 0, left: 0, right: 0, bottom: 0 },
-  };
-
-  const fakeNavigation = {
-    navigate: jest.fn(),
-  
-  };
-
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
       <NavigationContainer>
@@ -58,17 +41,6 @@ it('Press header', () => {
 });
 
 it('Press CP3 Email Button', () => {
-
-  const inset = {
-    frame: { x: 0, y: 0, width: 0, height: 0 },
-    insets: { top: 0, left: 0, right: 0, bottom: 0 },
-  };
-
-  const fakeNavigation = {
-    navigate: jest.fn(),
-  
-  };
-
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
       <NavigationContainer>
@@ -83,17 +55,6 @@ it('Press CP3 Email Button', () => {
 });
 
 it('Press CP3 Email Text', () => {
-
-  const inset = {
-    frame: { x: 0, y: 0, width: 0, height: 0 },
-    insets: { top: 0, left: 0, right: 0, bottom: 0 },
-  };
-
-  const fakeNavigation = {
-    navigate: jest.fn(),
-  
-  };
-
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
       <NavigationContainer>
@@ -108,17 +69,6 @@ it('Press CP3 Email Text', () => {
 });
 
 it('Press Zerowaste Email', () => {
-
-  const inset = {
-    frame: { x: 0, y: 0, width: 0, height: 0 },
-    insets: { top: 0, left: 0, right: 0, bottom: 0 },
-  };
-
-  const fakeNavigation = {
-    navigate: jest.fn(),
-  
-  };
-
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
       <NavigationContainer>
@@ -133,17 +83,6 @@ it('Press Zerowaste Email', () => {
 });
 
 it('Press Zerowaste Email Text', () => {
-
-  const inset = {
-    frame: { x: 0, y: 0, width: 0, height: 0 },
-    insets: { top: 0, left: 0, right: 0, bottom: 0 },
-  };
-
-  const fakeNavigation = {
-    navigate: jest.fn(),
-  
-  };
-
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
       <NavigationContainer>
@@ -158,17 +97,6 @@ it('Press Zerowaste Email Text', () => {
 });
 
 it('Press CP3 Facebook', () => {
-
-  const inset = {
-    frame: { x: 0, y: 0, width: 0, height: 0 },
-    insets: { top: 0, left: 0, right: 0, bottom: 0 },
-  };
-
-  const fakeNavigation = {
-    navigate: jest.fn(),
-  
-  };
-
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
       <NavigationContainer>
@@ -183,17 +111,6 @@ it('Press CP3 Facebook', () => {
 });
 
 it('Press CP3 Instagram', () => {
-
-  const inset = {
-    frame: { x: 0, y: 0, width: 0, height: 0 },
-    insets: { top: 0, left: 0, right: 0, bottom: 0 },
-  };
-
-  const fakeNavigation = {
-    navigate: jest.fn(),
-  
-  };
-
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
       <NavigationContainer>
@@ -208,17 +125,6 @@ it('Press CP3 Instagram', () => {
 });
 
 it('Press CP3 Web', () => {
-
-  const inset = {
-    frame: { x: 0, y: 0, width: 0, height: 0 },
-    insets: { top: 0, left: 0, right: 0, bottom: 0 },
-  };
-
-  const fakeNavigation = {
-    navigate: jest.fn(),
-  
-  };
-
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
       <NavigationContainer>
@@ -233,17 +139,6 @@ it('Press CP3 Web', () => {
 });
 
 it('Press Zerowaste Facebook', () => {
-
-  const inset = {
-    frame: { x: 0, y: 0, width: 0, height: 0 },
-    insets: { top: 0, left: 0, right: 0, bottom: 0 },
-  };
-
-  const fakeNavigation = {
-    navigate: jest.fn(),
-  
-  };
-
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
       <NavigationContainer>
@@ -258,17 +153,6 @@ it('Press Zerowaste Facebook', () => {
 });
 
 it('Press Zerowaste Instagram', () => {
-
-  const inset = {
-    frame: { x: 0, y: 0, width: 0, height: 0 },
-    insets: { top: 0, left: 0, right: 0, bottom: 0 },
-  };
-
-  const fakeNavigation = {
-    navigate: jest.fn(),
-  
-  };
-
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
       <NavigationContainer>
@@ -283,17 +167,6 @@ it('Press Zerowaste Instagram', () => {
 });
 
 it('Press Zerowaste Web', () => {
-
-  const inset = {
-    frame: { x: 0, y: 0, width: 0, height: 0 },
-    insets: { top: 0, left: 0, right: 0, bottom: 0 },
-  };
-
-  const fakeNavigation = {
-    navigate: jest.fn(),
-  
-  };
-
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
       <NavigationContainer>
@@ -308,17 +181,6 @@ it('Press Zerowaste Web', () => {
 });
 
 it('Press Zerowaste Email 2', () => {
-
-  const inset = {
-    frame: { x: 0, y: 0, width: 0, height: 0 },
-    insets: { top: 0, left: 0, right: 0, bottom: 0 },
-  };
-
-  const fakeNavigation = {
-    navigate: jest.fn(),
-  
-  };
-
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
       <NavigationContainer>
@@ -333,17 +195,6 @@ it('Press Zerowaste Email 2', () => {
 });
 
 it('Press Zerowaste Email Text 2', () => {
-
-  const inset = {
-    frame: { x: 0, y: 0, width: 0, height: 0 },
-    insets: { top: 0, left: 0, right: 0, bottom: 0 },
-  };
-
-  const fakeNavigation = {
-    navigate: jest.fn(),
-  
-  };
-
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
       <NavigationContainer>
