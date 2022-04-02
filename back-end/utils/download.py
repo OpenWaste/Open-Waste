@@ -3,7 +3,7 @@ import zipfile
 import os
 import shutil
 
-LINK_TO_ZIP = 'https://drive.google.com/file/d/1lnniHRHTVvQEbiKjqILO0xZG0kq4T_zl/view?usp=sharing'
+LINK_TO_ZIP = 'https://drive.google.com/file/d/1qKuw19chchrMF0MUD9sdIUhxZhMicTSh/view?usp=sharing'
 DATA_ZIPPED = 'utils/data/data.zip'
 DATA_UNZIPPED = 'utils/data'
 
