@@ -5,7 +5,7 @@ import { Heading } from "native-base";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ExpoLocation from 'expo-location'
-import BottomSheet from '@gorhom/bottom-sheet'
+import BottomSheet, {BottomSheetScrollView} from '@gorhom/bottom-sheet'
 import Service from "../../service/service";
 import { Region, Building } from '../../interfaces/service-types'
 import { getValueFor } from "../../utils/PersistInfo";
@@ -160,7 +160,7 @@ export function Map() {
               Get Directions
             </Button>
           <Text style={styles.text}>{selectedBuilding.address}</Text>
-          <ScrollView
+          <BottomSheetScrollView
             horizontal={true}
             style={styles.imageScroll}>
             {buildingImages.map((base64_img:string, index:number) => {
@@ -169,7 +169,7 @@ export function Map() {
                 source={{uri: base64_img}}
                 style={styles.image}/>
             })}
-          </ScrollView>
+          </BottomSheetScrollView>
           </BottomSheet>
         }
       </View>
