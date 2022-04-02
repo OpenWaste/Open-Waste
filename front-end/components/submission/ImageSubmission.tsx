@@ -22,10 +22,6 @@ import { getValueFor, save } from "../../utils/PersistInfo";
 import i18next from '../../Translate';
 import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
 
-// To ignore color scheme warnings given for dropdown color
-import { LogBox } from "react-native";
-LogBox.ignoreLogs(["NativeBase: The contrast ratio of 1:1"]);
-
 export function ImageSubmission() {
   const [image, setImage] = useState("");
   const [imageIsChosen, setImageIsChosen] = useState(false);

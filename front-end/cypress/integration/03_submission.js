@@ -1,10 +1,9 @@
 describe('Image Submission functionality: ', () => {
     it('Ensure error appears when no image selected', () => {
         // Navigate to submission page
-        cy.get('[data-focusable]').contains('Profile').click({force:true})
         cy.contains('Submission').click()
 
-        cy.wait(500)
+        cy.wait(1000)
 
         // Select category
         cy.get('select').select(1)
@@ -17,6 +16,5 @@ describe('Image Submission functionality: ', () => {
         // Ensure error pops up
         cy.get('div').contains('Error').should('exist')
         cy.get('div').contains('Selected image was not submitted').should('exist')
-        cy.get('div[role=button]').contains('Ok').click()
     })
 })

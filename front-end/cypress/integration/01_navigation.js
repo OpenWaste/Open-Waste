@@ -26,29 +26,39 @@ describe('Navigation Test', () => {
     cy.contains('Forgot Password').click({force:true})
     cy.get('div').contains('Enter the e-mail address associated to your account.').should('exist')
     cy.get('input[data-testid="emailField"]').should('exist')
-    cy.get('div[role=button]').contains('Submit').should('exist')
+    cy.get('div[data-testid=submitBtn]').contains('Submit').should('exist')
   })
 
-  it('Ensures access to settings page and tabs within', () => {
+  it('Ensures access to about us page', () => {
     // Navigate to Settings
     cy.get('[data-focusable]').contains('Settings').click({force:true})
 
     // Ensure UI of Settings page showed up
-    cy.get('h1').contains('Setting').should('exist')
-    cy.get('div[role=button]').contains('About us').should('exist')
-    cy.get('div[role=button]').contains('Language').should('exist')
+    cy.get('div').contains('Setting').should('exist')
+    cy.get('div').contains('About us').should('exist')
+    cy.get('div').contains('Language').should('exist')
 
     // Navigate into About us and ensure UI
-    cy.get('div[role=button]').contains('About us').click()
-    cy.get('h1').contains('About us').should('exist')
+    cy.get('div').contains('About us').click()
+    cy.get('div').contains('About us').should('exist')
     cy.get('div').contains('Concordia Precious Plastic Project').should('exist')
     cy.get('div').contains('Zero Waste Concordia').should('exist')
     cy.get('div').contains('Contact Us').should('exist')
     cy.get('div').contains('Social Media').should('exist')
+  })
 
-    // Navigate to Language and ensure UI
-    cy.get('div[aria-label="Setting, back"]').click()
-    cy.get('div[role=button]').contains('Language').click()
-    // TODO: Ensure UI when Language page is complete
+  it('Ensures access to language page', () => {
+    // Navigate to Settings
+    cy.get('[data-focusable]').contains('Settings').click({force:true})
+
+    // Ensure UI of Settings page showed up
+    cy.get('div').contains('Setting').should('exist')
+    cy.get('div').contains('About us').should('exist')
+    cy.get('div').contains('Language').should('exist')
+
+    // Navigate into Language and ensure UI
+    cy.get('div').contains('Language').click()
+    cy.get('div').contains('English').should('exist')
+    cy.get('div').contains('French').should('exist')
   })
 })
