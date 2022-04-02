@@ -10,7 +10,7 @@ import isEmail from 'validator/lib/isEmail';
 import { UserResource } from "../../../models/User";
 import { useNavigation } from '@react-navigation/native';
 import { save } from '../../../utils/PersistInfo';
-import i18next from '../../Translate'
+import i18next from '../../../Translate'
 
 export class SignUp extends React.Component {
 

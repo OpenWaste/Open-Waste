@@ -2,7 +2,9 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import {Registration} from '../components/profile/components/Registration'
 
-it('renders correctly', async () => {
-    const tree = await renderer.create(<Registration/>).toJSON();
-    expect(tree).toMatchSnapshot();
-  });
+describe("Registration Tests", () => {
+    it('renders correctly', async () => {
+        const tree = await renderer.create(<Registration/>).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
+});

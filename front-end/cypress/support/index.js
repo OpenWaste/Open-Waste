@@ -22,6 +22,7 @@ import './commands'
 beforeEach(() => {
     cy.viewport('samsung-s10')
     cy.visit('http://localhost:19006/')
+    window.localStorage.setItem('AlreadyLaunched', true)
 })
 
 Cypress.on('uncaught:exception', (err, runnable) => {

@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { View, Text, TouchableHighlight } from "react-native";
 import passStyle from "./styles/Language";
 import { NativeBaseProvider, Button } from "native-base";
-import i18next from '../../Translate';
+import i18next from '../../../Translate';
 import { deleteValueFor, getValueFor } from '../../../utils/PersistInfo';
 import { save } from '../../../utils/PersistInfo';
 import { showMessage } from "react-native-flash-message";
@@ -20,13 +20,16 @@ export class Language extends React.Component {
           <View style={ style.viewElement }> 
                 <MaterialIcons name="arrow-back-ios" size={26} color="gray" style={ style.leftIcon }/>
                 <Text style={style.midText}>
-                  Language
+                  {i18next.t("Language")}
                 </Text>
                 <MaterialIcons name="language" size={26} color="gray" style={ style.rightIcon }/>  
           </View>
         </TouchableHighlight>
         <View>
-            <LanguagesPicker/>
+          <LanguagesPicker/>
+        </View>
+        <View>
+          <Text style={style.languageWarning}>{i18next.t("AppRestart")}</Text>
         </View>
       </NativeBaseProvider>
     );
@@ -42,7 +45,7 @@ function LanguagesPicker () {
   useEffect(() => {
     getValueFor('language').then((output) => {
       setSelectedLanguage(output)
-    });
+    }).catch(() => {});
   })
 
   const setFrench = () => {
@@ -56,7 +59,7 @@ function LanguagesPicker () {
     })
 
     if(selectedLanguage != 'fr'){
-      navigation.navigate('Camera');
+      navigation.navigate('Setting');
     }
   }
 
@@ -71,7 +74,7 @@ function LanguagesPicker () {
     })
 
     if(selectedLanguage == 'fr'){
-      navigation.navigate('Camera');
+      navigation.navigate('Setting');
     }
   }
   

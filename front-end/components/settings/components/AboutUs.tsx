@@ -3,8 +3,8 @@ import { ScrollView, View, Text, Image, TouchableHighlight } from "react-native"
 import style from "./styles/AboutUs";
 import { NativeBaseProvider } from "native-base";
 import { Linking } from 'react-native';
+import i18next from '../../../Translate';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import i18next from '../../Translate';
 
 export class AboutUs extends React.Component {
 
@@ -20,7 +20,6 @@ export class AboutUs extends React.Component {
                 <MaterialIcons name="info" size={26} color="gray" style={ style.rightIcon }/>  
           </View>
         </TouchableHighlight>
-
         <ScrollView style={style.container} testID = 'p1'>
           <View style={style.viewMain}>
             <Image source={require("../../../assets/digitizingWaste.png")} style = { style.logo1 }/>
@@ -65,8 +64,16 @@ export class AboutUs extends React.Component {
             </View>
           </View>
 
-          <View style={style.viewMain}>
-            <Text style={style.textHeader}>{i18next.t('SocialMedia')} </Text>
+          <View style={ style.viewMain }>
+            <Text style={ style.textHeader }>{i18next.t('SocialMedia')} </Text>
+            <View style={ style.viewMain2 }>
+              <View style={ style.viewSub2 }>
+                <Text style={ style.text2 }>CP3 Concordia</Text>
+              </View>
+              <View style={ style.viewSub2 }>
+                <Text style={ style.text2 }>Zero Waste Concordia</Text>
+              </View>
+            </View>
             <View style={ style.viewMain2 }>
               <View style={ style.viewMain2 }>
                 <View>

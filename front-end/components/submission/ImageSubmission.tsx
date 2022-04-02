@@ -13,19 +13,14 @@ import {
   Image,
   AlertDialog,
   AspectRatio,
-  Spinner,
   NativeBaseProvider,
 } from "native-base";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
 import Service from "../../service/service";
 import { getValueFor, save } from "../../utils/PersistInfo";
-import i18next from "../Translate";
+import i18next from '../../Translate';
 import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
-
-// To ignore color scheme warnings given for dropdown color
-import { LogBox } from "react-native";
-LogBox.ignoreLogs(["NativeBase: The contrast ratio of 1:1"]);
 
 export function ImageSubmission() {
   const [image, setImage] = useState("");
@@ -151,7 +146,7 @@ export const ImageSubmissionView = (prop) => {
               >
                 {prop.categoriesList.map((value) => {
                   return (
-                    <Select.Item key={value} label={value} value={value} />
+                    <Select.Item key={value} label={i18next.t(value)} value={value} />
                   );
                 })}
               </Select>
