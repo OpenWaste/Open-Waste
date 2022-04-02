@@ -45,7 +45,7 @@ function LanguagesPicker () {
   useEffect(() => {
     getValueFor('language').then((output) => {
       setSelectedLanguage(output)
-    });
+    }).catch(() => {});
   })
 
   const setFrench = () => {

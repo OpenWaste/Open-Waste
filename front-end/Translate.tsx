@@ -32,7 +32,7 @@ getValueFor('language').then((output) => {
     if(output == 'fr'){
       i18n.changeLanguage("fr")
    }
-});
+}).catch(() => {});
 
 // other files can call this and use the translations from the json files
 export default i18n;

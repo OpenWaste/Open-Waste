@@ -63,6 +63,7 @@ export default StyleSheet.create({
   },
   directionsButton: {
     backgroundColor: "#0F968D",
+    marginBottom:10
   },
   headerContainer: {
     marginBottom: 25,
