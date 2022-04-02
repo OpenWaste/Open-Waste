@@ -11,16 +11,16 @@ import { ProfileNavigator } from "./profile/ProfileNavigator";
 import { ImageSubmission } from "./submission/ImageSubmission";
 
 const screens = [
-  { name: "Map", component: Map, icon: "map", unmount: false},
-  { name: "Submission", component: ImageSubmission, icon: "upload-file", unmount: true},
-  { name: "Camera", component: DisplayCamera, icon: "photo-camera", unmount: false},
+  { name: "Carte", component: Map, icon: "map", unmount: false},
+  { name: "Soumission", component: ImageSubmission, icon: "upload-file", unmount: true},
+  { name: "Caméra", component: DisplayCamera, icon: "photo-camera", unmount: false},
   { name: "Profile", component: ProfileNavigator, icon: "person", unmount: false},
-  { name: "Settings", component: SettingsNavigator, icon: "settings", unmount: false},
+  { name: "Paramètres", component: SettingsNavigator, icon: "settings", unmount: false},
 ];
 
 const Tab = createBottomTabNavigator();
 
-export class MainContainer extends React.Component {
+export class MainContainerFR extends React.Component {
   render() {
     return (
       <NavigationContainer independent={true}>

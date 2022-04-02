@@ -3,8 +3,8 @@ import { ScrollView, View, Text, Image, TouchableHighlight } from "react-native"
 import style from "./styles/AboutUs";
 import { NativeBaseProvider } from "native-base";
 import { Linking } from 'react-native';
+import i18next from '../../../Translate';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import i18next from '../../Translate';
 
 export class AboutUs extends React.Component {
 
@@ -15,7 +15,7 @@ export class AboutUs extends React.Component {
               <View style={ style.viewElement }> 
                     <MaterialIcons name="arrow-back-ios" size={26} color="gray" style={ style.leftIcon }/>
                     <Text style={style.midText}>
-                      About us
+                      {i18next.t('AboutUs')}
                     </Text>
                     <MaterialIcons name="info" size={26} color="gray" style={ style.rightIcon }/>  
               </View>

@@ -8,7 +8,7 @@ import Service from "../../../service/service";
 import { save } from '../../../utils/PersistInfo';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from "react-native-flash-message";
-import i18next from '../../Translate';
+import i18next from '../../../Translate';
 
 export class ForgotPassword extends React.Component {
   img = require("../../../assets/forgotpass.png");

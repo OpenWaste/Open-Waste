@@ -10,7 +10,7 @@ import { UserResource } from "../../../models/User";
 import { useNavigation } from '@react-navigation/native';
 import { save } from '../../../utils/PersistInfo';
 import { LoginFormProperties } from "../../../interfaces/profile-types";
-import i18next from '../../Translate';
+import i18next from '../../../Translate';
 
 export class LogIn extends React.Component {
   render() {

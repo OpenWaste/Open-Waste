@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Setting } from "./components/Settings";
 import { AboutUs } from "./components/AboutUs";
 import { Language } from "./components/Language";
-import i18next from "../Translate";
+import i18next from "../../Translate";
 
 const Stack = createStackNavigator();
 

@@ -38,15 +38,15 @@ export default StyleSheet.create({
         marginBottom: 10,
       },
       rightIcon: {
-        marginLeft: 200,
-        marginRight: 10,
+        marginLeft: "auto",
+        marginRight: 20,
       },
       viewElement: {
         flexDirection: "row",
         marginTop: 10,
         marginBottom: 10,
-        borderBottomColor: 'gray',
-        borderBottomWidth: 1,
+        borderColor: "#BDBDBD",
+        borderBottomWidth: 0.5,
       },
       viewMain: {
         marginTop: 40,
