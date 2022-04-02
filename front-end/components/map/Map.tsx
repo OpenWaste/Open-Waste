@@ -29,7 +29,7 @@ export function Map() {
 
   const mapRef = useRef<MapView>(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['3%', '33%'], []);
+  const snapPoints = useMemo(() => ['3%','33%', '50%'], []);
 
   useEffect(() => {
     if (!buildings || buildings.length == 0) {
@@ -152,7 +152,6 @@ export function Map() {
             snapPoints={snapPoints}
             style={styles.bottomSheet}
           >
-          <HStack style={styles.headerContainer}>
             <Heading style={styles.header}>{selectedBuilding.building_name}</Heading>
             <Button
               style={styles.directionsButton}
@@ -160,7 +159,6 @@ export function Map() {
               leftIcon={<Icon as={MaterialCommunityIcons} name="directions" size="sm" />}>
               Get Directions
             </Button>
-          </HStack>
           <Text style={styles.text}>{selectedBuilding.address}</Text>
           <ScrollView
             horizontal={true}
