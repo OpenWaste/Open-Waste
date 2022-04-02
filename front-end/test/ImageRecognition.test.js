@@ -33,7 +33,6 @@ describe("DisplayCamera Parent Component Tests", () => {
 
 describe("Latitude/Longitude Distance Function Tests", () => {
   it("returns 0 when both coordinates are equal", () => {
-
     let val = distance(1, 1, 1, 1)
     expect(val).toBe(0)
   })
