@@ -3,35 +3,42 @@ import { ScrollView, View, Text, Image, TouchableHighlight } from "react-native"
 import style from "./styles/AboutUs";
 import { NativeBaseProvider } from "native-base";
 import { Linking } from 'react-native';
-import Clipboard from '@react-native-community/clipboard';
-
+import i18next from '../../../Translate';
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 export class AboutUs extends React.Component {
 
   render() {
     return (
       <NativeBaseProvider>
+            <TouchableHighlight style={style.midText} underlayColor={"COLOR"} onPress={() => this.props.navigation.navigate('Setting')}>
+              <View style={ style.viewElement }> 
+                    <MaterialIcons name="arrow-back-ios" size={26} color="gray" style={ style.leftIcon }/>
+                    <Text style={style.midText}>
+                      {i18next.t('AboutUs')}
+                    </Text>
+                    <MaterialIcons name="info" size={26} color="gray" style={ style.rightIcon }/>  
+              </View>
+            </TouchableHighlight>
+
         <ScrollView style={style.container}>
           <View style={style.viewMain}>
             <Image source={require("../../../assets/digitizingWaste.png")} style = { style.logo1 }/>
-            <Text style={style.text}>Digitizing Waste is an open collaboration based out of Concordia University, in Montreal, Canada, that aims to accelerate adoption of circular economy through data-driven tools. </Text>
-            <Text style={style.text}>Our waste sorting app was developed by a group of capstone students in SOEN 490 with the supervision of members of CP3 and ZWC. </Text>
+            <Text style={style.text}> {i18next.t('AboutUsPart1')} </Text>
+            <Text style={style.text}> {i18next.t('AboutUsPart2')} </Text>
           </View>
           <View style={style.viewMain}>
             <Image source={require("../../../assets/CP3.png")} style = { style.logo2 }/>
-            <Text style={style.textHeader}>Concordia Precious Plastic Project </Text>
-            <Text style={style.text}>CP3 is a multi-disciplinary student-led initiative supporting 
-            Concordia University’s plastic waste management by recycling plastic 
-            on-site and raising awareness of the plastic crisis. 
-            We are a group of students across all four faculties united by the goal of protecting the environment and giving plastic waste a new life. </Text>
+            <Text style={style.textHeader}> {i18next.t('AboutUsPart3')} </Text>
+            <Text style={style.text}>{i18next.t('AboutUsPart4')} </Text>
           </View>
           <View style={style.viewMain}>
             <Image source={require("../../../assets/zeroWaste.png")} style = { style.logo2 }/>
-            <Text style={style.textHeader}>Zero Waste Concordia </Text>
-            <Text style={style.text}>Our mission is to divert and reduce as much waste on campus away from landfill, and instead reduce, reuse, recycle and rot.  </Text>
+            <Text style={style.textHeader}> Zero Waste Concordia </Text>
+            <Text style={style.text}>{i18next.t('OurMission')}  </Text>
           </View>
           <View style={style.viewMain}>
-            <Text style={style.textHeader}>Contact Us </Text>
+            <Text style={style.textHeader}>{i18next.t('ContactUs')} </Text>
             <View style={ style.viewMain2 }>
               <View style={ style.viewSub1 } >
                 <TouchableHighlight onPress={() => Linking.openURL('mailto:cp3@concordia.ca')}>
@@ -59,18 +66,7 @@ export class AboutUs extends React.Component {
           </View>
 
           <View style={style.viewMain}>
-            <Text style={style.textHeader}>Social Media </Text>
-            <View style={ style.viewMain2 }>
-              <View style={ style.viewSub2 } >
-                <Text style={style.links} onPress={() => Clipboard.setString('cp3@concordia.ca')}
-                title="cp3@concordia.ca"> cp3@concordia.ca </Text>
-              </View>
-              <View style={ style.viewSub2 } >
-                <Text style={style.links} onPress={() => Clipboard.setString('zerowaste@concordia.ca')}
-                title="zerowaste@concordia.ca"> zerowaste@concordia.ca </Text>
-              </View>
-            </View>
-            
+            <Text style={style.textHeader}>{i18next.t('SocialMedia')} </Text>
             <View style={ style.viewMain2 }>
               <View style={ style.viewMain2 }>
                 <View>
@@ -116,13 +112,12 @@ export class AboutUs extends React.Component {
           </View>
           <View>
             <Text style={style.text}>
-            We are grateful for your contributions to this project! By testing the app and submitting your waste images, you are helping to train our algorithm that we hope will demystify waste sorting around the planet.  
+            {i18next.t('AboutUsPart5')}
             </Text>
           </View>
           <View>
             <Text style={style.text}>
-            Want to contribute to the development of this project and other smart waste initiatives? {"\n"}
-            Contact us at:
+            {i18next.t('AboutUsPart6')}
             </Text>
           </View>
           <View style={ style.viewMain2 }>

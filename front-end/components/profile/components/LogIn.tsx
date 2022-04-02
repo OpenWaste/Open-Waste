@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { View, ScrollView, KeyboardAvoidingView, Text, TouchableOpacity } from "react-native";
 import loginStyle from "./styles/login";
 import formStyle from "./styles/forms";
-import { Button, Input, NativeBaseProvider } from 'native-base';
+import { Input, NativeBaseProvider } from 'native-base';
 import { showMessage } from "react-native-flash-message";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Service from "../../../service/service";
@@ -10,24 +10,24 @@ import { UserResource } from "../../../models/User";
 import { useNavigation } from '@react-navigation/native';
 import { save } from '../../../utils/PersistInfo';
 import { LoginFormProperties } from "../../../interfaces/profile-types";
+import i18next from '../../../Translate';
 
 export class LogIn extends React.Component {
-  
   render() {
     return (
       <NativeBaseProvider>
         <ScrollView>
           <KeyboardAvoidingView>
-            <Text style={loginStyle.LogInHeader}>Welcome Back</Text>
+            <Text style={loginStyle.LogInHeader}> {i18next.t('WelcomeBack')} </Text>
             <LoginForm/>
             <Text
               testID="forgotBtn" 
               style={loginStyle.forgotPass} 
-              onPress={() => this.props.navigation.navigate('ForgotPassword')}> Forgot Password? </Text>
+              onPress={() => this.props.navigation.navigate('ForgotPassword')}> {i18next.t('ForgotPassword')} </Text>
             <Text 
               testID="remainBtn"
               style={loginStyle.remainAsGuest} 
-              onPress={() => this.props.navigation.navigate('ProfilePage')}> Remain as Guest </Text>
+              onPress={() => this.props.navigation.navigate('ProfilePage')}> {i18next.t('RemainAsGuest')} </Text>
           </KeyboardAvoidingView>
         </ScrollView>
       </NativeBaseProvider>
@@ -79,7 +79,7 @@ export const LoginForm = (prop) => {
             inputProps={{ "data-testid": "content-input" }}
             borderWidth="0" 
             style={formStyle.registrationTextInputs}
-            placeholder="Username"
+            placeholder={i18next.t('Username')}
             autoFocus={true}
             returnKeyType="next"
             onChangeText={(value:any) => setUsername(value)}
@@ -93,7 +93,7 @@ export const LoginForm = (prop) => {
             type={show ? "text" : "password"} 
             style={formStyle.registrationTextInputs} 
             variant="underlined" 
-            placeholder="Password"
+            placeholder={i18next.t('Password')}
             autoFocus={true}
             onChangeText={(value:any) => setPassword(value)}
             ref={ref_input2} />
@@ -101,10 +101,10 @@ export const LoginForm = (prop) => {
             <MaterialIcons style={formStyle.registrationIcons} name={show ? "visibility-off" : "remove-red-eye"} size={22}/>
           </TouchableOpacity>
         </View>
-        <Button 
+        <Text 
           testID='loginBtn'
           style={loginStyle.logInBtn} 
-          onPress={handleSubmit}> Log In </Button>      
+          onPress={handleSubmit}> {i18next.t('LogIn')} </Text>      
     </View>
     </NativeBaseProvider>
   )

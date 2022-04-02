@@ -5,7 +5,8 @@ import {
   Modal,
   TouchableHighlight,
   Image,
-  ActivityIndicator, ScrollView,
+  ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { Camera } from "expo-camera";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -21,12 +22,20 @@ import {
   PredictionTextProperties,
   PostPictureSnapButtonsProperties,
   CameraViewProperties,
-  PicturePreviewProperties, MapBottomSheetProperties,
+  PicturePreviewProperties,
+  MapBottomSheetProperties,
+  BinWithImage, ClosestBuildingMapMarkerProperties, MapBottomSheetOpenCloseButtonsProperties,
 } from "../../interfaces/camera-types";
 import BottomSheet from "@gorhom/bottom-sheet";
-import { Building, CategoryInstruction } from "../../interfaces/service-types";
-import * as ExpoLocation from 'expo-location'
+import {
+  Building,
+  CategoryInstruction,
+  Bin,
+} from "../../interfaces/service-types";
+import * as ExpoLocation from "expo-location";
 import { getValueFor } from "../../utils/PersistInfo";
+import i18next from '../../Translate';
+import {LocationObject} from "expo-location";
 
 export default function DisplayCamera() {
   const isFocused = useIsFocused();
@@ -41,16 +50,14 @@ export default function DisplayCamera() {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === "granted");
-
     })();
   }, []);
 
   if (!hasPermission) {
-    return <Text>No access to camera</Text>;
+    return <Text>{i18next.t('NoCameraAccess')}</Text>;
   }
 
-  if (isFocused) {    
-
+  if (isFocused) {
     return (
       <NativeBaseProvider>
         <CameraView
@@ -121,6 +128,11 @@ export const CameraView = (props: CameraViewProperties) => {
   );
 };
 
+/**
+ * It creates a React component that displays an image.
+ * @param {PicturePreviewProperties} props - PicturePreviewProperties
+ * @returns A component that renders an image.
+ */
 export const PicturePreview = (props: PicturePreviewProperties) => {
   return (
     <Image
@@ -135,177 +147,309 @@ export const PicturePreview = (props: PicturePreviewProperties) => {
 export const MapModal = (props: MapModalProperties) => {
   const [instruction, setInstruction] = useState<string>();
   const [closestBuilding, setClosestBuilding] = useState<Building>();
+  const [bins, setBins] = useState<Bin[]>();
   const mapRef = useRef<MapView>(null);
-  const INSTRUCTION_SEPARATOR = ';'
 
   if (props.category.length > 0 && instruction == undefined) {
-    getValueFor("category_instructions").then(val => {
-      const categoryInstructions = val as CategoryInstruction[]
-
-      let rawInstructions = categoryInstructions.filter(el => el.category_name == props.category)[0].instruction;
-      let processedInstructions = ""
-      rawInstructions.split(INSTRUCTION_SEPARATOR).forEach((step, index) => {
-        if (step.length > 0)
-          processedInstructions += index + 1 + ". " + step + "\n"
-      })
-      setInstruction(processedInstructions)
-
-    })
+    getValueFor("category_instructions").then((val) => {
+      processRawInstructions(val as CategoryInstruction[], props.category, setInstruction);
+    });
   }
 
   if (closestBuilding == undefined) {
+    getValueFor("buildings").then((val) => {
+      ExpoLocation.getCurrentPositionAsync().then((position) => {
+        processClosestBuilding(val as Building[], position, setClosestBuilding);
+      });
+    });
+  }
 
-    getValueFor("buildings").then(val => {
-      var buildings = val as Building[]
-
-      ExpoLocation.getCurrentPositionAsync().then(position => {
-        let closestBuildingVar: Building
-        let closestBuildingDistance: number
-
-        buildings.forEach((building, index) => {
-          if (index == 0) {
-            closestBuildingVar = building
-            closestBuildingDistance = distance(building.latitude, building.longitude, position.coords.latitude, position.coords.longitude)
-          } else {
-
-            let newDistance = distance(building.latitude, building.longitude, position.coords.latitude, position.coords.longitude);
-            if (newDistance > closestBuildingDistance) {
-              closestBuildingDistance = newDistance
-              closestBuildingVar = building
-            }
-          }
-        })
-        setClosestBuilding(closestBuildingVar)
-
-      })
-    })
+  if (bins == undefined && closestBuilding != undefined) {
+    getValueFor("bins").then((val) => {
+      processClosestBuildingBins(val as Bin[], closestBuilding, setBins);
+    });
   }
 
   return (
-      <Modal
-        testID="map-modal"
-        animationType="slide"
-        transparent={true}
-        visible={props.currentVisibilty}
-        onRequestClose={() => {
-          props.visibilitySetter(false);
-        }}
-      >
-        <View style={style.centeredView}>
-          <View style={style.modalView}>
-            <MaterialIcons
-              testID="modal-close"
-              style={style.modalCloseButton}
-              name="cancel"
-              size={30}
-              onPress={() => props.visibilitySetter(false)}
-            />
-            <MapView
-              ref={mapRef}
-              style={style.map}
-              provider={PROVIDER_GOOGLE}
-              showsUserLocation={true}
-              followsUserLocation={true}
-              showsMyLocationButton={false}
-              onMapReady={()=> {
-                if(closestBuilding != undefined)
-                  mapRef.current?.animateToRegion({latitude:closestBuilding?.latitude, longitude:closestBuilding?.longitude, latitudeDelta:0.02, longitudeDelta:0.02}, 1000)
-              }}
-              initialRegion={{
-                latitude: 45.494862,
-                longitude: -73.5779,
-                latitudeDelta: 0.02,
-                longitudeDelta: 0.02,
-              }}
-            >
-              {
-                (closestBuilding != undefined) ? 
-                  <Marker
-                    key={closestBuilding.id}
-                    coordinate={{ longitude: closestBuilding.longitude, latitude: closestBuilding.latitude }}
-                  >
-                    <MaterialCommunityIcons
-                      name='map-marker'
-                      size={55}
-                      style={{'color':'red'}}
-                    />
-                  </Marker> : <></>
-              }
-            </MapView>
-            <MapBottomSheet category={props.category} instruction={instruction} closestBuilding={closestBuilding}/>
-
-          </View>
+    <Modal
+      testID="map-modal"
+      animationType="slide"
+      transparent={true}
+      visible={props.currentVisibilty}
+      onRequestClose={() => {
+        props.visibilitySetter(false);
+      }}
+    >
+      <View style={style.centeredView}>
+        <View style={style.modalView}>
+          <MaterialIcons
+            testID="modal-close"
+            style={style.modalCloseButton}
+            name="cancel"
+            size={30}
+            onPress={() => props.visibilitySetter(false)}
+          />
+          <MapView
+            ref={mapRef}
+            style={style.map}
+            provider={PROVIDER_GOOGLE}
+            showsUserLocation={true}
+            followsUserLocation={true}
+            showsMyLocationButton={false}
+            onMapReady={() => {
+              if (closestBuilding != undefined)
+                mapRef.current?.animateToRegion(
+                  {
+                    latitude: closestBuilding?.latitude,
+                    longitude: closestBuilding?.longitude,
+                    latitudeDelta: 0.02,
+                    longitudeDelta: 0.02,
+                  },
+                  1000
+                );
+            }}
+            initialRegion={{
+              latitude: 45.494862,
+              longitude: -73.5779,
+              latitudeDelta: 0.02,
+              longitudeDelta: 0.02,
+            }}
+          >
+            <ClosestBuildingMapMarker closestBuilding={closestBuilding}/>
+          </MapView>
+          <MapBottomSheet
+            category={props.category}
+            instruction={instruction}
+            closestBuilding={closestBuilding}
+            bins={bins}
+          />
         </View>
-      </Modal>
+      </View>
+    </Modal>
   );
 };
 
-export const MapBottomSheet = (props: MapBottomSheetProperties) => {
-  const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ["4%", "50%"], []);
-  const [bottomSheetVisible, setBottomSheetVisible] = useState(true);
-
+export const ClosestBuildingMapMarker = (props: ClosestBuildingMapMarkerProperties) => {
   return (
-      <BottomSheet
-          ref={bottomSheetRef}
-          index={1}
-          snapPoints={snapPoints}
-          enableContentPanningGesture={false}
-          enableHandlePanningGesture={false}
-          enableOverDrag={false}
-          handleComponent={() =><View></View>}
-      >
-        {bottomSheetVisible?
-            <MaterialCommunityIcons
-
-                style={style.bottomSheetCloseButton}
-                name="chevron-down"
-                size={30}
-                onPress={() => { bottomSheetRef.current?.collapse(); setBottomSheetVisible(false) }}
-            />
-            :
-            <MaterialCommunityIcons
-
-                style={style.bottomSheetCloseButton}
-                name="chevron-up"
-                size={30}
-                onPress={() => { bottomSheetRef.current?.expand(); setBottomSheetVisible(true) }}
-            />}
-        <ScrollView >
-          <View style={style.bottomSheetViewStyle}>
-            <Text><Text style={style.bottomSheetHeaderText}>Category:</Text> <Text style={style.bottomSheetContentText}> {props.category + "\n"} </Text></Text>
-
-            {
-              (props.instruction != undefined)?
-                  <Text testID="instruction-text"><Text style={style.bottomSheetHeaderText}>Disposal Method</Text><Text style={style.bottomSheetContentText}> {"\n" + props.instruction}</Text></Text>:<></>
-            }
-
-            <View style={style.verticallyAlignedView}>
+      <>
+        {props.closestBuilding != undefined ?
+            <Marker
+                testID="closest-building-marker"
+                key={props.closestBuilding.id}
+                coordinate={{
+                  longitude: props.closestBuilding.longitude,
+                  latitude: props.closestBuilding.latitude,
+                }}
+            >
               <MaterialCommunityIcons
-                name='map-marker'
-                size={25}
-                style={{'color':'red'}}
-            />
-            <Text style={style.bottomSheetHeaderText}>{props.closestBuilding?.building_name}</Text>
-            </View>
-            <Text style={style.bottomSheetContentText}>{props.closestBuilding?.address}</Text>
-          </View>
-        </ScrollView>
-      </BottomSheet>
+                  name="map-marker"
+                  size={55}
+                  style={{ color: "red" }}
+              />
+            </Marker>
+         : <></>
+        }
+      </>
   )
 }
 
-function distance(lat1: number, lon1: number, lat2: number, lon2: number) {
-  var p = 0.017453292519943295;    // Math.PI / 180
-  var c = Math.cos;
-  var a = 0.5 - c((lat2 - lat1) * p)/2 + 
-          c(lat1 * p) * c(lat2 * p) * 
-          (1 - c((lon2 - lon1) * p))/2;
+export function processRawInstructions(categoryInstructions:CategoryInstruction[], category:string, instructionSetterCallBack:(val:string)=>void):void {
+  const INSTRUCTION_SEPARATOR = ";";
 
-  return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+  let rawInstructions = categoryInstructions.filter(
+      (el) => el.category_name == category
+  )[0].instruction;
+  let processedInstructions = "";
+  rawInstructions.split(INSTRUCTION_SEPARATOR).forEach((step, index) => {
+    if (step.length > 0)
+      processedInstructions += index + 1 + ". " + step + "\n";
+  });
+  instructionSetterCallBack(processedInstructions);
+}
+
+export function processClosestBuilding(buildings:Building[], position:LocationObject, closestBuildingSetterCallBack:(val:Building)=>void):void {
+  let closestBuildingVar: Building|undefined;
+  let closestBuildingDistance: number;
+
+  buildings.forEach((building, index) => {
+    if (index == 0) {
+      closestBuildingVar = building;
+      closestBuildingDistance = distance(
+          building.latitude,
+          building.longitude,
+          position.coords.latitude,
+          position.coords.longitude
+      );
+    } else {
+      let newDistance = distance(
+          building.latitude,
+          building.longitude,
+          position.coords.latitude,
+          position.coords.longitude
+      );
+      if (newDistance < closestBuildingDistance) {
+        closestBuildingDistance = newDistance;
+        closestBuildingVar = building;
+      }
+    }
+  });
+
+  if(closestBuildingVar != undefined)
+    closestBuildingSetterCallBack(closestBuildingVar);
+}
+export function processClosestBuildingBins(bins:Bin[], closestBuilding:Building, binsSetterCallback:(val:Bin[])=>void):void {
+
+  let nearestBuildingBins = bins.filter(
+      (bin) => bin.building_id == closestBuilding.id
+  );
+  binsSetterCallback(nearestBuildingBins);
+}
+
+export const MapBottomSheet = (props: MapBottomSheetProperties) => {
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(() => ["5%", "50%"], []);
+  const [bottomSheetVisible, setBottomSheetVisible] = useState(true);
+  const [binWithImages, setBinWithImages] = useState<BinWithImage[]>();
+
+  if (binWithImages == undefined) {
+    let binImagesArray = [];
+    props.bins?.forEach((bin, idx) => {
+      Service.getBinImages(bin.id).then((r) => {
+        binImagesArray.push({ bin: bin, imageBase64: r.data[0] });
+        if (idx == props.bins?.length - 1) {
+          setBinWithImages(binImagesArray);
+        }
+      });
+    });
+  }
+
+  return (
+    <BottomSheet
+      ref={bottomSheetRef}
+      index={1}
+      snapPoints={snapPoints}
+      enableContentPanningGesture={false}
+      enableHandlePanningGesture={false}
+      enableOverDrag={false}
+      handleComponent={() => <></>}
+    >
+      <MapBottomSheetOpenCloseButtons
+          collapse={bottomSheetRef.current?.collapse}
+          expand={bottomSheetRef.current?.expand}
+          bottomSheetVisible={bottomSheetVisible}
+          bottomSheetVisibilitySetter={setBottomSheetVisible}
+      />
+      <ScrollView>
+        <View style={style.bottomSheetViewStyle}>
+          <Text>
+            <Text style={style.bottomSheetHeaderText}>Category:</Text>{" "}
+            <Text style={style.bottomSheetContentText}>
+              {" "}
+              {props.category + "\n"}{" "}
+            </Text>
+          </Text>
+
+          {props.instruction != undefined ? (
+            <Text testID="instruction-text">
+              <Text style={style.bottomSheetHeaderText}>Disposal Method</Text>
+              <Text style={style.bottomSheetContentText}>
+                {" "}
+                {"\n" + props.instruction}
+              </Text>
+            </Text>
+          ) : (
+            <></>
+          )}
+
+          <>
+            <Text style={style.bottomSheetHeaderText}>
+              {props.closestBuilding?.building_name} - {props.bins?.length} Bins
+            </Text>
+          </>
+
+          {binWithImages?.map((binWithImage: BinWithImage, index:number) => {
+            return (
+              <React.Fragment key={index.toString()}>
+                <View style={style.verticallyAlignedView}>
+                  <MaterialCommunityIcons
+                    name="map-marker"
+                    size={25}
+                    style={{ color: "red" }}
+                  />
+                  <Text style={style.bottomSheetContentText}>
+                    {binWithImage.bin.location_name} - Floor{" "}
+                    {binWithImage.bin.floor_number}
+                  </Text>
+                </View>
+                <Image
+                  source={{ uri: binWithImage.imageBase64 }}
+                  style={style.imageBin}
+                  resizeMode="contain"
+                />
+              </React.Fragment>
+            );
+          })}
+        </View>
+      </ScrollView>
+    </BottomSheet>
+  );
+};
+
+export const MapBottomSheetOpenCloseButtons = (props:MapBottomSheetOpenCloseButtonsProperties) => {
+
+  return(
+      <>
+        {props.bottomSheetVisible ? (
+            <MaterialCommunityIcons
+                testID="bottom-sheet-close-btn"
+                style={style.bottomSheetCloseButton}
+                name="chevron-down"
+                size={40}
+                onPress={() => {
+                  if (props.collapse) {
+                    props.collapse();
+                  }
+                  props.bottomSheetVisibilitySetter(false);
+                }}
+            />
+        ) : (
+            <MaterialCommunityIcons
+                testID="bottom-sheet-open-btn"
+                style={style.bottomSheetCloseButton}
+                name="chevron-up"
+                size={40}
+                onPress={() => {
+                  if (props.expand) {
+                    props.expand();
+                  }
+                  props.bottomSheetVisibilitySetter(true);
+                }}
+            />
+        )}
+      </>
+  )
 }
 
 
+
+/**
+ * Given two points on the Earth's surface, calculate the distance between them
+ * @param {number} lat1 - Latitude of the first point
+ * @param {number} lon1 - Longitude of the first point
+ * @param {number} lat2 - Latitude of the second point in decimal degrees
+ * @param {number} lon2 - Longitude of the second location in decimal degrees
+ * @returns The distance between the two points in kilometers.
+ */
+export function distance(lat1: number, lon1: number, lat2: number, lon2: number) {
+  var p = 0.017453292519943295; // Math.PI / 180
+  var c = Math.cos;
+  var a =
+    0.5 -
+    c((lat2 - lat1) * p) / 2 +
+    (c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))) / 2;
+
+  return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+}
 
 // Camera trigger button: displayed only before a picture is taken
 export const CameraTriggerButton = (props: CameraTriggerButtonProperties) => {
@@ -329,6 +473,13 @@ export const CameraTriggerButton = (props: CameraTriggerButtonProperties) => {
   );
 };
 
+/**
+ * It renders the prediction text.
+ * @param {PredictionTextProperties} props - PredictionTextProperties
+ * @returns The `PredictionText` component is being returned. It is a functional component that takes
+ * in a `predictionString` prop and returns a view with a text component that displays the prediction
+ * string.
+ */
 export const PredictionText = (props: PredictionTextProperties) => {
   return (
     <View style={style.predictionTextContainer}>
@@ -349,7 +500,9 @@ export const PredictionText = (props: PredictionTextProperties) => {
 
 // Buttons rendered after a picture has been taken AND a prediction was returned
 // This includes the CANCEL and NEXT button. The latter of which triggers the MapModal
-export const PostPictureSnapButtons = (props: PostPictureSnapButtonsProperties) => {
+export const PostPictureSnapButtons = (
+  props: PostPictureSnapButtonsProperties
+) => {
   return (
     <>
       <TouchableHighlight

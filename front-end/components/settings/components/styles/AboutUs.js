@@ -99,5 +99,30 @@ export default StyleSheet.create({
     links: {
       color: 'blue',
       textAlign: 'center'
-    }
+    },
+    leftIcon: {
+      marginLeft: 20,
+      marginRight: 0,
+      color: "grey",
+    },
+    rightIcon: {
+      marginLeft: 60,
+      marginRight: 10,
+      color: "grey",
+    },
+    midText: {
+      fontFamily: "Roboto",
+      fontSize: 20,
+      fontWeight: "bold",
+      textAlign: "left",
+      marginLeft: 5,
+      marginRight: 125,
+      marginTop: 2,
+      color: "grey",
+    },
+    viewElement: {
+      flexDirection: "row",
+      marginTop: 30,
+      marginBottom: 10,
+    },
 });

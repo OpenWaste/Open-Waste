@@ -1,5 +1,6 @@
 import * as React from "react";
 import { MainContainer } from "./components/MainContainer";
+import { MainContainerFR } from "./components/MainContainerFR";
 import Service from "./service/service";
 import "react-native-gesture-handler";
 import * as Location from 'expo-location';
@@ -8,6 +9,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import OnboardingScreen from "./components/OnboardingScreen";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getValueFor } from './utils/PersistInfo';
 
 const AppStack = createStackNavigator();
 
@@ -19,6 +21,7 @@ const App = () => {
 
   // Allows to 'remember' if you are a first time user; If yes, show the onboarding screen, else do not show.
   const [isFirstLaunch, setIsFirstLauch] = React.useState(false); 
+  const [LanguageIsFrench, setIsFrench] = React.useState(false); 
 
   React.useEffect(() => {
     AsyncStorage.getItem('AlreadyLaunched').then(value => {
@@ -28,6 +31,15 @@ const App = () => {
       }
       else {
         setIsFirstLauch(false);
+      }
+    });
+    // set language to french on startup if the app was set to french previously
+    getValueFor('language').then((output) => {
+        if(output == 'fr') {
+          setIsFrench(true);
+      }
+      else {
+        setIsFrench(false);
       }
     });
   }, []);
@@ -42,7 +54,12 @@ const App = () => {
       </NavigationContainer>
     );
   }
-  return <MainContainer />
+  else if (LanguageIsFrench){
+    return <MainContainerFR />
+  }
+  else {
+    return <MainContainer />
+  }
 }
 
 export default App;

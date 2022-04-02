@@ -4,12 +4,13 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 
 import { LogIn } from "./LogIn";
 import { SignUp } from "./SignUp";
+import i18next from '../../../Translate';
 
 const Tab = createMaterialTopTabNavigator();
 
 const screens = [
-  { name: "Log In", component: LogIn },
-  { name: "Sign Up", component: SignUp },
+  { name: i18next.t('LogIn'), component: LogIn },
+  { name: i18next.t('SignUp'), component: SignUp },
 ];
 
 export class Registration extends React.Component {
