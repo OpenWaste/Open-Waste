@@ -131,4 +131,7 @@ export default StyleSheet.create({
     width: 200,
     marginBottom: 20,
   },
+  directionBtn:{
+    marginLeft:"auto",
+  }
 });
