@@ -295,11 +295,13 @@ describe("MapModal Component Tests", () => {
     save("category_instructions", mockCategoryInstruction);
 
     const { getByTestId } = render(
-      <MapModal
-        category="test"
-        currentVisibilty={visibility}
-        visibilitySetter={visibilitySetterMock}
-      />
+        <NativeBaseProvider initialWindowMetrics={inset}>
+          <MapModal
+              category="test"
+              currentVisibilty={visibility}
+              visibilitySetter={visibilitySetterMock}
+          />
+        </NativeBaseProvider>
     );
 
     //Confirm that visibility has been set to true
@@ -316,12 +318,14 @@ describe("MapModal Component Tests", () => {
 describe("MapBottomSheet Component Tests", () => {
   it("MapBottomSheet should not render instruction wrapper if undefined", () => {
     const { queryByTestId } = render(
-      <MapBottomSheet
-        category="test"
-        instruction={undefined}
-        closestBuilding={undefined}
-        bins={[{}]}
-      />
+        <NativeBaseProvider initialWindowMetrics={inset}>
+          <MapBottomSheet
+              category="test"
+              instruction={undefined}
+              closestBuilding={undefined}
+              bins={[{}]}
+          />
+        </NativeBaseProvider>
     );
 
     expect(queryByTestId("instruction-text")).toBeNull();
@@ -330,12 +334,14 @@ describe("MapBottomSheet Component Tests", () => {
   it("MapBottomSheet should render instruction wrapper if defined", () => {
     
       const {queryByTestId} = render(
-        <MapBottomSheet
-          category="test"
-          instruction="test"
-          closestBuilding={undefined}
-          bins={[{}]}
-        />
+          <NativeBaseProvider initialWindowMetrics={inset}>
+            <MapBottomSheet
+                category="test"
+                instruction="test"
+                closestBuilding={undefined}
+                bins={[{}]}
+            />
+          </NativeBaseProvider>
       );
 
     expect(queryByTestId("instruction-text")).not.toBeNull();

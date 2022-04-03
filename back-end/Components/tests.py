@@ -92,10 +92,26 @@ class UpdatePassword(TestCase):
         user_info = {'password': PASSWORD}
 
         # patch request
-        response = self.client.patch(self.path, user_info)
+        response = self.client.patch(self.path, user_info, content_type=CONTENT_TYPE)
 
         # assert status code: 400
         self.assertEqual(response.status_code, 400)
+
+    def test_update_password_success(self):
+        # create user
+        self.user = DWUser.objects.create_user(USER_NAME.lower(),
+                                                TEST_EMAIL,
+                                                PASSWORD)
+        self.user.save()
+        # user
+        user_info = {'username': USER_NAME, 'password': 'newpass'}
+
+        # patch request
+        response = self.client.patch(self.path, user_info, content_type=CONTENT_TYPE)
+
+        # assert status code: 400
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue("Successfully changed password." in response.json())
 
 
 class UpdateUsernameAndEmail(TestCase):
@@ -140,9 +156,10 @@ class DeleteUser(TestCase):
 
     def test_delete_user_success(self):
         # create user
-        self.user = DWUser.objects.create_user({'username': USER_NAME,
-                                                'email': TEST_EMAIL,
-                                                'password': PASSWORD})
+        self.user = DWUser.objects.create_user(USER_NAME.lower(),
+                                                TEST_EMAIL,
+                                                PASSWORD)
+        self.user.save()
 
         # user
         user_info = {'username': USER_NAME}
@@ -153,6 +170,22 @@ class DeleteUser(TestCase):
 
         # assert status code: 200
         self.assertEqual(response.status_code, 200)
+        self.assertTrue("The user is deleted." in response.json())
+
+
+    def test_delete_user_that_does_not_exist(self):
+        # user that does not exist
+        user_info = {'username': USER_NAME}
+
+        # delete request
+        response = self.client.delete(
+            self.path, user_info, content_type=CONTENT_TYPE)
+
+        # assert status code: 200
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue("The user does not exist." in response.json())
+
+
 
     def test_delete_user_missing_param_fail(self):
         # user
@@ -305,30 +338,6 @@ class ImageRecognitionTest(TestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertTrue('prediction' not in response.data)
-
-
-class BinImagesTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.path = '/bin-images/1'
-
-    def test_get_bin_images(self):
-        Building(id=1, building_name='hall building', address='123 address street',
-                 latitude=45, longitude=46).save()  # For foreign key
-        Bin(id=1,
-            location_name='second floor hall bins',
-            floor_number=2,
-            room_number='n/a',
-            disposal_type='d_type',
-            accepted_categories='C1',
-            building_id=1).save()
-        BinImages(id=1, bin_images='base64img', bin_id=1).save()
-        BinImages(id=2, bin_images='base64img2', bin_id=1).save()
-
-        # get request
-        response = self.client.get(self.path)
-
-        self.assertEquals(response.json(), ['base64img', 'base64img2'])
 
 
 class ResetPassword(TestCase):

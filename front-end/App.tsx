@@ -9,7 +9,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import OnboardingScreen from "./components/OnboardingScreen";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getValueFor } from './utils/PersistInfo';
+import {getValueFor, save} from './utils/PersistInfo';
 
 const AppStack = createStackNavigator();
 
@@ -24,15 +24,13 @@ const App = () => {
   const [LanguageIsFrench, setIsFrench] = React.useState(false); 
 
   React.useEffect(() => {
-    AsyncStorage.getItem('AlreadyLaunched').then(value => {
-      if(value == null) {
-        AsyncStorage.setItem('AlreadyLaunched', 'true');
-        setIsFirstLauch(true);
-      }
-      else {
-        setIsFirstLauch(false);
-      }
+    getValueFor('AlreadyLaunched').then(value => {
+      setIsFirstLauch(!(value as boolean));
+    }).catch(() => {
+      save('AlreadyLaunched', true)
+      setIsFirstLauch(true);
     });
+
     // set language to french on startup if the app was set to french previously
     getValueFor('language').then((output) => {
         if(output == 'fr') {
