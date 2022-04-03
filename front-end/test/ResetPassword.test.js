@@ -29,6 +29,37 @@ describe("ResetPassword Tests", () => {
     expect(queryByTestId("submitBtn")).not.toBeNull();
   });
 
+  it("Fill In Password Fields", () => {
+    const { queryByTestId } = render(
+      <NativeBaseProvider initialWindowMetrics={inset}>
+        <NavigationContainer>
+          <ResetPasswordForm />
+        </NavigationContainer>
+      </NativeBaseProvider>
+    );
+
+    const field1 = queryByTestId("password1");
+    const field2 = queryByTestId("password2");
+    fireEvent.changeText(field1, "123");
+    fireEvent(field1, 'submitEditing')
+    fireEvent.changeText(field2, "321");
+  });
+
+  it("Show Passwords", () => {
+    const { queryByTestId } = render(
+      <NativeBaseProvider initialWindowMetrics={inset}>
+        <NavigationContainer>
+          <ResetPasswordForm />
+        </NavigationContainer>
+      </NativeBaseProvider>
+    );
+
+    const button1 = queryByTestId("showPass1");
+    const button2 = queryByTestId("showPass2");
+    fireEvent.press(button1);
+    fireEvent.press(button2);
+  });
+
   it("Press Submit Button", () => {
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>

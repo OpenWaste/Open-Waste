@@ -26,7 +26,7 @@ export class ForgotPassword extends React.Component {
                 {i18next.t('ForgotPasswordText')}
               </Text>
               <ResetPassword/>
-              <Text style={passStyle.toLogin} onPress={() => this.props.navigation.navigate("BackToLogin")}> </Text>
+              <Text testID="loginBtn" style={passStyle.toLogin} onPress={() => this.props.navigation.navigate("BackToLogin")}> </Text>
             </View>
           </KeyboardAvoidingView>
         </ScrollView>

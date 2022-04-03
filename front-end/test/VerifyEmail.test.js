@@ -1,6 +1,6 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import { render } from "@testing-library/react-native";
+import { render, fireEvent } from "@testing-library/react-native";
 import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from "@react-navigation/native";
 import {
@@ -27,4 +27,31 @@ describe("VerifyEmail Tests", () => {
     expect(queryByTestId("passcodeField")).not.toBeNull();
     expect(queryByTestId("submitBtn")).not.toBeNull();
   });
+
+  it("Fill In Password Field", () => {
+    const { getByTestId } = render(
+      <NativeBaseProvider initialWindowMetrics={inset}>
+        <NavigationContainer>
+          <ValidatePasscode navigation={fakeNavigation} />
+        </NavigationContainer>
+      </NativeBaseProvider>
+    );
+
+    const field = getByTestId("passcodeField");
+    fireEvent.changeText(field, "123");
+  });
+
+  it("Submit Form", () => {
+    const { getByTestId } = render(
+      <NativeBaseProvider initialWindowMetrics={inset}>
+        <NavigationContainer>
+          <ValidatePasscode navigation={fakeNavigation} />
+        </NavigationContainer>
+      </NativeBaseProvider>
+    );
+
+    const button = getByTestId("submitBtn");
+    fireEvent.press(button);
+  });
+
 });

@@ -28,6 +28,19 @@ describe("ForgotPassword Tests", () => {
     expect(queryByTestId("submitBtn")).not.toBeNull();
   });
 
+  it("Fill In Email Field", () => {
+    const { queryByTestId } = render(
+      <NativeBaseProvider initialWindowMetrics={inset}>
+        <NavigationContainer>
+          <ResetPassword navigation={fakeNavigation} />
+        </NavigationContainer>
+      </NativeBaseProvider>
+    );
+
+    const field = queryByTestId("emailField");
+    fireEvent.changeText(field, "test@gmail.com");
+  });
+
   it("Press Submit Button", () => {
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
@@ -39,5 +52,19 @@ describe("ForgotPassword Tests", () => {
 
     const button = queryByTestId("submitBtn");
     fireEvent.press(button);
+  });
+
+  it("Press Back to Login Button", () => {
+    const { queryByTestId } = render(
+      <NativeBaseProvider initialWindowMetrics={inset}>
+        <NavigationContainer>
+          <ForgotPassword navigation={fakeNavigation} />
+        </NavigationContainer>
+      </NativeBaseProvider>
+    );
+
+    const button = queryByTestId("loginBtn");
+    fireEvent.press(button);
+    expect(fakeNavigation.navigate).toBeCalledWith("BackToLogin");
   });
 });

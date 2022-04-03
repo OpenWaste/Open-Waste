@@ -3,6 +3,7 @@ import { View, ScrollView, SafeAreaView, Text, Image, Alert } from "react-native
 import style from "./styles/profile";
 import { NativeBaseProvider } from 'native-base';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { useNavigation } from '@react-navigation/native';
 import { deleteValueFor, getValueFor } from '../../../utils/PersistInfo';
 import { showMessage } from "react-native-flash-message";
 import i18next from '../../../Translate';
@@ -51,15 +52,7 @@ export class Profile extends React.Component {
     }
     else {
       return (
-        <NativeBaseProvider>
-          <View>
-            <View style={style.header}></View>
-            {/* TODO: Pull profile pic from database. */}
-            <Image style={style.profilePic} source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}} />
-            <Text style={style.username}> {i18next.t('Guest')} </Text>
-            <Text style={style.loginBtn} onPress={() => this.props.navigation.navigate('Registration')}> {i18next.t('LogIn')} </Text>
-          </View>
-        </NativeBaseProvider>
+        <GuestPage/>
       );
     }
   }
@@ -76,7 +69,10 @@ export class Profile extends React.Component {
     }
   
     return (
-      <Text style={style.logOutBtn} onPress={handleLogOut}> {i18next.t('LogOut')} </Text>
+      <Text 
+        testID="logOutBtn"
+        style={style.logOutBtn} 
+        onPress={handleLogOut}> {i18next.t('LogOut')} </Text>
     )
     
   }
@@ -139,3 +135,21 @@ export function InfoBox(props: any) {
     </View>
   );
 }
+
+export function GuestPage() {
+
+  const navigation = useNavigation();
+  
+  return(
+    <NativeBaseProvider>
+      <View>
+        <View style={style.header}></View>
+        {/* TODO: Pull profile pic from database. */}
+        <Image style={style.profilePic} source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}} />
+        <Text style={style.username}> {i18next.t('Guest')} </Text>
+        <Text testID="logInBtn" style={style.loginBtn} onPress={() => navigation.navigate('Registration')}> {i18next.t('LogIn')} </Text>
+      </View>
+    </NativeBaseProvider>
+  )
+}
+

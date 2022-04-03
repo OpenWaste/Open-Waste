@@ -1,10 +1,14 @@
 import React from "react";
 import renderer from "react-test-renderer";
+import Adapter from 'enzyme-adapter-react-16';
+import { configure, shallow, unmount } from "enzyme";
 import { render, fireEvent } from "@testing-library/react-native";
 import { LogIn, LoginForm } from "../components/profile/components/LogIn";
 import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from "@react-navigation/native";
-import { inset, fakeNavigation } from "./utils/constants";
+import { inset, fakeNavigation, showPass } from "./utils/constants";
+
+configure({adapter: new Adapter()});
 
 describe("LogIn Tests", () => {
   it("renders correctly", async () => {
@@ -65,6 +69,7 @@ describe("LogIn Tests", () => {
 
     const field = getByTestId("usernameField");
     fireEvent.changeText(field, "John");
+    fireEvent(field, 'submitEditing')
   });
 
   it("Enter password field", async () => {
@@ -94,4 +99,34 @@ describe("LogIn Tests", () => {
     const button = getByTestId("loginBtn");
     fireEvent.press(button);
   });
+
+  it("Show Password", () => {
+
+    const { getByTestId } = render(
+      <NativeBaseProvider initialWindowMetrics={inset}>
+        <NavigationContainer>
+          <LoginForm />
+        </NavigationContainer>
+      </NativeBaseProvider>
+    );
+
+    const button = getByTestId("showPassBtn");
+    fireEvent.press(button);
+
+  });
+
+  it("Unmount Login Component", () => {
+
+    const wrapper = shallow(
+      <NativeBaseProvider initialWindowMetrics={inset}>
+        <NavigationContainer>
+          <LoginForm />
+        </NavigationContainer>
+      </NativeBaseProvider>
+    );
+
+    wrapper.unmount()
+
+  });
+
 });

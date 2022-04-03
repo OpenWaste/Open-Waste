@@ -141,6 +141,7 @@ export function EditForm() {
                   size={22}
                 />
                 <Input
+                  testID="usernameField"
                   style={formStyle.registrationTextInputs}
                   onChangeText={(value: any) => {
                     setValue(value, "user");
@@ -168,6 +169,7 @@ export function EditForm() {
                   size={22}
                 />
                 <Input
+                  testID="emailField"
                   style={formStyle.registrationTextInputs}
                   onChangeText={(value: any) => {
                     setValue(value, "email");
@@ -264,6 +266,7 @@ export function DeleteAccount() {
                 {i18next.t('Delete')}
               </Button>
               <Button
+                testID="modalCancelBtn"
                 variant="unstyled"
                 colorScheme="coolGray"
                 onPress={onClose}

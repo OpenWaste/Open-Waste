@@ -3,7 +3,7 @@ import renderer from "react-test-renderer";
 import { render, fireEvent } from "@testing-library/react-native";
 import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from "@react-navigation/native";
-import { SignUp, SignUpForm } from "../components/profile/components/SignUp";
+import { SignUp, SignUpForm, userAuthenticated } from "../components/profile/components/SignUp";
 import { inset } from './utils/constants';
 
 describe("SignUp Tests", () => {
@@ -38,6 +38,7 @@ describe("SignUp Tests", () => {
 
     const field = getByTestId("usernameField");
     fireEvent.changeText(field, "John");
+    fireEvent(field, 'submitEditing')
   });
 
   it("Enter Password Field", () => {
@@ -51,6 +52,7 @@ describe("SignUp Tests", () => {
 
     const field = getByTestId("passwordField");
     fireEvent.changeText(field, "123");
+    fireEvent(field, 'submitEditing')
   });
 
   it("Enter email Field", () => {
@@ -65,4 +67,37 @@ describe("SignUp Tests", () => {
     const field = getByTestId("emailField");
     fireEvent.changeText(field, "John@gmail.com");
   });
+
+  it("Press Show Password Button", () => {
+    const { getByTestId } = render(
+      <NativeBaseProvider initialWindowMetrics={inset}>
+        <NavigationContainer>
+          <SignUpForm />
+        </NavigationContainer>
+      </NativeBaseProvider>
+    );
+
+    const button = getByTestId("showPassBtn");
+    fireEvent.press(button);
+  });
+
+  it("Submit Form", () => {
+
+    const username = "test";
+    const password = "test123";
+    const email = "test@gmail.com";
+
+    const { getByTestId } = render(
+      <NativeBaseProvider initialWindowMetrics={inset}>
+        <NavigationContainer>
+          <SignUpForm username={username} password={password} email={email}/>
+        </NavigationContainer>
+      </NativeBaseProvider>
+    );
+
+    const button = getByTestId("signUpBtn");
+    fireEvent.press(button);
+    expect(userAuthenticated()).not.toBeNull();
+  });
+
 });

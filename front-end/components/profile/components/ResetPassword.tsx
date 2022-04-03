@@ -90,7 +90,7 @@ export function ResetPasswordForm() {
           onChangeText={(value:any) => setPass1(value)}
           onSubmitEditing={() => ref_input2.current.focus()}
         />
-        <TouchableOpacity onPress={showPass1}>
+        <TouchableOpacity testID="showPass1" onPress={showPass1}>
           {show1 ? (
             <MaterialIcons
               style={formStyle.registrationIcons}
@@ -123,7 +123,7 @@ export function ResetPasswordForm() {
           ref={ref_input2}
           onChangeText={(value:any) => setPass2(value)}
         />
-        <TouchableOpacity onPress={showPass2}>
+        <TouchableOpacity testID="showPass2" onPress={showPass2}>
           {show2 ? (
             <MaterialIcons
               style={formStyle.registrationIcons}

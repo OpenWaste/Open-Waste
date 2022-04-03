@@ -38,8 +38,8 @@ export class LogIn extends React.Component {
 export const LoginForm = (prop) => {
 
   const ref_input2 = useRef();
-  const [show, setShow] = React.useState(false)
-  const showPass = () => setShow(!show)
+  const [show, setShow] = React.useState(false);
+  const showPass = () => setShow(!show);
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
  
@@ -97,7 +97,7 @@ export const LoginForm = (prop) => {
             autoFocus={true}
             onChangeText={(value:any) => setPassword(value)}
             ref={ref_input2} />
-          <TouchableOpacity onPress={showPass}>
+          <TouchableOpacity testID="showPassBtn" onPress={showPass}>
             <MaterialIcons style={formStyle.registrationIcons} name={show ? "visibility-off" : "remove-red-eye"} size={22}/>
           </TouchableOpacity>
         </View>

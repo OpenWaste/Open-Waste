@@ -24,6 +24,8 @@
     "@testing-library/react": "^12.1.3",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.24.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
     "expo": "~42.0.1",
     "expo-camera": "~11.2.2",
     "expo-image-manipulator": "~9.2.2",

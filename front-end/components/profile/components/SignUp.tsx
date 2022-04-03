@@ -57,12 +57,10 @@ export function SignUpForm() {
   
       // Get response from create-user endpoint
       Service.submitAccountCreation(user).then((resp) => {
-        save('username', username)
-        save('email', email)
-        save('submitted_images', 0)
-        save('accepted_images', 0)
+        save('username', username);
+        save('email', email);
         navigation.navigate('ProfilePage');
-        showMessage({ message: 'Success!', type: 'success' });
+        userAuthenticated();
       }).catch(error => {
         showMessage({ message: error.toJSON().message, type: 'warning' });
       })
@@ -100,7 +98,7 @@ export function SignUpForm() {
           onChangeText={(value:any) => setPassword(value)}
           onSubmitEditing={() => ref_input3.current.focus()}
           ref={ref_input2} />
-        <TouchableOpacity onPress={showPass}>
+        <TouchableOpacity testID="showPassBtn" onPress={showPass}>
           <MaterialIcons style={formStyle.registrationIcons} name={show ? "visibility-off" : "remove-red-eye"} size={22}/>
         </TouchableOpacity>
       </View>
@@ -122,3 +120,9 @@ export function SignUpForm() {
     </View>
   )
 }
+
+export function userAuthenticated() {
+  save('submitted_images', 0);
+  save('accepted_images', 0);
+  showMessage({ message: 'Success!', type: 'success' });
+};

@@ -1,6 +1,6 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import { render } from "@testing-library/react-native";
+import { render, fireEvent } from "@testing-library/react-native";
 import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from "@react-navigation/native";
 import {
@@ -31,8 +31,34 @@ describe("EditProfile tests", () => {
     expect(queryByTestId("saveBtn")).not.toBeNull();
   });
 
-  it("Delete Modal Renders Properly", () => {
+  it("Save Information", () => {
     const { queryByTestId } = render(
+      <NativeBaseProvider initialWindowMetrics={inset}>
+        <NavigationContainer>
+          <EditForm/>
+        </NavigationContainer>
+      </NativeBaseProvider>
+    );
+
+    const button = queryByTestId("saveBtn");
+    fireEvent.press(button);
+  });
+
+  it("Cancel Changes on Edit Form", () => {
+    const { getByTestId } = render(
+      <NativeBaseProvider initialWindowMetrics={inset}>
+        <NavigationContainer>
+          <EditForm />
+        </NavigationContainer>
+      </NativeBaseProvider>
+    );
+    
+    const button = getByTestId("cancelBtn");
+    fireEvent.press(button);
+  });
+
+  it("Delete Modal Renders Properly", () => {
+    const { getByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
         <NavigationContainer>
           <DeleteAccount />
@@ -40,6 +66,50 @@ describe("EditProfile tests", () => {
       </NativeBaseProvider>
     );
 
-    expect(queryByTestId("deleteBtn")).not.toBeNull();
+    const button = getByTestId("deleteBtn");
+    fireEvent.press(button);
   });
+
+  it("Close Delete Modal", () => {
+    const { getByTestId } = render(
+      <NativeBaseProvider initialWindowMetrics={inset}>
+        <NavigationContainer>
+          <DeleteAccount />
+        </NavigationContainer>
+      </NativeBaseProvider>
+    );
+    
+    const button1 = getByTestId("deleteBtn");
+    fireEvent.press(button1);
+
+    const button2 = getByTestId("modalCancelBtn");
+    fireEvent.press(button2);
+  });
+
+  it("Enter Username Field", () => {
+    const { getByTestId } = render(
+      <NativeBaseProvider initialWindowMetrics={inset}>
+        <NavigationContainer>
+          <EditForm />
+        </NavigationContainer>
+      </NativeBaseProvider>
+    );
+
+    const field = getByTestId("usernameField");
+    fireEvent.changeText(field, "newtest");
+  });
+
+  it("Enter Email Field", () => {
+    const { getByTestId } = render(
+      <NativeBaseProvider initialWindowMetrics={inset}>
+        <NavigationContainer>
+          <EditForm />
+        </NavigationContainer>
+      </NativeBaseProvider>
+    );
+
+    const field = getByTestId("emailField");
+    fireEvent.changeText(field, "newtest@gmail.com");
+  });
+
 });
