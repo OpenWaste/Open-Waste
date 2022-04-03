@@ -1,11 +1,17 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-    onboardingImg: {
+    logo: {
         width: "50%",
         height: "50%",
         padding: "40%",
         margin: "-15%",    
+        resizeMode: "contain",
+    },
+    appMockupImages: {
+        width: 400,
+        height: 400,
+        margin: -25,    
         resizeMode: "contain",
     },
 });
