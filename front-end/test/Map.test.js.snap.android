@@ -114,7 +114,7 @@ exports[`Map Tests Map component renders correctly 1`] = `
                     },
                   ]
                 }
-                testID="searchBar"
+                testID="search-bar"
                 underlineColorAndroid="transparent"
                 value=""
               />
@@ -143,7 +143,7 @@ exports[`Map Tests Map component renders correctly 1`] = `
           renderItem={[Function]}
           scrollEventThrottle={50}
           stickyHeaderIndices={Array []}
-          testID="flatList"
+          testID="flat-list"
           updateCellsBatchingPeriod={50}
           viewabilityConfigCallbackPairs={Array []}
           windowSize={21}

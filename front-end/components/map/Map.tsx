@@ -86,7 +86,7 @@ export function Map() {
           {
             pressed
             ? <FlatList
-                testID="flatList"
+                testID="flat-list"
                 keyboardShouldPersistTaps='never'
                 data={filteredBuildings} keyExtractor={index => index.id.toString()}
                 extraData = {query} 
@@ -96,8 +96,8 @@ export function Map() {
                     style={!pressed ? styles.pressable : null}
                   >
                     <HStack space={2} style={styles.flatList}>
-                      <Text testID="buildingName" style={styles.flatListText}>{item.building_name}</Text>
-                      <Text testID="buildingAddress" style={styles.flatListAddress}>{item.address}</Text>
+                      <Text style={styles.flatListText}>{item.building_name}</Text>
+                      <Text style={styles.flatListAddress}>{item.address}</Text>
                     </HStack>
                   </Pressable>
                 }
@@ -106,6 +106,7 @@ export function Map() {
           }
         </View>
         <MapView
+          testID="map-view"
           ref={mapRef}
           initialRegion={region}
           provider={PROVIDER_GOOGLE}
@@ -114,6 +115,7 @@ export function Map() {
         >
         {buildings.map((building: Building) => {
           return <Marker
+            testID="marker"
             key={building.id}
             coordinate={{longitude:building.longitude, latitude:building.latitude}}
             onPress={() => markerOnPress(building)}

@@ -1,10 +1,10 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import { NativeBaseProvider } from "native-base";
-import { FlatList, Pressable, Text } from "react-native";
 import { Map } from "../components/map/Map";
 import { SearchBar } from "../components/map/SearchBar";
 import { inset } from './utils/constants';
+import MapView, { Marker } from "react-native-maps";
 
 describe("Map Tests", () => {
     it('Map component renders correctly', () => {
@@ -15,11 +15,11 @@ describe("Map Tests", () => {
         expect(tree).toMatchSnapshot();
       });
     
-    it('Tests SearchBar input field', () => {
+    it('SearchBar should take input and render flatlist', () => {
         const onEventMock = jest.fn();
         const mockInput = 'test';
 
-        const { getByTestId } = render(
+        const { queryByTestId } = render(
             <NativeBaseProvider initialWindowMetrics={inset}>
                 <Map>
                     <SearchBar onChangeText={onEventMock}/>
@@ -27,47 +27,40 @@ describe("Map Tests", () => {
             </NativeBaseProvider>
         );
       
-        const search = getByTestId('searchBar');
-        fireEvent.changeText(search, mockInput);
+        fireEvent.changeText(queryByTestId("search-bar"), mockInput);
         expect(onEventMock).toBeDefined();
+        expect(queryByTestId("flat-list")).not.toBeNull();
     });
 
-    it('Tests if FlatList renders', () => {
-        const onEventMock = jest.fn();
-        const mockPressed = true;
-        const mockFilteredBuildings = [
-            {
-                id: 1,
-                building_name:'X Building',
-                address: '123 Street, Canada',
-                latitude: 45.5235,
-                longitude: 43.8663
-            }
-        ];
-
+    //skipping for now
+    xit('Mapview renders', () => {
         const { getByTestId } = render(
             <NativeBaseProvider initialWindowMetrics={inset}>
                 <Map>
-                    { mockPressed
-                        ? <FlatList data={mockFilteredBuildings}
-                            renderItem={
-                                <Pressable onPress={() => {onEventMock}}>
-                                    <Text></Text>
-                                </Pressable>
-                            }
-                        />
-                        : null
-                    }
+                    <MapView/>
                 </Map>
             </NativeBaseProvider>
         );
       
-        const search = getByTestId('flatList');
-        const building = getByTestId('buildingName');
-        const address = getByTestId('buildingAddress');
-        
-        expect(search).toBeDefined();
-        expect(building).toBe(mockFilteredBuildings[0].building_name);
-        expect(address).toBe(mockFilteredBuildings[0].address);
+        expect(getByTestId("map-view")).not.toBeNull();
+    });
+
+    //skipping for now
+    xit('Marker is pressed', () => {
+        const onEventMock = jest.fn();
+        const mockCoordinates = { longitude: 0, latitude: 0 };
+
+        const { getByTestId } = render(
+            <NativeBaseProvider initialWindowMetrics={inset}>
+                <Map>
+                    <MapView>
+                        <Marker coordinate={mockCoordinates} onPress={onEventMock}/>
+                    </MapView>
+                </Map>
+            </NativeBaseProvider>
+        );
+      
+        fireEvent.press(getByTestId("marker"));
+        expect(onEventMock).toHaveBeenCalled();
     });
 });
