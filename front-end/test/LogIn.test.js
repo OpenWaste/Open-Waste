@@ -9,11 +9,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { inset, fakeNavigation } from "./utils/constants";
 
 configure({adapter: new Adapter()});
-jest.useFakeTimers()
 
 describe("LogIn Tests", () => {
-  it("renders correctly", async () => {
-    const tree = await renderer.create(<LogIn />).toJSON();
+  it("renders correctly", () => {
+    const tree = renderer.create(<LogIn />).toJSON();
     expect(tree).toMatchSnapshot();
   });
 
@@ -67,7 +66,7 @@ describe("LogIn Tests", () => {
     fireEvent(field, 'submitEditing')
   });
 
-  it("Enter password field", async () => {
+  it("Enter password field", () => {
     const { getByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
           <LoginForm />

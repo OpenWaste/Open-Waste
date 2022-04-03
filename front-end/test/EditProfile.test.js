@@ -11,11 +11,10 @@ import {
   handleUserProfileChange
 } from "../components/profile/components/EditProfile";
 import { inset } from './utils/constants';
-jest.useFakeTimers()
 
 describe("EditProfile tests", () => {
-  it("renders correctly", async () => {
-    const tree = await renderer.create(<EditProfile />).toJSON();
+  it("renders correctly", () => {
+    const tree = renderer.create(<EditProfile />).toJSON();
     expect(tree).toMatchSnapshot();
   });
 

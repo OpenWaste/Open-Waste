@@ -8,11 +8,10 @@ import {
   handlePasswordChange
 } from "../components/profile/components/ResetPassword";
 import { inset } from './utils/constants';
-jest.useFakeTimers()
 
 describe("ResetPassword Tests", () => {
-  it("renders correctly", async () => {
-    const tree = await renderer.create(<ResetPassword />).toJSON();
+  it("renders correctly", () => {
+    const tree = renderer.create(<ResetPassword />).toJSON();
     expect(tree).toMatchSnapshot();
   });
 

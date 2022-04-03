@@ -8,11 +8,11 @@ import {
   handleEmailVerification
 } from "../components/profile/components/VerifyEmail";
 import { inset, fakeNavigation } from "./utils/constants";
-jest.useFakeTimers()
+
 
 describe("VerifyEmail Tests", () => {
-  it("renders correctly", async () => {
-    const tree = await renderer.create(<VerifyEmail />).toJSON();
+  it("renders correctly", () => {
+    const tree = renderer.create(<VerifyEmail />).toJSON();
     expect(tree).toMatchSnapshot();
   });
 

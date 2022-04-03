@@ -4,10 +4,9 @@ import { NativeBaseProvider } from "native-base";
 import { AboutUs } from '../components/settings/components/AboutUs'
 import renderer from 'react-test-renderer';
 import { inset, fakeNavigation } from './utils/constants';
-jest.useFakeTimers()
 
-it('renders correctly', async () => {
-  const tree = await renderer.create(
+it('renders correctly', () => {
+  const tree = renderer.create(
     <AboutUs/>).toJSON();
   expect(tree).toMatchSnapshot();
 });

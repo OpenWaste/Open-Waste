@@ -4,7 +4,6 @@ import { render, fireEvent } from "@testing-library/react-native";
 import { NativeBaseProvider } from "native-base";
 import { SignUp, SignUpForm, handleAccountCreation } from "../components/profile/components/SignUp";
 import { inset } from './utils/constants';
-jest.useFakeTimers()
 
 describe("SignUp Tests", () => {
   it("renders correctly", () => {

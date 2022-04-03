@@ -1,7 +1,3 @@
-/**
- * @jest-environment jsdom
- */
-
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 import Adapter from 'enzyme-adapter-react-16';
@@ -13,15 +9,6 @@ import { inset, fakeNavigation } from './utils/constants';
 configure({adapter: new Adapter()});
 
 describe("Profile Tests", () => {
-  it("Profile view properly", () => {
-    const tree = render(
-        <NativeBaseProvider initialWindowMetrics={inset}>
-          <Profile navigation={fakeNavigation}/>
-        </NativeBaseProvider>
-    ).toJSON();
-    expect(tree).toMatchSnapshot();
-  });
-
   it('Profile Information Renders Properly', () => {
     const {queryByText} = render(
         <NativeBaseProvider initialWindowMetrics={inset}>
@@ -54,7 +41,7 @@ it("Press on Login Button", () => {
 
   const { getByTestId } = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
-        <GuestPage />
+        <GuestPage/>
     </NativeBaseProvider>
   );
   
@@ -66,7 +53,7 @@ it("Press on Logout Button", () => {
 
   const { queryByTestId } = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
-        <GuestPage navigation={fakeNavigation}/>
+        <GuestPage/>
     </NativeBaseProvider>
   );
   

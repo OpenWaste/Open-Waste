@@ -8,11 +8,10 @@ import {
   handleResetPassword
 } from "../components/profile/components/ForgotPassword";
 import { inset, fakeNavigation } from "./utils/constants";
-jest.useFakeTimers()
 
 describe("ForgotPassword Tests", () => {
-  it("renders correctly", async () => {
-    const tree = await renderer.create(<ForgotPassword />).toJSON();
+  it("renders correctly", () => {
+    const tree = renderer.create(<ForgotPassword />).toJSON();
     expect(tree).toMatchSnapshot();
   });
 

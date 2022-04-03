@@ -1,13 +1,12 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { NativeBaseProvider } from "native-base";
-import { NavigationContainer } from '@react-navigation/native';
 import { Setting } from '../components/settings/components/Settings'
 import renderer from 'react-test-renderer';
 import { inset, fakeNavigation } from './utils/constants';
 
-it('renders correctly', async () => {
-  const tree = await renderer.create(
+it('renders correctly', () => {
+  const tree = renderer.create(
     <Setting navigation={fakeNavigation}/>).toJSON();
   expect(tree).toMatchSnapshot();
 });
