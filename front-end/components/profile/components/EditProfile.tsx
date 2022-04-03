@@ -24,7 +24,8 @@ import { showMessage } from "react-native-flash-message";
 
 import style from "./styles/edit-profile";
 import formStyle from "./styles/forms";
-import isEmail from "validator/lib/isEmail";
+import isEmail from 'validator/lib/isEmail';
+import i18next from '../../../Translate';
 
 export class EditProfile extends React.Component {
   render() {
@@ -40,7 +41,7 @@ export class EditProfile extends React.Component {
                 uri: "https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm",
               }}
             />
-            <Text style={style.username}> Edit Profile </Text>
+            <Text style={style.username}> {i18next.t('EditProfile')} </Text>
             <EditForm />
           </KeyboardAvoidingView>
         </ScrollView>
@@ -129,8 +130,7 @@ export function EditForm() {
         <Accordion>
           <Accordion.Item testID="editUsernameAccordion">
             <Accordion.Summary _expanded={{ backgroundColor: "#0F968D" }}>
-              Edit Username
-              <Accordion.Icon />
+              <Text style={style.editBttn}>{i18next.t('EditUsername')}</Text> <Accordion.Icon />
             </Accordion.Summary>
             <Accordion.Details>
               <View style={formStyle.accordionInputView}>
@@ -145,9 +145,8 @@ export function EditForm() {
                     setValue(value, "user");
                   }}
                   borderColor="transparent"
-                >
-                  {oldUsername}
-                </Input>
+                  defaultValue={oldUsername}
+                />
               </View>
             </Accordion.Details>
           </Accordion.Item>
@@ -158,7 +157,7 @@ export function EditForm() {
         <Accordion>
           <Accordion.Item testID="editEmailAccordion">
             <Accordion.Summary _expanded={{ backgroundColor: "#0F968D" }}>
-              Edit Email <Accordion.Icon />
+              <Text style={style.editBttn}>{i18next.t('EditEmail')}</Text> <Accordion.Icon />
             </Accordion.Summary>
             <Accordion.Details>
               <View style={formStyle.accordionInputView}>
@@ -173,9 +172,8 @@ export function EditForm() {
                     setValue(value, "email");
                   }}
                   borderColor="transparent"
-                >
-                  {oldEmail}
-                </Input>
+                  defaultValue={oldEmail}
+                />
               </View>
             </Accordion.Details>
           </Accordion.Item>
@@ -183,16 +181,16 @@ export function EditForm() {
       </Box>
       <DeleteAccount />
       <View style={style.btnView}>
-        <Button
+        <Text
           testID="cancelBtn"
           style={style.cancelBtn}
           onPress={handleCancel}
         >
-          Cancel
-        </Button>
-        <Button testID="saveBtn" style={style.saveBtn} onPress={handleSubmit}>
-          Save
-        </Button>
+          {i18next.t('Cancel')}
+        </Text>
+        <Text testID="saveBtn" style={style.saveBtn} onPress={handleSubmit}>
+          {i18next.t('Save')}
+        </Text>
       </View>
     </View>
   );
@@ -246,7 +244,7 @@ export function DeleteAccount() {
         colorScheme="danger"
         onPress={() => setIsOpen(!isOpen)}
       >
-        Delete account
+        {i18next.t('DeleteAccount')}
       </Button>
       <AlertDialog
         leastDestructiveRef={cancelRef}
@@ -255,15 +253,14 @@ export function DeleteAccount() {
       >
         <AlertDialog.Content>
           <AlertDialog.CloseButton />
-          <AlertDialog.Header>Are you sure?</AlertDialog.Header>
+          <AlertDialog.Header> {i18next.t('AreYouSure')} </AlertDialog.Header>
           <AlertDialog.Body>
-            This action will delete all your data from your device and cloud.
-            This action is irreversable.
+            {i18next.t('DeleteAccountText')}
           </AlertDialog.Body>
           <AlertDialog.Footer>
             <Button.Group space={2}>
               <Button colorScheme="danger" onPress={handleDelete}>
-                Delete
+                {i18next.t('Delete')}
               </Button>
               <Button
                 variant="unstyled"
@@ -271,7 +268,7 @@ export function DeleteAccount() {
                 onPress={onClose}
                 ref={cancelRef}
               >
-                Cancel
+                {i18next.t('Cancel')}
               </Button>
             </Button.Group>
           </AlertDialog.Footer>

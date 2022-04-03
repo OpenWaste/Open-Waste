@@ -11,11 +11,11 @@ import { ProfileNavigator } from "./profile/ProfileNavigator";
 import { ImageSubmission } from "./submission/ImageSubmission";
 
 const screens = [
-  { name: "Map", component: Map, icon: "map" },
-  { name: "Submission", component: ImageSubmission, icon: "upload-file"},
-  { name: "Camera", component: DisplayCamera, icon: "photo-camera" },
-  { name: "Profile", component: ProfileNavigator, icon: "person" },
-  { name: "Settings", component: SettingsNavigator, icon: "settings" },
+  { name: "Map", component: Map, icon: "map", unmount: false},
+  { name: "Submission", component: ImageSubmission, icon: "upload-file", unmount: true},
+  { name: "Camera", component: DisplayCamera, icon: "photo-camera", unmount: false},
+  { name: "Profile", component: ProfileNavigator, icon: "person", unmount: false},
+  { name: "Settings", component: SettingsNavigator, icon: "settings", unmount: false},
 ];
 
 const Tab = createBottomTabNavigator();
@@ -48,6 +48,7 @@ export class MainContainer extends React.Component {
                 key={screen.name}
                 name={screen.name}
                 component={screen.component}
+                options={{ unmountOnBlur: screen.unmount }}
               />
             );
           })}

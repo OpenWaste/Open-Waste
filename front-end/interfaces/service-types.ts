@@ -3,9 +3,9 @@ export interface PredictionResponse {
 }
 
 export interface UpdateResponse {
-    categories:string[]
-    category_instructions:CategoryInstruction[]
-    bins:Bin[]
+    categories:string[],
+    category_instructions:CategoryInstruction[],
+    bins:Bin[],
     buildings:Building[]
 }
 
@@ -32,9 +32,9 @@ export interface Bin {
 }
 
 export interface Building {
-    id:number
-    building_name:string
-    address:string
-    latitude:number
-    longitude:number
+    id:number,
+    building_name:string,
+    address:string,
+    latitude:number,
+    longitude:number,
 }

@@ -30,11 +30,13 @@
     "expo-image-picker": "~10.2.2",
     "expo-location": "~12.1.2",
     "expo-status-bar": "~1.0.4",
+    "i18next": "^21.6.12",
     "jest-expo": "^42.0.1",
     "modal-enhanced-react-native-web": "^0.1.2",
     "native-base": "3.2.2",
     "react": "^16.13.1",
     "react-dom": "16.13.1",
+    "react-i18next": "^11.15.5",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
     "react-native-flash-message": "^0.2.0",
     "react-native-gesture-handler": "~1.10.2",
@@ -55,7 +57,8 @@
     "react-navigation": "^4.4.4",
     "react-navigation-stack": "^2.10.4",
     "react-router-dom": "^6.2.1",
-    "validator": "^13.7.0"
+    "validator": "^13.7.0",
+    "expo-updates": "~0.8.2"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
