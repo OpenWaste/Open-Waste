@@ -11,7 +11,7 @@ export default StyleSheet.create({
     appMockupImages: {
         width: 400,
         height: 400,
-        margin: -25,    
+        margin: -40,    
         resizeMode: "contain",
     },
 });
