@@ -5,7 +5,7 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 import Adapter from 'enzyme-adapter-react-16';
-import { configure, shallow, unmount, shallowMount } from "enzyme";
+import { configure } from "enzyme";
 import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from '@react-navigation/native';
 import { ProfileInformation, InfoBox, GuestPage, Profile } from '../components/profile/components/Profile'
@@ -47,21 +47,6 @@ describe("Profile Tests", () => {
   });
 });
 
-it("Unmount Login Component", async () => {
-
-  const wrapper = shallowMount(
-    <NativeBaseProvider initialWindowMetrics={inset}>
-      <NavigationContainer>
-        <Profile navigation={fakeNavigation}/>
-      </NavigationContainer>
-    </NativeBaseProvider>
-  );
-
-  wrapper.setState({ username: 'test' });
-  wrapper.unmount()
-
-});
-
 it("Press on Login Button", () => {
 
   const { getByTestId } = render(
@@ -78,10 +63,7 @@ it("Press on Login Button", () => {
 
 it("Press on Logout Button", () => {
 
-  const addListener = jest.fn();
-  const focusSubscription = jest.fn();
-
-  const { getByTestId } = render(
+  const { queryByTestId } = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
       <NavigationContainer>
         <GuestPage navigation={fakeNavigation}/>
@@ -89,6 +71,7 @@ it("Press on Logout Button", () => {
     </NativeBaseProvider>
   );
   
-  const button = getByTestId('logInBtn');
-  fireEvent.press(button)
+  const button = queryByTestId('logInBtn');
+  fireEvent.press(button);
+
 });

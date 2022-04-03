@@ -57,7 +57,7 @@ export class Profile extends React.Component {
     }
   }
 
-   LogOutBtn = () =>{
+   LogOutBtn = () => {
 
     const handleLogOut = () => {
       deleteValueFor('username');
@@ -139,7 +139,7 @@ export function InfoBox(props: any) {
 export function GuestPage() {
 
   const navigation = useNavigation();
-  
+  const handleBtnClick = () => navigation.navigate('Registration');
   return(
     <NativeBaseProvider>
       <View>
@@ -147,7 +147,7 @@ export function GuestPage() {
         {/* TODO: Pull profile pic from database. */}
         <Image style={style.profilePic} source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}} />
         <Text style={style.username}> {i18next.t('Guest')} </Text>
-        <Text testID="logInBtn" style={style.loginBtn} onPress={() => navigation.navigate('Registration')}> {i18next.t('LogIn')} </Text>
+        <Text testID="logInBtn" style={style.loginBtn} onPress={handleBtnClick}> {i18next.t('LogIn')} </Text>
       </View>
     </NativeBaseProvider>
   )

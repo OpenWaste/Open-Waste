@@ -1,7 +1,7 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import Adapter from 'enzyme-adapter-react-16';
-import { configure, shallow, unmount } from "enzyme";
+import { configure, shallow } from "enzyme";
 import { render, fireEvent } from "@testing-library/react-native";
 import { LogIn, LoginForm } from "../components/profile/components/LogIn";
 import { NativeBaseProvider } from "native-base";
