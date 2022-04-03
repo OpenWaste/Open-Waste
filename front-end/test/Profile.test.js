@@ -7,12 +7,21 @@ import { fireEvent, render } from '@testing-library/react-native';
 import Adapter from 'enzyme-adapter-react-16';
 import { configure } from "enzyme";
 import { NativeBaseProvider } from "native-base";
-import { ProfileInformation, InfoBox, GuestPage, Profile } from '../components/profile/components/Profile'
+import {ProfileInformation, InfoBox, GuestPage, handleLogout, Profile} from '../components/profile/components/Profile'
 import { inset, fakeNavigation } from './utils/constants';
 
 configure({adapter: new Adapter()});
 
 describe("Profile Tests", () => {
+  it("Profile view properly", () => {
+    const tree = render(
+        <NativeBaseProvider initialWindowMetrics={inset}>
+          <Profile navigation={fakeNavigation}/>
+        </NativeBaseProvider>
+    ).toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
   it('Profile Information Renders Properly', () => {
     const {queryByText} = render(
         <NativeBaseProvider initialWindowMetrics={inset}>
@@ -63,5 +72,14 @@ it("Press on Logout Button", () => {
   
   const button = queryByTestId('logInBtn');
   fireEvent.press(button);
-
 });
+
+describe("handleLogout Tests", () => {
+  it("Correct Success message is displayed", () => {
+    let messageDisplayerMockFN = jest.fn()
+    handleLogout(messageDisplayerMockFN)
+
+    expect(messageDisplayerMockFN).toHaveBeenCalled();
+    expect(messageDisplayerMockFN).toHaveBeenCalledWith({ message: 'Logged Out', type: 'success' })
+  })
+})

@@ -2,7 +2,7 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { render, fireEvent } from "@testing-library/react-native";
 import { NativeBaseProvider } from "native-base";
-import { SignUp, SignUpForm, userAuthenticated } from "../components/profile/components/SignUp";
+import { SignUp, SignUpForm, handleAccountCreation } from "../components/profile/components/SignUp";
 import { inset } from './utils/constants';
 jest.useFakeTimers()
 
@@ -70,22 +70,25 @@ describe("SignUp Tests", () => {
     const button = getByTestId("showPassBtn");
     fireEvent.press(button);
   });
+});
 
-  it("Submit Form", () => {
+describe("handleAccountCreation() tests",  () => {
+  it("Correct success message is displayed", () => {
+    let messageDisplayerMockFN = jest.fn()
+    handleAccountCreation(true, "test", "test",  messageDisplayerMockFN)
 
-    const username = "test";
-    const password = "test123";
-    const email = "test@gmail.com";
+    expect(messageDisplayerMockFN).toHaveBeenCalled();
+    expect(messageDisplayerMockFN).toHaveBeenCalledWith({ message: 'Success!', type: 'success' })
 
-    const { getByTestId } = render(
-      <NativeBaseProvider initialWindowMetrics={inset}>
-          <SignUpForm username={username} password={password} email={email}/>
-      </NativeBaseProvider>
-    );
-
-    const button = getByTestId("signUpBtn");
-    fireEvent.press(button);
-    expect(userAuthenticated()).not.toBeNull();
   });
 
+  it("Correct failed message is displayed", () => {
+    let messageDisplayerMockFN = jest.fn()
+    handleAccountCreation(false, "test", "test", messageDisplayerMockFN)
+
+    expect(messageDisplayerMockFN).toHaveBeenCalled();
+    expect(messageDisplayerMockFN).toHaveBeenCalledWith({ message: "Error creating account", type: 'warning' })
+
+  });
 });
+

@@ -5,7 +5,7 @@ import formStyle from "./styles/forms";
 import passStyle from "./styles/forgot-password";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
-import { showMessage } from "react-native-flash-message";
+import {MessageOptions, showMessage} from "react-native-flash-message";
 import Service from "../../../service/service";
 import { deleteValueFor, getValueFor } from '../../../utils/PersistInfo';
 import { UserResource } from "../../../models/User";
@@ -47,8 +47,6 @@ export function ResetPasswordForm() {
     });
   })
 
-  const navigation = useNavigation();
-
   const handleSubmit = () => {
     if (pass1 != pass2) {
       showMessage({ message: "Passwords do not match!", type: "danger" });
@@ -61,13 +59,10 @@ export function ResetPasswordForm() {
     };
 
     Service.changePassword(user).then(() => {
-      deleteValueFor('username');
-      deleteValueFor('email');
-      navigation.navigate("Registration");
-      showMessage({ message: username, type: "success" });
+      handlePasswordChange(true, showMessage)
     })
-    .catch((error) => {
-      showMessage({ message: error.toJSON().message, type: "warning" });
+    .catch(() => {
+      handlePasswordChange(false, showMessage)
     });
   };
 
@@ -145,4 +140,17 @@ export function ResetPasswordForm() {
         onPress={handleSubmit}> Submit </Text>
     </View>
   );
+}
+
+export function handlePasswordChange(isSuccessful:boolean, messageDisplayer:(value:MessageOptions)=>void):void {
+  const navigation = useNavigation();
+
+  if(isSuccessful){
+    deleteValueFor('username');
+    deleteValueFor('email');
+    navigation.navigate("Registration");
+    messageDisplayer({ message: "Password change was successful", type: "success" });
+  } else {
+    messageDisplayer({ message: "Could not change password", type: "warning" });
+  }
 }

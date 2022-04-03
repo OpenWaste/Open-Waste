@@ -5,7 +5,7 @@ import formStyle from "./styles/forms";
 import { Avatar, Center, Input, NativeBaseProvider } from 'native-base';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Service from "../../../service/service";
-import { showMessage } from "react-native-flash-message";
+import {MessageOptions, showMessage} from "react-native-flash-message";
 import isEmail from 'validator/lib/isEmail';
 import { UserResource } from "../../../models/User";
 import { useNavigation } from '@react-navigation/native';
@@ -44,8 +44,6 @@ export function SignUpForm() {
   const [email, setEmail] = React.useState('');
   const showPass = () => setShow(!show);
 
-  const navigation = useNavigation();
-
   const handleSubmit = () => {
 
     if (isEmail(email)) {
@@ -57,12 +55,9 @@ export function SignUpForm() {
   
       // Get response from create-user endpoint
       Service.submitAccountCreation(user).then((resp) => {
-        save('username', username);
-        save('email', email);
-        navigation.navigate('ProfilePage');
-        userAuthenticated();
-      }).catch(error => {
-        showMessage({ message: error.toJSON().message, type: 'warning' });
+        handleAccountCreation(true, username, email, showMessage)
+      }).catch(() => {
+        handleAccountCreation(false, username, email, showMessage)
       })
     }
     else {
@@ -121,8 +116,18 @@ export function SignUpForm() {
   )
 }
 
-export function userAuthenticated() {
-  save('submitted_images', 0);
-  save('accepted_images', 0);
-  showMessage({ message: 'Success!', type: 'success' });
-};
+
+export function handleAccountCreation(isSuccessful: boolean, username:string, email:string, messageDisplayer:(value:MessageOptions) => void): void {
+  const navigation = useNavigation()
+
+  if(isSuccessful) {
+    save('username', username);
+    save('email', email);
+    navigation.navigate('ProfilePage');
+    save('submitted_images', 0);
+    save('accepted_images', 0);
+    messageDisplayer({ message: 'Success!', type: 'success' });
+  } else {
+    messageDisplayer({ message: "Error creating account", type: 'warning' });
+  }
+}

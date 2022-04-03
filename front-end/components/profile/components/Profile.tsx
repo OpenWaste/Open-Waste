@@ -5,7 +5,7 @@ import { NativeBaseProvider } from 'native-base';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from '@react-navigation/native';
 import { deleteValueFor, getValueFor } from '../../../utils/PersistInfo';
-import { showMessage } from "react-native-flash-message";
+import {MessageOptions, showMessage} from "react-native-flash-message";
 import i18next from '../../../Translate';
 
 export class Profile extends React.Component {
@@ -26,7 +26,6 @@ export class Profile extends React.Component {
   componentWillUnmount() {
     this.focusSubscription()
   }
-
 
   render() {
     
@@ -58,26 +57,22 @@ export class Profile extends React.Component {
   }
 
    LogOutBtn = () => {
-
-    const handleLogOut = () => {
-      deleteValueFor('username');
-      deleteValueFor('email');
-      deleteValueFor('submitted_images');
-      deleteValueFor('accepted_images');
-      this.setState({username:null})
-      showMessage({ message: 'Logged Out', type: 'success' });
-    }
-  
     return (
       <Text 
         testID="logOutBtn"
         style={style.logOutBtn} 
-        onPress={handleLogOut}> {i18next.t('LogOut')} </Text>
+        onPress={() =>{handleLogout(showMessage); this.setState({username:null})}}> {i18next.t('LogOut')} </Text>
     )
-    
   }
 }
 
+export function handleLogout(messageDisplayer:(value:MessageOptions)=>void):void {
+  deleteValueFor('username');
+  deleteValueFor('email');
+  deleteValueFor('submitted_images');
+  deleteValueFor('accepted_images');
+  messageDisplayer({ message: 'Logged Out', type: 'success' });
+}
 
 
 export function ProfileInformation() {

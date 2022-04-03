@@ -3,7 +3,7 @@ import { View, ScrollView, KeyboardAvoidingView, Text, TouchableOpacity } from "
 import loginStyle from "./styles/login";
 import formStyle from "./styles/forms";
 import { Input, NativeBaseProvider } from 'native-base';
-import { showMessage } from "react-native-flash-message";
+import {MessageOptions, showMessage} from "react-native-flash-message";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Service from "../../../service/service";
 import { UserResource } from "../../../models/User";
@@ -42,8 +42,6 @@ export const LoginForm = (prop) => {
   const showPass = () => setShow(!show);
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
- 
-  const navigation = useNavigation();
 
   const handleSubmit = () => {
 
@@ -56,16 +54,9 @@ export const LoginForm = (prop) => {
 
     // Get response from authenticate-user endpoint
     Service.authenticateUser(user).then(resp => {
-      save('email', resp.data.email)
-      save('username', username)
-      save('submitted_images', resp.data.submitted_images)
-      save('accepted_images', resp.data.accepted_images)
-
-      navigation.navigate('ProfilePage');
-      showMessage({ message: 'Success!', type: 'success' });
-      
-    }).catch(error => {
-      showMessage({ message: error.toJSON().message, type: 'warning' }); 
+      handleUserAuthentication(true, resp.email, username,  resp.submitted_images, resp.accepted_images, showMessage);
+    }).catch(() => {
+      handleUserAuthentication(false, "","", 0,0, showMessage);
     })
   }
 
@@ -108,4 +99,20 @@ export const LoginForm = (prop) => {
     </View>
     </NativeBaseProvider>
   )
+}
+
+export function handleUserAuthentication(isSuccessful:boolean, email:string, username:string, submittedImages:number, acceptedImages:number, messageDisplayer:(value:MessageOptions) =>void):void {
+  const navigation = useNavigation();
+
+  if(isSuccessful){
+    save('email', email)
+    save('username', username)
+    save('submitted_images', submittedImages)
+    save('accepted_images', acceptedImages)
+
+    navigation.navigate('ProfilePage');
+    messageDisplayer({ message: 'Success!', type: 'success' });
+  } else {
+    messageDisplayer({ message: 'Invalid Login Information', type: 'warning' });
+  }
 }

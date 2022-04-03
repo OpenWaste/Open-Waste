@@ -5,6 +5,7 @@ import { NativeBaseProvider } from "native-base";
 import {
   ForgotPassword,
   ResetPassword,
+  handleResetPassword
 } from "../components/profile/components/ForgotPassword";
 import { inset, fakeNavigation } from "./utils/constants";
 jest.useFakeTimers()
@@ -60,3 +61,23 @@ describe("ForgotPassword Tests", () => {
     expect(fakeNavigation.navigate).toBeCalledWith("BackToLogin");
   });
 });
+
+describe("handleResetPassword() Tests", () => {
+  it("Correct success message is displayed", () => {
+    let messageDisplayerMockFN = jest.fn()
+    handleResetPassword(true, "test@gmail.com", messageDisplayerMockFN)
+
+    expect(messageDisplayerMockFN).toHaveBeenCalled();
+    expect(messageDisplayerMockFN).toHaveBeenCalledWith({ message: 'Successfully submitted email', type: 'success' })
+
+  });
+
+  it("Correct failed message is displayed", () => {
+    let messageDisplayerMockFN = jest.fn()
+    handleResetPassword(false, "test@gmail.com", messageDisplayerMockFN)
+
+    expect(messageDisplayerMockFN).toHaveBeenCalled();
+    expect(messageDisplayerMockFN).toHaveBeenCalledWith({ message: 'An Error Has Occurred', type: 'warning' })
+
+  });
+})

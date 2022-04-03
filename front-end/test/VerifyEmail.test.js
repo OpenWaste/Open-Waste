@@ -5,6 +5,7 @@ import { NativeBaseProvider } from "native-base";
 import {
   VerifyEmail,
   ValidatePasscode,
+  handleEmailVerification
 } from "../components/profile/components/VerifyEmail";
 import { inset, fakeNavigation } from "./utils/constants";
 jest.useFakeTimers()
@@ -47,5 +48,25 @@ describe("VerifyEmail Tests", () => {
     const button = getByTestId("submitBtn");
     fireEvent.press(button);
   });
-
 });
+
+describe("handleEmailVerification() tests",  () => {
+  it("Correct success message is displayed", () => {
+    let messageDisplayerMockFN = jest.fn()
+    handleEmailVerification(true, "test",  messageDisplayerMockFN)
+
+    expect(messageDisplayerMockFN).toHaveBeenCalled();
+    expect(messageDisplayerMockFN).toHaveBeenCalledWith({ message: 'Successfully verified email', type: 'success' })
+
+  });
+
+  it("Correct failed message is displayed", () => {
+    let messageDisplayerMockFN = jest.fn()
+    handleEmailVerification(false, "test",  messageDisplayerMockFN)
+
+    expect(messageDisplayerMockFN).toHaveBeenCalled();
+    expect(messageDisplayerMockFN).toHaveBeenCalledWith({ message: 'Invalid Passcode', type: 'warning' })
+
+  });
+});
+

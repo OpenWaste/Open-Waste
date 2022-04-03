@@ -3,7 +3,7 @@ import renderer from "react-test-renderer";
 import Adapter from 'enzyme-adapter-react-16';
 import { configure, shallow } from "enzyme";
 import { render, fireEvent } from "@testing-library/react-native";
-import { LogIn, LoginForm } from "../components/profile/components/LogIn";
+import { LogIn, LoginForm, handleUserAuthentication } from "../components/profile/components/LogIn";
 import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from "@react-navigation/native";
 import { inset, fakeNavigation } from "./utils/constants";
@@ -116,4 +116,24 @@ describe("LogIn Tests", () => {
 
   });
 
+});
+
+describe("handleUserAuthentication() tests",  () => {
+  it("Correct success message is displayed", () => {
+    let messageDisplayerMockFN = jest.fn()
+    handleUserAuthentication(true,  "","",0,0, messageDisplayerMockFN)
+
+    expect(messageDisplayerMockFN).toHaveBeenCalled();
+    expect(messageDisplayerMockFN).toHaveBeenCalledWith({ message: 'Success!', type: 'success' })
+
+  });
+
+  it("Correct failed message is displayed", () => {
+    let messageDisplayerMockFN = jest.fn()
+    handleUserAuthentication(false, "","",0,0, messageDisplayerMockFN)
+
+    expect(messageDisplayerMockFN).toHaveBeenCalled();
+    expect(messageDisplayerMockFN).toHaveBeenCalledWith({ message: 'Invalid Login Information', type: 'warning' })
+
+  });
 });

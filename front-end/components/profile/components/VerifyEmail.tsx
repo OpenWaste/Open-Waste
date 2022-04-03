@@ -5,7 +5,7 @@ import { NativeBaseProvider } from "native-base";
 import { useNavigation } from '@react-navigation/native';
 import Service from "../../../service/service";
 import { save } from '../../../utils/PersistInfo';
-import { showMessage } from "react-native-flash-message";
+import {MessageOptions, showMessage} from "react-native-flash-message";
 import formStyle from "./styles/forms";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { getValueFor } from '../../../utils/PersistInfo';
@@ -35,9 +35,6 @@ export class VerifyEmail extends React.Component {
 }
 
 export function ValidatePasscode(){
-
-  const navigation=useNavigation();
-
   const [enteredPasscode, setPasscode]=React.useState('');
   const [email, setEmail]=React.useState('');
 
@@ -58,14 +55,9 @@ export function ValidatePasscode(){
     // Get response from authenticate-user endpoint
     // Get response from update-username-email endpoint
     Service.verifyEmail(user).then(resp => {
-
-      save('username', resp.data.username)
-
-      navigation.navigate('ResetPassword');
-      showMessage({ message: 'Successfully verified email', type: 'success' });
-
+      handleEmailVerification(true, resp.data.username, showMessage)
     }).catch(() =>{
-      showMessage({ message: 'Invalid Passcode', type: 'warning' });
+      handleEmailVerification(false, "", showMessage)
     })
   }
 
@@ -87,4 +79,16 @@ export function ValidatePasscode(){
         style={passStyle.submitBtn} onPress={handleSubmit}> {i18next.t('Submit')} </Text>
   </View>
   )
+}
+
+export function handleEmailVerification(isSuccessful:boolean, username:string, messageDisplayer:(value:MessageOptions) => void ): void {
+  const navigation=useNavigation();
+
+  if(isSuccessful){
+    save('username', username)
+    navigation.navigate('ResetPassword');
+    messageDisplayer({ message: 'Successfully verified email', type: 'success' });
+  } else {
+    messageDisplayer({ message: 'Invalid Passcode', type: 'warning' });
+  }
 }

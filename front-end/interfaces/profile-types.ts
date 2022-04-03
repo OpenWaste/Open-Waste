@@ -15,3 +15,9 @@ export interface SignUpFormProperties{
     passwordSetter: (value:string) => void,
     emailSetter: (value:string) => void,
 }
+
+export interface AuthenticationResponse {
+    email:string,
+    submitted_images:number,
+    accepted_images:number
+}
