@@ -130,8 +130,7 @@ export function EditForm() {
         <Accordion>
           <Accordion.Item testID="editUsernameAccordion">
             <Accordion.Summary _expanded={{ backgroundColor: "#0F968D" }}>
-              <Text style={style.editBttn}>{i18next.t('EditUsername')}</Text>
-              <Accordion.Icon />
+              <Text style={style.editBttn}>{i18next.t('EditUsername')}</Text> <Accordion.Icon />
             </Accordion.Summary>
             <Accordion.Details>
               <View style={formStyle.accordionInputView}>

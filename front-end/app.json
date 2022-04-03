@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "front-end",
-    "slug": "front-end",
+    "name": "DigiWaste",
+    "slug": "DigiWaste",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/digiwaste_icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -21,9 +21,15 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+        "foregroundImage": "./assets/digiwaste_icon.png",
+        "backgroundColor": "#0F968D"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBqov0pbXWnREsuKbkqI_uAQXkzG05HVao"
+        }
+      },
+      "package": "com.concordia.digiwaste"
     },
     "web": {
       "favicon": "./assets/favicon.png"
