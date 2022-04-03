@@ -11,17 +11,16 @@ export class AboutUs extends React.Component {
   render() {
     return (
       <NativeBaseProvider>
-            <TouchableHighlight style={style.midText} underlayColor={"COLOR"} onPress={() => this.props.navigation.navigate('Setting')}>
-              <View style={ style.viewElement }> 
-                    <MaterialIcons name="arrow-back-ios" size={26} color="gray" style={ style.leftIcon }/>
-                    <Text style={style.midText}>
-                      {i18next.t('AboutUs')}
-                    </Text>
-                    <MaterialIcons name="info" size={26} color="gray" style={ style.rightIcon }/>  
-              </View>
-            </TouchableHighlight>
-
-        <ScrollView style={style.container}>
+        <TouchableHighlight style={style.midText} testID = 'header' underlayColor={"COLOR"} onPress={() => this.props.navigation.navigate('Setting')}>
+          <View style={ style.viewElement }> 
+                <MaterialIcons name="arrow-back-ios" size={26} color="gray" style={ style.leftIcon }/>
+                <Text style={style.midText} testID = 'test'>
+                  About us
+                </Text>
+                <MaterialIcons name="info" size={26} color="gray" style={ style.rightIcon }/>  
+          </View>
+        </TouchableHighlight>
+        <ScrollView style={style.container} testID = 'p1'>
           <View style={style.viewMain}>
             <Image source={require("../../../assets/digitizingWaste.png")} style = { style.logo1 }/>
             <Text style={style.text}> {i18next.t('AboutUsPart1')} </Text>
@@ -41,25 +40,25 @@ export class AboutUs extends React.Component {
             <Text style={style.textHeader}>{i18next.t('ContactUs')} </Text>
             <View style={ style.viewMain2 }>
               <View style={ style.viewSub1 } >
-                <TouchableHighlight onPress={() => Linking.openURL('mailto:cp3@concordia.ca')}>
+                <TouchableHighlight  testID="CP3Email" onPress={() => Linking.openURL('mailto:cp3@concordia.ca')}>
                   <Image source={require("../../../assets/mail.png")} style = { style.image1 }>
                   </Image>
                 </TouchableHighlight>
               </View>
               <View style={ style.viewSub2 } >
-                <Text style={style.links} onPress={() => Linking.openURL('mailto:cp3@concordia.ca') }
+                <Text testID="CP3EmailText" style={style.links} onPress={() => Linking.openURL('mailto:cp3@concordia.ca') }
                 title="cp3@concordia.ca"> cp3@concordia.ca </Text>
               </View>
             </View>
             <View style={ style.viewMain2 }>
               <View style={ style.viewSub1 } >
-                <TouchableHighlight onPress={() => Linking.openURL('mailto:zerowaste@concordia.ca')}>
+                <TouchableHighlight testID="ZerowasteEmail" onPress={() => Linking.openURL('mailto:zerowaste@concordia.ca')}>
                   <Image source={require("../../../assets/mail.png")} style = { style.image1 }>
                   </Image>
                 </TouchableHighlight>
               </View>
               <View style={ style.viewSub2 } >
-                <Text style={style.links} onPress={() => Linking.openURL('mailto:zerowaste@concordia.ca') }
+                <Text testID="ZerowasteEmailText" style={style.links} onPress={() => Linking.openURL('mailto:zerowaste@concordia.ca') }
                 title="zerowaste@concordia.ca"> zerowaste@concordia.ca </Text>
               </View>
             </View>
@@ -78,19 +77,19 @@ export class AboutUs extends React.Component {
             <View style={ style.viewMain2 }>
               <View style={ style.viewMain2 }>
                 <View>
-                  <TouchableHighlight onPress={() => Linking.openURL('https://www.facebook.com/CP3Concordia/')}>
+                  <TouchableHighlight testID="CP3Facebook" onPress={() => Linking.openURL('https://www.facebook.com/CP3Concordia/')}>
                   <Image source={require("../../../assets/facebook.png")} style = { style.image2 }>
                   </Image>
                   </TouchableHighlight>
                 </View>
                 <View>
-                  <TouchableHighlight onPress={() => Linking.openURL('https://www.instagram.com/cp3concordia/?hl=en')}>
+                  <TouchableHighlight testID="CP3Instagram" onPress={() => Linking.openURL('https://www.instagram.com/cp3concordia/?hl=en')}>
                   <Image source={require("../../../assets/instagram.png")} style = { style.image2 }>
                   </Image>
                   </TouchableHighlight>
                 </View>
                 <View>
-                  <TouchableHighlight onPress={() => Linking.openURL('https://www.cp3montreal.com/')}>
+                  <TouchableHighlight testID="CP3Web" onPress={() => Linking.openURL('https://www.cp3montreal.com/')}>
                   <Image source={require("../../../assets/web.png")} style = { style.image2 }>
                   </Image>
                   </TouchableHighlight>
@@ -98,19 +97,19 @@ export class AboutUs extends React.Component {
               </View>
               <View style={ style.viewMain3 }>
                 <View>
-                  <TouchableHighlight onPress={() => Linking.openURL('https://www.facebook.com/zerowasteconcordia/')}>
+                  <TouchableHighlight testID="ZerowasteFacebook" onPress={() => Linking.openURL('https://www.facebook.com/zerowasteconcordia/')}>
                   <Image source={require("../../../assets/facebook.png")} style = { style.image2 }>
                   </Image>
                   </TouchableHighlight>
                 </View>
                 <View>
-                  <TouchableHighlight onPress={() => Linking.openURL('https://www.instagram.com/zerowasteconcordia/?hl=en')}>
+                  <TouchableHighlight testID="ZerowasteInstagram" onPress={() => Linking.openURL('https://www.instagram.com/zerowasteconcordia/?hl=en')}>
                   <Image source={require("../../../assets/instagram.png")} style = { style.image2 }>
                   </Image>
                   </TouchableHighlight>
                 </View>
                 <View>
-                  <TouchableHighlight onPress={() => Linking.openURL('https://www.concordia.ca/about/sustainability/sustainability-initiatives/zero-waste.html?utm_source=vanity&utm_campaign=zerowaste')}>
+                  <TouchableHighlight testID="ZerowasteWeb" onPress={() => Linking.openURL('https://www.concordia.ca/about/sustainability/sustainability-initiatives/zero-waste.html?utm_source=vanity&utm_campaign=zerowaste')}>
                   <Image source={require("../../../assets/web.png")} style = { style.image2 }>
                   </Image>
                   </TouchableHighlight>
@@ -130,13 +129,13 @@ export class AboutUs extends React.Component {
           </View>
           <View style={ style.viewMain2 }>
               <View style={ style.viewSub1 } >
-              <TouchableHighlight onPress={() => Linking.openURL('mailto:zerowaste@concordia.ca')}>
+              <TouchableHighlight testID="ZerowasteEmail2" onPress={() => Linking.openURL('mailto:zerowaste@concordia.ca')}>
                 <Image source={require("../../../assets/mail.png")} style = {{width: 25, height: 15, flex: 1, marginLeft: 40}}>
                 </Image>
               </TouchableHighlight>
               </View>
               <View style={ style.viewSub3 } >
-                <Text style={style.links} onPress={() => Linking.openURL('mailto:zerowaste@concordia.ca') }
+                <Text testID="ZerowasteEmailText2" style={style.links} onPress={() => Linking.openURL('mailto:zerowaste@concordia.ca') }
                 title="zerowaste@concordia.ca"> zerowaste@concordia.ca</Text>
               </View>
             </View>
