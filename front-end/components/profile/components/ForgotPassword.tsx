@@ -19,7 +19,7 @@ export class ForgotPassword extends React.Component {
         <ScrollView>
           <KeyboardAvoidingView>
             <View style={passStyle.container}>
-              <Image source={this.img} style={passStyle.img} />
+              <Image source={{uri:this.img}} style={passStyle.img} />
 
               <Text style={passStyle.header}> {i18next.t('ForgotPassword')} </Text>
               <Text style={passStyle.description}>
@@ -51,12 +51,9 @@ export function ResetPassword(){
     // Get response from authenticate-user endpoint
     // Get response from update-username-email endpoint
     Service.resetPassword(user).then(() => {
-
       save('email', email)
-
       navigation.navigate('VerifyEmail');
       showMessage({ message: 'Successfully submitted email', type: 'success' });
-
     }).catch(() =>{
       showMessage({ message: 'An Error Has Occurred', type: 'warning' });
     })

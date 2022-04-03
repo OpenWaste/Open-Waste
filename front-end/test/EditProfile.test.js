@@ -2,13 +2,13 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { render, fireEvent } from "@testing-library/react-native";
 import { NativeBaseProvider } from "native-base";
-import { NavigationContainer } from "@react-navigation/native";
 import {
   EditProfile,
   EditForm,
   DeleteAccount,
 } from "../components/profile/components/EditProfile";
 import { inset } from './utils/constants';
+jest.useFakeTimers()
 
 describe("EditProfile tests", () => {
   it("renders correctly", async () => {
@@ -19,9 +19,7 @@ describe("EditProfile tests", () => {
   it("Edit Form Renders Properly", () => {
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <EditForm />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 
@@ -34,9 +32,7 @@ describe("EditProfile tests", () => {
   it("Save Information", () => {
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <EditForm/>
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 
@@ -47,9 +43,7 @@ describe("EditProfile tests", () => {
   it("Cancel Changes on Edit Form", () => {
     const { getByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <EditForm />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
     
@@ -60,9 +54,7 @@ describe("EditProfile tests", () => {
   it("Delete Modal Renders Properly", () => {
     const { getByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <DeleteAccount />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 
@@ -73,9 +65,7 @@ describe("EditProfile tests", () => {
   it("Close Delete Modal", () => {
     const { getByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <DeleteAccount />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
     
@@ -89,9 +79,7 @@ describe("EditProfile tests", () => {
   it("Enter Username Field", () => {
     const { getByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <EditForm />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 
@@ -102,9 +90,7 @@ describe("EditProfile tests", () => {
   it("Enter Email Field", () => {
     const { getByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <EditForm />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 

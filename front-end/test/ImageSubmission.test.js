@@ -10,6 +10,7 @@ import {
 import { NativeBaseProvider } from "native-base";
 import { fireEvent, render } from "@testing-library/react-native";
 import { inset } from './utils/constants';
+jest.useFakeTimers()
 
 describe("Image Submission Component Tests", () => {
   it("Image Submission view properly", () => {

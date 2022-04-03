@@ -6,9 +6,10 @@ import { render, fireEvent } from "@testing-library/react-native";
 import { LogIn, LoginForm } from "../components/profile/components/LogIn";
 import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from "@react-navigation/native";
-import { inset, fakeNavigation, showPass } from "./utils/constants";
+import { inset, fakeNavigation } from "./utils/constants";
 
 configure({adapter: new Adapter()});
+jest.useFakeTimers()
 
 describe("LogIn Tests", () => {
   it("renders correctly", async () => {
@@ -33,9 +34,7 @@ describe("LogIn Tests", () => {
   it("Press Forgot Password Button", () => {
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <LogIn navigation={fakeNavigation} />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 
@@ -47,9 +46,7 @@ describe("LogIn Tests", () => {
   it("Press Remain Guest Button", () => {
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <LogIn navigation={fakeNavigation} />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 
@@ -61,9 +58,7 @@ describe("LogIn Tests", () => {
   it("Enter username field", () => {
     const { getByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <LoginForm />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 
@@ -75,9 +70,7 @@ describe("LogIn Tests", () => {
   it("Enter password field", async () => {
     const { getByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <LoginForm />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 
@@ -90,9 +83,7 @@ describe("LogIn Tests", () => {
 
     const { getByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <LoginForm handleSubmit={handleSubmit} />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 
@@ -104,9 +95,7 @@ describe("LogIn Tests", () => {
 
     const { getByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <LoginForm />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 
@@ -119,9 +108,7 @@ describe("LogIn Tests", () => {
 
     const wrapper = shallow(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <LoginForm />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 

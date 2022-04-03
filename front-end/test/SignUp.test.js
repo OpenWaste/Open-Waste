@@ -2,9 +2,9 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { render, fireEvent } from "@testing-library/react-native";
 import { NativeBaseProvider } from "native-base";
-import { NavigationContainer } from "@react-navigation/native";
 import { SignUp, SignUpForm, userAuthenticated } from "../components/profile/components/SignUp";
 import { inset } from './utils/constants';
+jest.useFakeTimers()
 
 describe("SignUp Tests", () => {
   it("renders correctly", () => {
@@ -15,9 +15,7 @@ describe("SignUp Tests", () => {
   it("Sign Up Form Renders properly", () => {
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <SignUpForm />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 
@@ -30,9 +28,7 @@ describe("SignUp Tests", () => {
   it("Enter username field", () => {
     const { getByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <SignUpForm />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 
@@ -44,9 +40,7 @@ describe("SignUp Tests", () => {
   it("Enter Password Field", () => {
     const { getByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <SignUpForm />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 
@@ -58,9 +52,7 @@ describe("SignUp Tests", () => {
   it("Enter email Field", () => {
     const { getByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <SignUpForm />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 
@@ -71,9 +63,7 @@ describe("SignUp Tests", () => {
   it("Press Show Password Button", () => {
     const { getByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <SignUpForm />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 
@@ -89,9 +79,7 @@ describe("SignUp Tests", () => {
 
     const { getByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <SignUpForm username={username} password={password} email={email}/>
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 

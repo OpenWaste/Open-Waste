@@ -27,3 +27,16 @@ jest.mock('@gorhom/bottom-sheet', () => {
         },
     };
 });
+
+const mockedNavigate = jest.fn();
+
+jest.mock('@react-navigation/native', () => {
+    const actualNav = jest.requireActual('@react-navigation/native');
+    return {
+        ...actualNav,
+        useNavigation: () => ({
+            navigate: mockedNavigate,
+            addListener:jest.fn(() => {return jest.fn()})
+        }),
+    };
+});

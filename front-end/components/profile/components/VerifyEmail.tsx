@@ -20,7 +20,7 @@ export class VerifyEmail extends React.Component {
         <View style={passStyle.container}>
           <Image 
             testID="verifyImg"
-            source={this.img} style={passStyle.img} />
+            source={{uri:this.img}} style={passStyle.img} />
           <Text 
             testID="verifyHeader"
             style={passStyle.header}> {i18next.t('VerifyEmail')} </Text>

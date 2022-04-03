@@ -2,12 +2,12 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { render, fireEvent } from "@testing-library/react-native";
 import { NativeBaseProvider } from "native-base";
-import { NavigationContainer } from "@react-navigation/native";
 import {
   ForgotPassword,
   ResetPassword,
 } from "../components/profile/components/ForgotPassword";
 import { inset, fakeNavigation } from "./utils/constants";
+jest.useFakeTimers()
 
 describe("ForgotPassword Tests", () => {
   it("renders correctly", async () => {
@@ -18,9 +18,7 @@ describe("ForgotPassword Tests", () => {
   it("Reset Password Form Renders Properly", () => {
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
-          <ResetPassword />
-        </NavigationContainer>
+          <ResetPassword navigation={fakeNavigation}/>
       </NativeBaseProvider>
     );
 
@@ -31,9 +29,7 @@ describe("ForgotPassword Tests", () => {
   it("Fill In Email Field", () => {
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <ResetPassword navigation={fakeNavigation} />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 
@@ -44,9 +40,7 @@ describe("ForgotPassword Tests", () => {
   it("Press Submit Button", () => {
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <ResetPassword navigation={fakeNavigation} />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 
@@ -57,9 +51,7 @@ describe("ForgotPassword Tests", () => {
   it("Press Back to Login Button", () => {
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <ForgotPassword navigation={fakeNavigation} />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 

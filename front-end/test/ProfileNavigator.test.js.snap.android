@@ -252,6 +252,7 @@ exports[`ProfileNavigator tests renders correctly 1`] = `
                                 "width": "30%",
                               }
                             }
+                            testID="logInBtn"
                           >
                              
                             Log In

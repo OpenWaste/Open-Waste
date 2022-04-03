@@ -309,6 +309,6 @@ export const pickImage = async (setImage, setImageIsChosen, imageIsChosen) => {
   }
 };
 
-export const onClose = (setIsOpen, setIsError, setIsLoading) => {
+export function onClose(setIsOpen:(val:boolean)=>void, setIsError:(val:boolean)=>void, setIsLoading:(val:boolean)=>void):void {
   setIsOpen(false), setIsError(false), setIsLoading(false);
-};
+}
