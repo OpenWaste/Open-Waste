@@ -82,7 +82,7 @@ export function SignUpForm() {
           style={formStyle.registrationTextInputs} 
           borderWidth="0" 
           placeholder={i18next.t('Username')}
-          autoFocus={true}
+         // autoFocus={true}
           returnKeyType="next"
           onChangeText={(value:any) => setUsername(value)}
           onSubmitEditing={() => ref_input2.current.focus()} />
@@ -96,7 +96,7 @@ export function SignUpForm() {
           borderWidth="0" 
           placeholder={i18next.t('Password')}
           returnKeyType="next"
-          autoFocus={true}
+         // autoFocus={true}
           onChangeText={(value:any) => setPassword(value)}
           onSubmitEditing={() => ref_input3.current.focus()}
           ref={ref_input2} />
@@ -111,7 +111,7 @@ export function SignUpForm() {
           style={formStyle.registrationTextInputs} 
           borderWidth="0" 
           placeholder={i18next.t('Email')}
-          autoFocus={true}
+          //autoFocus={true}
           onChangeText={(emailInput:any) => setEmail(emailInput.toLowerCase())}
           ref={ref_input3}/>
       </View>
