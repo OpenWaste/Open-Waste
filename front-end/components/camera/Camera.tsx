@@ -6,13 +6,13 @@ import {
   TouchableHighlight,
   Image,
   ActivityIndicator,
-  ScrollView,
+  ScrollView, Linking,
 } from "react-native";
 import { Camera } from "expo-camera";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import style from "./styles";
-import { Button, NativeBaseProvider } from "native-base";
+import {Button, HStack, NativeBaseProvider} from "native-base";
 import Service from "../../service/service";
 import { useIsFocused } from "@react-navigation/native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
@@ -341,6 +341,7 @@ export const MapBottomSheet = (props: MapBottomSheetProperties) => {
       />
       <ScrollView>
         <View style={style.bottomSheetViewStyle}>
+          <HStack>
           <Text>
             <Text style={style.bottomSheetHeaderText}>Category:</Text>{" "}
             <Text style={style.bottomSheetContentText}>
@@ -348,6 +349,21 @@ export const MapBottomSheet = (props: MapBottomSheetProperties) => {
               {props.category + "\n"}{" "}
             </Text>
           </Text>
+            <TouchableHighlight
+                style={style.directionBtn}
+                activeOpacity={0.6}
+                underlayColor={"transparent"}
+                onPress={() => {
+              Linking.openURL(encodeURI(`https://www.google.com/maps/dir/?api=1&destination=${props.closestBuilding?.latitude},${props.closestBuilding?.longitude}`));
+            }}>
+            <MaterialCommunityIcons
+                style={{color:'#4285f4'}}
+                name="directions"
+                size={50}
+            />
+            </TouchableHighlight>
+          </HStack>
+
 
           {props.instruction != undefined ? (
             <Text testID="instruction-text">

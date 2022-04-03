@@ -214,36 +214,86 @@ exports[`CameraView Component Tests CameraView renders correctly 1`] = `
                       }
                     }
                   >
-                    <Text>
-                      <Text
-                        style={
-                          Object {
-                            "color": 808080,
-                            "fontFamily": "Roboto",
-                            "fontSize": 18,
-                            "fontWeight": "bold",
-                            "justifyContent": "center",
-                          }
+                    <View
+                      style={
+                        Object {
+                          "flexDirection": "row",
                         }
-                      >
-                        Category:
-                      </Text>
-                       
-                      <Text
-                        style={
-                          Object {
-                            "color": 808080,
-                            "fontFamily": "Roboto",
-                            "fontSize": 16,
+                      }
+                    >
+                      <Text>
+                        <Text
+                          style={
+                            Object {
+                              "color": 808080,
+                              "fontFamily": "Roboto",
+                              "fontSize": 18,
+                              "fontWeight": "bold",
+                              "justifyContent": "center",
+                            }
                           }
-                        }
-                      >
+                        >
+                          Category:
+                        </Text>
                          
-                        test
+                        <Text
+                          style={
+                            Object {
+                              "color": 808080,
+                              "fontFamily": "Roboto",
+                              "fontSize": 16,
+                            }
+                          }
+                        >
+                           
+                          test
 
-                         
+                           
+                        </Text>
                       </Text>
-                    </Text>
+                      <View
+                        style={Object {}}
+                      />
+                      <View
+                        accessible={true}
+                        focusable={true}
+                        onClick={[Function]}
+                        onResponderGrant={[Function]}
+                        onResponderMove={[Function]}
+                        onResponderRelease={[Function]}
+                        onResponderTerminate={[Function]}
+                        onResponderTerminationRequest={[Function]}
+                        onStartShouldSetResponder={[Function]}
+                        style={
+                          Object {
+                            "marginLeft": "auto",
+                          }
+                        }
+                      >
+                        <Text
+                          allowFontScaling={false}
+                          style={
+                            Array [
+                              Object {
+                                "color": undefined,
+                                "fontSize": 50,
+                              },
+                              Object {
+                                "color": "#4285f4",
+                              },
+                              Object {
+                                "fontFamily": "material-community",
+                                "fontStyle": "normal",
+                                "fontWeight": "normal",
+                              },
+                              Object {},
+                            ]
+                          }
+                        >
+                          󰇐
+                        </Text>
+                      </View>
+                    </View>
                     <Text
                       style={
                         Object {
