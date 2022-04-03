@@ -8,6 +8,7 @@ import styles from './styles'
 export function SearchBar(props) {
     return <ScrollView width="100%" space={5} alignSelf="center" keyboardShouldPersistTaps="never">
           <Input
+            testID="searchBar"
             onFocus={props.focus}
             onChangeText={props.query}
             placeholder={props.placeholder}

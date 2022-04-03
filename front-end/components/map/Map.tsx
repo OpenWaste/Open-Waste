@@ -9,7 +9,7 @@ import BottomSheet, {BottomSheetScrollView} from '@gorhom/bottom-sheet'
 import Service from "../../service/service";
 import { Region, Building } from '../../interfaces/service-types'
 import { getValueFor } from "../../utils/PersistInfo";
-import { NativeBaseProvider, ScrollView, HStack, Button, Icon } from "native-base";
+import { NativeBaseProvider, HStack, Button, Icon } from "native-base";
 import { SearchBar } from './SearchBar';
 
 export function Map() {
@@ -95,6 +95,7 @@ export function Map() {
           {
             pressed
             ? <FlatList
+                testID="flatList"
                 keyboardShouldPersistTaps='never'
                 data={filteredBuildings} keyExtractor={index => index.id.toString()}
                 extraData = {query} 
@@ -104,8 +105,8 @@ export function Map() {
                     style={!pressed ? styles.pressable : null}
                   >
                     <HStack space={2} style={styles.flatList}>
-                      <Text style={styles.flatListText}>{item.building_name}</Text>
-                      <Text style={styles.flatListAddress}>{item.address}</Text>
+                      <Text testID="buildingName" style={styles.flatListText}>{item.building_name}</Text>
+                      <Text testID="buildingAddress" style={styles.flatListAddress}>{item.address}</Text>
                     </HStack>
                   </Pressable>
                 }
