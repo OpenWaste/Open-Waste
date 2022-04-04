@@ -11,7 +11,7 @@ import { ProfileNavigator } from "./profile/ProfileNavigator";
 import { ImageSubmission } from "./submission/ImageSubmission";
 
 const screens = [
-  { name: "Carte", component: Map, icon: "map", unmount: false},
+  { name: "Carte", component: Map, icon: "map", unmount: true},
   { name: "Soumission", component: ImageSubmission, icon: "upload-file", unmount: true},
   { name: "Caméra", component: DisplayCamera, icon: "photo-camera", unmount: false},
   { name: "Profile", component: ProfileNavigator, icon: "person", unmount: false},
