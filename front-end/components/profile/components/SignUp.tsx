@@ -43,6 +43,7 @@ export function SignUpForm() {
   const [password, setPassword] = React.useState('');
   const [email, setEmail] = React.useState('');
   const showPass = () => setShow(!show);
+  const navigation = useNavigation()
 
   const handleSubmit = () => {
 
@@ -55,9 +56,9 @@ export function SignUpForm() {
   
       // Get response from create-user endpoint
       Service.submitAccountCreation(user).then((resp) => {
-        handleAccountCreation(true, username, email, showMessage)
+        handleAccountCreation(true, username, email, showMessage, navigation)
       }).catch(() => {
-        handleAccountCreation(false, username, email, showMessage)
+        handleAccountCreation(false, username, email, showMessage, navigation)
       })
     }
     else {
@@ -117,9 +118,7 @@ export function SignUpForm() {
 }
 
 
-export function handleAccountCreation(isSuccessful: boolean, username:string, email:string, messageDisplayer:(value:MessageOptions) => void): void {
-  const navigation = useNavigation()
-
+export function handleAccountCreation(isSuccessful: boolean, username:string, email:string, messageDisplayer:(value:MessageOptions) => void, navigation): void {
   if(isSuccessful) {
     save('username', username);
     save('email', email);

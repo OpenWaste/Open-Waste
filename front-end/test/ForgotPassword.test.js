@@ -64,7 +64,7 @@ describe("ForgotPassword Tests", () => {
 describe("handleResetPassword() Tests", () => {
   it("Correct success message is displayed", () => {
     let messageDisplayerMockFN = jest.fn()
-    handleResetPassword(true, "test@gmail.com", messageDisplayerMockFN)
+    handleResetPassword(true, "test@gmail.com", messageDisplayerMockFN, fakeNavigation)
 
     expect(messageDisplayerMockFN).toHaveBeenCalled();
     expect(messageDisplayerMockFN).toHaveBeenCalledWith({ message: 'Successfully submitted email', type: 'success' })
@@ -73,7 +73,7 @@ describe("handleResetPassword() Tests", () => {
 
   it("Correct failed message is displayed", () => {
     let messageDisplayerMockFN = jest.fn()
-    handleResetPassword(false, "test@gmail.com", messageDisplayerMockFN)
+    handleResetPassword(false, "test@gmail.com", messageDisplayerMockFN, fakeNavigation)
 
     expect(messageDisplayerMockFN).toHaveBeenCalled();
     expect(messageDisplayerMockFN).toHaveBeenCalledWith({ message: 'An Error Has Occurred', type: 'warning' })

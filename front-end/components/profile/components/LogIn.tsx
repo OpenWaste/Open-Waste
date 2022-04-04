@@ -9,7 +9,6 @@ import Service from "../../../service/service";
 import { UserResource } from "../../../models/User";
 import { useNavigation } from '@react-navigation/native';
 import { save } from '../../../utils/PersistInfo';
-import { LoginFormProperties } from "../../../interfaces/profile-types";
 import i18next from '../../../Translate';
 
 export class LogIn extends React.Component {
@@ -42,7 +41,7 @@ export const LoginForm = (prop) => {
   const showPass = () => setShow(!show);
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
-
+  const navigation = useNavigation();
   const handleSubmit = () => {
 
     // Prepare info
@@ -54,9 +53,9 @@ export const LoginForm = (prop) => {
 
     // Get response from authenticate-user endpoint
     Service.authenticateUser(user).then(resp => {
-      handleUserAuthentication(true, resp.email, username,  resp.submitted_images, resp.accepted_images, showMessage);
+      handleUserAuthentication(true, resp.email, username,  resp.submitted_images, resp.accepted_images, showMessage, navigation);
     }).catch(() => {
-      handleUserAuthentication(false, "","", 0,0, showMessage);
+      handleUserAuthentication(false, "","", 0,0, showMessage, navigation);
     })
   }
 
@@ -101,8 +100,8 @@ export const LoginForm = (prop) => {
   )
 }
 
-export function handleUserAuthentication(isSuccessful:boolean, email:string, username:string, submittedImages:number, acceptedImages:number, messageDisplayer:(value:MessageOptions) =>void):void {
-  const navigation = useNavigation();
+export function handleUserAuthentication(isSuccessful:boolean, email:string, username:string, submittedImages:number, acceptedImages:number, messageDisplayer:(value:MessageOptions) =>void, navigation):void {
+
 
   if(isSuccessful){
     save('email', email)

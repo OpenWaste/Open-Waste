@@ -53,7 +53,7 @@ describe("VerifyEmail Tests", () => {
 describe("handleEmailVerification() tests",  () => {
   it("Correct success message is displayed", () => {
     let messageDisplayerMockFN = jest.fn()
-    handleEmailVerification(true, "test",  messageDisplayerMockFN)
+    handleEmailVerification(true, "test",  messageDisplayerMockFN, fakeNavigation)
 
     expect(messageDisplayerMockFN).toHaveBeenCalled();
     expect(messageDisplayerMockFN).toHaveBeenCalledWith({ message: 'Successfully verified email', type: 'success' })
@@ -62,7 +62,7 @@ describe("handleEmailVerification() tests",  () => {
 
   it("Correct failed message is displayed", () => {
     let messageDisplayerMockFN = jest.fn()
-    handleEmailVerification(false, "test",  messageDisplayerMockFN)
+    handleEmailVerification(false, "test",  messageDisplayerMockFN, fakeNavigation)
 
     expect(messageDisplayerMockFN).toHaveBeenCalled();
     expect(messageDisplayerMockFN).toHaveBeenCalledWith({ message: 'Invalid Passcode', type: 'warning' })

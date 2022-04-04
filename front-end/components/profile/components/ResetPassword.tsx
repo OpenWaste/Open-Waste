@@ -40,6 +40,7 @@ export function ResetPasswordForm() {
   const [pass1, setPass1] = React.useState("");
   const [pass2, setPass2] = React.useState("");
   const [username, setUsername] = React.useState("");
+  const navigation = useNavigation();
 
   useEffect(() => {
     getValueFor('username').then((output) => {
@@ -59,10 +60,10 @@ export function ResetPasswordForm() {
     };
 
     Service.changePassword(user).then(() => {
-      handlePasswordChange(true, showMessage)
+      handlePasswordChange(true, showMessage, navigation)
     })
     .catch(() => {
-      handlePasswordChange(false, showMessage)
+      handlePasswordChange(false, showMessage, navigation)
     });
   };
 
@@ -142,9 +143,7 @@ export function ResetPasswordForm() {
   );
 }
 
-export function handlePasswordChange(isSuccessful:boolean, messageDisplayer:(value:MessageOptions)=>void):void {
-  const navigation = useNavigation();
-
+export function handlePasswordChange(isSuccessful:boolean, messageDisplayer:(value:MessageOptions)=>void, navigation):void {
   if(isSuccessful){
     deleteValueFor('username');
     deleteValueFor('email');

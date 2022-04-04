@@ -151,7 +151,7 @@ export function EditForm() {
         >
           {i18next.t('Cancel')}
         </Text>
-        <Text testID="saveBtn" style={style.saveBtn} onPress={()=>{validateUserProfileChange(isChange, newUsername, newEmail, oldUsername, showMessage)}}>
+        <Text testID="saveBtn" style={style.saveBtn} onPress={()=>{validateUserProfileChange(isChange, newUsername, newEmail, oldUsername, showMessage, navigation)}}>
           {i18next.t('Save')}
         </Text>
       </View>
@@ -159,8 +159,7 @@ export function EditForm() {
   );
 }
 
-export function validateUserProfileChange(isChange:boolean, newUsername:string, newEmail:string, oldUsername:string, messageDisplayer:(value:MessageOptions) => void):void{
-  const navigation = useNavigation();
+export function validateUserProfileChange(isChange:boolean, newUsername:string, newEmail:string, oldUsername:string, messageDisplayer:(value:MessageOptions) => void ,navigation):void{
   if (isChange) {
     if (newUsername == "") {
       messageDisplayer({ message: "Please fill a new username", type: "warning" });
@@ -182,18 +181,17 @@ export function validateUserProfileChange(isChange:boolean, newUsername:string, 
     // Get response from update-username-email endpoint
     Service.updateUsernameEmail(user)
         .then(() => {
-          handleUserProfileChange(true, newUsername, newEmail, messageDisplayer)
+          handleUserProfileChange(true, newUsername, newEmail, messageDisplayer, navigation)
         })
         .catch(() => {
-          handleUserProfileChange(false, newUsername, newEmail, messageDisplayer)
+          handleUserProfileChange(false, newUsername, newEmail, messageDisplayer, navigation)
         });
   } else {
     navigation.navigate("ProfilePage");
   }
 }
 
-export function handleUserProfileChange(isSuccessful:boolean, newUsername:string, newEmail:string, messageDisplayer:(value:MessageOptions) => void):void {
-  const navigation = useNavigation();
+export function handleUserProfileChange(isSuccessful:boolean, newUsername:string, newEmail:string, messageDisplayer:(value:MessageOptions) => void, navigation):void {
   if(isSuccessful){
     save("username", newUsername);
     save("email", newEmail);
@@ -213,6 +211,7 @@ export function DeleteAccount() {
   const [username, setUsername] = React.useState("");
   const onClose = () => setIsOpen(false);
   const cancelRef = React.useRef(null);
+  const navigation = useNavigation();
 
   getValueFor("username").then((output) => {
     setUsername(output);
@@ -227,10 +226,10 @@ export function DeleteAccount() {
 
     Service.deleteUser(user)
       .then(() => {
-        handleUserDeletion(true, showMessage)
+        handleUserDeletion(true, showMessage, navigation)
       })
       .catch(() => {
-        handleUserDeletion(false, showMessage)
+        handleUserDeletion(false, showMessage, navigation)
       });
 
     onClose();
@@ -280,8 +279,7 @@ export function DeleteAccount() {
   );
 }
 
-export function handleUserDeletion(isSuccessful:boolean,  messageDisplayer:(value:MessageOptions)=>void) {
-  const navigation = useNavigation();
+export function handleUserDeletion(isSuccessful:boolean,  messageDisplayer:(value:MessageOptions)=>void, navigation) {
 
   if(isSuccessful) {
     // If response is good, delete persistent data

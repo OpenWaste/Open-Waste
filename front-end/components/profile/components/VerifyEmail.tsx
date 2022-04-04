@@ -37,6 +37,7 @@ export class VerifyEmail extends React.Component {
 export function ValidatePasscode(){
   const [enteredPasscode, setPasscode]=React.useState('');
   const [email, setEmail]=React.useState('');
+  const navigation=useNavigation();
 
   useEffect(() => {
     getValueFor('email').then((output) => {
@@ -55,9 +56,9 @@ export function ValidatePasscode(){
     // Get response from authenticate-user endpoint
     // Get response from update-username-email endpoint
     Service.verifyEmail(user).then(resp => {
-      handleEmailVerification(true, resp.data.username, showMessage)
+      handleEmailVerification(true, resp.data.username, showMessage, navigation)
     }).catch(() =>{
-      handleEmailVerification(false, "", showMessage)
+      handleEmailVerification(false, "", showMessage, navigation)
     })
   }
 
@@ -81,8 +82,8 @@ export function ValidatePasscode(){
   )
 }
 
-export function handleEmailVerification(isSuccessful:boolean, username:string, messageDisplayer:(value:MessageOptions) => void ): void {
-  const navigation=useNavigation();
+export function handleEmailVerification(isSuccessful:boolean, username:string, messageDisplayer:(value:MessageOptions) => void, navigation): void {
+
 
   if(isSuccessful){
     save('username', username)

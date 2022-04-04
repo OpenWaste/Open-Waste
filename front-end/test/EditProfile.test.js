@@ -10,7 +10,7 @@ import {
   handleUserDeletion,
   handleUserProfileChange
 } from "../components/profile/components/EditProfile";
-import { inset } from './utils/constants';
+import {fakeNavigation, inset} from './utils/constants';
 
 describe("EditProfile tests", () => {
   it("renders correctly", () => {
@@ -105,13 +105,13 @@ describe("EditProfile tests", () => {
 describe("validateUserProfileChange() Tests", () => {
   it("If no change, then display no message to user", () => {
     let messageDisplayer = jest.fn()
-    validateUserProfileChange(false,"","","", messageDisplayer)
+    validateUserProfileChange(false,"","","", messageDisplayer, fakeNavigation)
     expect(messageDisplayer).not.toBeCalled()
   })
 
   it("If change and no new username specified, then display correct message to user", () => {
     let messageDisplayer = jest.fn()
-    validateUserProfileChange(true,"","","", messageDisplayer)
+    validateUserProfileChange(true,"","","", messageDisplayer, fakeNavigation)
 
     expect(messageDisplayer).toBeCalled()
     expect(messageDisplayer).toBeCalledWith({ message: "Please fill a new username", type: "warning" })
@@ -119,7 +119,7 @@ describe("validateUserProfileChange() Tests", () => {
 
   it("If change and no new email specified, then display correct message to user", () => {
     let messageDisplayer = jest.fn()
-    validateUserProfileChange(true,"test","","", messageDisplayer)
+    validateUserProfileChange(true,"test","","", messageDisplayer, fakeNavigation)
 
     expect(messageDisplayer).toBeCalled()
     expect(messageDisplayer).toBeCalledWith({ message: "Please fill a new email", type: "warning" })
@@ -127,7 +127,7 @@ describe("validateUserProfileChange() Tests", () => {
 
   it("If change new email is invalid, then display correct message to user", () => {
     let messageDisplayer = jest.fn()
-    validateUserProfileChange(true,"test","test","", messageDisplayer)
+    validateUserProfileChange(true,"test","test","", messageDisplayer, fakeNavigation)
 
     expect(messageDisplayer).toBeCalled()
     expect(messageDisplayer).toBeCalledWith({ message: "Invalid Email", type: "warning" })
@@ -137,7 +137,7 @@ describe("validateUserProfileChange() Tests", () => {
 describe("handleUserDeletion() Tests", () => {
   it("Correct success message is displayed", () => {
     let messageDisplayer = jest.fn()
-    handleUserDeletion(true ,messageDisplayer)
+    handleUserDeletion(true ,messageDisplayer, fakeNavigation)
     expect(messageDisplayer).toBeCalled()
     expect(messageDisplayer).toBeCalledWith({
       message: "Successfully Deleted Account",
@@ -147,7 +147,7 @@ describe("handleUserDeletion() Tests", () => {
 
   it("Correct failure message is displayed", () => {
     let messageDisplayer = jest.fn()
-    handleUserDeletion(false ,messageDisplayer)
+    handleUserDeletion(false ,messageDisplayer, fakeNavigation)
     expect(messageDisplayer).toBeCalled()
     expect(messageDisplayer).toBeCalledWith({ message: "An Error Has Occurred", type: "warning" })
   })
@@ -156,7 +156,7 @@ describe("handleUserDeletion() Tests", () => {
 describe("handleUserProfileChange() Tests", () => {
   it("Correct success message is displayed", () => {
     let messageDisplayer = jest.fn()
-    handleUserProfileChange(true , "", "", messageDisplayer)
+    handleUserProfileChange(true , "", "", messageDisplayer, fakeNavigation)
     expect(messageDisplayer).toBeCalled()
     expect(messageDisplayer).toBeCalledWith({
       message: "Successfully Updated Account",
@@ -166,7 +166,7 @@ describe("handleUserProfileChange() Tests", () => {
 
   it("Correct failure message is displayed", () => {
     let messageDisplayer = jest.fn()
-    handleUserProfileChange(false , "", "", messageDisplayer)
+    handleUserProfileChange(false , "", "", messageDisplayer, fakeNavigation)
     expect(messageDisplayer).toBeCalled()
     expect(messageDisplayer).toBeCalledWith({ message: "An Error Has Occurred", type: "warning" })
   })

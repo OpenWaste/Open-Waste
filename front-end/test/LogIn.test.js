@@ -120,7 +120,7 @@ describe("LogIn Tests", () => {
 describe("handleUserAuthentication() tests",  () => {
   it("Correct success message is displayed", () => {
     let messageDisplayerMockFN = jest.fn()
-    handleUserAuthentication(true,  "","",0,0, messageDisplayerMockFN)
+    handleUserAuthentication(true,  "","",0,0, messageDisplayerMockFN, fakeNavigation)
 
     expect(messageDisplayerMockFN).toHaveBeenCalled();
     expect(messageDisplayerMockFN).toHaveBeenCalledWith({ message: 'Success!', type: 'success' })
@@ -129,7 +129,7 @@ describe("handleUserAuthentication() tests",  () => {
 
   it("Correct failed message is displayed", () => {
     let messageDisplayerMockFN = jest.fn()
-    handleUserAuthentication(false, "","",0,0, messageDisplayerMockFN)
+    handleUserAuthentication(false, "","",0,0, messageDisplayerMockFN, fakeNavigation)
 
     expect(messageDisplayerMockFN).toHaveBeenCalled();
     expect(messageDisplayerMockFN).toHaveBeenCalledWith({ message: 'Invalid Login Information', type: 'warning' })

@@ -37,6 +37,7 @@ export class ForgotPassword extends React.Component {
 
 export function ResetPassword(){
   const [email, setEmail]=React.useState('');
+  const navigation=useNavigation();
 
   const handleSubmit = () => {
 
@@ -48,9 +49,9 @@ export function ResetPassword(){
     // Get response from authenticate-user endpoint
     // Get response from update-username-email endpoint
     Service.resetPassword(user).then(() => {
-      handleResetPassword(true, email, showMessage)
+      handleResetPassword(true, email, showMessage, navigation)
     }).catch(() =>{
-      handleResetPassword(false, null, showMessage)
+      handleResetPassword(false, null, showMessage, navigation)
     })
   }
 
@@ -76,8 +77,7 @@ export function ResetPassword(){
   )
 }
 
-export function handleResetPassword(isSuccessful:boolean, email:string|null, messageDisplayer:(value:MessageOptions) =>void) {
-  const navigation=useNavigation();
+export function handleResetPassword(isSuccessful:boolean, email:string|null, messageDisplayer:(value:MessageOptions) =>void, navigation) {
 
   if(isSuccessful){
     email !=null ? save('email', email):null;

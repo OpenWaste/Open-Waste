@@ -7,7 +7,7 @@ import {
   ResetPasswordForm,
   handlePasswordChange
 } from "../components/profile/components/ResetPassword";
-import { inset } from './utils/constants';
+import {fakeNavigation, inset} from './utils/constants';
 
 describe("ResetPassword Tests", () => {
   it("renders correctly", () => {
@@ -70,7 +70,7 @@ describe("ResetPassword Tests", () => {
 describe("handlePasswordChange() tests",  () => {
   it("Correct success message is displayed", () => {
     let messageDisplayerMockFN = jest.fn()
-    handlePasswordChange(true,   messageDisplayerMockFN)
+    handlePasswordChange(true,   messageDisplayerMockFN, fakeNavigation)
 
     expect(messageDisplayerMockFN).toHaveBeenCalled();
     expect(messageDisplayerMockFN).toHaveBeenCalledWith({ message: "Password change was successful", type: "success" })
@@ -79,7 +79,7 @@ describe("handlePasswordChange() tests",  () => {
 
   it("Correct failed message is displayed", () => {
     let messageDisplayerMockFN = jest.fn()
-    handlePasswordChange(false, messageDisplayerMockFN)
+    handlePasswordChange(false, messageDisplayerMockFN, fakeNavigation)
 
     expect(messageDisplayerMockFN).toHaveBeenCalled();
     expect(messageDisplayerMockFN).toHaveBeenCalledWith({ message: "Could not change password", type: "warning" })

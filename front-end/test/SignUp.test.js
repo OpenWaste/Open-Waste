@@ -3,7 +3,7 @@ import renderer from "react-test-renderer";
 import { render, fireEvent } from "@testing-library/react-native";
 import { NativeBaseProvider } from "native-base";
 import { SignUp, SignUpForm, handleAccountCreation } from "../components/profile/components/SignUp";
-import { inset } from './utils/constants';
+import {fakeNavigation, inset} from './utils/constants';
 
 describe("SignUp Tests", () => {
   it("renders correctly", () => {
@@ -74,7 +74,7 @@ describe("SignUp Tests", () => {
 describe("handleAccountCreation() tests",  () => {
   it("Correct success message is displayed", () => {
     let messageDisplayerMockFN = jest.fn()
-    handleAccountCreation(true, "test", "test",  messageDisplayerMockFN)
+    handleAccountCreation(true, "test", "test",  messageDisplayerMockFN, fakeNavigation)
 
     expect(messageDisplayerMockFN).toHaveBeenCalled();
     expect(messageDisplayerMockFN).toHaveBeenCalledWith({ message: 'Success!', type: 'success' })
@@ -83,7 +83,7 @@ describe("handleAccountCreation() tests",  () => {
 
   it("Correct failed message is displayed", () => {
     let messageDisplayerMockFN = jest.fn()
-    handleAccountCreation(false, "test", "test", messageDisplayerMockFN)
+    handleAccountCreation(false, "test", "test", messageDisplayerMockFN, fakeNavigation)
 
     expect(messageDisplayerMockFN).toHaveBeenCalled();
     expect(messageDisplayerMockFN).toHaveBeenCalledWith({ message: "Error creating account", type: 'warning' })
