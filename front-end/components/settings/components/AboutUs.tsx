@@ -15,7 +15,7 @@ export class AboutUs extends React.Component {
           <View style={ style.viewElement }> 
                 <MaterialIcons name="arrow-back-ios" size={26} color="gray" style={ style.leftIcon }/>
                 <Text style={style.midText} testID = 'test'>
-                  About us
+                  {i18next.t('AboutUs')}
                 </Text>
                 <MaterialIcons name="info" size={26} color="gray" style={ style.rightIcon }/>  
           </View>

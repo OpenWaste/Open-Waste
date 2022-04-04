@@ -18,7 +18,7 @@ class CategoryInstructions(models.Model):
 
 
 class DWUser(AbstractUser):
-    email = models.EmailField(blank=False)
+    email = models.EmailField(blank=False, unique=True)
     profile_picture = models.ImageField(
         null=True, blank=True, upload_to=settings.PROFILE_PICTURE_PATH)
     passcode = models.CharField(max_length=8, blank=True)
