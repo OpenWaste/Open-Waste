@@ -60,5 +60,6 @@
     "paper": "Papier",
     "cardboard": "Carton",
     "glass": "Verre",
-    "trash": "Déchet"
+    "trash": "Déchet",
+    "FindA": "Chercher un..."
 }

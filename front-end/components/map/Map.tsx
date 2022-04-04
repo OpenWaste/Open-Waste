@@ -10,6 +10,7 @@ import { Region, Building } from '../../interfaces/service-types'
 import { getValueFor } from "../../utils/PersistInfo";
 import { NativeBaseProvider, HStack, Button, Icon } from "native-base";
 import { SearchBar } from './SearchBar';
+import i18next from '../../Translate'
 
 export function Map() {
   const [region, setRegion] = useState<Region>({
@@ -81,7 +82,7 @@ export function Map() {
             focus={() => setPressed(true)}
             query={updateQuery}
             value={query}   
-            placeholder="Find a..."
+            placeholder={i18next.t('FindA')}
           />
           {
             pressed

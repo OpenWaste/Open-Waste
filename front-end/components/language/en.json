@@ -62,5 +62,6 @@
     "paper": "Paper",
     "cardboard": "Cardboard",
     "glass": "Glass",
-    "trash": "Trash"
+    "trash": "Trash",
+    "FindA": "Find a..."
   }
