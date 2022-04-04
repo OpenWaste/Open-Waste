@@ -5,7 +5,7 @@ import formStyle from "./styles/forms";
 import { Avatar, Center, Input, NativeBaseProvider } from 'native-base';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Service from "../../../service/service";
-import { showMessage } from "react-native-flash-message";
+import {MessageOptions, showMessage} from "react-native-flash-message";
 import isEmail from 'validator/lib/isEmail';
 import { UserResource } from "../../../models/User";
 import { useNavigation } from '@react-navigation/native';
@@ -43,8 +43,7 @@ export function SignUpForm() {
   const [password, setPassword] = React.useState('');
   const [email, setEmail] = React.useState('');
   const showPass = () => setShow(!show);
-
-  const navigation = useNavigation();
+  const navigation = useNavigation()
 
   const handleSubmit = () => {
 
@@ -57,14 +56,9 @@ export function SignUpForm() {
   
       // Get response from create-user endpoint
       Service.submitAccountCreation(user).then((resp) => {
-        save('username', username)
-        save('email', email)
-        save('submitted_images', 0)
-        save('accepted_images', 0)
-        navigation.navigate('ProfilePage');
-        showMessage({ message: 'Success!', type: 'success' });
-      }).catch(error => {
-        showMessage({ message: error.toJSON().message, type: 'warning' });
+        handleAccountCreation(true, username, email, showMessage, navigation)
+      }).catch(() => {
+        handleAccountCreation(false, username, email, showMessage, navigation)
       })
     }
     else {
@@ -98,7 +92,7 @@ export function SignUpForm() {
           onChangeText={(value:any) => setPassword(value)}
           onSubmitEditing={() => ref_input3.current.focus()}
           ref={ref_input2} />
-        <TouchableOpacity onPress={showPass}>
+        <TouchableOpacity testID="showPassBtn" onPress={showPass}>
           <MaterialIcons style={formStyle.registrationIcons} name={show ? "visibility-off" : "remove-red-eye"} size={22}/>
         </TouchableOpacity>
       </View>
@@ -118,4 +112,18 @@ export function SignUpForm() {
         onPress={handleSubmit}> {i18next.t('SignUp')} </Text>
     </View>
   )
+}
+
+
+export function handleAccountCreation(isSuccessful: boolean, username:string, email:string, messageDisplayer:(value:MessageOptions) => void, navigation): void {
+  if(isSuccessful) {
+    save('username', username);
+    save('email', email);
+    navigation.navigate('ProfilePage');
+    save('submitted_images', 0);
+    save('accepted_images', 0);
+    messageDisplayer({ message: 'Success!', type: 'success' });
+  } else {
+    messageDisplayer({ message: "Error creating account", type: 'warning' });
+  }
 }

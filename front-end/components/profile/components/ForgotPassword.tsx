@@ -7,7 +7,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Service from "../../../service/service";
 import { save } from '../../../utils/PersistInfo';
 import { useNavigation } from '@react-navigation/native';
-import { showMessage } from "react-native-flash-message";
+import {MessageOptions, showMessage} from "react-native-flash-message";
 import i18next from '../../../Translate';
 
 export class ForgotPassword extends React.Component {
@@ -19,14 +19,14 @@ export class ForgotPassword extends React.Component {
         <ScrollView>
           <KeyboardAvoidingView>
             <View style={passStyle.container}>
-              <Image source={this.img} style={passStyle.img} />
+              <Image source={{uri:this.img}} style={passStyle.img} />
 
               <Text style={passStyle.header}> {i18next.t('ForgotPassword')} </Text>
               <Text style={passStyle.description}>
                 {i18next.t('ForgotPasswordText')}
               </Text>
               <ResetPassword/>
-              <Text style={passStyle.toLogin} onPress={() => this.props.navigation.navigate("BackToLogin")}> </Text>
+              <Text testID="loginBtn" style={passStyle.toLogin} onPress={() => this.props.navigation.navigate("BackToLogin")}> </Text>
             </View>
           </KeyboardAvoidingView>
         </ScrollView>
@@ -36,10 +36,8 @@ export class ForgotPassword extends React.Component {
 }
 
 export function ResetPassword(){
-
-  const navigation=useNavigation();
-
   const [email, setEmail]=React.useState('');
+  const navigation=useNavigation();
 
   const handleSubmit = () => {
 
@@ -51,14 +49,9 @@ export function ResetPassword(){
     // Get response from authenticate-user endpoint
     // Get response from update-username-email endpoint
     Service.resetPassword(user).then(() => {
-
-      save('email', email)
-
-      navigation.navigate('VerifyEmail');
-      showMessage({ message: 'Successfully submitted email', type: 'success' });
-
+      handleResetPassword(true, email, showMessage, navigation)
     }).catch(() =>{
-      showMessage({ message: 'An Error Has Occurred', type: 'warning' });
+      handleResetPassword(false, null, showMessage, navigation)
     })
   }
 
@@ -82,4 +75,15 @@ export function ResetPassword(){
         onPress={handleSubmit}> {i18next.t('Submit')} </Text>
   </View>
   )
+}
+
+export function handleResetPassword(isSuccessful:boolean, email:string|null, messageDisplayer:(value:MessageOptions) =>void, navigation) {
+
+  if(isSuccessful){
+    email !=null ? save('email', email):null;
+    navigation.navigate('VerifyEmail');
+    messageDisplayer({ message: 'Successfully submitted email', type: 'success' });
+  } else{
+    messageDisplayer({ message: 'An Error Has Occurred', type: 'warning' });
+  }
 }

@@ -1,27 +1,22 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { NativeBaseProvider } from "native-base";
-import { NavigationContainer } from '@react-navigation/native';
 import { AboutUs } from '../components/settings/components/AboutUs'
 import renderer from 'react-test-renderer';
 import { inset, fakeNavigation } from './utils/constants';
 
-it('renders correctly', async () => {
-  const tree = await renderer.create(
-  <NavigationContainer>
-    <AboutUs/>
-  </NavigationContainer>).toJSON();
+it('renders correctly', () => {
+  const tree = renderer.create(
+    <AboutUs/>).toJSON();
   expect(tree).toMatchSnapshot();
 });
 
-it('Heaader for showing About Us Page Renders Properly', () => {
+it('Header for showing About Us Page Renders Properly', () => {
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
-      <NavigationContainer>
         <AboutUs>
                 style={""}
         </AboutUs>
-      </NavigationContainer>
     </NativeBaseProvider>);  
   expect(queryByTestId('p1')).not.toBeNull();  
 });
@@ -29,9 +24,7 @@ it('Heaader for showing About Us Page Renders Properly', () => {
 it('Press header', () => {
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
-      <NavigationContainer>
         <AboutUs navigation={fakeNavigation}/>
-      </NavigationContainer>
     </NativeBaseProvider>);
 
   const button = queryByTestId("header");
@@ -43,9 +36,7 @@ it('Press header', () => {
 it('Press CP3 Email Button', () => {
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
-      <NavigationContainer>
         <AboutUs navigation={fakeNavigation}/>
-      </NavigationContainer>
     </NativeBaseProvider>);
 
   const button = queryByTestId("CP3Email");
@@ -57,9 +48,7 @@ it('Press CP3 Email Button', () => {
 it('Press CP3 Email Text', () => {
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
-      <NavigationContainer>
         <AboutUs navigation={fakeNavigation}/>
-      </NavigationContainer>
     </NativeBaseProvider>);
 
   const button = queryByTestId("CP3EmailText");
@@ -71,9 +60,7 @@ it('Press CP3 Email Text', () => {
 it('Press Zerowaste Email', () => {
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
-      <NavigationContainer>
         <AboutUs navigation={fakeNavigation}/>
-      </NavigationContainer>
     </NativeBaseProvider>);
 
   const button = queryByTestId("ZerowasteEmail");
@@ -85,9 +72,7 @@ it('Press Zerowaste Email', () => {
 it('Press Zerowaste Email Text', () => {
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
-      <NavigationContainer>
         <AboutUs navigation={fakeNavigation}/>
-      </NavigationContainer>
     </NativeBaseProvider>);
 
   const button = queryByTestId("ZerowasteEmailText");
@@ -99,9 +84,7 @@ it('Press Zerowaste Email Text', () => {
 it('Press CP3 Facebook', () => {
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
-      <NavigationContainer>
         <AboutUs navigation={fakeNavigation}/>
-      </NavigationContainer>
     </NativeBaseProvider>);
 
   const button = queryByTestId("CP3Facebook");
@@ -113,9 +96,7 @@ it('Press CP3 Facebook', () => {
 it('Press CP3 Instagram', () => {
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
-      <NavigationContainer>
         <AboutUs navigation={fakeNavigation}/>
-      </NavigationContainer>
     </NativeBaseProvider>);
 
   const button = queryByTestId("CP3Instagram");
@@ -127,9 +108,7 @@ it('Press CP3 Instagram', () => {
 it('Press CP3 Web', () => {
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
-      <NavigationContainer>
         <AboutUs navigation={fakeNavigation}/>
-      </NavigationContainer>
     </NativeBaseProvider>);
 
   const button = queryByTestId("CP3Web");
@@ -141,9 +120,7 @@ it('Press CP3 Web', () => {
 it('Press Zerowaste Facebook', () => {
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
-      <NavigationContainer>
         <AboutUs navigation={fakeNavigation}/>
-      </NavigationContainer>
     </NativeBaseProvider>);
 
   const button = queryByTestId("ZerowasteFacebook");
@@ -155,9 +132,7 @@ it('Press Zerowaste Facebook', () => {
 it('Press Zerowaste Instagram', () => {
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
-      <NavigationContainer>
         <AboutUs navigation={fakeNavigation}/>
-      </NavigationContainer>
     </NativeBaseProvider>);
 
   const button = queryByTestId("ZerowasteInstagram");
@@ -169,9 +144,7 @@ it('Press Zerowaste Instagram', () => {
 it('Press Zerowaste Web', () => {
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
-      <NavigationContainer>
         <AboutUs navigation={fakeNavigation}/>
-      </NavigationContainer>
     </NativeBaseProvider>);
 
   const button = queryByTestId("ZerowasteWeb");
@@ -183,9 +156,7 @@ it('Press Zerowaste Web', () => {
 it('Press Zerowaste Email 2', () => {
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
-      <NavigationContainer>
         <AboutUs navigation={fakeNavigation}/>
-      </NavigationContainer>
     </NativeBaseProvider>);
 
   const button = queryByTestId("ZerowasteEmail2");
@@ -197,9 +168,7 @@ it('Press Zerowaste Email 2', () => {
 it('Press Zerowaste Email Text 2', () => {
   const {queryByTestId} = render(
     <NativeBaseProvider initialWindowMetrics={inset}>
-      <NavigationContainer>
         <AboutUs navigation={fakeNavigation}/>
-      </NavigationContainer>
     </NativeBaseProvider>);
 
   const button = queryByTestId("ZerowasteEmailText2");

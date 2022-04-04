@@ -9,11 +9,11 @@ import style from "./styles/Settings";
 
 export class Setting extends React.Component {
 
-  constructor(props) {
+    constructor(props) {
     super(props);
     this.state = { language: null };
   }
-  
+
   componentDidMount() {
     this.focusSubscription = this.props.navigation.addListener('focus', () => {
       getValueFor('language').then(output => {

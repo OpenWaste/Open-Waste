@@ -5,4 +5,5 @@ export const inset = {
 
 export const fakeNavigation = {
     navigate: jest.fn(),
+    addListener:jest.fn((val,val2) => {return jest.fn()})
 };

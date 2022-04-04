@@ -1,14 +1,18 @@
 import React from "react";
 import renderer from "react-test-renderer";
+import Adapter from 'enzyme-adapter-react-16';
+import { configure, shallow } from "enzyme";
 import { render, fireEvent } from "@testing-library/react-native";
-import { LogIn, LoginForm } from "../components/profile/components/LogIn";
+import { LogIn, LoginForm, handleUserAuthentication } from "../components/profile/components/LogIn";
 import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from "@react-navigation/native";
 import { inset, fakeNavigation } from "./utils/constants";
 
+configure({adapter: new Adapter()});
+
 describe("LogIn Tests", () => {
-  it("renders correctly", async () => {
-    const tree = await renderer.create(<LogIn />).toJSON();
+  it("renders correctly", () => {
+    const tree = renderer.create(<LogIn />).toJSON();
     expect(tree).toMatchSnapshot();
   });
 
@@ -29,9 +33,7 @@ describe("LogIn Tests", () => {
   it("Press Forgot Password Button", () => {
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <LogIn navigation={fakeNavigation} />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 
@@ -43,9 +45,7 @@ describe("LogIn Tests", () => {
   it("Press Remain Guest Button", () => {
     const { queryByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <LogIn navigation={fakeNavigation} />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 
@@ -57,22 +57,19 @@ describe("LogIn Tests", () => {
   it("Enter username field", () => {
     const { getByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <LoginForm />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 
     const field = getByTestId("usernameField");
     fireEvent.changeText(field, "John");
+    fireEvent(field, 'submitEditing')
   });
 
-  it("Enter password field", async () => {
+  it("Enter password field", () => {
     const { getByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <LoginForm />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 
@@ -85,13 +82,57 @@ describe("LogIn Tests", () => {
 
     const { getByTestId } = render(
       <NativeBaseProvider initialWindowMetrics={inset}>
-        <NavigationContainer>
           <LoginForm handleSubmit={handleSubmit} />
-        </NavigationContainer>
       </NativeBaseProvider>
     );
 
     const button = getByTestId("loginBtn");
     fireEvent.press(button);
+  });
+
+  it("Show Password", () => {
+
+    const { getByTestId } = render(
+      <NativeBaseProvider initialWindowMetrics={inset}>
+          <LoginForm />
+      </NativeBaseProvider>
+    );
+
+    const button = getByTestId("showPassBtn");
+    fireEvent.press(button);
+
+  });
+
+  it("Unmount Login Component", () => {
+
+    const wrapper = shallow(
+      <NativeBaseProvider initialWindowMetrics={inset}>
+          <LoginForm />
+      </NativeBaseProvider>
+    );
+
+    wrapper.unmount()
+
+  });
+
+});
+
+describe("handleUserAuthentication() tests",  () => {
+  it("Correct success message is displayed", () => {
+    let messageDisplayerMockFN = jest.fn()
+    handleUserAuthentication(true,  "","",0,0, messageDisplayerMockFN, fakeNavigation)
+
+    expect(messageDisplayerMockFN).toHaveBeenCalled();
+    expect(messageDisplayerMockFN).toHaveBeenCalledWith({ message: 'Success!', type: 'success' })
+
+  });
+
+  it("Correct failed message is displayed", () => {
+    let messageDisplayerMockFN = jest.fn()
+    handleUserAuthentication(false, "","",0,0, messageDisplayerMockFN, fakeNavigation)
+
+    expect(messageDisplayerMockFN).toHaveBeenCalled();
+    expect(messageDisplayerMockFN).toHaveBeenCalledWith({ message: 'Invalid Login Information', type: 'warning' })
+
   });
 });

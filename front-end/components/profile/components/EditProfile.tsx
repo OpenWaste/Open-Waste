@@ -20,7 +20,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Service from "../../../service/service";
 import { UserResource } from "../../../models/User";
 import { useNavigation } from "@react-navigation/native";
-import { showMessage } from "react-native-flash-message";
+import {MessageOptions, showMessage} from "react-native-flash-message";
 
 import style from "./styles/edit-profile";
 import formStyle from "./styles/forms";
@@ -74,45 +74,6 @@ export function EditForm() {
     navigation.navigate("ProfilePage");
   };
 
-  const handleSubmit = () => {
-    if (isChange) {
-      if (newUsername == "") {
-        showMessage({ message: "Please fill a new username", type: "warning" });
-        return;
-      } else if (newEmail == "") {
-        showMessage({ message: "Please fill a new email", type: "warning" });
-        return;
-      } else if (!isEmail(newEmail)) {
-        showMessage({ message: "Invalid Email", type: "warning" });
-        return;
-      }
-
-      const user = {
-        old_username: oldUsername,
-        new_username: newUsername,
-        email: newEmail,
-      };
-
-      // Get response from update-username-email endpoint
-      Service.updateUsernameEmail(user)
-        .then(() => {
-          save("username", newUsername);
-          save("email", newEmail);
-
-          navigation.navigate("ProfilePage");
-          showMessage({
-            message: "Successfully Updated Account",
-            type: "success",
-          });
-        })
-        .catch(() => {
-          showMessage({ message: "An Error Has Occurred", type: "warning" });
-        });
-    } else {
-      navigation.navigate("ProfilePage");
-    }
-  };
-
   const setValue = (value: any, category: string) => {
     if (category == "email") {
       setNewEmail(value);
@@ -140,6 +101,7 @@ export function EditForm() {
                   size={22}
                 />
                 <Input
+                  testID="usernameField"
                   style={formStyle.registrationTextInputs}
                   onChangeText={(value: any) => {
                     setValue(value, "user");
@@ -167,6 +129,7 @@ export function EditForm() {
                   size={22}
                 />
                 <Input
+                  testID="emailField"
                   style={formStyle.registrationTextInputs}
                   onChangeText={(value: any) => {
                     setValue(value, "email");
@@ -188,12 +151,59 @@ export function EditForm() {
         >
           {i18next.t('Cancel')}
         </Text>
-        <Text testID="saveBtn" style={style.saveBtn} onPress={handleSubmit}>
+        <Text testID="saveBtn" style={style.saveBtn} onPress={()=>{validateUserProfileChange(isChange, newUsername, newEmail, oldUsername, showMessage, navigation)}}>
           {i18next.t('Save')}
         </Text>
       </View>
     </View>
   );
+}
+
+export function validateUserProfileChange(isChange:boolean, newUsername:string, newEmail:string, oldUsername:string, messageDisplayer:(value:MessageOptions) => void ,navigation):void{
+  if (isChange) {
+    if (newUsername == "") {
+      messageDisplayer({ message: "Please fill a new username", type: "warning" });
+      return;
+    } else if (newEmail == "") {
+      messageDisplayer({ message: "Please fill a new email", type: "warning" });
+      return;
+    } else if (!isEmail(newEmail)) {
+      messageDisplayer({ message: "Invalid Email", type: "warning" });
+      return;
+    }
+
+    const user = {
+      old_username: oldUsername,
+      new_username: newUsername,
+      email: newEmail,
+    };
+
+    // Get response from update-username-email endpoint
+    Service.updateUsernameEmail(user)
+        .then(() => {
+          handleUserProfileChange(true, newUsername, newEmail, messageDisplayer, navigation)
+        })
+        .catch(() => {
+          handleUserProfileChange(false, newUsername, newEmail, messageDisplayer, navigation)
+        });
+  } else {
+    navigation.navigate("ProfilePage");
+  }
+}
+
+export function handleUserProfileChange(isSuccessful:boolean, newUsername:string, newEmail:string, messageDisplayer:(value:MessageOptions) => void, navigation):void {
+  if(isSuccessful){
+    save("username", newUsername);
+    save("email", newEmail);
+
+    navigation.navigate("ProfilePage");
+    messageDisplayer({
+      message: "Successfully Updated Account",
+      type: "success",
+    });
+  } else {
+    messageDisplayer({ message: "An Error Has Occurred", type: "warning" });
+  }
 }
 
 export function DeleteAccount() {
@@ -216,20 +226,10 @@ export function DeleteAccount() {
 
     Service.deleteUser(user)
       .then(() => {
-        // If response is good, delete persistent data
-        deleteValueFor("username");
-        deleteValueFor("email");
-        deleteValueFor("submitted_images");
-        deleteValueFor("accepted_images");
-        // Redirect and show success message
-        navigation.navigate("ProfilePage");
-        showMessage({
-          message: "Successfully Deleted Account",
-          type: "success",
-        });
+        handleUserDeletion(true, showMessage, navigation)
       })
       .catch(() => {
-        showMessage({ message: "An Error Has Occurred", type: "warning" });
+        handleUserDeletion(false, showMessage, navigation)
       });
 
     onClose();
@@ -263,6 +263,7 @@ export function DeleteAccount() {
                 {i18next.t('Delete')}
               </Button>
               <Button
+                testID="modalCancelBtn"
                 variant="unstyled"
                 colorScheme="coolGray"
                 onPress={onClose}
@@ -276,4 +277,23 @@ export function DeleteAccount() {
       </AlertDialog>
     </Center>
   );
+}
+
+export function handleUserDeletion(isSuccessful:boolean,  messageDisplayer:(value:MessageOptions)=>void, navigation) {
+
+  if(isSuccessful) {
+    // If response is good, delete persistent data
+    deleteValueFor("username");
+    deleteValueFor("email");
+    deleteValueFor("submitted_images");
+    deleteValueFor("accepted_images");
+    // Redirect and show success message
+    navigation.navigate("ProfilePage");
+    messageDisplayer({
+      message: "Successfully Deleted Account",
+      type: "success",
+    });
+  } else {
+    messageDisplayer({ message: "An Error Has Occurred", type: "warning" });
+  }
 }

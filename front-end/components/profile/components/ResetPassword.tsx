@@ -5,7 +5,7 @@ import formStyle from "./styles/forms";
 import passStyle from "./styles/forgot-password";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
-import { showMessage } from "react-native-flash-message";
+import {MessageOptions, showMessage} from "react-native-flash-message";
 import Service from "../../../service/service";
 import { deleteValueFor, getValueFor } from '../../../utils/PersistInfo';
 import { UserResource } from "../../../models/User";
@@ -20,7 +20,7 @@ export class ResetPassword extends React.Component {
         <ScrollView>
           <KeyboardAvoidingView>
             <View style={passStyle.container}>
-              <Image source={this.img} style={passStyle.resetImg} />
+              <Image source={{uri:this.img}} style={passStyle.resetImg} />
               <Text style={passStyle.header}> {i18next.t('ResetPassword')} </Text>
               <ResetPasswordForm />
             </View>
@@ -40,14 +40,13 @@ export function ResetPasswordForm() {
   const [pass1, setPass1] = React.useState("");
   const [pass2, setPass2] = React.useState("");
   const [username, setUsername] = React.useState("");
+  const navigation = useNavigation();
 
   useEffect(() => {
     getValueFor('username').then((output) => {
       setUsername(output)
     });
   })
-
-  const navigation = useNavigation();
 
   const handleSubmit = () => {
     if (pass1 != pass2) {
@@ -61,13 +60,10 @@ export function ResetPasswordForm() {
     };
 
     Service.changePassword(user).then(() => {
-      deleteValueFor('username');
-      deleteValueFor('email');
-      navigation.navigate("Registration");
-      showMessage({ message: username, type: "success" });
+      handlePasswordChange(true, showMessage, navigation)
     })
-    .catch((error) => {
-      showMessage({ message: error.toJSON().message, type: "warning" });
+    .catch(() => {
+      handlePasswordChange(false, showMessage, navigation)
     });
   };
 
@@ -90,7 +86,7 @@ export function ResetPasswordForm() {
           onChangeText={(value:any) => setPass1(value)}
           onSubmitEditing={() => ref_input2.current.focus()}
         />
-        <TouchableOpacity onPress={showPass1}>
+        <TouchableOpacity testID="showPass1" onPress={showPass1}>
           {show1 ? (
             <MaterialIcons
               style={formStyle.registrationIcons}
@@ -123,7 +119,7 @@ export function ResetPasswordForm() {
           ref={ref_input2}
           onChangeText={(value:any) => setPass2(value)}
         />
-        <TouchableOpacity onPress={showPass2}>
+        <TouchableOpacity testID="showPass2" onPress={showPass2}>
           {show2 ? (
             <MaterialIcons
               style={formStyle.registrationIcons}
@@ -145,4 +141,15 @@ export function ResetPasswordForm() {
         onPress={handleSubmit}> Submit </Text>
     </View>
   );
+}
+
+export function handlePasswordChange(isSuccessful:boolean, messageDisplayer:(value:MessageOptions)=>void, navigation):void {
+  if(isSuccessful){
+    deleteValueFor('username');
+    deleteValueFor('email');
+    navigation.navigate("Registration");
+    messageDisplayer({ message: "Password change was successful", type: "success" });
+  } else {
+    messageDisplayer({ message: "Could not change password", type: "warning" });
+  }
 }

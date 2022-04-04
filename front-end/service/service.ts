@@ -2,6 +2,7 @@ import axios from 'axios';
 import { PredictionResponse, UpdateResponse } from '../interfaces/service-types';
 import { UserResource } from '../models/User';
 import { save, getValueFor } from '../utils/PersistInfo';
+import {AuthenticationResponse} from "../interfaces/profile-types";
 
 const instance = axios.create({
   baseURL: 'https://digiwaste.systems:42069'
@@ -50,14 +51,21 @@ export default class Service {
     return await Service.post('create-user', resource);
   }
 
-  static async authenticateUser(data: UserResource):Promise<Object> {
+  static authenticateUser(data: UserResource):Promise<AuthenticationResponse> {
     const resource = {
       username: data.username,
       password: data.password
     }
 
-    let resp = await Service.post('authenticate-user', resource);
-    return resp
+    return new Promise((resolve, reject) => {
+      Service.post('authenticate-user', resource)
+          .then(a => {
+            resolve(a.data)
+          })
+          .catch(error => {
+            reject(error)
+          })
+    });
   }
 
   static async changePassword(data: UserResource):Promise<Object> {

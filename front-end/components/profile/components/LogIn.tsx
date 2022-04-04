@@ -3,13 +3,12 @@ import { View, ScrollView, KeyboardAvoidingView, Text, TouchableOpacity } from "
 import loginStyle from "./styles/login";
 import formStyle from "./styles/forms";
 import { Input, NativeBaseProvider } from 'native-base';
-import { showMessage } from "react-native-flash-message";
+import {MessageOptions, showMessage} from "react-native-flash-message";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Service from "../../../service/service";
 import { UserResource } from "../../../models/User";
 import { useNavigation } from '@react-navigation/native';
 import { save } from '../../../utils/PersistInfo';
-import { LoginFormProperties } from "../../../interfaces/profile-types";
 import i18next from '../../../Translate';
 
 export class LogIn extends React.Component {
@@ -38,13 +37,11 @@ export class LogIn extends React.Component {
 export const LoginForm = (prop) => {
 
   const ref_input2 = useRef();
-  const [show, setShow] = React.useState(false)
-  const showPass = () => setShow(!show)
+  const [show, setShow] = React.useState(false);
+  const showPass = () => setShow(!show);
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
- 
   const navigation = useNavigation();
-
   const handleSubmit = () => {
 
     // Prepare info
@@ -56,16 +53,9 @@ export const LoginForm = (prop) => {
 
     // Get response from authenticate-user endpoint
     Service.authenticateUser(user).then(resp => {
-      save('email', resp.data.email)
-      save('username', username)
-      save('submitted_images', resp.data.submitted_images)
-      save('accepted_images', resp.data.accepted_images)
-
-      navigation.navigate('ProfilePage');
-      showMessage({ message: 'Success!', type: 'success' });
-      
-    }).catch(error => {
-      showMessage({ message: error.toJSON().message, type: 'warning' }); 
+      handleUserAuthentication(true, resp.email, username,  resp.submitted_images, resp.accepted_images, showMessage, navigation);
+    }).catch(() => {
+      handleUserAuthentication(false, "","", 0,0, showMessage, navigation);
     })
   }
 
@@ -95,7 +85,7 @@ export const LoginForm = (prop) => {
             placeholder={i18next.t('Password')}
             onChangeText={(value:any) => setPassword(value)}
             ref={ref_input2} />
-          <TouchableOpacity onPress={showPass}>
+          <TouchableOpacity testID="showPassBtn" onPress={showPass}>
             <MaterialIcons style={formStyle.registrationIcons} name={show ? "visibility-off" : "remove-red-eye"} size={22}/>
           </TouchableOpacity>
         </View>
@@ -106,4 +96,20 @@ export const LoginForm = (prop) => {
     </View>
     </NativeBaseProvider>
   )
+}
+
+export function handleUserAuthentication(isSuccessful:boolean, email:string, username:string, submittedImages:number, acceptedImages:number, messageDisplayer:(value:MessageOptions) =>void, navigation):void {
+
+
+  if(isSuccessful){
+    save('email', email)
+    save('username', username)
+    save('submitted_images', submittedImages)
+    save('accepted_images', acceptedImages)
+
+    navigation.navigate('ProfilePage');
+    messageDisplayer({ message: 'Success!', type: 'success' });
+  } else {
+    messageDisplayer({ message: 'Invalid Login Information', type: 'warning' });
+  }
 }

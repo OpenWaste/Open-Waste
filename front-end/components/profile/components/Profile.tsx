@@ -3,8 +3,9 @@ import { View, ScrollView, SafeAreaView, Text, Image, Alert } from "react-native
 import style from "./styles/profile";
 import { NativeBaseProvider } from 'native-base';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { useNavigation } from '@react-navigation/native';
 import { deleteValueFor, getValueFor } from '../../../utils/PersistInfo';
-import { showMessage } from "react-native-flash-message";
+import {MessageOptions, showMessage} from "react-native-flash-message";
 import i18next from '../../../Translate';
 
 export class Profile extends React.Component {
@@ -25,7 +26,6 @@ export class Profile extends React.Component {
   componentWillUnmount() {
     this.focusSubscription()
   }
-
 
   render() {
     
@@ -51,37 +51,28 @@ export class Profile extends React.Component {
     }
     else {
       return (
-        <NativeBaseProvider>
-          <View>
-            <View style={style.header}></View>
-            {/* TODO: Pull profile pic from database. */}
-            <Image style={style.profilePic} source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}} />
-            <Text style={style.username}> {i18next.t('Guest')} </Text>
-            <Text style={style.loginBtn} onPress={() => this.props.navigation.navigate('Registration')}> {i18next.t('LogIn')} </Text>
-          </View>
-        </NativeBaseProvider>
+        <GuestPage/>
       );
     }
   }
 
-   LogOutBtn = () =>{
-
-    const handleLogOut = () => {
-      deleteValueFor('username');
-      deleteValueFor('email');
-      deleteValueFor('submitted_images');
-      deleteValueFor('accepted_images');
-      this.setState({username:null})
-      showMessage({ message: 'Logged Out', type: 'success' });
-    }
-  
+   LogOutBtn = () => {
     return (
-      <Text style={style.logOutBtn} onPress={handleLogOut}> {i18next.t('LogOut')} </Text>
+      <Text 
+        testID="logOutBtn"
+        style={style.logOutBtn} 
+        onPress={() =>{handleLogout(showMessage); this.setState({username:null})}}> {i18next.t('LogOut')} </Text>
     )
-    
   }
 }
 
+export function handleLogout(messageDisplayer:(value:MessageOptions)=>void):void {
+  deleteValueFor('username');
+  deleteValueFor('email');
+  deleteValueFor('submitted_images');
+  deleteValueFor('accepted_images');
+  messageDisplayer({ message: 'Logged Out', type: 'success' });
+}
 
 
 export function ProfileInformation() {
@@ -139,3 +130,21 @@ export function InfoBox(props: any) {
     </View>
   );
 }
+
+export function GuestPage() {
+
+  const navigation = useNavigation();
+  const handleBtnClick = () => navigation.navigate('Registration');
+  return(
+    <NativeBaseProvider>
+      <View>
+        <View style={style.header}></View>
+        {/* TODO: Pull profile pic from database. */}
+        <Image style={style.profilePic} source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}} />
+        <Text style={style.username}> {i18next.t('Guest')} </Text>
+        <Text testID="logInBtn" style={style.loginBtn} onPress={handleBtnClick}> {i18next.t('LogIn')} </Text>
+      </View>
+    </NativeBaseProvider>
+  )
+}
+
