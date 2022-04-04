@@ -86,6 +86,7 @@ export function Map() {
           {
             pressed
             ? <FlatList
+                testID="flat-list"
                 keyboardShouldPersistTaps='never'
                 data={filteredBuildings} keyExtractor={index => index.id.toString()}
                 extraData = {query} 
@@ -105,6 +106,7 @@ export function Map() {
           }
         </View>
         <MapView
+          testID="map-view"
           ref={mapRef}
           initialRegion={region}
           provider={PROVIDER_GOOGLE}
@@ -113,6 +115,7 @@ export function Map() {
         >
         {buildings.map((building: Building) => {
           return <Marker
+            testID="marker"
             key={building.id}
             coordinate={{longitude:building.longitude, latitude:building.latitude}}
             onPress={() => markerOnPress(building)}

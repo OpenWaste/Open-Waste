@@ -1,7 +1,7 @@
 describe('Image Submission functionality: ', () => {
     it('Ensure error appears when no image selected', () => {
         // Navigate to submission page
-        cy.contains('Submission').click()
+        cy.contains('Submission').click({force:true})
 
         cy.wait(1000)
 

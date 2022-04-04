@@ -70,7 +70,6 @@ export const LoginForm = (prop) => {
             borderWidth="0" 
             style={formStyle.registrationTextInputs}
             placeholder={i18next.t('Username')}
-            autoFocus={true}
             returnKeyType="next"
             onChangeText={(value:any) => setUsername(value)}
             onSubmitEditing={() => ref_input2.current.focus()} />
@@ -84,7 +83,6 @@ export const LoginForm = (prop) => {
             style={formStyle.registrationTextInputs} 
             variant="underlined" 
             placeholder={i18next.t('Password')}
-            autoFocus={true}
             onChangeText={(value:any) => setPassword(value)}
             ref={ref_input2} />
           <TouchableOpacity testID="showPassBtn" onPress={showPass}>
