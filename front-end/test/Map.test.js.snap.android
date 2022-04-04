@@ -1,0 +1,171 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Map Tests Map component renders correctly 1`] = `
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    Array [
+      Object {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <RNCSafeAreaProvider
+    onInsetsChange={[Function]}
+    style={
+      Array [
+        Object {
+          "flex": 1,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View>
+      <View
+        style={
+          Object {
+            "backgroundColor": "#F9F9F9",
+            "marginTop": 30,
+            "position": "relative",
+          }
+        }
+      >
+        <RCTScrollView
+          alignSelf="center"
+          keyboardShouldPersistTaps="never"
+          space={5}
+          width="100%"
+        >
+          <View>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "borderColor": "#e5e5e5",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                  "overflow": "hidden",
+                }
+              }
+            >
+              <Text />
+              <TextInput
+                _disabled={
+                  Object {
+                    "bg": "muted.100",
+                    "opacity": "80",
+                  }
+                }
+                _invalid={
+                  Object {
+                    "borderColor": "danger.600",
+                  }
+                }
+                _text={
+                  Object {
+                    "color": "lightText",
+                  }
+                }
+                accessible={true}
+                allowFontScaling={true}
+                editable={true}
+                onBlur={[Function]}
+                onChangeText={[Function]}
+                onFocus={[Function]}
+                onKeyPress={[Function]}
+                placeholder="Find a..."
+                placeholderTextColor="#a3a3a3"
+                rejectResponderTermination={true}
+                secureTextEntry={false}
+                selectionColor="#1f2937"
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "borderColor": "#e5e5e5",
+                      "borderRadius": 4,
+                      "borderWidth": 0,
+                      "color": "#1f2937",
+                      "flex": 1,
+                      "fontFamily": undefined,
+                      "fontSize": 12,
+                      "fontStyle": "normal",
+                      "fontWeight": "400",
+                      "paddingBottom": 8,
+                      "paddingLeft": 8,
+                      "paddingRight": 8,
+                      "paddingTop": 8,
+                      "width": undefined,
+                    },
+                    Object {
+                      "backgroundColor": "#F9F9F9",
+                      "borderRadius": 4,
+                      "color": "#808080",
+                      "fontSize": 14,
+                      "paddingHorizontal": 3,
+                      "paddingVertical": 5,
+                      "width": 100,
+                    },
+                  ]
+                }
+                testID="search-bar"
+                underlineColorAndroid="transparent"
+                value=""
+              />
+            </View>
+          </View>
+        </RCTScrollView>
+        <RCTScrollView
+          data={Array []}
+          disableVirtualization={false}
+          extraData=""
+          getItem={[Function]}
+          getItemCount={[Function]}
+          horizontal={false}
+          initialNumToRender={10}
+          keyExtractor={[Function]}
+          keyboardShouldPersistTaps="never"
+          maxToRenderPerBatch={10}
+          onContentSizeChange={[Function]}
+          onEndReachedThreshold={2}
+          onLayout={[Function]}
+          onMomentumScrollEnd={[Function]}
+          onScroll={[Function]}
+          onScrollBeginDrag={[Function]}
+          onScrollEndDrag={[Function]}
+          removeClippedSubviews={true}
+          renderItem={[Function]}
+          scrollEventThrottle={50}
+          stickyHeaderIndices={Array []}
+          testID="flat-list"
+          updateCellsBatchingPeriod={50}
+          viewabilityConfigCallbackPairs={Array []}
+          windowSize={21}
+        >
+          <View />
+        </RCTScrollView>
+      </View>
+      <AIRMap
+        initialRegion={null}
+        onChange={[Function]}
+        onLayout={[Function]}
+        onMapReady={[Function]}
+        onMarkerPress={[Function]}
+        region={null}
+        style={
+          Object {
+            "height": "89%",
+            "width": "100%",
+          }
+        }
+      />
+    </View>
+  </RNCSafeAreaProvider>
+</RNCSafeAreaProvider>
+`;

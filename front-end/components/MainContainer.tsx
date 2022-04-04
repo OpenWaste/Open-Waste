@@ -4,16 +4,18 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import FlashMessage from "react-native-flash-message";
 
-import { Camera } from "./camera/CameraContainer";
+import DisplayCamera from "./camera/Camera";
 import { Map } from "./map/Map";
-import { Settings } from "./settings/Settings";
+import { SettingsNavigator } from "./settings/SettingsNavigator";
 import { ProfileNavigator } from "./profile/ProfileNavigator";
+import { ImageSubmission } from "./submission/ImageSubmission";
 
 const screens = [
-  { name: "Camera", component: Camera, icon: "photo-camera" },
-  { name: "Map", component: Map, icon: "map" },
-  { name: "Settings", component: Settings, icon: "settings" },
-  { name: "Profile", component: ProfileNavigator, icon: "person" },
+  { name: "Map", component: Map, icon: "map", unmount: true},
+  { name: "Submission", component: ImageSubmission, icon: "upload-file", unmount: true},
+  { name: "Camera", component: DisplayCamera, icon: "photo-camera", unmount: false},
+  { name: "Profile", component: ProfileNavigator, icon: "person", unmount: false},
+  { name: "Settings", component: SettingsNavigator, icon: "settings", unmount: false},
 ];
 
 const Tab = createBottomTabNavigator();
@@ -21,9 +23,10 @@ const Tab = createBottomTabNavigator();
 export class MainContainer extends React.Component {
   render() {
     return (
-      <NavigationContainer>
+      <NavigationContainer independent={true}>
+        
         <Tab.Navigator
-          initialRouteName={screens[0].name}
+          initialRouteName={"Camera"}
           screenOptions={({ route }) => ({
             tabBarIcon: ({ color, size }) => {
               const icon = screens.find(
@@ -45,6 +48,7 @@ export class MainContainer extends React.Component {
                 key={screen.name}
                 name={screen.name}
                 component={screen.component}
+                options={{ unmountOnBlur: screen.unmount }}
               />
             );
           })}

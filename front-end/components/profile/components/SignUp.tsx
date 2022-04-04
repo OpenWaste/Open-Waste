@@ -2,14 +2,15 @@ import React, { useRef } from "react";
 import { View, ScrollView, KeyboardAvoidingView, Text, TouchableOpacity } from "react-native";
 import signUpStyle from "./styles/signup";
 import formStyle from "./styles/forms";
-import { Avatar, Button, Center, Input, NativeBaseProvider } from 'native-base';
+import { Avatar, Center, Input, NativeBaseProvider } from 'native-base';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Service from "../../../service/service";
-import { showMessage } from "react-native-flash-message";
+import {MessageOptions, showMessage} from "react-native-flash-message";
 import isEmail from 'validator/lib/isEmail';
 import { UserResource } from "../../../models/User";
 import { useNavigation } from '@react-navigation/native';
 import { save } from '../../../utils/PersistInfo';
+import i18next from '../../../Translate'
 
 export class SignUp extends React.Component {
 
@@ -19,7 +20,7 @@ export class SignUp extends React.Component {
       <NativeBaseProvider>
         <ScrollView>
           <KeyboardAvoidingView>
-          <Text style={signUpStyle.signUpHeader}>Create an Account</Text>
+          <Text style={signUpStyle.signUpHeader}> {i18next.t('CreateAnAccount')} </Text>
           <Center style={signUpStyle.addProfilePic}>
             <Avatar size='40' source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}}>
               <Avatar.Badge bg="green.200" />
@@ -42,8 +43,7 @@ export function SignUpForm() {
   const [password, setPassword] = React.useState('');
   const [email, setEmail] = React.useState('');
   const showPass = () => setShow(!show);
-
-  const navigation = useNavigation();
+  const navigation = useNavigation()
 
   const handleSubmit = () => {
 
@@ -56,12 +56,9 @@ export function SignUpForm() {
   
       // Get response from create-user endpoint
       Service.submitAccountCreation(user).then((resp) => {
-        save('username', username)
-        save('email', email)
-        navigation.navigate('ProfilePage');
-        showMessage({ message: 'Success!', type: 'success' });
-      }).catch(error => {
-        showMessage({ message: error.toJSON().message, type: 'warning' });
+        handleAccountCreation(true, username, email, showMessage, navigation)
+      }).catch(() => {
+        handleAccountCreation(false, username, email, showMessage, navigation)
       })
     }
     else {
@@ -75,10 +72,10 @@ export function SignUpForm() {
       <View style={formStyle.registrationInputView}>
         <MaterialIcons style={formStyle.registrationIcons} name="person" size={22}/>
         <Input
+          testID="usernameField"
           style={formStyle.registrationTextInputs} 
           borderWidth="0" 
-          placeholder="Username"
-          autoFocus={true}
+          placeholder={i18next.t('Username')}
           returnKeyType="next"
           onChangeText={(value:any) => setUsername(value)}
           onSubmitEditing={() => ref_input2.current.focus()} />
@@ -86,30 +83,47 @@ export function SignUpForm() {
       <View style={formStyle.registrationInputView}>
         <MaterialIcons style={formStyle.registrationIcons} name="lock" size={22}/>
         <Input
+          testID="passwordField"
           type={show ? "text" : "password"} 
           style={formStyle.registrationTextInputs} 
           borderWidth="0" 
-          placeholder="Password"
+          placeholder={i18next.t('Password')}
           returnKeyType="next"
-          autoFocus={true}
           onChangeText={(value:any) => setPassword(value)}
           onSubmitEditing={() => ref_input3.current.focus()}
           ref={ref_input2} />
-        <TouchableOpacity onPress={showPass}>
+        <TouchableOpacity testID="showPassBtn" onPress={showPass}>
           <MaterialIcons style={formStyle.registrationIcons} name={show ? "visibility-off" : "remove-red-eye"} size={22}/>
         </TouchableOpacity>
       </View>
       <View style={formStyle.registrationInputView}>
         <MaterialIcons style={formStyle.registrationIcons} name="alternate-email" size={22}/>
         <Input
+          testID="emailField"
           style={formStyle.registrationTextInputs} 
           borderWidth="0" 
-          placeholder="Email"
-          autoFocus={true}
-          onChangeText={(emailInput:any) => setEmail(emailInput)}
+          placeholder={i18next.t('Email')}
+          onChangeText={(emailInput:any) => setEmail(emailInput.toLowerCase())}
           ref={ref_input3}/>
       </View>
-      <Button style={signUpStyle.signUpBtn} onPress={handleSubmit}> Sign Up </Button>
+      <Text 
+        testID="signUpBtn"
+        style={signUpStyle.signUpBtn} 
+        onPress={handleSubmit}> {i18next.t('SignUp')} </Text>
     </View>
   )
+}
+
+
+export function handleAccountCreation(isSuccessful: boolean, username:string, email:string, messageDisplayer:(value:MessageOptions) => void, navigation): void {
+  if(isSuccessful) {
+    save('username', username);
+    save('email', email);
+    navigation.navigate('ProfilePage');
+    save('submitted_images', 0);
+    save('accepted_images', 0);
+    messageDisplayer({ message: 'Success!', type: 'success' });
+  } else {
+    messageDisplayer({ message: "Error creating account", type: 'warning' });
+  }
 }

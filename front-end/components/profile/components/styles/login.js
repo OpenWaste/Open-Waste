@@ -7,8 +7,8 @@ export default StyleSheet.create({
     fontFamily: 'Roboto',
     fontSize: 40,
     marginTop: '10%',
-    marginLeft: '10%',
-    marginRight: '40%',
+    marginLeft: '5%',
+    marginRight: '10%',
     color: 'grey',
   },
 
@@ -26,7 +26,14 @@ export default StyleSheet.create({
     fontFamily: 'Roboto',
     alignSelf: 'center',
     marginTop: 20,
-    width: '90%'
+    width: '90%',
+    color: "white",
+    textAlign: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderColor: '#0F968D',
+    borderWidth: 2,
+    borderRadius: 5,
   },
 
   remainAsGuest: {

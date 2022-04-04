@@ -1,30 +1,48 @@
-import * as React from "react";
-import { View, ScrollView, KeyboardAvoidingView, Text, Image } from "react-native";
-import { Accordion, AlertDialog, Box, Button, Center, NativeBaseProvider, Input } from 'native-base';
-import { save, getValueFor, deleteValueFor } from '../../../utils/PersistInfo';
+import React, { useEffect } from "react";
+import {
+  View,
+  ScrollView,
+  KeyboardAvoidingView,
+  Text,
+  Image,
+} from "react-native";
+import {
+  Accordion,
+  AlertDialog,
+  Box,
+  Button,
+  Center,
+  NativeBaseProvider,
+  Input,
+} from "native-base";
+import { save, getValueFor, deleteValueFor } from "../../../utils/PersistInfo";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Service from "../../../service/service";
 import { UserResource } from "../../../models/User";
-import { useNavigation } from '@react-navigation/native';
-import { showMessage } from "react-native-flash-message";
+import { useNavigation } from "@react-navigation/native";
+import {MessageOptions, showMessage} from "react-native-flash-message";
 
 import style from "./styles/edit-profile";
 import formStyle from "./styles/forms";
 import isEmail from 'validator/lib/isEmail';
+import i18next from '../../../Translate';
 
 export class EditProfile extends React.Component {
-    
   render() {
-    
     return (
       <NativeBaseProvider>
         <ScrollView>
           <KeyboardAvoidingView>
-              <View style={style.header}></View> 
-              {/* TO DO: Pull profile pic from database. */}
-              <Image style={style.profilePic} source={{uri: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm'}} />
-              <Text style={style.username}> Edit Profile </Text>
-              <EditForm />
+            <View style={style.header}></View>
+            {/* TO DO: Pull profile pic from database. */}
+            <Image
+              style={style.profilePic}
+              source={{
+                uri: "https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?size=192&d=mm",
+              }}
+            />
+            <Text style={style.username}> {i18next.t('EditProfile')} </Text>
+            <EditForm />
           </KeyboardAvoidingView>
         </ScrollView>
       </NativeBaseProvider>
@@ -32,76 +50,65 @@ export class EditProfile extends React.Component {
   }
 }
 
-function EditForm() {
+export function EditForm() {
+  const navigation = useNavigation();
+  const [oldUsername, setOldUsername] = React.useState("");
+  const [newUsername, setNewUsername] = React.useState("");
+  const [oldEmail, setOldEmail] = React.useState("");
+  const [newEmail, setNewEmail] = React.useState("");
+  const [isChange, setIsChange] = React.useState(false);
 
-  const navigation=useNavigation();
+  useEffect(() => {
+    getValueFor("username").then((output) => {
+      setOldUsername(output);
+      setNewUsername(output);
+    });
 
-  const [oldUsername, setOldUsername]=React.useState('');
-  const [newUsername, setNewUsername]=React.useState('');
-  const [oldEmail, setOldEmail]=React.useState('');
-  const [newEmail, setNewEmail]=React.useState('');
+    getValueFor("email").then((output) => {
+      setOldEmail(output);
+      setNewEmail(output);
+    });
+  }, []);
 
-  getValueFor('username').then(output => {
-    setOldUsername(output);
-  })
+  const handleCancel = () => {
+    navigation.navigate("ProfilePage");
+  };
 
-  getValueFor('email').then(output => {
-    setOldEmail(output);
-  })
-
-  const handleCancel=() => {
-    navigation.navigate('ProfilePage')
-  }
-
-  const handleSubmit=() => {
-
-    if (newUsername == '' && newEmail == '') {
-      showMessage({ message: "Please fill a new username or email", type: "warning" })
-      return;
-    }
-    else if(newUsername==''){
-      setNewUsername(oldUsername)
-    }
-    else if(newEmail==''){
-      setNewEmail(oldEmail);
+  const setValue = (value: any, category: string) => {
+    if (category == "email") {
+      setNewEmail(value);
+    } else if (category == "user") {
+      setNewUsername(value);
     }
 
-    if(!isEmail(newEmail)){
-      showMessage({ message: 'Invalid Email', type: 'warning' });
-      return;
-    }
-      
-    const user={
-      old_username: oldUsername,
-      new_username: newUsername,
-      email: newEmail,
-    }
+    setIsChange(true);
+    return;
+  };
 
-    // Get response from update-username-email endpoint
-    Service.updateUsernameEmail(user).then(() => {
-      save('username', newUsername);
-      save('email', newEmail);
-
-      navigation.navigate('ProfilePage');
-      showMessage({ message: 'Successfully Updated Account', type: 'success' });
-
-    }).catch(() =>{
-      showMessage({ message: 'An Error Has Occurred', type: 'warning' });
-    })
-  }
-
-  return(
+  return (
     <View>
       <Box m={3}>
         <Accordion>
-          <Accordion.Item>
-            <Accordion.Summary _expanded={{ backgroundColor: '#0F968D' }}>Edit Username<Accordion.Icon /></Accordion.Summary>
+          <Accordion.Item testID="editUsernameAccordion">
+            <Accordion.Summary _expanded={{ backgroundColor: "#0F968D" }}>
+              <Text style={style.editBttn}>{i18next.t('EditUsername')}</Text> <Accordion.Icon />
+            </Accordion.Summary>
             <Accordion.Details>
               <View style={formStyle.accordionInputView}>
-                <MaterialIcons style={formStyle.registrationIcons} name="person" size={22}/>
-                <Input style={formStyle.registrationTextInputs} onChangeText={(value:any) => setNewUsername(value)} borderColor="transparent">
-                  {oldUsername}
-                </Input>
+                <MaterialIcons
+                  style={formStyle.registrationIcons}
+                  name="person"
+                  size={22}
+                />
+                <Input
+                  testID="usernameField"
+                  style={formStyle.registrationTextInputs}
+                  onChangeText={(value: any) => {
+                    setValue(value, "user");
+                  }}
+                  borderColor="transparent"
+                  defaultValue={oldUsername}
+                />
               </View>
             </Accordion.Details>
           </Accordion.Item>
@@ -110,86 +117,183 @@ function EditForm() {
 
       <Box m={3}>
         <Accordion>
-          <Accordion.Item>
-            <Accordion.Summary _expanded={{ backgroundColor: '#0F968D' }}> Edit Email <Accordion.Icon/></Accordion.Summary>
+          <Accordion.Item testID="editEmailAccordion">
+            <Accordion.Summary _expanded={{ backgroundColor: "#0F968D" }}>
+              <Text style={style.editBttn}>{i18next.t('EditEmail')}</Text> <Accordion.Icon />
+            </Accordion.Summary>
             <Accordion.Details>
               <View style={formStyle.accordionInputView}>
-                <MaterialIcons style={formStyle.registrationIcons} name="alternate-email" size={22}/>
-                <Input style={formStyle.registrationTextInputs} onChangeText={(value:any) => setNewEmail(value)} borderColor="transparent">
-                  {oldEmail}
-                </Input>
+                <MaterialIcons
+                  style={formStyle.registrationIcons}
+                  name="alternate-email"
+                  size={22}
+                />
+                <Input
+                  testID="emailField"
+                  style={formStyle.registrationTextInputs}
+                  onChangeText={(value: any) => {
+                    setValue(value, "email");
+                  }}
+                  borderColor="transparent"
+                  defaultValue={oldEmail}
+                />
               </View>
             </Accordion.Details>
           </Accordion.Item>
         </Accordion>
       </Box>
-      <DeleteAccount/>
+      <DeleteAccount />
       <View style={style.btnView}>
-        <Button style={style.cancelBtn} onPress={handleCancel}> Cancel </Button>
-        <Button style={style.saveBtn} onPress={handleSubmit}> Save </Button>
-      </View> 
+        <Text
+          testID="cancelBtn"
+          style={style.cancelBtn}
+          onPress={handleCancel}
+        >
+          {i18next.t('Cancel')}
+        </Text>
+        <Text testID="saveBtn" style={style.saveBtn} onPress={()=>{validateUserProfileChange(isChange, newUsername, newEmail, oldUsername, showMessage, navigation)}}>
+          {i18next.t('Save')}
+        </Text>
+      </View>
     </View>
-  )
+  );
 }
 
-function DeleteAccount() {
-  const [isOpen, setIsOpen]=React.useState(false);
-  const [username, setUsername]=React.useState('');
-  const onClose=() => setIsOpen(false)
-  const cancelRef=React.useRef(null);
-  const navigation=useNavigation();
-
-  getValueFor('username').then(output => {
-    setUsername(output);
-  }) 
-
-  const handleDelete=() => {
-    
-    const user: UserResource={
-      username: username,
-      email: '',
-      password: '',
+export function validateUserProfileChange(isChange:boolean, newUsername:string, newEmail:string, oldUsername:string, messageDisplayer:(value:MessageOptions) => void ,navigation):void{
+  if (isChange) {
+    if (newUsername == "") {
+      messageDisplayer({ message: "Please fill a new username", type: "warning" });
+      return;
+    } else if (newEmail == "") {
+      messageDisplayer({ message: "Please fill a new email", type: "warning" });
+      return;
+    } else if (!isEmail(newEmail)) {
+      messageDisplayer({ message: "Invalid Email", type: "warning" });
+      return;
     }
 
-    Service.deleteUser(user).then(() => {
-      // If response is good, delete persistent data
-      deleteValueFor('username');
-      deleteValueFor('email');
-      // Redirect and show success message
-      navigation.navigate('ProfilePage');
-      showMessage({ message: 'Successfully Deleted Account', type: 'success' })
-    }).catch(() => {
-      showMessage({ message: 'An Error Has Occurred', type: 'warning' });
-    })
+    const user = {
+      old_username: oldUsername,
+      new_username: newUsername,
+      email: newEmail,
+    };
+
+    // Get response from update-username-email endpoint
+    Service.updateUsernameEmail(user)
+        .then(() => {
+          handleUserProfileChange(true, newUsername, newEmail, messageDisplayer, navigation)
+        })
+        .catch(() => {
+          handleUserProfileChange(false, newUsername, newEmail, messageDisplayer, navigation)
+        });
+  } else {
+    navigation.navigate("ProfilePage");
+  }
+}
+
+export function handleUserProfileChange(isSuccessful:boolean, newUsername:string, newEmail:string, messageDisplayer:(value:MessageOptions) => void, navigation):void {
+  if(isSuccessful){
+    save("username", newUsername);
+    save("email", newEmail);
+
+    navigation.navigate("ProfilePage");
+    messageDisplayer({
+      message: "Successfully Updated Account",
+      type: "success",
+    });
+  } else {
+    messageDisplayer({ message: "An Error Has Occurred", type: "warning" });
+  }
+}
+
+export function DeleteAccount() {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [username, setUsername] = React.useState("");
+  const onClose = () => setIsOpen(false);
+  const cancelRef = React.useRef(null);
+  const navigation = useNavigation();
+
+  getValueFor("username").then((output) => {
+    setUsername(output);
+  });
+
+  const handleDelete = () => {
+    const user: UserResource = {
+      username: username,
+      email: "",
+      password: "",
+    };
+
+    Service.deleteUser(user)
+      .then(() => {
+        handleUserDeletion(true, showMessage, navigation)
+      })
+      .catch(() => {
+        handleUserDeletion(false, showMessage, navigation)
+      });
 
     onClose();
-  }
+  };
 
   return (
     <Center>
       <Button
+        testID="deleteBtn"
         style={style.deleteBtn}
-        _text={{color:'#D33333', paddingTop: 2, paddingBottom: 2}}
+        _text={{ color: "#D33333", paddingTop: 2, paddingBottom: 2 }}
         colorScheme="danger"
         onPress={() => setIsOpen(!isOpen)}
       >
-        Delete account
+        {i18next.t('DeleteAccount')}
       </Button>
-      <AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}>
-      <AlertDialog.Content>
-      <AlertDialog.CloseButton/>
-      <AlertDialog.Header>Are you sure?</AlertDialog.Header>
-      <AlertDialog.Body>
-        This action will delete all your data from your device and cloud. This action is irreversable.
-      </AlertDialog.Body>
-      <AlertDialog.Footer>
-        <Button.Group space={2}>
-          <Button colorScheme="danger" onPress={handleDelete}>Delete</Button>
-          <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>Cancel</Button>                   
-        </Button.Group>
-      </AlertDialog.Footer>
-      </AlertDialog.Content>
-    </AlertDialog>
+      <AlertDialog
+        leastDestructiveRef={cancelRef}
+        isOpen={isOpen}
+        onClose={onClose}
+      >
+        <AlertDialog.Content>
+          <AlertDialog.CloseButton />
+          <AlertDialog.Header> {i18next.t('AreYouSure')} </AlertDialog.Header>
+          <AlertDialog.Body>
+            {i18next.t('DeleteAccountText')}
+          </AlertDialog.Body>
+          <AlertDialog.Footer>
+            <Button.Group space={2}>
+              <Button colorScheme="danger" onPress={handleDelete}>
+                {i18next.t('Delete')}
+              </Button>
+              <Button
+                testID="modalCancelBtn"
+                variant="unstyled"
+                colorScheme="coolGray"
+                onPress={onClose}
+                ref={cancelRef}
+              >
+                {i18next.t('Cancel')}
+              </Button>
+            </Button.Group>
+          </AlertDialog.Footer>
+        </AlertDialog.Content>
+      </AlertDialog>
     </Center>
-  )
+  );
+}
+
+export function handleUserDeletion(isSuccessful:boolean,  messageDisplayer:(value:MessageOptions)=>void, navigation) {
+
+  if(isSuccessful) {
+    // If response is good, delete persistent data
+    deleteValueFor("username");
+    deleteValueFor("email");
+    deleteValueFor("submitted_images");
+    deleteValueFor("accepted_images");
+    // Redirect and show success message
+    navigation.navigate("ProfilePage");
+    messageDisplayer({
+      message: "Successfully Deleted Account",
+      type: "success",
+    });
+  } else {
+    messageDisplayer({ message: "An Error Has Occurred", type: "warning" });
+  }
 }
